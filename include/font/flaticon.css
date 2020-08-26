@@ -1,0 +1,295 @@
+	/*
+  	Flaticon icon font: Flaticon
+  	Creation date: 22/06/2016 15:46
+  	*/
+
+@font-face {
+  font-family: "Flaticon";
+  src: url("./Flaticon.eot");
+  src: url("./Flaticon.eot?#iefix") format("embedded-opentype"),
+       url("./Flaticon.woff") format("woff"),
+       url("./Flaticon.ttf") format("truetype"),
+       url("./Flaticon.svg#Flaticon") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  @font-face {
+    font-family: "Flaticon";
+    src: url("./Flaticon.svg#Flaticon") format("svg");
+  }
+}
+
+[class^="flaticon-"]:before, [class*=" flaticon-"]:before,
+[class^="flaticon-"]:after, [class*=" flaticon-"]:after {   
+  font-family: Flaticon;
+        font-size: 20px;
+font-style: normal;
+margin-left: 20px;
+}
+
+.flaticon-abkhazia:before { content: "\f100"; }
+.flaticon-afghanistan:before { content: "\f101"; }
+.flaticon-aland-islands:before { content: "\f102"; }
+.flaticon-albania:before { content: "\f103"; }
+.flaticon-algeria:before { content: "\f104"; }
+.flaticon-american-samoa:before { content: "\f105"; }
+.flaticon-andorra:before { content: "\f106"; }
+.flaticon-angola:before { content: "\f107"; }
+.flaticon-anguilla:before { content: "\f108"; }
+.flaticon-antigua-and-barbuda:before { content: "\f109"; }
+.flaticon-argentina:before { content: "\f10a"; }
+.flaticon-armenia:before { content: "\f10b"; }
+.flaticon-aruba:before { content: "\f10c"; }
+.flaticon-australia:before { content: "\f10d"; }
+.flaticon-austria:before { content: "\f10e"; }
+.flaticon-azerbaijan:before { content: "\f10f"; }
+.flaticon-azores-islands:before { content: "\f110"; }
+.flaticon-bahamas:before { content: "\f111"; }
+.flaticon-bahrain:before { content: "\f112"; }
+.flaticon-balearic-islands:before { content: "\f113"; }
+.flaticon-bangladesh:before { content: "\f114"; }
+.flaticon-barbados:before { content: "\f115"; }
+.flaticon-basque-country:before { content: "\f116"; }
+.flaticon-belarus:before { content: "\f117"; }
+.flaticon-belgium:before { content: "\f118"; }
+.flaticon-belize:before { content: "\f119"; }
+.flaticon-benin:before { content: "\f11a"; }
+.flaticon-bermuda:before { content: "\f11b"; }
+.flaticon-bhutan:before { content: "\f11c"; }
+.flaticon-bolivia:before { content: "\f11d"; }
+.flaticon-bonaire:before { content: "\f11e"; }
+.flaticon-bosnia-and-herzegovina:before { content: "\f11f"; }
+.flaticon-botswana:before { content: "\f120"; }
+.flaticon-brazil:before { content: "\f121"; }
+.flaticon-british-columbia:before { content: "\f122"; }
+.flaticon-british-indian-ocean-territory:before { content: "\f123"; }
+.flaticon-british-virgin-islands:before { content: "\f124"; }
+.flaticon-brunei:before { content: "\f125"; }
+.flaticon-bulgaria:before { content: "\f126"; }
+.flaticon-burkina-faso:before { content: "\f127"; }
+.flaticon-burundi:before { content: "\f128"; }
+.flaticon-cambodia:before { content: "\f129"; }
+.flaticon-cameroon:before { content: "\f12a"; }
+.flaticon-canada:before { content: "\f12b"; }
+.flaticon-canary-islands:before { content: "\f12c"; }
+.flaticon-cape-verde:before { content: "\f12d"; }
+.flaticon-cayman-islands:before { content: "\f12e"; }
+.flaticon-central-african-republic:before { content: "\f12f"; }
+.flaticon-ceuta:before { content: "\f130"; }
+.flaticon-chad:before { content: "\f131"; }
+.flaticon-chile:before { content: "\f132"; }
+.flaticon-china:before { content: "\f133"; }
+.flaticon-christmas-island:before { content: "\f134"; }
+.flaticon-cocos-island:before { content: "\f135"; }
+.flaticon-colombia:before { content: "\f136"; }
+.flaticon-comoros:before { content: "\f137"; }
+.flaticon-cook-islands:before { content: "\f138"; }
+.flaticon-corsica:before { content: "\f139"; }
+.flaticon-costa-rica:before { content: "\f13a"; }
+.flaticon-croatia:before { content: "\f13b"; }
+.flaticon-cuba:before { content: "\f13c"; }
+.flaticon-curacao:before { content: "\f13d"; }
+.flaticon-cyprus:before { content: "\f13e"; }
+.flaticon-czech-republic:before { content: "\f13f"; }
+.flaticon-democratic-republic-of-congo:before { content: "\f140"; }
+.flaticon-denmark:before { content: "\f141"; }
+.flaticon-djibouti:before { content: "\f142"; }
+.flaticon-dominica:before { content: "\f143"; }
+.flaticon-dominican-republic:before { content: "\f144"; }
+.flaticon-east-timor:before { content: "\f145"; }
+.flaticon-ecuador:before { content: "\f146"; }
+.flaticon-egypt:before { content: "\f147"; }
+.flaticon-el-salvador:before { content: "\f148"; }
+.flaticon-england:before { content: "\f149"; }
+.flaticon-equatorial-guinea:before { content: "\f14a"; }
+.flaticon-eritrea:before { content: "\f14b"; }
+.flaticon-estonia:before { content: "\f14c"; }
+.flaticon-ethiopia:before { content: "\f14d"; }
+.flaticon-european-union:before { content: "\f14e"; }
+.flaticon-falkland-islands:before { content: "\f14f"; }
+.flaticon-faroe-islands:before { content: "\f150"; }
+.flaticon-fiji:before { content: "\f151"; }
+.flaticon-finland:before { content: "\f152"; }
+.flaticon-france:before { content: "\f153"; }
+.flaticon-french-polynesia:before { content: "\f154"; }
+.flaticon-gabon:before { content: "\f155"; }
+.flaticon-galapagos-islands:before { content: "\f156"; }
+.flaticon-gambia:before { content: "\f157"; }
+.flaticon-georgia:before { content: "\f158"; }
+.flaticon-germany:before { content: "\f159"; }
+.flaticon-ghana:before { content: "\f15a"; }
+.flaticon-gibraltar:before { content: "\f15b"; }
+.flaticon-greece:before { content: "\f15c"; }
+.flaticon-greenland:before { content: "\f15d"; }
+.flaticon-grenada:before { content: "\f15e"; }
+.flaticon-guam:before { content: "\f15f"; }
+.flaticon-guatemala:before { content: "\f160"; }
+.flaticon-guernsey:before { content: "\f161"; }
+.flaticon-guinea:before { content: "\f162"; }
+.flaticon-guinea-bissau:before { content: "\f163"; }
+.flaticon-guyana:before { content: "\f164"; }
+.flaticon-haiti:before { content: "\f165"; }
+.flaticon-hawaii:before { content: "\f166"; }
+.flaticon-honduras:before { content: "\f167"; }
+.flaticon-hong-kong:before { content: "\f168"; }
+.flaticon-hungary:before { content: "\f169"; }
+.flaticon-iceland:before { content: "\f16a"; }
+.flaticon-india:before { content: "\f16b"; }
+.flaticon-indonesia:before { content: "\f16c"; }
+.flaticon-iran:before { content: "\f16d"; }
+.flaticon-iraq:before { content: "\f16e"; }
+.flaticon-ireland:before { content: "\f16f"; }
+.flaticon-isle-of-man:before { content: "\f170"; }
+.flaticon-israel:before { content: "\f171"; }
+.flaticon-italy:before { content: "\f172"; }
+.flaticon-ivory-coast:before { content: "\f173"; }
+.flaticon-jamaica:before { content: "\f174"; }
+.flaticon-japan:before { content: "\f175"; }
+.flaticon-jersey:before { content: "\f176"; }
+.flaticon-jordan:before { content: "\f177"; }
+.flaticon-kazakhstan:before { content: "\f178"; }
+.flaticon-kenya:before { content: "\f179"; }
+.flaticon-kiribati:before { content: "\f17a"; }
+.flaticon-kosovo:before { content: "\f17b"; }
+.flaticon-kwait:before { content: "\f17c"; }
+.flaticon-kyrgyzstan:before { content: "\f17d"; }
+.flaticon-laos:before { content: "\f17e"; }
+.flaticon-latvia:before { content: "\f17f"; }
+.flaticon-lebanon:before { content: "\f180"; }
+.flaticon-lesotho:before { content: "\f181"; }
+.flaticon-liberia:before { content: "\f182"; }
+.flaticon-libya:before { content: "\f183"; }
+.flaticon-liechtenstein:before { content: "\f184"; }
+.flaticon-lithuania:before { content: "\f185"; }
+.flaticon-luxembourg:before { content: "\f186"; }
+.flaticon-macao:before { content: "\f187"; }
+.flaticon-madagascar:before { content: "\f188"; }
+.flaticon-madeira:before { content: "\f189"; }
+.flaticon-malasya:before { content: "\f18a"; }
+.flaticon-malawi:before { content: "\f18b"; }
+.flaticon-maldives:before { content: "\f18c"; }
+.flaticon-mali:before { content: "\f18d"; }
+.flaticon-malta:before { content: "\f18e"; }
+.flaticon-marshall-island:before { content: "\f18f"; }
+.flaticon-martinique:before { content: "\f190"; }
+.flaticon-mauritania:before { content: "\f191"; }
+.flaticon-mauritius:before { content: "\f192"; }
+.flaticon-melilla:before { content: "\f193"; }
+.flaticon-mexico:before { content: "\f194"; }
+.flaticon-micronesia:before { content: "\f195"; }
+.flaticon-moldova:before { content: "\f196"; }
+.flaticon-monaco:before { content: "\f197"; }
+.flaticon-mongolia:before { content: "\f198"; }
+.flaticon-montenegro:before { content: "\f199"; }
+.flaticon-montserrat:before { content: "\f19a"; }
+.flaticon-morocco:before { content: "\f19b"; }
+.flaticon-mozambique:before { content: "\f19c"; }
+.flaticon-myanmar:before { content: "\f19d"; }
+.flaticon-nagorno-karabakh-republic:before { content: "\f19e"; }
+.flaticon-namibia:before { content: "\f19f"; }
+.flaticon-nauru:before { content: "\f1a0"; }
+.flaticon-nepal:before { content: "\f1a1"; }
+.flaticon-netherlands:before { content: "\f1a2"; }
+.flaticon-new-zealand:before { content: "\f1a3"; }
+.flaticon-nicaragua:before { content: "\f1a4"; }
+.flaticon-niger:before { content: "\f1a5"; }
+.flaticon-nigeria:before { content: "\f1a6"; }
+.flaticon-niue:before { content: "\f1a7"; }
+.flaticon-norfolk-island:before { content: "\f1a8"; }
+.flaticon-north-korea:before { content: "\f1a9"; }
+.flaticon-northern-cyprus:before { content: "\f1aa"; }
+.flaticon-northern-marianas-islands:before { content: "\f1ab"; }
+.flaticon-norway:before { content: "\f1ac"; }
+.flaticon-oman:before { content: "\f1ad"; }
+.flaticon-ossetia:before { content: "\f1ae"; }
+.flaticon-otan:before { content: "\f1af"; }
+.flaticon-pakistan:before { content: "\f1b0"; }
+.flaticon-palau:before { content: "\f1b1"; }
+.flaticon-palestine:before { content: "\f1b2"; }
+.flaticon-panama:before { content: "\f1b3"; }
+.flaticon-papua-new-guinea:before { content: "\f1b4"; }
+.flaticon-paraguay:before { content: "\f1b5"; }
+.flaticon-peru:before { content: "\f1b6"; }
+.flaticon-philippines:before { content: "\f1b7"; }
+.flaticon-pitcairn-islands:before { content: "\f1b8"; }
+.flaticon-portugal:before { content: "\f1b9"; }
+.flaticon-puerto-rico:before { content: "\f1ba"; }
+.flaticon-qatar:before { content: "\f1bb"; }
+.flaticon-rapa-nui:before { content: "\f1bc"; }
+.flaticon-republic-of-macedonia:before { content: "\f1bd"; }
+.flaticon-republic-of-poland:before { content: "\f1be"; }
+.flaticon-republic-of-the-congo:before { content: "\f1bf"; }
+.flaticon-romania:before { content: "\f1c0"; }
+.flaticon-russia:before { content: "\f1c1"; }
+.flaticon-rwanda:before { content: "\f1c2"; }
+.flaticon-saba-island:before { content: "\f1c3"; }
+.flaticon-sahrawi-arab-democratic-republic:before { content: "\f1c4"; }
+.flaticon-saint-kitts-and-nevis:before { content: "\f1c5"; }
+.flaticon-samoa:before { content: "\f1c6"; }
+.flaticon-san-marino:before { content: "\f1c7"; }
+.flaticon-sao-tome-and-prince:before { content: "\f1c8"; }
+.flaticon-sardinia:before { content: "\f1c9"; }
+.flaticon-saudi-arabia:before { content: "\f1ca"; }
+.flaticon-scotland:before { content: "\f1cb"; }
+.flaticon-senegal:before { content: "\f1cc"; }
+.flaticon-serbia:before { content: "\f1cd"; }
+.flaticon-seychelles:before { content: "\f1ce"; }
+.flaticon-sicily:before { content: "\f1cf"; }
+.flaticon-sierra-leone:before { content: "\f1d0"; }
+.flaticon-singapore:before { content: "\f1d1"; }
+.flaticon-sint-eustatius:before { content: "\f1d2"; }
+.flaticon-sint-maarten:before { content: "\f1d3"; }
+.flaticon-slovakia:before { content: "\f1d4"; }
+.flaticon-slovenia:before { content: "\f1d5"; }
+.flaticon-solomon-islands:before { content: "\f1d6"; }
+.flaticon-somalia:before { content: "\f1d7"; }
+.flaticon-somaliland:before { content: "\f1d8"; }
+.flaticon-south-africa:before { content: "\f1d9"; }
+.flaticon-south-korea:before { content: "\f1da"; }
+.flaticon-south-sudan:before { content: "\f1db"; }
+.flaticon-spain:before { content: "\f1dc"; }
+.flaticon-sri-lanka:before { content: "\f1dd"; }
+.flaticon-st-barts:before { content: "\f1de"; }
+.flaticon-st-lucia:before { content: "\f1df"; }
+.flaticon-st-vincent-and-the-grenadines:before { content: "\f1e0"; }
+.flaticon-sudan:before { content: "\f1e1"; }
+.flaticon-suriname:before { content: "\f1e2"; }
+.flaticon-swaziland:before { content: "\f1e3"; }
+.flaticon-sweden:before { content: "\f1e4"; }
+.flaticon-switzerland:before { content: "\f1e5"; }
+.flaticon-syria:before { content: "\f1e6"; }
+.flaticon-taiwan:before { content: "\f1e7"; }
+.flaticon-tajikistan:before { content: "\f1e8"; }
+.flaticon-tanzania:before { content: "\f1e9"; }
+.flaticon-thailand:before { content: "\f1ea"; }
+.flaticon-tibet:before { content: "\f1eb"; }
+.flaticon-togo:before { content: "\f1ec"; }
+.flaticon-tokelau:before { content: "\f1ed"; }
+.flaticon-tonga:before { content: "\f1ee"; }
+.flaticon-transnistria:before { content: "\f1ef"; }
+.flaticon-trinidad-and-tobago:before { content: "\f1f0"; }
+.flaticon-tunisia:before { content: "\f1f1"; }
+.flaticon-turkey:before { content: "\f1f2"; }
+.flaticon-turkmenistan:before { content: "\f1f3"; }
+.flaticon-turks-and-caicos:before { content: "\f1f4"; }
+.flaticon-tuvalu:before { content: "\f1f5"; }
+.flaticon-tuvalu-1:before { content: "\f1f6"; }
+.flaticon-uganda:before { content: "\f1f7"; }
+.flaticon-ukraine:before { content: "\f1f8"; }
+.flaticon-united-arab-emirates:before { content: "\f1f9"; }
+.flaticon-united-kingdom:before { content: "\f1fa"; }
+.flaticon-united-nations:before { content: "\f1fb"; }
+.flaticon-united-states:before { content: "\f1fc"; }
+.flaticon-uruguay:before { content: "\f1fd"; }
+.flaticon-uzbekistn:before { content: "\f1fe"; }
+.flaticon-vanuatu:before { content: "\f1ff"; }
+.flaticon-vatican-city:before { content: "\f200"; }
+.flaticon-venezuela:before { content: "\f201"; }
+.flaticon-vietnam:before { content: "\f202"; }
+.flaticon-virgin-islands:before { content: "\f203"; }
+.flaticon-wales:before { content: "\f204"; }
+.flaticon-yemen:before { content: "\f205"; }
+.flaticon-zambia:before { content: "\f206"; }
+.flaticon-zimbabwe:before { content: "\f207"; }

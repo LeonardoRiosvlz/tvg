@@ -1,0 +1,26 @@
+<IfModule mod_rewrite.c>
+
+    RewriteEngine on
+
+    #If isnt directory
+    RewriteCond %{REQUEST_FILENAME} !-d
+
+    #Redirect assets to include folder
+    RewriteRule ^css/(.+)$ /include/css/$1 [L]
+    RewriteRule ^js/(.+)$ /include/js/$1 [L]
+    RewriteRule ^img/(.+)$ /include/img/$1 [L]
+    RewriteRule ^fonts/(.+)$ /include/fonts/$1 [L]
+    #No direct access to .php files
+    RewriteRule ^(.+)(\.php$) /index.php/ [L]
+
+    #If isnt directory and file
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+
+    #Send all to index
+    RewriteRule ^(.*)$ /index.php/$1 [L]
+
+
+
+
+</IfModule>
