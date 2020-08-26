@@ -10,10 +10,9 @@
         </button>
     <div class="collapse navbar-collapse" id="navbarResponsive">
       <ul class="navbar-nav ml-auto">
-        
+
         <br>
          <li class="nav-item"> <a href="#" class="btn boton_4">Enviar Dinero</a></li>            
-           
                         <!-- Nav Item - User Information -->
             <li class="nav-item dropdown no-arrow">
               <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -41,17 +40,13 @@
                 </a>
               </div>
             </li>
-          
+
            </li><li class="nav-item">
           <a class="nav-link " href="#"><i class="" aria-hidden="true"></i> <strong><b> <span class="fa fa-question"></span></b></strong> </a>
         </li>
       </ul>
- 
+
 
 
   </div>
  </nav>
-
-
-
-
