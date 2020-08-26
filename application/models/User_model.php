@@ -148,9 +148,12 @@ public function insertar($data){
         'auth_level'     => $data['auth_level'],
         'banned'         => $data['banned'],
         'passwd'         => $data['passwd'],
-        'datos'          => json_encode($data['datos']),
         'created_at'         => $data['created_at'],
+        'passwd_verify_code' =>   $data['passwd_verify_code'],
         'cargo'         => $data['cargo'],
+        'telefono_personal'         => $data['telefono_personal'],
+        'telefono_corporativo'         => $data['telefono_corporativo'],
+        'sucursal'         => $data['sucursal'],
         'url_foto'         => $data['url_foto'],
     ));
     return $this->db->error();
@@ -162,11 +165,13 @@ public function editar($data) {
       'auth_level'     => $data['auth_level'],
       'banned'         => $data['banned'],
       'username'         => $data['username'],
-      'datos'          => json_encode($data['datos']),
       'nombre'       => $data['nombre'],
       'cargo'         => $data['cargo'],
       'apellido'       => $data['apellido'],
       'cedula'       => $data['cedula'],
+      'telefono_personal'         => $data['telefono_personal'],
+      'telefono_corporativo'         => $data['telefono_corporativo'],
+      'sucursal'         => $data['sucursal'],
     ));
     return $this->db->error();
    }
@@ -178,12 +183,14 @@ public function editar_img($data) {
       'auth_level'     => $data['auth_level'],
       'banned'         => $data['banned'],
       'username'         => $data['username'],
-      'datos'          => json_encode($data['datos']),
       'url_foto'         => $data['url_foto'],
       'nombre'       => $data['nombre'],
       'cargo'         => $data['cargo'],
       'apellido'       => $data['apellido'],
       'cedula'       => $data['cedula'],
+      'telefono_personal'         => $data['telefono_personal'],
+      'telefono_corporativo'         => $data['telefono_corporativo'],
+      'sucursal'         => $data['sucursal'],
     ));
     return $this->db->error();
    }

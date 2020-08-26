@@ -49,10 +49,19 @@ class Root_user extends MY_Controller
           echo json_encode($error);
         } else {
             $data = json_decode($this->input->post('service_form'),true);
+
+
+            $recovery_code = substr( $this->authentication->random_salt()
+                . $this->authentication->random_salt()
+                . $this->authentication->random_salt()
+                . $this->authentication->random_salt(), 0, 72 );
+
+            $data['passwd_verify_code'] = $this->authentication->hash_passwd($recovery_code);
+
             $upload_data = $this->upload->data();
             $file_name = $upload_data['file_name'];
             $data['url_foto'] ="/include/img/user/".$file_name;
-            $data['passwd']     = $this->authentication->hash_passwd($data['email']);
+            $data['passwd']     = $this->authentication->hash_passwd($data['username'].$data['cedula']);
             $data['user_id']    = $this->examples_model->get_unused_id();
             $data['created_at'] = date('Y-m-d H:i:s');
             // If username is not used, it must be entered into the record as NULL

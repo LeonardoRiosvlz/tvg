@@ -110,7 +110,7 @@
                                       <div class="col-sm-12">
                                         <label class="links">Sucursal</label>
                                         <div class="form-group">
-                                          <select v-model="form.datos[0].sucursal" v-validate="'required'"  name="sucursal" class="form-control" :disabled="ver" >
+                                          <select v-model="form.sucursal" v-validate="'required'"  name="sucursal" class="form-control" :disabled="ver" >
                                            <option value=""></option>
                                             <option v-for="sucursales in sucursales" :value="sucursales.nombre_sucursal">{{sucursales.nombre_sucursal}}</option>
                                           </select>
@@ -155,7 +155,7 @@
                                         <!-- textarea -->
                                         <div class="form-group">
                                           <label class="links">Teléfono personal</label>
-                                           <input type="text" v-model="form.datos[0].telefono_personal" v-validate="'required|numeric'" name="telefono_personal" class="form-control form-control-lg" id="" :disabled="ver">
+                                           <input type="text" v-model="form.telefono_personal" v-validate="'required|numeric'" name="telefono_personal" class="form-control form-control-lg" id="" :disabled="ver">
                                           <p class="text-danger my-1 small" v-if="(errors.first('telefono_personal'))" >  Este dato es requerido  </p>
                                         </div>
                                       </div>
@@ -163,7 +163,7 @@
                                         <!-- textarea -->
                                         <div class="form-group">
                                           <label class="links">Teléfono corporativo</label>
-                                           <input type="text" v-model="form.datos[0].telefono_corporativo" v-validate="'required|numeric'" name="telefono_corporativo" class="form-control form-control-lg" id="" :disabled="ver">
+                                           <input type="text" v-model="form.telefono_corporativo" v-validate="'required|numeric'" name="telefono_corporativo" class="form-control form-control-lg" id="" :disabled="ver">
                                           <p class="text-danger my-1 small" v-if="(errors.first('telefono_corporativo'))" >  Este dato es requerido  </p>
                                         </div>
                                       </div>
@@ -221,8 +221,8 @@
                                </div>
 
                               </div>
-                             <button v-if="editMode===false"  class="button btn-primary links btn btn-light float-right my-3" type="submit">Guardar</button>
-                             <button v-if="editMode===true && !ver"  class="button is-primary btn btn-light links float-right my-3" type="submit">Editar</button>
+                             <button v-if="editMode===false"  class="btn btn-primary btn-lg btn-block" type="submit">Guardar</button>
+                             <button v-if="editMode===true && !ver"  class="btn btn-primary btn-lg btn-block" type="submit">Editar</button>
                          </form>
                        </div>
            <!-- Fin del formulario -->
@@ -403,6 +403,9 @@
              this.form.apellido="";
              this.form.nombre="";
              this.form.cargo="";
+             this.form.telefono_personal="";
+             this.form.telefono_corporativo="";
+             this.form.sucursal="";
              this.editMode=false;
                this.$validator.reset();
                document.getElementById("form").reset();
@@ -511,7 +514,9 @@
                        this.form.apellido=this.profiles[index].apellido;
                        this.form.nombre=this.profiles[index].nombre;
                        this.form.cargo=this.profiles[index].cargo;
-                       this.form.datos=JSON.parse(this.profiles[index].datos);
+                       this.form.telefono_personal=this.profiles[index].telefono_personal;
+                       this.form.telefono_corporativo=this.profiles[index].telefono_corporativo;
+                       this.form.sucursal=this.profiles[index].sucursal;
                        $('#modal-lg').modal('show');
                        this.editMode=true
                  },
@@ -526,7 +531,9 @@
                        this.form.apellido=this.profiles[index].apellido;
                        this.form.nombre=this.profiles[index].nombre;
                        this.form.cargo=this.profiles[index].cargo;
-                       this.form.datos=JSON.parse(this.profiles[index].datos);
+                       this.form.telefono_personal=this.profiles[index].telefono_personal;
+                       this.form.telefono_corporativo=this.profiles[index].telefono_corporativo;
+                       this.form.sucursal=this.profiles[index].sucursal;
                        $('#modal-lg').modal('show');
                        this.editMode=false
                  },
