@@ -95,14 +95,16 @@
                                     <div class="card-body  align-self-center">
                                       <h3 class="lead text-center">{{form.nombre}} {{form.apellido}}</h3>
                                     </hr>
-                                      <img :src="'<?=base_url();?>'+form.url_foto" v-if="form.url_foto" alt="" class="mx-auto rounded-circle img-fluid">
-                                      <img v-else  src="<?=base_url();?>/include/img/avatar.png"  alt="" class="mx-auto rounded-circle img-fluid">
+                                      <img :src="'<?=base_url();?>'+form.url_foto" v-if="form.url_foto" alt="" class="mx-auto  img-fluid">
+                                      <img v-else  src="<?=base_url();?>/include/img/avatar.png"  alt="" class="mx-auto  img-fluid">
                                       <div class="form-group" v-if="editMode">
-                                              <input type="file"   id="image" name="image">
+                                        <input type="file"  id="image" name="image">
+                                         <p class="text-danger my-1 small" v-if="(errors.first('image'))" >  Este dato es requerido  </p>
                                        </div>
                                        <div v-else class="form-group">
                                               <input type="file" v-validate="'required'"  id="image" name="image">
                                        </div>
+
                                     </div>
                                   </div>
                                   <div class="col-md-6 col-sm-12 ">
