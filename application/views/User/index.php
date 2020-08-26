@@ -102,6 +102,7 @@
                                        </div>
                                        <div v-else class="form-group">
                                               <input type="file" v-validate="'required'"  id="image" name="image">
+                                              <p class="text-danger my-1 small" v-if="(errors.first('image'))" >  Este dato es requerido  </p>
                                        </div>
                                     </div>
                                   </div>
