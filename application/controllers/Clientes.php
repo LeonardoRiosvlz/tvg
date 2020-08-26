@@ -1,9 +1,9 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
-class Cargos extends MY_Controller {
+class Clientes extends MY_Controller {
 	private $request;
 	public function __construct(){
 		parent::__construct();
-		$this->load->model('Cargos_model', 'cargos');
+		$this->load->model('Clientes_model', 'clientes');
 	  }
     public function index() {
 			if( ! $this->verify_min_level(9)){
@@ -12,14 +12,14 @@ class Cargos extends MY_Controller {
      		$this->is_logged_in();
         $this->load->view('header',["css"=>[""]]);
         $this->load->view('menu');
-        $this->load->view('Cargos/index');
+        $this->load->view('clientes/index');
         $this->load->view('footer',["js"=>[""]]);
       }
-			public function getcargos($id=0) {
+			public function getclientes($id=0) {
 
-				  $data['cargos'] = $this->cargos->getcargos();
+				  $data['clientes'] = $this->clientes->getclientes();
 				  header('Content-Type: application/json');
-				  echo json_encode(['cargos' => $data['cargos']]);
+				  echo json_encode(['clientes' => $data['clientes']]);
 
 				}
 
@@ -28,7 +28,7 @@ class Cargos extends MY_Controller {
 					redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
 				}
 				$data = json_decode($this->input->post('service_form'),true);
-				$result = $this->cargos->insertar($data);
+				$result = $this->clientes->insertar($data);
 					if($result['code'] == 0){
 						echo json_encode(['status' => '200', 'message' => 'Agregado exitosamente']);
 					}
@@ -41,7 +41,7 @@ class Cargos extends MY_Controller {
 					redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
 				}
 			    $data = json_decode($this->input->post('service_form'),true);
-				$result = $this->cargos->editar($data);
+				$result = $this->clientes->editar($data);
 					if($result['code'] == 0){
 						echo json_encode(['status' => '200', 'message' => 'editado exitosamente']);
 					}
@@ -54,7 +54,7 @@ class Cargos extends MY_Controller {
 					redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
 				}
 	            $id = $this->input->post('id');
-	            $result = $this->cargos->deletecargos($id);
+	            $result = $this->clientes->deleteclientes($id);
 	               if($result['code'] == 0){
 	                    echo json_encode(['status' => '200', 'message' => ' Eliminado correctamente']);
 	                  }
@@ -62,10 +62,10 @@ class Cargos extends MY_Controller {
 	                    echo json_encode(['status' => '500', 'message' => ' No eliminado, ha ocurrido un error', 'response' => $result]);
 	                  }
      		 }
-				public function get_cargos() {
+				public function get_clientes() {
 		        $id = $this->input->post('id');
-					  $data['cargos'] = $this->cargos->get_cargos($id);
+					  $data['clientes'] = $this->clientes->get_clientes($id);
 					  header('Content-Type: application/json');
-					  echo json_encode(['cargos' => $data['cargos']]);
+					  echo json_encode(['clientes' => $data['clientes']]);
 		 }
 }
