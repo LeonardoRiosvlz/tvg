@@ -61,6 +61,7 @@ class User_model extends MY_Model {
        ));
        return $this->db->error();
       }
+
       public function documentos($data) {
           $this->db->insert('documentos', array(
               'id_usuario'          => $data['id_usuario'],
@@ -78,9 +79,9 @@ class User_model extends MY_Model {
        ->get()
        ->result();
     }
-    public function eliminar_documento($id) {
-        $this->db->where('id', $id);
-        $this->db->delete('documentos');
+    public function eliminar($id) {
+        $this->db->where('user_id', $id);
+        $this->db->delete('users');
         return $this->db->error();
       }
 

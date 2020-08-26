@@ -42,7 +42,7 @@
                                         <div class="dropdown-menu" role="menu">
                                           <a class="dropdown-item" href="#"@click="setear(index);ver=true">Ver</a>
                                           <a class="dropdown-item" href="#" @click="setear(index);ver=false">Editar</a>
-                                          <a class="dropdown-item" href="#" @click="eliminarsucursales(index)">Eliminar</a>
+                                          <a class="dropdown-item" href="#" @click="eliminar(index)">Eliminar</a>
                                         </div>
                                       </button>
                                   </div>
@@ -103,6 +103,7 @@
                                        </div>
                                        <div v-else class="form-group">
                                               <input type="file" v-validate="'required'"  id="image" name="image">
+                                              <p class="text-danger my-1 small" v-if="(errors.first('image'))" >  Este dato es requerido  </p>
                                        </div>
 
                                     </div>
@@ -139,7 +140,7 @@
                                         <!-- textarea -->
                                         <div class="form-group">
                                           <label class="links">Cedula</label>
-                                           <input type="text" v-model="form.cedula" v-validate="'required|numeric'" name="cedula" class="form-control form-control-lg" id="" :disabled="ver">
+                                           <input type="text" v-model="form.cedula" @change="check_cedula()" v-validate="'required|numeric'" name="cedula" class="form-control form-control-lg" id="" :disabled="ver">
                                           <p class="text-danger my-1 small" v-if="(errors.first('cedula'))" >  Este dato es requerido  </p>
                                         </div>
                                       </div>
@@ -394,6 +395,18 @@
              }
            }
          },
+         check_cedula(index){
+           for (var i = 0; i < this.profiles.length; i++) {
+             if ( this.profiles[i].cedula===this.form.cedula) {
+               Swal.fire({
+                 type: 'error',
+                 title: 'Lo sentimos',
+                 text: 'Esta cedula ya esta en uso'
+               });
+               this.form.cedula="";
+             }
+           }
+         },
            resete(){
              this.form.user_id="";
              this.form.banned="";
@@ -504,6 +517,50 @@
                        'warning'
                      );
                    });
+                 },
+                 eliminar(index){
+                   Swal({
+                     title: '¿Estás seguro?',
+                     text: "¡ será eliminado para siempre!",
+                     type: 'warning',
+                     showCancelButton: true,
+                     confirmButtonText: '¡Si! ¡eliminar!',
+                     cancelButtonText: '¡No! ¡cancelar!',
+                     reverseButtons: true
+                   }).then((result) => {
+                     if (result.value) {
+                       let data = new FormData();
+                       data.append('id',this.profiles[index].user_id);
+                         axios.post('index.php/Root_user/eliminar',data)
+                         .then(response => {
+                           if(response) {
+                             Swal(
+                               '¡Eliminado!',
+                               'Ha sido eliminado.',
+                               'success'
+                             ).then(response => {
+                                   this.loadProfiles();
+                             })
+                           } else {
+                             Swal(
+                               'Error',
+                               'Ha ocurrido un error.',
+                               'warning'
+                             ).then(response => {
+                               this.loadProfiles();
+                             })
+                           }
+                         })
+                     } else if (
+                       result.dismiss === Swal.DismissReason.cancel
+                     ) {
+                       Swal(
+                         'Cancelado',
+                         'No fue eliminado.',
+                         'success'
+                       )
+                     }
+                   })
                  },
                  setear(index){
                        this.form.user_id=this.profiles[index].user_id;

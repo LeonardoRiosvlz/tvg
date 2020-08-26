@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 22-08-2020 a las 14:06:52
+-- Tiempo de generación: 27-08-2020 a las 16:30:35
 -- Versión del servidor: 10.4.11-MariaDB
 -- Versión de PHP: 7.2.31
 
@@ -78,14 +78,11 @@ CREATE TABLE `auth_sessions` (
 --
 
 INSERT INTO `auth_sessions` (`id`, `user_id`, `login_time`, `modified_at`, `ip_address`, `user_agent`) VALUES
-('oj4m62olm5d6nfepd6eg0ijorfg6nt4e', 3581919691, '2020-08-20 01:20:00', '2020-08-20 00:36:22', '127.0.0.1', 'Chrome 84.0.4147.125 on Windows 8'),
-('gcjc0m766o23t288umofjl7rnjnoh0r4', 3581919691, '2020-08-23 14:05:24', '2020-08-23 13:36:56', '127.0.0.1', 'Chrome 84.0.4147.135 on Windows 8'),
-('ocv54kplmoo7v0b1doa5cblpr75fl77i', 3581919691, '2020-08-19 01:47:51', '2020-08-19 02:34:58', '127.0.0.1', 'Chrome 84.0.4147.125 on Windows 8'),
-('5b33m3pmipoh30u5e713oohavbbgbrrq', 3581919691, '2020-08-18 19:43:14', '2020-08-18 21:12:27', '127.0.0.1', 'Chrome 84.0.4147.125 on Windows 8'),
-('15oco9mapsm5u4nqibmphevo97cm840g', 3581919691, '2020-08-22 08:08:13', '2020-08-22 09:41:28', '::1', 'Chrome 84.0.4147.135 on Windows 8'),
-('662be4u8pfadbipe99m4rfrc3cagcoai', 3581919691, '2020-08-24 14:10:02', '2020-08-24 13:20:28', '127.0.0.1', 'Chrome 84.0.4147.135 on Windows 8'),
-('h16rvj57g92smrdknmbc8hvnpvp507ii', 3581919691, '2020-08-25 14:02:51', '2020-08-25 14:43:24', '127.0.0.1', 'Chrome 84.0.4147.135 on Windows 8'),
-('9nmik70ihlkmodjkr03gfh5ainfrjrfn', 3581919691, '2020-08-22 11:33:49', '2020-08-22 12:00:52', '::1', 'Chrome 84.0.4147.135 on Windows 8');
+('vbpiblq72a21cg3fint6r7pu17u1djah', 3581919691, '2020-08-27 14:33:03', '2020-08-27 14:13:45', '127.0.0.1', 'Chrome 84.0.4147.135 on Windows 8'),
+('r3irm7a2r4ejtitjpn3vleqmcv9a94jg', 1567466676, '2020-08-26 17:20:58', '2020-08-26 15:20:58', '127.0.0.1', 'Chrome 84.0.4147.135 on Windows 8'),
+('ommuelse6gcriddupqj9ktdlrqscfgqq', 3581919691, '2020-08-26 16:37:46', '2020-08-26 15:18:38', '127.0.0.1', 'Chrome 84.0.4147.135 on Windows 8'),
+('atcboj94ji0v8vlr6boufrjk0tcl1h0f', 3581919691, '2020-08-26 15:59:30', '2020-08-26 14:16:46', '127.0.0.1', 'Chrome 84.0.4147.135 on Windows 8'),
+('pkh495nr86ee4pb4f7lu7orble68i1gh', 3581919691, '2020-08-27 01:33:38', '2020-08-27 03:25:11', '127.0.0.1', 'Chrome 84.0.4147.135 on Windows 8');
 
 -- --------------------------------------------------------
 
@@ -166,11 +163,7 @@ CREATE TABLE `datos` (
 --
 
 INSERT INTO `datos` (`id_usuario`, `nombre`, `apellido`, `dni`, `foto`, `id_tipo_dni`) VALUES
-(1173949351, 'Administrador', 'Rol', '20328861', NULL, '1'),
-(2492008171, NULL, NULL, NULL, NULL, ''),
-(3426296719, 'Usuario', 'Prueba Editado', '20328861343', NULL, '4'),
-(3581919691, 'Leonardo', 'Rios', '20328861', 'include/img/user/873ae59c6165e09fc14291628ba6082f1.png', '1'),
-(3886263392, 'Super', 'Admin', '20328861', NULL, '3');
+(3581919691, 'Leonardo', 'Rios', '20328861', 'include/img/user/873ae59c6165e09fc14291628ba6082f1.png', '1');
 
 -- --------------------------------------------------------
 
@@ -204,6 +197,37 @@ INSERT INTO `document` (`id`, `name`) VALUES
 (1, 'Pasaporte'),
 (3, 'Cedula'),
 (4, 'PEP');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `empresa`
+--
+
+CREATE TABLE `empresa` (
+  `id` int(15) NOT NULL,
+  `nombre_empresa` varchar(50) NOT NULL,
+  `nit` int(20) NOT NULL,
+  `departamento` varchar(20) NOT NULL,
+  `ciudad` varchar(20) NOT NULL,
+  `direccion` varchar(150) NOT NULL,
+  `email` varchar(25) NOT NULL,
+  `pbx` varchar(25) NOT NULL,
+  `telefono_uno` varchar(15) NOT NULL,
+  `telefono_dos` varchar(15) NOT NULL,
+  `celular` varchar(15) NOT NULL,
+  `web` varchar(50) NOT NULL,
+  `logo_uno` varchar(150) NOT NULL,
+  `logo_dos` varchar(150) NOT NULL,
+  `dep` int(5) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `empresa`
+--
+
+INSERT INTO `empresa` (`id`, `nombre_empresa`, `nit`, `departamento`, `ciudad`, `direccion`, `email`, `pbx`, `telefono_uno`, `telefono_dos`, `celular`, `web`, `logo_uno`, `logo_dos`, `dep`) VALUES
+(0, 'Tvg Cargo', 456464, 'Atlántico', 'Sabanalarga', 'direccion', 'lelita@gmail.com', '45678979', '1234567', '1234679', '4565321', 'http://www.antaresoft.com/', 'include/img/873ae59c6165e09fc14291628ba6082f4.png', 'include/img/linterna.jpg', 3);
 
 -- --------------------------------------------------------
 
@@ -302,8 +326,7 @@ CREATE TABLE `login_errors` (
 --
 
 INSERT INTO `login_errors` (`ai`, `username_or_email`, `ip_address`, `time`) VALUES
-(167, 'leonardo2718', '127.0.0.1', '2020-08-25 14:02:43'),
-(168, 'leonardo2718', '::1', '2020-08-22 11:33:43');
+(192, 'Marina', '127.0.0.1', '2020-08-26 17:12:30');
 
 -- --------------------------------------------------------
 
@@ -349,8 +372,8 @@ CREATE TABLE `sucursales` (
 
 INSERT INTO `sucursales` (`id`, `nombre_sucursal`, `descripcion`, `direccion`, `telefono`, `celular`, `email`, `departamento`, `ciudad`, `dep`) VALUES
 (2, 'TVG Barranquilla', 'empresa destinada al uso de sofware', 'minas de arena #17', '04264472911', '04264472911', 'granadolelianis@gmail.com', 'Atlántico', 'Barranquilla', '3'),
-(3, 'TVG Barranquilla', 'empresa destinada al uso de sofware', 'minas de arena #17', '04264472911', '04264472911', 'granadolelianis@gmail.com', 'Antioquia', 'Abejorral', '1'),
-(4, 'TVG Barranquilla', 'empresa destinada al uso de sofware', 'minas de arena #17', '04264472911', '04264472911', 'granadolelianis@gmail.com', 'Antioquia', 'Abejorral', '1');
+(3, 'TVG Santa Marta', 'empresa destinada al uso de sofware', 'minas de arena #17', '04264472911', '04264472911', 'granadolelianis@gmail.com', 'Magdalena', 'Santa Marta', '18'),
+(4, 'TVG Bogota', 'empresa destinada al uso de sofware', 'minas de arena #17', '04264472911', '04264472911', 'granadolelianis@gmail.com', 'Cundinamarca', 'Bogotá', '12');
 
 -- --------------------------------------------------------
 
@@ -473,11 +496,13 @@ CREATE TABLE `users` (
   `last_login` datetime DEFAULT NULL,
   `passwd_verify_code` varchar(60) DEFAULT NULL,
   `url_foto` varchar(160) NOT NULL,
-  `datos` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL CHECK (json_valid(`datos`)),
   `nombre` varchar(60) NOT NULL,
   `apellido` varchar(60) NOT NULL,
   `cedula` varchar(15) NOT NULL,
   `cargo` varchar(25) NOT NULL,
+  `telefono_personal` varchar(15) NOT NULL,
+  `telefono_corporativo` varchar(15) NOT NULL,
+  `sucursal` varchar(30) NOT NULL,
   `created_at` datetime NOT NULL,
   `modified_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -486,14 +511,13 @@ CREATE TABLE `users` (
 -- Volcado de datos para la tabla `users`
 --
 
-INSERT INTO `users` (`user_id`, `username`, `email`, `auth_level`, `banned`, `verify`, `passwd`, `passwd_recovery_code`, `passwd_recovery_date`, `passwd_modified_at`, `last_login`, `passwd_verify_code`, `url_foto`, `datos`, `nombre`, `apellido`, `cedula`, `cargo`, `created_at`, `modified_at`) VALUES
-(1173949351, 'Eliecer28', 'administrador@gmail.com', 6, '0', 0, '$2y$11$rhtY6ybus6IJgx3MpbSJPu0.ypzo3Qk1Gf4mwx0CunaWvyByVRBuS', NULL, NULL, '2020-08-15 07:21:49', '2020-08-15 13:30:00', NULL, '', '[{\"sucursal\":\"TVG Barranquilla\",\"nombre\":\"Jose\",\"apellido\":\"Madero\",\"telefono_personal\":\"7456134\",\"cargo\":\"Supervisor\",\"telefono_corporativo\":\"7456134\"}]', 'Elicer', 'Blanca', '35658746', 'Supervisor', '2020-08-15 12:52:00', '2020-08-22 11:21:30'),
-(2292299539, 'Lelitaa', 'Bios@gmail.com', 9, '0', 0, '$2y$11$EhskqaPNF1Ri6L5XuR9dd.jkJZyLae0JNbHNEhyB8cYzRYDQpHNte', NULL, NULL, NULL, NULL, NULL, '/include/img/user/IMG_20191216_082232.jpg', '[{\"sucursal\":\"TVG Barranquilla\",\"nombre\":\"leonardo\",\"apellido\":\"Rios\",\"cargo\":\"Supervisor\",\"telefono_personal\":\"7456156\",\"telefono_corporativo\":\"7456134\",\"cedula\":\"25272381\"}]', 'Lelinis', 'Granado', '25698745', 'Supervisor', '2020-08-22 12:33:18', '2020-08-22 11:22:39'),
-(2492008171, 'Usuario', 'usuario@gmail.com', 9, '0', 0, '$2y$11$6uC00jE4YStgRIDOr80Bz.ZQjm5Ya1MinpVqjN968Txju6A87djoe', NULL, NULL, NULL, '2020-08-15 13:31:50', '$2y$11$zH4Tg.dnzrYIZixra9BCp.9VnucBgKH0lemJLpOkZoBobncv3/zMC', '', '[{\"sucursal\":\"TVG Barranquilla\",\"nombre\":\"Jose\",\"apellido\":\"Madero\",\"telefono_personal\":\"7456134\",\"cargo\":\"Supervisor\",\"telefono_corporativo\":\"7456134\"}]', 'Raul', 'Roberto', '564878987', 'Supervisor', '2020-08-15 13:30:50', '2020-08-22 11:23:07'),
-(3426296719, 'Luz23', 'usuario@prueba.com', 1, '0', 0, '$2y$11$FIC5lEy4L4Cr.ucVIZUh7uIdMi.6eYN29x8iwNDKjIHOFL.i0lqD.', NULL, NULL, NULL, NULL, NULL, '', '[{\"sucursal\":\"TVG Barranquilla\",\"nombre\":\"Jose Ramon\",\"apellido\":\"Madero\",\"telefono_personal\":\"7456134\",\"cargo\":\"Supervisor\",\"telefono_corporativo\":\"7456134\"}]', 'Luz ', 'Rios', '1864547', 'Supervisor', '2020-08-16 01:28:20', '2020-08-22 11:15:50'),
-(3581919691, 'leonardo2718', 'leonardo2718@hotmail.es', 9, '0', 0, '$2y$11$jBiNpGCqGOoPRCBws90Ih.ApWPKQeN1S/rk12.R7baSpE4jqdsS7u', NULL, NULL, NULL, '2020-08-22 11:33:49', '$2y$11$LUi1aLY/hjkFUbWQ3Q2VKOXBoz5iqPmk5XxM8JxWb26t6nG7jg.xK', '', '[{\"sucursal\":\"TVG Barranquilla\",\"nombre\":\"Jose\",\"apellido\":\"Madero\",\"telefono_personal\":\"7456134\",\"cargo\":\"Supervisor\",\"telefono_corporativo\":\"7456134\"}]', 'leonardo', 'Rios', '203288614', '', '2020-08-16 01:06:25', '2020-08-22 11:10:32'),
-(3723684040, 'administrador', 'administradod@gmail.com', 9, '0', 0, '$2y$11$QSHnwejZLPO1esg7UiH9ROr5ZmNrlLOmmVwpV1Kk0e87ODIhyCsA6', NULL, NULL, NULL, NULL, NULL, '/include/img/user/logo.png', '[{\"sucursal\":\"TVG Barranquilla\",\"nombre\":\"Jose maria\",\"apellido\":\"Madero\",\"telefono_personal\":\"7456156\",\"cargo\":\"Supervisor\",\"telefono_corporativo\":\"7456134\"}]', 'Jorbrannis ', 'Lara', '487857879', 'Supervisor', '2020-08-25 14:34:59', '2020-08-22 11:27:29'),
-(3886263392, 'Andres23', 'superadmin@admin.com', 9, '0', 0, '$2y$11$wKIgRbj..XVEuKmUQGXwMeLQSqjLhju53N/HzF9e1Dwdk5ch4GkBy', NULL, NULL, NULL, '2020-08-15 12:56:30', NULL, '/include/img/user/FB_IMG_1589228057461.jpg', '[{\"sucursal\":\"TVG Barranquilla\",\"nombre\":\"Jose\",\"apellido\":\"Madero\",\"telefono_personal\":\"7456134\",\"cargo\":\"Supervisor\",\"telefono_corporativo\":\"7456134\"}]', 'Andres', 'Dias', '65458484', 'Supervisor', '2020-08-15 12:56:00', '2020-08-22 11:55:34');
+INSERT INTO `users` (`user_id`, `username`, `email`, `auth_level`, `banned`, `verify`, `passwd`, `passwd_recovery_code`, `passwd_recovery_date`, `passwd_modified_at`, `last_login`, `passwd_verify_code`, `url_foto`, `nombre`, `apellido`, `cedula`, `cargo`, `telefono_personal`, `telefono_corporativo`, `sucursal`, `created_at`, `modified_at`) VALUES
+(1268850497, 'Cristiano', 'cr7@gmail.com', 9, '0', 0, '$2y$11$uhVxTsaH581Q3VtH5YdV.e.g8hsA4aXbGroFB85D2aVoE3VgHEu5K', NULL, NULL, NULL, NULL, '$2y$11$LUi1aLY/hjkFUbWQ3Q2VKOXBoz5iqPmk5XxM8JxWb26t6nG7jg.xK', '/include/img/user/873ae59c6165e09fc14291628ba6082f.png', 'Cristiano', 'Ronaldo', '78946123', 'Supervisor', '04264472911', '04264472911', 'TVG Barranquilla', '2020-08-26 16:27:09', '2020-08-26 15:04:04'),
+(1567466676, 'Leonardo', 'leonardo@tvg.com', 9, '0', 0, '$2y$11$NqTRHgqBXtZiCwk6yeQ.FO48UM8oKnUJLXQfaYcKz5PsA.GhiZ6Xa', NULL, NULL, NULL, '2020-08-26 17:20:58', '$2y$11$h0uusdq351hfF2LIb0h1H.225bpCHQQaj25xxJQxnoz8OKVeHU.w.', '/include/img/user/873ae59c6165e09fc14291628ba6082f4.png', 'Jose', 'Leonardo', '20328861', 'Supervisor', '7456134', '7456134', 'TVG Santa Marta', '2020-08-26 17:20:33', '2020-08-26 15:20:58'),
+(2032761865, 'Cr7', 'leonardo21788@gmail.com', 9, '0', 0, '$2y$11$jBiNpGCqGOoPRCBws90Ih.ApWPKQeN1S/rk12.R7baSpE4jqdsS7u', NULL, NULL, '2020-08-26 10:28:51', NULL, '$2y$11$jBiNpGCqGOoPRCBws90Ih.ApWPKQeN1S/rk12.R7baSpE4jqdsS7u', '/include/img/user/asdasdad1.png', 'Jose', 'Leonardo', '10981021', 'Supervisor', '', '', '', '2020-08-26 16:01:27', '2020-08-26 14:28:51'),
+(2192184043, 'LuzRios2718', 'Luz@gmail.com', 9, '0', 0, '$2y$11$zO3zdIrbm9YOSTEJgkBw6uLTrNCY.iPahnsUBxl.VNDy94pzeleUS', NULL, NULL, NULL, '2020-08-26 16:47:31', '$2y$11$Aehw7FozAqIaA1EfMViN0Oz/Jm.5BtN8OcFK83s/WElLvuOQD7wf2', '/include/img/user/72429-hospital-ghost-748x417.jpg', 'Luz', 'Rios', '25272381', 'Supervisor', '', '', '', '2020-08-26 16:47:08', '2020-08-26 14:47:31'),
+(2822719046, 'Marina', 'marina@gmail.com', 9, '0', 0, '$2y$11$EVbi/7xHKdNVT8QMTq0GS.QOArGbi1T9G3sN559qbE1kkSkS.4tjK', NULL, NULL, NULL, NULL, '$2y$11$J3bxlg..o9pohVCgiwslXuYiYmS6zZY0Dvr6WcSYIRqDpDz0dlhpG', '/include/img/user/873ae59c6165e09fc14291628ba6082f3.png', 'Luz ', 'Marina', '258369147', 'Supervisor', '04264472911', '04264472911', 'TVG Barranquilla', '2020-08-26 17:10:34', '2020-08-26 15:10:34'),
+(3581919691, 'leonardo2718', 'leonardo2718@hotmail.es', 9, '0', 0, '$2y$11$jBiNpGCqGOoPRCBws90Ih.ApWPKQeN1S/rk12.R7baSpE4jqdsS7u', NULL, NULL, NULL, '2020-08-27 14:33:03', '$2y$11$LUi1aLY/hjkFUbWQ3Q2VKOXBoz5iqPmk5XxM8JxWb26t6nG7jg.xK', '', 'Tvg', 'Cargo', '203288614', '', '', '', '', '2020-08-16 01:06:25', '2020-08-27 12:33:03');
 
 --
 -- Disparadores `users`
@@ -708,7 +732,7 @@ ALTER TABLE `img_pro`
 -- AUTO_INCREMENT de la tabla `ips_on_hold`
 --
 ALTER TABLE `ips_on_hold`
-  MODIFY `ai` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `ai` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT de la tabla `itinerarios`
@@ -720,7 +744,7 @@ ALTER TABLE `itinerarios`
 -- AUTO_INCREMENT de la tabla `login_errors`
 --
 ALTER TABLE `login_errors`
-  MODIFY `ai` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=169;
+  MODIFY `ai` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=193;
 
 --
 -- AUTO_INCREMENT de la tabla `segurocarga`
@@ -762,7 +786,7 @@ ALTER TABLE `transportes`
 -- AUTO_INCREMENT de la tabla `username_or_email_on_hold`
 --
 ALTER TABLE `username_or_email_on_hold`
-  MODIFY `ai` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `ai` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Restricciones para tablas volcadas
