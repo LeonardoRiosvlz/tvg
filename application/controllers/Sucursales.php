@@ -6,7 +6,7 @@ class Sucursales extends MY_Controller {
 		$this->load->model('Sucursales_model', 'sucursales');
 	  }
     public function index() {
-			if( ! $this->verify_min_level(9)){
+			if( ! $this->verify_min_level(6)){
 				redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
 			}
      		$this->is_logged_in();
