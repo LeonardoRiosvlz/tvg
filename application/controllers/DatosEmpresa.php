@@ -48,5 +48,42 @@ class DatosEmpresa extends MY_Controller {
 										 $data['empresa'] = $this->empresa->get_empresa($id);
 							 		  header('Content-Type: application/json');
 							 		  echo json_encode(['empresa' => $data['empresa']]);
-		      		 }
+		      		}
+
+							public function logo_uno() {
+								$config['upload_path']          = './include/img/';
+								$config['allowed_types']        = 'jpg|png|jpeg';
+								$config['max_size']             = 7500;
+								$config['max_width']            = 2500;
+								$config['max_height']           = 1400;
+								$this->load->library('upload', $config);
+								if ( ! $this->upload->do_upload('file')) {
+									$error = array('error' => $this->upload->display_errors());
+									echo json_encode($error);
+								} else {
+									$upload_data = $this->upload->data();
+									$file_name = $upload_data['file_name'];
+									$data['logo_uno'] ="include/img/".$file_name;
+									$rut=$this->empresa->logo_uno($data);
+									echo json_encode(['status' => '201', 'message' => 'Imagen creada exitosamente']);
+								}
+							}
+							public function logo_dos() {
+								$config['upload_path']          = './include/img/';
+								$config['allowed_types']        = 'jpg|png|jpeg';
+								$config['max_size']             = 7500;
+								$config['max_width']            = 2500;
+								$config['max_height']           = 1400;
+								$this->load->library('upload', $config);
+								if ( ! $this->upload->do_upload('file')) {
+									$error = array('error' => $this->upload->display_errors());
+									echo json_encode($error);
+								} else {
+									$upload_data = $this->upload->data();
+									$file_name = $upload_data['file_name'];
+									$data['logo_dos'] ="include/img/".$file_name;
+									$rut=$this->empresa->logo_dos($data);
+									echo json_encode(['status' => '201', 'message' => 'Imagen creada exitosamente']);
+								}
+							}
 }

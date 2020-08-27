@@ -1,6 +1,6 @@
 <div id="app" class="container">
   <div class="row">
-    <div class="col-lg-12 my-5 ">
+    <div class="col-lg-12 ">
       <!-- Shopping cart table -->
       <div class="table-responsive ">
         <table id="example2" class="table">
@@ -12,6 +12,7 @@
             </tr>
           </thead>
         </table>
+    </div>
         <form role="form" id="form" @submit.prevent="validateBeforeSubmit">
           <div class="row">
             <div class="col-sm-4">
@@ -107,17 +108,38 @@
                 <p class="text-danger my-1" v-if="(errors.first('web'))" >  Este dato es requerido  </p>
               </div>
             </div>
+            <button v-if="editMode===false"  class="button is-primary links btn-block btn-primary float-right my-3" type="submit">Guardar</button>
+            <button v-if="editMode===true && !ver"  class="button is-primary btn-block btn-primary links float-right my-3" type="submit">Editar</button>
+      </form>
+            <div class="col-6 " >
+              <img :src="'<?=base_url();?>'+form.logo_uno" alt="" width="100%" class="mx-auto img-thumbnail img-fluid">
+              <a class="btn btn-block links" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample"><span class="mbri-camera"></span>Editar logo 1</a>
+                <div class="col-sm-12 collapse" id="collapseExample">
+
+                        <input type="file"  id="imagenFoto" name="imagenFoto">
+
+                    <button class="btn btn-block links btn-primary"  @click="uploadFoto()" data-toggle="collapse" href="#collapseExample"><span class="mbri-success " ></span> Cambiar logo 1</button>
+              </div>
+            </div>
+            <div class="col-6 " >
+              <img :src="'<?=base_url();?>'+form.logo_dos" alt="" width="100%"  class="mx-auto img-thumbnail img-fluid">
+              <a class="btn btn-block links" data-toggle="collapse" href="#collapseExamples" role="button" aria-expanded="false" aria-controls="collapseExample"><span class="mbri-camera"></span>Editar logo 2</a>
+                <div class="col-sm-12 collapse" id="collapseExamples">
+
+                        <input type="file"  id="imagenFotos" name="imagenFotos">
+
+                    <button class="btn btn-block links btn-primary"  @click="uploadFoto_dos()" data-toggle="collapse" href="#collapseExample"><span class="mbri-success " ></span> Cambiar logo 2</button>
+              </div>
+            </div>
         </div>
-            <button v-if="editMode===false"  class="button is-primary links btn btn-light float-right my-3" type="submit">Guardar</button>
-            <button v-if="editMode===true && !ver"  class="button is-primary btn btn-light links float-right my-3" type="submit">Editar</button>
-        </form>
-      </div>
+
+
       <!-- End -->
     </div>
   </div>
    <!-- fin del modal -->
    </div>
-<pre>{{empresa}}</pre>
+
 </div>
 <script>
      axios.defaults.baseURL = '<?PHP echo base_url(); ?>';
@@ -1446,6 +1468,54 @@
              this.form.departamento = this.colombia[this.form.dep].departamento;
              console.log(this.colombia[this.form.dep].departamento);
            },
+           async     uploadFoto() {
+                  this.file_data = $('#imagenFoto').prop('files')[0];
+                  this.form_data = new FormData();
+                  this.form_data.append('file', this.file_data);
+               await     axios.post('index.php/DatosEmpresa/logo_uno', this.form_data)
+                    .then(response => {
+                      if(response.data.status == 201){
+                        Swal.fire({
+                          type: 'success',
+                          title: 'Exito!',
+                          text: 'Agregado correctamente'
+                        });
+                        this.loadProfiles();
+                      }
+                      else
+                      {
+                        Swal.fire({
+                          type: 'error',
+                          title: 'Lo sentimos',
+                          text: 'Ha ocurrido un error'
+                        })
+                      }
+                    })
+                },
+                async uploadFoto_dos() {
+                       this.file_data = $('#imagenFotos').prop('files')[0];
+                       this.form_data = new FormData();
+                       this.form_data.append('file', this.file_data);
+                await  axios.post('index.php/DatosEmpresa/logo_dos', this.form_data)
+                         .then(response => {
+                           if(response.data.status == 201){
+                             Swal.fire({
+                               type: 'success',
+                               title: 'Exito!',
+                               text: 'Agregado correctamente'
+                             });
+                             this.loadProfiles();
+                           }
+                           else
+                           {
+                             Swal.fire({
+                               type: 'error',
+                               title: 'Lo sentimos',
+                               text: 'Ha ocurrido un error'
+                             })
+                           }
+                         })
+                     },
            resete(){
 
                this.$validator.reset();
@@ -1577,6 +1647,8 @@
                        this.form.dep=this.empresa[0].dep,
                        this.form.ciudad=this.empresa[0].ciudad,
                        this.form.web=this.empresa[0].web,
+                       this.form.logo_uno=this.empresa[0].logo_uno,
+                       this.form.logo_dos=this.empresa[0].logo_dos,
                        this.form.departamento=this.colombia[this.empresa[0].dep].departamento,
                        this.editMode=true
                  },
@@ -1592,6 +1664,8 @@
                    this.form.email=this.empresa[0].email,
                    this.form.dep=this.empresa[0].dep,
                    this.form.ciudad=this.empresa[0].ciudad,
+                   this.form.logo_uno=this.empresa[0].logo_uno,
+                   this.form.logo_dos=this.empresa[0].logo_dos,
                    this.form.departamento=this.empresa[0].departamento,
                    $('#myModal').modal('show');
                    this.editMode=false

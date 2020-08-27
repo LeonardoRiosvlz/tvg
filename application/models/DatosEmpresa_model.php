@@ -29,5 +29,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
               ->get()
               ->result();
             }
-
+            public function logo_uno($data) {
+                $this->db->where('id',0);
+                $this->db->update('empresa', array(
+                    'logo_uno'     => $data['logo_uno'],
+                ));
+                return $this->db->error();
+            }
+            public function logo_dos($data) {
+                $this->db->where('id',0);
+                $this->db->update('empresa', array(
+                    'logo_dos'     => $data['logo_dos'],
+                ));
+                return $this->db->error();
+            }
     }

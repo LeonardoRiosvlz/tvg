@@ -61,6 +61,7 @@ class User_model extends MY_Model {
        ));
        return $this->db->error();
       }
+
       public function documentos($data) {
           $this->db->insert('documentos', array(
               'id_usuario'          => $data['id_usuario'],
