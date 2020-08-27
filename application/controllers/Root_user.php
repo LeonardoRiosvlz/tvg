@@ -31,6 +31,21 @@ class Root_user extends MY_Controller
 
       }
 
+      public function eliminar() {
+  			if( ! $this->verify_min_level(9)){
+  				redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
+  			}
+              $id = $this->input->post('id');
+              $result = $this->user->eliminar($id);
+                 if($result['code'] == 0){
+                      echo json_encode(['status' => '200', 'message' => ' Eliminado correctamente']);
+                    }
+                  else{
+                      echo json_encode(['status' => '500', 'message' => ' No eliminado, ha ocurrido un error', 'response' => $result]);
+                    }
+       		 }
+
+
       public function insertar() {
         $this->load->model('examples/examples_model');
         if( ! $this->verify_min_level(9)){

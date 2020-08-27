@@ -91,17 +91,6 @@ class User extends MY_Controller
 
       }
 
-      public function eliminar_documento() {
-              $id = $this->input->post('id');
-              $result = $this->user->eliminar_documento($id);
-                 if($result['code'] == 0){
-                      echo json_encode(['status' => '200', 'message' => ' Eliminado correctamente']);
-                    }
-                  else{
-                      echo json_encode(['status' => '500', 'message' => ' No eliminado, ha ocurrido un error', 'response' => $result]);
-                    }
-           }
-
            public function editar() {
        			//  if ($this->session->userdata('is_authenticated') == FALSE) {
        			//    echo json_encode(['status' => '403','message' => 'Permission Denied']);
