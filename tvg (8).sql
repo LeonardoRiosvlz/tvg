@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 26-08-2020 a las 16:26:53
+-- Tiempo de generación: 28-08-2020 a las 16:23:33
 -- Versión del servidor: 10.4.11-MariaDB
 -- Versión de PHP: 7.2.31
 
@@ -78,12 +78,12 @@ CREATE TABLE `auth_sessions` (
 --
 
 INSERT INTO `auth_sessions` (`id`, `user_id`, `login_time`, `modified_at`, `ip_address`, `user_agent`) VALUES
+('uq1c1fedgaa877508nr896dc05bkk1ij', 3581919691, '2020-08-28 14:18:32', '2020-08-28 14:16:25', '127.0.0.1', 'Chrome 84.0.4147.135 on Windows 8'),
 ('vbpiblq72a21cg3fint6r7pu17u1djah', 3581919691, '2020-08-27 14:33:03', '2020-08-27 14:13:45', '127.0.0.1', 'Chrome 84.0.4147.135 on Windows 8'),
 ('r3irm7a2r4ejtitjpn3vleqmcv9a94jg', 1567466676, '2020-08-26 17:20:58', '2020-08-26 15:20:58', '127.0.0.1', 'Chrome 84.0.4147.135 on Windows 8'),
 ('ommuelse6gcriddupqj9ktdlrqscfgqq', 3581919691, '2020-08-26 16:37:46', '2020-08-26 15:18:38', '127.0.0.1', 'Chrome 84.0.4147.135 on Windows 8'),
 ('atcboj94ji0v8vlr6boufrjk0tcl1h0f', 3581919691, '2020-08-26 15:59:30', '2020-08-26 14:16:46', '127.0.0.1', 'Chrome 84.0.4147.135 on Windows 8'),
-('pkh495nr86ee4pb4f7lu7orble68i1gh', 3581919691, '2020-08-27 01:33:38', '2020-08-27 03:25:11', '127.0.0.1', 'Chrome 84.0.4147.135 on Windows 8'),
-('o9t5jnifqbut9dvidfv1uhmd9b33rdbr', 3581919691, '2020-08-26 13:10:56', '2020-08-26 14:23:35', '::1', 'Chrome 84.0.4147.135 on Windows 8');
+('pkh495nr86ee4pb4f7lu7orble68i1gh', 3581919691, '2020-08-27 01:33:38', '2020-08-27 03:25:11', '127.0.0.1', 'Chrome 84.0.4147.135 on Windows 8');
 
 -- --------------------------------------------------------
 
@@ -152,7 +152,7 @@ INSERT INTO `ci_sessions` (`id`, `ip_address`, `timestamp`, `data`) VALUES
 
 CREATE TABLE `clientes` (
   `id` int(15) NOT NULL,
-  `nit_cliente` int(15) NOT NULL,
+  `nit_cliente` varchar(15) NOT NULL,
   `nombre_empresa` varchar(60) NOT NULL,
   `r_legal` varchar(60) NOT NULL,
   `nombre_cliente` varchar(60) NOT NULL,
@@ -257,7 +257,21 @@ CREATE TABLE `empresa` (
 --
 
 INSERT INTO `empresa` (`id`, `nombre_empresa`, `nit`, `departamento`, `ciudad`, `direccion`, `email`, `pbx`, `telefono_uno`, `telefono_dos`, `celular`, `web`, `logo_uno`, `logo_dos`, `dep`) VALUES
+(0, 'Tvg Cargo', 456464, 'Atlántico', 'Sabanalarga', 'direccion', 'lelita@gmail.com', '45678979', '1234567', '1234679', '4565321', 'http://www.antaresoft.com/', 'include/img/873ae59c6165e09fc14291628ba6082f4.png', 'include/img/linterna.jpg', 3),
 (0, 'Tvg Cargo', 456464, 'Atlántico', 'Sabanalarga', 'direccion', 'lelita@gmail.com', '45678979', '1234567', '1234679', '4565321', 'http://www.antaresoft.com/', 'include/img/873ae59c6165e09fc14291628ba6082f4.png', 'include/img/linterna.jpg', 3);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `forma_pago`
+--
+
+CREATE TABLE `forma_pago` (
+  `id` int(15) NOT NULL,
+  `forma` varchar(30) NOT NULL,
+  `descripcion` varchar(250) NOT NULL,
+  `dias` int(6) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -356,7 +370,7 @@ CREATE TABLE `login_errors` (
 --
 
 INSERT INTO `login_errors` (`ai`, `username_or_email`, `ip_address`, `time`) VALUES
-(192, 'Marina', '127.0.0.1', '2020-08-26 17:12:30');
+(193, 'Leonardo2718', '127.0.0.1', '2020-08-28 14:18:25');
 
 -- --------------------------------------------------------
 
@@ -547,7 +561,7 @@ INSERT INTO `users` (`user_id`, `username`, `email`, `auth_level`, `banned`, `ve
 (2032761865, 'Cr7', 'leonardo21788@gmail.com', 9, '0', 0, '$2y$11$jBiNpGCqGOoPRCBws90Ih.ApWPKQeN1S/rk12.R7baSpE4jqdsS7u', NULL, NULL, '2020-08-26 10:28:51', NULL, '$2y$11$jBiNpGCqGOoPRCBws90Ih.ApWPKQeN1S/rk12.R7baSpE4jqdsS7u', '/include/img/user/asdasdad1.png', 'Jose', 'Leonardo', '10981021', 'Supervisor', '', '', '', '2020-08-26 16:01:27', '2020-08-26 14:28:51'),
 (2192184043, 'LuzRios2718', 'Luz@gmail.com', 9, '0', 0, '$2y$11$zO3zdIrbm9YOSTEJgkBw6uLTrNCY.iPahnsUBxl.VNDy94pzeleUS', NULL, NULL, NULL, '2020-08-26 16:47:31', '$2y$11$Aehw7FozAqIaA1EfMViN0Oz/Jm.5BtN8OcFK83s/WElLvuOQD7wf2', '/include/img/user/72429-hospital-ghost-748x417.jpg', 'Luz', 'Rios', '25272381', 'Supervisor', '', '', '', '2020-08-26 16:47:08', '2020-08-26 14:47:31'),
 (2822719046, 'Marina', 'marina@gmail.com', 9, '0', 0, '$2y$11$EVbi/7xHKdNVT8QMTq0GS.QOArGbi1T9G3sN559qbE1kkSkS.4tjK', NULL, NULL, NULL, NULL, '$2y$11$J3bxlg..o9pohVCgiwslXuYiYmS6zZY0Dvr6WcSYIRqDpDz0dlhpG', '/include/img/user/873ae59c6165e09fc14291628ba6082f3.png', 'Luz ', 'Marina', '258369147', 'Supervisor', '04264472911', '04264472911', 'TVG Barranquilla', '2020-08-26 17:10:34', '2020-08-26 15:10:34'),
-(3581919691, 'leonardo2718', 'leonardo2718@hotmail.es', 9, '0', 0, '$2y$11$jBiNpGCqGOoPRCBws90Ih.ApWPKQeN1S/rk12.R7baSpE4jqdsS7u', NULL, NULL, NULL, '2020-08-26 13:10:56', '$2y$11$LUi1aLY/hjkFUbWQ3Q2VKOXBoz5iqPmk5XxM8JxWb26t6nG7jg.xK', '', 'Tvg', 'Cargo', '203288614', '', '', '', '', '2020-08-16 01:06:25', '2020-08-26 11:10:56');
+(3581919691, 'leonardo2718', 'leonardo2718@hotmail.es', 9, '0', 0, '$2y$11$jBiNpGCqGOoPRCBws90Ih.ApWPKQeN1S/rk12.R7baSpE4jqdsS7u', NULL, NULL, NULL, '2020-08-28 14:18:32', '$2y$11$LUi1aLY/hjkFUbWQ3Q2VKOXBoz5iqPmk5XxM8JxWb26t6nG7jg.xK', '', 'Tvg', 'Cargo', '203288614', '', '', '', '', '2020-08-16 01:06:25', '2020-08-28 12:18:32');
 
 --
 -- Disparadores `users`
@@ -617,8 +631,7 @@ ALTER TABLE `ci_sessions`
 -- Indices de la tabla `clientes`
 --
 ALTER TABLE `clientes`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `nit_cliente` (`nit_cliente`);
+  ADD UNIQUE KEY `cedula_cliente` (`cedula_cliente`);
 
 --
 -- Indices de la tabla `datos`
@@ -637,6 +650,12 @@ ALTER TABLE `denied_access`
 -- Indices de la tabla `document`
 --
 ALTER TABLE `document`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `forma_pago`
+--
+ALTER TABLE `forma_pago`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -748,12 +767,6 @@ ALTER TABLE `cargos`
   MODIFY `id` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT de la tabla `clientes`
---
-ALTER TABLE `clientes`
-  MODIFY `id` int(15) NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT de la tabla `denied_access`
 --
 ALTER TABLE `denied_access`
@@ -764,6 +777,12 @@ ALTER TABLE `denied_access`
 --
 ALTER TABLE `document`
   MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT de la tabla `forma_pago`
+--
+ALTER TABLE `forma_pago`
+  MODIFY `id` int(15) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `img_pro`
@@ -787,7 +806,7 @@ ALTER TABLE `itinerarios`
 -- AUTO_INCREMENT de la tabla `login_errors`
 --
 ALTER TABLE `login_errors`
-  MODIFY `ai` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=193;
+  MODIFY `ai` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=194;
 
 --
 -- AUTO_INCREMENT de la tabla `segurocarga`

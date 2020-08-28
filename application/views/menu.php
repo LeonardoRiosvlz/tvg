@@ -65,7 +65,7 @@
                       <a class="dropdown-item links" href="<?=base_url()?>DatosEmpresa"><i class="fa fa-sitemap" aria-hidden="true"></i> Datos de la epresa</a>
                       <a class="dropdown-item links" href="<?=base_url()?>Root_user"><i class="fa fa-users" aria-hidden="true"></i> Usuarios del sistema</a>
                       <a class="dropdown-item links" href="<?=base_url()?>cambios_estado"><i class="fa fa-recycle" aria-hidden="true"></i> Cambio de estado</a>
-                      <a class="dropdown-item links" href="<?=base_url()?>formas_pago"><i class="fa fa-money" aria-hidden="true"></i> Formas de pago </a>
+                      <a class="dropdown-item links" href="<?=base_url()?>FormasPago"><i class="fa fa-money" aria-hidden="true"></i> Formas de pago </a>
                     </div>
                   </div>
                   <div class="dropdown">
