@@ -1,13 +1,13 @@
 <div id="app" class="container">
   <div class="row">
-    <div class="col-lg-12 my-5 ">
+    <div class="col-lg-12 my-1 ">
       <!-- Shopping cart table -->
       <div class="table-responsive ">
         <table id="example2" class="table">
           <thead>
             <tr>
               <th scope="col" colspan="5" class="border-0 bg-white  text-center">
-                  <div class="bg-light rounded-pill px-4 py-3 text-uppercase font-weight-bold links">Formas de pago <i class="fa fa-street-view" aria-hidden="true"></i></div>
+                  <div class="bg-light rounded-pill px-4 py-3 text-uppercase font-weight-bold links">Formas de pago <i class="fa fa-money" aria-hidden="true"></i></div>
               </th>
             </tr>
             <tr>
@@ -23,14 +23,18 @@
           <table id="example1" class="table ">
             <thead>
             <tr>
-              <th class="links">Nombre del cargo</th>
+              <th class="links">Forma de pago</th>
+              <th class="links">Descrición</th>
+              <th class="links">Valor de dias</th>
                 <th class="links">Action</th>
             </tr>
             </thead>
               <tr v-for="(formaspago,index) in formaspago">
-                <td class="links">{{formaspago.nombre_cargo}}</td>
+                <td class="links">{{formaspago.forma}}</td>
+                <td class="links">{{formaspago.descripcion}}</td>
+                <td class="links">{{formaspago.dias}} Dias</td>
                   <td>
-                    <div class="btn-group">
+                    <div v-if="formaspago.id>7" class="btn-group">
                         <button type="button" class="btn btn-default">Action</button>
                         <button type="button" class="btn btn-default dropdown-toggle dropdown-icon" data-toggle="dropdown">
                           <span class="sr-only">Toggle Dropdown</span>
@@ -41,6 +45,7 @@
                           </div>
                         </button>
                     </div>
+                    <p class="small" v-else>No editabel</p>
                   </td>
                </tr>
           </table>
@@ -66,9 +71,25 @@
                              <div class="col-sm-12">
                                <!-- textarea -->
                                <div class="form-group">
-                                 <label class="links">Nombre formaspago</label>
-                                  <input type="text" v-model="form.nombre_cargo" v-validate="'required'" name="nombre_formaspago" class="form-control" id="" :disabled="ver">
-                                 <p class="text-danger my-1" v-if="(errors.first('nombre_formaspago'))" >  Este dato es requerido  </p>
+                                 <label class="links">Forma de pago</label>
+                                  <input type="text" v-model="form.forma" v-validate="'required'" name="forma" class="form-control" id="" :disabled="ver">
+                                 <p class="text-danger my-1" v-if="(errors.first('forma'))" >  Este dato es requerido  </p>
+                               </div>
+                             </div>
+                             <div class="col-sm-12">
+                               <!-- textarea -->
+                               <div class="form-group">
+                                 <label class="links">Descrición</label>
+                                  <textarea type="text" v-model="form.descripcion" v-validate="'required'" name="descripcion" class="form-control" id="" :disabled="ver"></textarea>
+                                 <p class="text-danger my-1" v-if="(errors.first('descripcion'))" >  Este dato es requerido  </p>
+                               </div>
+                             </div>
+                             <div class="col-sm-12">
+                               <!-- textarea -->
+                               <div class="form-group">
+                                 <label class="links">Número de dias</label>
+                                  <input type="number" v-model="form.dias" v-validate="'required|integer'" name="dias" class="form-control" id="" :disabled="ver">
+                                 <p class="text-danger my-1" v-if="(errors.first('dias'))" >  Este dato es requerido  </p>
                                </div>
                              </div>
                             </div>
@@ -100,7 +121,9 @@
          editMode:false,
          form:{
              'id':'',
-             'nombre_cargo':'',
+             'forma':'',
+             'descripcion':'',
+             'dias':'',
          }
        },
        methods: {
@@ -122,7 +145,7 @@
                        let data = new FormData();
                        data.append('service_form',JSON.stringify(this.form));
                      if(!this.editMode){
-                       axios.post('index.php/formaspago/insertar',data)
+                       axios.post('index.php/FormasPago/insertar',data)
                        .then(response => {
                          if(response.data.status == 200){
                            Swal.fire({
@@ -144,7 +167,7 @@
                        })
                      }
                      else{
-                       axios.post('index.php/formaspago/editar',data)
+                       axios.post('index.php/FormasPago/editar',data)
                        .then(response => {
                          if(response.data.status == 200)
                          {
@@ -223,13 +246,17 @@
                  },
                  setear(index){
                    this.form.id=this.formaspago[index].id,
-                   this.form.nombre_cargo=this.formaspago[index].nombre_cargo,
+                   this.form.forma=this.formaspago[index].forma,
+                   this.form.descripcion=this.formaspago[index].descripcion,
+                   this.form.dias=this.formaspago[index].dias,
                    $('#modal-lg').modal('show');
                    this.editMode=true
                  },
                  ver(index){
                    this.form.id=this.formaspago[index].id,
-                   this.form.nombre_cargo=this.formaspago[index].nombre_cargo,
+                   this.form.forma=this.formaspago[index].forma,
+                   this.form.descripcion=this.formaspago[index].descripcion,
+                   this.form.dias=this.formaspago[index].dias,
                    $('#myModal').modal('show');
                    this.editMode=false
                  },

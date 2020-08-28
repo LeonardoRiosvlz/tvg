@@ -1,9 +1,8 @@
   <div class="container spl my-5 ">
-
-
             <!-- Wrapper for carousel items -->
 
                 <div class="row">
+
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                         <div class="card">
                             <div class="card-body">
@@ -18,10 +17,10 @@
 
                                                   </div>
                                                   <div class="col-12  text-center">
-                                                      <img :src="'<?=base_url();?>'+profile.foto" alt="" class="mx-auto rounded-circle img-fluid">
+                                                      <img :src="'<?=base_url();?>'+profile.url_foto" alt="" class="mx-auto  img-fluid">
                                                       <br>
                                                   </div>
-                                                  <div class="col-12 " >
+                                                 <!--/coldiv class="col-12 " >
                                                     <a class="btn btn-block links" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample"><span class="mbri-camera"></span>Editar foto</a>
                                                     <a class="btn btn-block links" role="button" href="#" @click="resete()" aria-expanded="false" aria-controls="collapseExample"><span class="mbri-edit"></span> Editar datos</a>
 
@@ -36,7 +35,7 @@
                                                     </div>
 
                                                   </div>
-                                                  <!--/col-->
+                                              -->
                                               </div>
                                               <!--/row-->
                                           </div>
@@ -59,29 +58,33 @@
                           <td class="  align-middle"><span class="mbri-edit" style="font-size: 1.6em"></span> Nombre</td>
                           <td class="  align-middle">{{profile.nombre}} {{profile.apellido}}</td>
                         </tr>
-                        <tr v-if="form.profesional==='Si'">
-                          <td class="  align-middle"><span class="mbri-edit" style="font-size: 1.6em"></span> Nombre Empresa</td>
-                          <td class="  align-middle">{{profile.nombre_empresa}}</td>
+                        <tr >
+                          <td class="  align-middle"><span class="mbri-mobile" style="font-size: 1.6em"></span> Teléfono personal</td>
+                          <td class="  align-middle">{{profile.telefono_personal}}</td>
                         </tr>
                         <tr>
-                          <td class="  align-middle"><span class="mbri-mobile2" style="font-size: 1.6em"></span> Telefono</td>
-                          <td class="  align-middle">{{profile.telefono}}</td>
+                          <td class="  align-middle"><span class="mbri-mobile2" style="font-size: 1.6em"></span> Telefono corporativo</td>
+                          <td class="  align-middle">{{profile.telefono_corporativo}}</td>
                         </tr>
-                         <tr v-if="form.profesional==='Si'">
-                          <td class="  align-middle" ><span class="mbri-mobile2" style="font-size: 1.6em"></span> Telefono Empresa</td>
-                          <td class="  align-middle">{{profile.telefono_empresa}}</td>
-                        </tr>
-                        <tr >
-                          <td class="  align-middle"><span class="mbri-delivery" style="font-size: 1.6em"></span> Dirección de facturación</td>
-                          <td class="  align-middle">{{profile.direccion_facturacion}}</td>
-                        </tr>
-                        <tr v-if="form.profesional==='Si'">
-                          <td class="  align-middle"><span class="mbri-delivery" style="font-size: 1.6em"></span> Dirección de empresa</td>
-                          <td class="  align-middle">{{profile.direccion_empresa}}</td>
+                         <tr >
+                          <td class="  align-middle" ><span class="mbri-contact-form" style="font-size: 1.6em"></span> Cédula</td>
+                          <td class="  align-middle">{{profile.cedula}}</td>
                         </tr>
                         <tr >
-                          <td class="  align-middle"><span class="mbri-delivery" style="font-size: 1.6em"></span> Dirección de envío</td>
-                          <td class="  align-middle">{{profile.direccion_envio}}</td>
+                          <td class="  align-middle"><span class="mbri-sites" style="font-size: 1.6em"></span> Cargo</td>
+                          <td class="  align-middle">{{profile.cargo}}</td>
+                        </tr>
+                        <tr >
+                          <td class="  align-middle"><span class="mbri-calendar" style="font-size: 1.6em"></span> sucursal</td>
+                          <td class="  align-middle">{{profile.sucursal}}</td>
+                        </tr>
+                        <tr >
+                          <td class="  align-middle"><span class="mbri-letter" style="font-size: 1.6em"></span> Email</td>
+                          <td class="  align-middle">{{profile.email}}</td>
+                        </tr>
+                        <tr >
+                          <td class="  align-middle"><span class="mbri-user" style="font-size: 1.6em"></span> Nick</td>
+                          <td class="  align-middle">{{profile.username}}</td>
                         </tr>
                       </tbody>
                     </table>
@@ -207,6 +210,7 @@
               </div>
             </div>
             </div>
+
 </div></div></div></div>
 </div>
         <script>
@@ -1587,30 +1591,7 @@
                       this.setear();
                        $('#exampleModal').modal('show');
                    },
-                   uploadDocumento() {
-                     this.file_data = $('#imagen').prop('files')[0];
-                     this.form_data = new FormData();
-                     this.form_data.append('file', this.file_data);
-                       axios.post('index.php/User/documentos', this.form_data)
-                       .then(response => {
-                         if(response.data.status == 201){
-                           Swal.fire({
-                             type: 'success',
-                             title: 'Exito!',
-                             text: 'Agregado correctamente'
-                           });
-                           this.loadDocumentos();
-                         }
-                         else
-                         {
-                           Swal.fire({
-                             type: 'error',
-                             title: 'Lo sentimos',
-                             text: 'Ha ocurrido un error'
-                           })
-                         }
-                       })
-                   },
+
               async     uploadFoto() {
                      this.file_data = $('#imagenFoto').prop('files')[0];
                      this.form_data = new FormData();
@@ -1798,38 +1779,27 @@
                          },
                          async loadProfiles() {
                              await  axios.get('index.php/User/get_profile/')
-                              .then(({data: {profile}}) => {
-                                 this.profiles = profile;
+                              .then(({data: {profiles}}) => {
+                                 this.profiles = profiles;
                               });
-                              this.form.id_usuario=this.profiles[0].id_usuario;
-                              this.form.nombre=this.profiles[0].nombre;
+                              this.form.user_id=this.profiles[0].user_id;
+                              this.form.banned=this.profiles[0].banned;
+                              this.form.auth_level=this.profiles[0].auth_level;
+                              this.form.email=this.profiles[0].email;
+                              this.form.username=this.profiles[0].username;
+                              this.form.url_foto=this.profiles[0].url_foto;
+                              this.form.cedula=this.profiles[0].cedula;
                               this.form.apellido=this.profiles[0].apellido;
-                              this.form.foto=this.profiles[0].foto;
-                              this.form.direccion_envio=this.profiles[0].direccion_envio;
-                              this.form.telefono=this.profiles[0].telefono;
-                              this.form.direccion_facturacion=this.profiles[0].direccion_facturacion;
-                              this.form.direccion_empresa=this.profiles[0].direccion_empresa;
-                              this.form.profesional=this.profiles[0].profesional;
-                              this.form.dep=this.profiles[0].dep;
-                              this.form.departamento=this.profiles[0].departamento;
-                              this.form.ciudad=this.profiles[0].ciudad;
-                              this.form.nombre_empresa=this.profiles[0].nombre_empresa;
-                              this.form.nit=this.profiles[0].nit;
-                              this.form.status=this.profiles[0].status;
-                              this.form.telefono_empresa=this.profiles[0].telefono_empresa;
+                              this.form.nombre=this.profiles[0].nombre;
+                              this.form.cargo=this.profiles[0].cargo;
+                              this.form.telefono_personal=this.profiles[0].telefono_personal;
+                              this.form.telefono_corporativo=this.profiles[0].telefono_corporativo;
+                              this.form.sucursal=this.profiles[0].sucursal;
                             },
                             depp(){
                               this.form.departamento=this.colombia[this.form.dep].departamento;
                             },
-                            async loadDocumentos() {
-                                await  axios.get('index.php/User/documentos_get/')
-                                 .then(({data: {documentos}}) => {
-                                    this.documentos = documentos;
-                                 });
-                               },
-                               depp(){
-                                 this.form.departamento=this.colombia[this.form.dep].departamento;
-                               },
+
                          loadCart(){
 
                            if(localStorage.getItem('cart')) {
@@ -1844,7 +1814,6 @@
 
                created(){
                     this.loadProfiles();
-                    this.loadDocumentos();
                     this.loadCart();
                },
            })

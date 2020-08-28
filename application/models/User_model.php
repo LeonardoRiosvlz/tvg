@@ -14,10 +14,9 @@ class User_model extends MY_Model {
 
   function get_profile($id){
     return $this->db
-    ->select('d.*, u.email')
-    ->from('datos d')
-    ->where('id_usuario', $id)
-    ->join('users u', 'd.id_usuario = u.user_id')
+    ->select('u.username, u.url_foto, u.nombre, u.apellido, u.cedula, u.cargo, u.telefono_personal, u.telefono_corporativo, u.sucursal, u.email')
+    ->from('users u')
+    ->where('user_id', $id)
     ->get()
     ->result();
   }

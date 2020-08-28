@@ -35,7 +35,6 @@ class User extends MY_Controller
         $this->load->view('User/profile');
         $this->load->view('footer',["js"=>["vue/panel"]]);
       }
-
       public function foto() {
         $config['upload_path']          = './include/img/user';
         $config['allowed_types']        = 'jpg|png|jpeg';
@@ -55,39 +54,12 @@ class User extends MY_Controller
           echo json_encode(['status' => '201', 'message' => 'Imagen creada exitosamente']);
         }
       }
-      public function documentos() {
-        $config['upload_path']          = './include/img/documento';
-        $config['allowed_types']        = 'jpg|png|jpeg|pdf';
-        $config['max_size']             = 7500;
-        $config['max_width']            = 2500;
-        $config['max_height']           = 1400;
-        $this->load->library('upload', $config);
-        if ( ! $this->upload->do_upload('file')) {
-          $error = array('error' => $this->upload->display_errors());
-          echo json_encode($error);
-        } else {
-            $upload_data = $this->upload->data();
-          $file_name = $upload_data['file_name'];
-          $data['url_documento'] ="include/img/documento/".$file_name;
-          $data['id_usuario'] = $this->auth_user_id;;
-          $rut=$this->user->documentos($data);
-          echo json_encode(['status' => '201', 'message' => 'Imagen creada exitosamente']);
-        }
-      }
       public function get_profile(){
 
         $id=$this->auth_user_id;
-        $data['profile'] = $this->user->get_profile($id);
+        $data['profiles'] = $this->user->get_profile($id);
         header('Content-Type: application/json');
-        echo json_encode(['profile' => $data['profile']]);
-
-      }
-      public function documentos_get(){
-
-        $id=$this->auth_user_id;
-        $data['documentos'] = $this->user->documentos_get($id);
-        header('Content-Type: application/json');
-        echo json_encode(['documentos' => $data['documentos']]);
+        echo json_encode(['profiles' => $data['profiles']]);
 
       }
 
