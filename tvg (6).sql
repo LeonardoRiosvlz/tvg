@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 28-08-2020 a las 16:23:33
+-- Tiempo de generación: 28-08-2020 a las 23:59:06
 -- Versión del servidor: 10.4.11-MariaDB
 -- Versión de PHP: 7.2.31
 
@@ -83,7 +83,12 @@ INSERT INTO `auth_sessions` (`id`, `user_id`, `login_time`, `modified_at`, `ip_a
 ('r3irm7a2r4ejtitjpn3vleqmcv9a94jg', 1567466676, '2020-08-26 17:20:58', '2020-08-26 15:20:58', '127.0.0.1', 'Chrome 84.0.4147.135 on Windows 8'),
 ('ommuelse6gcriddupqj9ktdlrqscfgqq', 3581919691, '2020-08-26 16:37:46', '2020-08-26 15:18:38', '127.0.0.1', 'Chrome 84.0.4147.135 on Windows 8'),
 ('atcboj94ji0v8vlr6boufrjk0tcl1h0f', 3581919691, '2020-08-26 15:59:30', '2020-08-26 14:16:46', '127.0.0.1', 'Chrome 84.0.4147.135 on Windows 8'),
-('pkh495nr86ee4pb4f7lu7orble68i1gh', 3581919691, '2020-08-27 01:33:38', '2020-08-27 03:25:11', '127.0.0.1', 'Chrome 84.0.4147.135 on Windows 8');
+('pkh495nr86ee4pb4f7lu7orble68i1gh', 3581919691, '2020-08-27 01:33:38', '2020-08-27 03:25:11', '127.0.0.1', 'Chrome 84.0.4147.135 on Windows 8'),
+('58h368b4c1ci7f1k1o7unv5iv9p9f3ce', 3581919691, '2020-08-26 18:42:07', '2020-08-26 16:42:07', '::1', 'Chrome 84.0.4147.135 on Windows 8'),
+('8ip7emuf5mr1m0qj04f7idf6ni5elch5', 2520322231, '2020-08-26 18:45:16', '2020-08-26 17:02:46', '::1', 'Chrome 84.0.4147.135 on Windows 8'),
+('uh9dg6o8op3o9e6qvalu5n1bhf6qfr8j', 2520322231, '2020-08-28 22:18:40', '2020-08-28 21:46:18', '::1', 'Chrome 84.0.4147.135 on Windows 8'),
+('hlhqsf3s8h8ggb5ucbu7htdojvt6kksj', 3581919691, '2020-08-28 23:01:42', '2020-08-28 21:13:12', '::1', 'Chrome 84.0.4147.135 on Windows 8'),
+('tc70ris15nc2klt7ctqkmhaqtmbj58q0', 3581919691, '2020-08-28 23:22:30', '2020-08-28 21:47:44', '::1', 'Chrome 84.0.4147.135 on Windows 8');
 
 -- --------------------------------------------------------
 
@@ -167,8 +172,8 @@ CREATE TABLE `clientes` (
   `fecha_registro` date NOT NULL,
   `fecha_inactivo` date NOT NULL,
   `tipo_cliente` enum('Persona natural','Persona jurídica') NOT NULL,
-  `sucursal` varchar(25) NOT NULL,
-  `forma_pago` varchar(20) NOT NULL,
+  `sucursal` int(10) NOT NULL,
+  `forma_pago` int(10) NOT NULL,
   `autorizador` varchar(50) NOT NULL,
   `cliente_especial` enum('Si','No') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -268,10 +273,23 @@ INSERT INTO `empresa` (`id`, `nombre_empresa`, `nit`, `departamento`, `ciudad`, 
 
 CREATE TABLE `forma_pago` (
   `id` int(15) NOT NULL,
-  `forma` varchar(30) NOT NULL,
+  `forma` varchar(60) NOT NULL,
   `descripcion` varchar(250) NOT NULL,
-  `dias` int(6) NOT NULL
+  `dias` varchar(15) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `forma_pago`
+--
+
+INSERT INTO `forma_pago` (`id`, `forma`, `descripcion`, `dias`) VALUES
+(1, 'Crédito', '\nPago realizado posterior al despacho de la carga en el tiempo acordado. ', '8'),
+(2, 'Crédito', 'Pago realizado posterior al despacho de la carga en el tiempo acordado. ', '15'),
+(3, 'Crédito', 'Pago realizado posterior al despacho de la carga en el tiempo acordado. ', '30'),
+(4, 'Crédito', 'Pago realizado posterior al despacho de la carga en el tiempo acordado. ', '40'),
+(5, 'Crédito', '\nPago realizado posterior al despacho de la carga en el tiempo acordado. ', '60'),
+(6, 'Crédito', 'Pago inmediato', '0'),
+(7, '50% al despacho y 50% contra entrega ', 'Mitad de dinero al momento del envío y mitad de dinero a la entrega de la carga.', '0');
 
 -- --------------------------------------------------------
 
@@ -560,8 +578,9 @@ INSERT INTO `users` (`user_id`, `username`, `email`, `auth_level`, `banned`, `ve
 (1567466676, 'Leonardo', 'leonardo@tvg.com', 9, '0', 0, '$2y$11$NqTRHgqBXtZiCwk6yeQ.FO48UM8oKnUJLXQfaYcKz5PsA.GhiZ6Xa', NULL, NULL, NULL, '2020-08-26 17:20:58', '$2y$11$h0uusdq351hfF2LIb0h1H.225bpCHQQaj25xxJQxnoz8OKVeHU.w.', '/include/img/user/873ae59c6165e09fc14291628ba6082f4.png', 'Jose', 'Leonardo', '20328861', 'Supervisor', '7456134', '7456134', 'TVG Santa Marta', '2020-08-26 17:20:33', '2020-08-26 15:20:58'),
 (2032761865, 'Cr7', 'leonardo21788@gmail.com', 9, '0', 0, '$2y$11$jBiNpGCqGOoPRCBws90Ih.ApWPKQeN1S/rk12.R7baSpE4jqdsS7u', NULL, NULL, '2020-08-26 10:28:51', NULL, '$2y$11$jBiNpGCqGOoPRCBws90Ih.ApWPKQeN1S/rk12.R7baSpE4jqdsS7u', '/include/img/user/asdasdad1.png', 'Jose', 'Leonardo', '10981021', 'Supervisor', '', '', '', '2020-08-26 16:01:27', '2020-08-26 14:28:51'),
 (2192184043, 'LuzRios2718', 'Luz@gmail.com', 9, '0', 0, '$2y$11$zO3zdIrbm9YOSTEJgkBw6uLTrNCY.iPahnsUBxl.VNDy94pzeleUS', NULL, NULL, NULL, '2020-08-26 16:47:31', '$2y$11$Aehw7FozAqIaA1EfMViN0Oz/Jm.5BtN8OcFK83s/WElLvuOQD7wf2', '/include/img/user/72429-hospital-ghost-748x417.jpg', 'Luz', 'Rios', '25272381', 'Supervisor', '', '', '', '2020-08-26 16:47:08', '2020-08-26 14:47:31'),
+(2520322231, 'Diego', 'diego@gmail.com', 9, '0', 0, '$2y$11$YyIF9OW8OVOMVgGGTgeRYOSgW.ykjjKGMSPoezNlWWKqgFcY3StUK', NULL, NULL, NULL, '2020-08-28 22:18:40', '$2y$11$n2NBHXo0wwsBNj2Cdbugr.9hAGqd2antLVh5h/k5DbUvjcul1uH/6', '/include/img/user/IMG_20191225_184425.jpg', 'Diego', 'Morejon', '123', 'Supervisor', '7456156', '7456134', 'TVG Santa Marta', '2020-08-26 18:44:54', '2020-08-28 20:18:40'),
 (2822719046, 'Marina', 'marina@gmail.com', 9, '0', 0, '$2y$11$EVbi/7xHKdNVT8QMTq0GS.QOArGbi1T9G3sN559qbE1kkSkS.4tjK', NULL, NULL, NULL, NULL, '$2y$11$J3bxlg..o9pohVCgiwslXuYiYmS6zZY0Dvr6WcSYIRqDpDz0dlhpG', '/include/img/user/873ae59c6165e09fc14291628ba6082f3.png', 'Luz ', 'Marina', '258369147', 'Supervisor', '04264472911', '04264472911', 'TVG Barranquilla', '2020-08-26 17:10:34', '2020-08-26 15:10:34'),
-(3581919691, 'leonardo2718', 'leonardo2718@hotmail.es', 9, '0', 0, '$2y$11$jBiNpGCqGOoPRCBws90Ih.ApWPKQeN1S/rk12.R7baSpE4jqdsS7u', NULL, NULL, NULL, '2020-08-28 14:18:32', '$2y$11$LUi1aLY/hjkFUbWQ3Q2VKOXBoz5iqPmk5XxM8JxWb26t6nG7jg.xK', '', 'Tvg', 'Cargo', '203288614', '', '', '', '', '2020-08-16 01:06:25', '2020-08-28 12:18:32');
+(3581919691, 'leonardo2718', 'leonardo2718@hotmail.es', 9, '0', 0, '$2y$11$jBiNpGCqGOoPRCBws90Ih.ApWPKQeN1S/rk12.R7baSpE4jqdsS7u', NULL, NULL, NULL, '2020-08-28 23:22:30', '$2y$11$LUi1aLY/hjkFUbWQ3Q2VKOXBoz5iqPmk5XxM8JxWb26t6nG7jg.xK', '', 'Tvg', 'Cargo', '203288614', '', '', '', '', '2020-08-16 01:06:25', '2020-08-28 21:22:30');
 
 --
 -- Disparadores `users`
@@ -631,7 +650,9 @@ ALTER TABLE `ci_sessions`
 -- Indices de la tabla `clientes`
 --
 ALTER TABLE `clientes`
-  ADD UNIQUE KEY `cedula_cliente` (`cedula_cliente`);
+  ADD UNIQUE KEY `cedula_cliente` (`cedula_cliente`),
+  ADD KEY `sucursal` (`sucursal`),
+  ADD KEY `forma_pago` (`forma_pago`);
 
 --
 -- Indices de la tabla `datos`
@@ -782,7 +803,7 @@ ALTER TABLE `document`
 -- AUTO_INCREMENT de la tabla `forma_pago`
 --
 ALTER TABLE `forma_pago`
-  MODIFY `id` int(15) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT de la tabla `img_pro`
@@ -866,6 +887,13 @@ ALTER TABLE `acl`
 --
 ALTER TABLE `acl_actions`
   ADD CONSTRAINT `acl_actions_ibfk_1` FOREIGN KEY (`category_id`) REFERENCES `acl_categories` (`category_id`) ON DELETE CASCADE;
+
+--
+-- Filtros para la tabla `clientes`
+--
+ALTER TABLE `clientes`
+  ADD CONSTRAINT `clientes_ibfk_1` FOREIGN KEY (`sucursal`) REFERENCES `sucursales` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE,
+  ADD CONSTRAINT `clientes_ibfk_2` FOREIGN KEY (`forma_pago`) REFERENCES `forma_pago` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `datos`
