@@ -67,7 +67,7 @@
                 <td class="links">{{clientes.nit_cliente}}</td>
                 <td class="links">{{clientes.r_legal}}</td>
                 <td class="links">{{clientes.nombre_cliente}}</td>
-                <td class="links">{{clientes.estado}}</td>
+                <td class="links"><span v-if="clientes.estado==='Activo'" class="badge badge-success">{{clientes.estado}}</span><span v-else class="badge badge-danger">{{clientes.estado}}</span></td>
                   <td>
                     <div class="btn-group">
                         <button type="button" class="btn btn-default">Action</button>
