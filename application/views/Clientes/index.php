@@ -63,7 +63,11 @@
             </tr>
             </thead>
               <tr v-for="(clientes,index) in clientes">
-                <td class="links">{{clientes.nombre_cargo}}</td>
+                <td class="links">{{clientes.nombre_empresa}}</td>
+                <td class="links">{{clientes.nit_cliente}}</td>
+                <td class="links">{{clientes.r_legal}}</td>
+                <td class="links">{{clientes.nombre_cliente}}</td>
+                <td class="links">{{clientes.estado}}</td>
                   <td>
                     <div class="btn-group">
                         <button type="button" class="btn btn-default">Action</button>
@@ -125,7 +129,7 @@
                              <div class="form-group">
                                <select v-model="form.sucursal" v-validate="'required'" name="sucursal" class="form-control" :disabled="ver"  >
                                 <option value=""></option>
-                                 <option v-for="sucursales in sucursales" :value="sucursales.nombre_sucursal">{{sucursales.nombre_sucursal}}</option>
+                                 <option v-for="sucursales in sucursales" :value="sucursales.id">{{sucursales.nombre_sucursal}}</option>
                                </select>
                                <p class="text-danger my-1 small" v-if="(errors.first('sucursal'))" >  Este dato es requerido/o es inválido  </p>
                              </div>
@@ -135,7 +139,7 @@
                                <div class="form-group">
                                  <label class="links">NIT</label>
                                   <input type="text" v-model="form.nit_cliente" v-validate="'required'" name="nit_cliente" class="form-control" id="" :disabled="ver||form.tipo_cliente==='Persona natural'">
-                                 <p class="text-danger my-1" v-if="(errors.first('nit_cliente'))" >  Este dato es requerido/o es inválido  </p>
+                                 <p class="text-danger small my-1" v-if="(errors.first('nit_cliente'))" >  Este dato es requerido/o es inválido  </p>
                                </div>
                              </div>
                              <div class="col-md-4 col-sm-12">
@@ -143,7 +147,7 @@
                                <div class="form-group">
                                  <label class="links">Nombre Empresa</label>
                                   <input type="text" v-model="form.nombre_empresa" v-validate="'required'" name="nombre_empresa" class="form-control" id="" :disabled="ver||form.tipo_cliente==='Persona natural'">
-                                 <p class="text-danger my-1" v-if="(errors.first('nombre_empresa'))" >  Este dato es requerido/o es inválido  </p>
+                                 <p class="text-danger small my-1" v-if="(errors.first('nombre_empresa'))" >  Este dato es requerido/o es inválido  </p>
                                </div>
                              </div>
                              <div class="col-md-4 col-sm-12">
@@ -151,7 +155,7 @@
                                <div class="form-group">
                                  <label class="links">Representante Legal</label>
                                   <input type="text" v-model="form.r_legal" v-validate="'required'" name="r_legal" class="form-control" id="" :disabled="ver||form.tipo_cliente==='Persona natural'">
-                                 <p class="text-danger my-1" v-if="(errors.first('r_legal'))" >  Este dato es requerido/o es inválido  </p>
+                                 <p class="text-danger small my-1" v-if="(errors.first('r_legal'))" >  Este dato es requerido/o es inválido  </p>
                                </div>
                              </div>
                              <table class="table">
@@ -168,7 +172,7 @@
                                <div class="form-group">
                                  <label class="links">Nombre y Apellido</label>
                                   <input type="text" v-model="form.nombre_cliente" v-validate="'required|alpha_spaces'" name="nombre_cliente" class="form-control" id="" :disabled="ver">
-                                 <p class="text-danger my-1" v-if="(errors.first('nombre_cliente'))" >  Este dato es requerido/o es inválido  </p>
+                                 <p class="text-danger small my-1" v-if="(errors.first('nombre_cliente'))" >  Este dato es requerido/o es inválido  </p>
                                </div>
                              </div>
                              <div class="col-md-6 col-sm-12">
@@ -176,15 +180,15 @@
                                <div class="form-group">
                                  <label class="links">Número de cédula</label>
                                   <input type="number" v-model="form.cedula_cliente" v-validate="'required'" name="cedula_cliente" class="form-control" id="" :disabled="ver">
-                                 <p class="text-danger my-1" v-if="(errors.first('cedula_cliente'))" >  Este dato es requerido/o es inválido  </p>
+                                 <p class="text-danger small my-1" v-if="(errors.first('cedula_cliente'))" >  Este dato es requerido/o es inválido  </p>
                                </div>
                              </div>
                              <div class="col-md-6 col-sm-12">
                                <!-- textarea -->
                                <div class="form-group">
                                  <label class="links">Teléfono</label>
-                                  <input type="number" v-model="form.telfono_cliente" v-validate="'required'" name="telfono_cliente" class="form-control" id="" :disabled="ver">
-                                 <p class="text-danger my-1" v-if="(errors.first('telfono_cliente'))" >  Este dato es requerido/o es inválido  </p>
+                                  <input type="number" v-model="form.telefono_cliente" v-validate="'required'" name="telefono_cliente" class="form-control" id="" :disabled="ver">
+                                 <p class="text-danger small my-1" v-if="(errors.first('telefono_cliente'))" >  Este dato es requerido/o es inválido  </p>
                                </div>
                              </div>
                              <div class="col-md-12 col-sm-12">
@@ -192,7 +196,7 @@
                                <div class="form-group">
                                  <label class="links">Correo</label>
                                   <input type="email" v-model="form.correo_cliente" v-validate="'required'" name="correo_cliente" class="form-control" id="" :disabled="ver">
-                                 <p class="text-danger my-1" v-if="(errors.first('correo_cliente'))" >  Este dato es requerido/o es inválido  </p>
+                                 <p class="text-danger small my-1" v-if="(errors.first('correo_cliente'))" >  Este dato es requerido/o es inválido  </p>
                                </div>
                              </div>
                              <div class="col-md-12 col-sm-12">
@@ -200,7 +204,7 @@
                                <div class="form-group">
                                  <label class="links">Dirección</label>
                                   <textarea type="email" v-model="form.direccion_cliente" v-validate="'required'" name="direccion_cliente" class="form-control" id="" :disabled="ver"></textarea>
-                                 <p class="text-danger my-1" v-if="(errors.first('direccion_cliente'))" >  Este dato es requerido/o es inválido  </p>
+                                 <p class="text-danger small my-1" v-if="(errors.first('direccion_cliente'))" >  Este dato es requerido/o es inválido  </p>
                                </div>
                              </div>
                              <div class="col-sm-6">
@@ -218,7 +222,7 @@
                                 <select v-model="form.ciudad" v-validate="'required'" name="ciudad" class="form-control" :disabled="ver" >
                                     <option v-for="ciudad in colombia[form.dep].ciudades" :value="ciudad">{{ciudad}}</option>
                                 </select>
-                                <p class="text-danger my-1" v-if="(errors.first('ciudad'))" >  Este dato es requerido  </p>
+                                <p class="text-danger small my-1" v-if="(errors.first('ciudad'))" >  Este dato es requerido  </p>
                               </div>
                            </div>
                            <div class="col-md-6 col-sm-12">
@@ -244,12 +248,12 @@
                              <div class="col-md-6 col-sm-12">
                                <label class="links">Estado</label>
                                <div class="form-group">
-                                 <select v-model="form.cliente_especial" v-validate="'required'"  name="cliente_especial" class="form-control" :disabled="ver" >
+                                 <select v-model="form.estado" v-validate="'required'"  name="estado" class="form-control" :disabled="ver" >
                                   <option value=""></option>
                                   <option value="Activo">Activo</option>
                                   <option value="Inactivo">Inactivo</option>
                                  </select>
-                                 <p class="text-danger my-1 small" v-if="(errors.first('cliente_especial'))" >  Este dato es requerido/o es inválido  </p>
+                                 <p class="text-danger my-1 small" v-if="(errors.first('estado'))" >  Este dato es requerido/o es inválido  </p>
                                </div>
                              </div>
                             </div>
@@ -266,7 +270,7 @@
         </div>
    <!-- fin del modal -->
    </div>
-
+<pre> {{form}}</pre>
 </div>
 <script>
      axios.defaults.baseURL = '<?PHP echo base_url(); ?>';
@@ -277,6 +281,28 @@
          departamento:0,
          ver:false,
          cart:[],
+         form:{
+             'id':'',
+             'nit_cliente':'',
+             'nombre_empresa':'',
+             'r_legal':'',
+             'nombre_cliente':'',
+             'cedula_cliente':'',
+             'telefono_cliente':'',
+             'correo_cliente':'',
+             'departamento':'',
+             'ciudad':'',
+             'dep':0,
+             'direccion_cliente':'',
+             'estado':'',
+             'fecha_registro':'',
+             'fecha_inactivo':'',
+             'tipo_cliente':'',
+             'sucursal':'',
+             'forma_pago':'',
+             'autorizador':'',
+             'cliente_especial':'',
+         },
          formaspago:[],
          clientes:[],
          profiles:[],
@@ -1581,13 +1607,6 @@
           ]
           }
           ],
-         form:{
-             'id':'',
-             'nombre_cargo':'',
-             'departamento':'',
-             'ciudad':'',
-             'dep':0,
-         }
        },
        methods: {
            depp(){
@@ -1721,13 +1740,49 @@
                  },
                  setear(index){
                    this.form.id=this.clientes[index].id,
-                   this.form.nombre_cargo=this.clientes[index].nombre_cargo,
+                   this.form.nit_cliente=this.clientes[index].nit_cliente,
+                   this.form.nombre_empresa=this.clientes[index].nombre_empresa,
+                   this.form.r_legal=this.clientes[index].r_legal,
+                   this.form.nombre_cliente=this.clientes[index].nombre_cliente,
+                   this.form.cedula_cliente=this.clientes[index].cedula_cliente,
+                   this.form.telefono_cliente=this.clientes[index].telefono_cliente,
+                   this.form.correo_cliente=this.clientes[index].correo_cliente,
+                   this.form.departamento=this.clientes[index].departamento,
+                   this.form.ciudad=this.clientes[index].ciudad,
+                   this.form.dep=this.clientes[index].dep,
+                   this.form.fecha_inactivo=this.clientes[index].fecha_inactivo,
+                   this.form.fecha_registro=this.clientes[index].fecha_registro,
+                   this.form.direccion_cliente=this.clientes[index].direccion_cliente,
+                   this.form.estado=this.clientes[index].estado,
+                   this.form.tipo_cliente=this.clientes[index].tipo_cliente,
+                   this.form.sucursal=this.clientes[index].sucursal,
+                   this.form.forma_pago=this.clientes[index].forma_pago,
+                   this.form.autorizador=this.clientes[index].autorizador,
+                   this.form.cliente_especial=this.clientes[index].cliente_especial,
                    $('#modal-lg').modal('show');
                    this.editMode=true
                  },
                  ver(index){
                    this.form.id=this.clientes[index].id,
-                   this.form.nombre_cargo=this.clientes[index].nombre_cargo,
+                   this.form.nit_cliente=this.clientes[index].nit_cliente,
+                   this.form.nombre_empresa=this.clientes[index].nombre_empresa,
+                   this.form.r_legal=this.clientes[index].r_legal,
+                   this.form.nombre_cliente=this.clientes[index].nombre_cliente,
+                   this.form.cedula_cliente=this.clientes[index].cedula_cliente,
+                   this.form.telefono_cliente=this.clientes[index].telefono_cliente,
+                   this.form.correo_cliente=this.clientes[index].correo_cliente,
+                   this.form.departamento=this.clientes[index].departamento,
+                   this.form.ciudad=this.clientes[index].ciudad,
+                   this.form.dep=this.clientes[index].dep,
+                   this.form.fecha_inactivo=this.clientes[index].fecha_inactivo,
+                   this.form.fecha_registro=this.clientes[index].fecha_registro,
+                   this.form.direccion_cliente=this.clientes[index].direccion_cliente,
+                   this.form.estado=this.clientes[index].estado,
+                   this.form.tipo_cliente=this.clientes[index].tipo_cliente,
+                   this.form.sucursal=this.clientes[index].sucursal,
+                   this.form.forma_pago=this.clientes[index].forma_pago,
+                   this.form.autorizador=this.clientes[index].autorizador,
+                   this.form.cliente_especial=this.clientes[index].cliente_especial,
                    $('#myModal').modal('show');
                    this.editMode=false
                  },

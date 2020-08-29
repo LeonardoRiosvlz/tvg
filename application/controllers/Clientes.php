@@ -28,6 +28,9 @@ class Clientes extends MY_Controller {
 					redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
 				}
 				$data = json_decode($this->input->post('service_form'),true);
+				if ($data['estado']==="Inactivo") {
+					$data['fecha_inactivo'] = date("Y-m-d");
+				}
 				$result = $this->clientes->insertar($data);
 					if($result['code'] == 0){
 						echo json_encode(['status' => '200', 'message' => 'Agregado exitosamente']);
@@ -41,6 +44,9 @@ class Clientes extends MY_Controller {
 					redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
 				}
 			    $data = json_decode($this->input->post('service_form'),true);
+					if ($data['estado']==="Inactivo") {
+						$data['fecha_inactivo'] = date("Y-m-d");
+					}
 				$result = $this->clientes->editar($data);
 					if($result['code'] == 0){
 						echo json_encode(['status' => '200', 'message' => 'editado exitosamente']);
