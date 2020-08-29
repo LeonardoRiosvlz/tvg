@@ -15,7 +15,7 @@
                 <a href="<?=base_url();?>/Clientes/exportData"  class="btn btn-block btn-info btn-sm links" >Exportar CSV <span class="mbri-download"></span></a>
               </th>
               <th scope="col" colspan="2" class="border-0 bg-white  text-center">
-                <button type="button"  class="btn btn-block btn-primary btn-sm links" >Exportar Excel <span class="mbri-save"></span></button>
+                <a href="<?=base_url();?>/Clientes/excelexport" type="button"  class="btn btn-block btn-primary btn-sm links" >Exportar Excel <span class="mbri-save"></span></a>
               </th>
               <th scope="col" colspan="2" class="border-0 bg-white  text-center">
                 <button type="button" class="btn btn-block btn-secondary btn-sm links" >Exportar PDF <span class="mbri-file"></span></button>
