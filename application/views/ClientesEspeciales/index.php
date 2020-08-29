@@ -59,7 +59,6 @@
          <div class="modal-dialog modal-lg">
            <div class="modal-content">
              <div class="modal-header">
-               <h4 class="modal-title links">Gestión de clientes  <i class="fa fa-street-view" aria-hidden="true"></i></h4>
                <button type="button" @click="resete()" class="close" data-dismiss="modal" aria-label="Close">
                  <span class="mbri-close " ></span>
                </button>
@@ -82,9 +81,37 @@
                  </div>
                </div>
                <div class="col-md-4 py-4"><button type="button" class="btn btn-info btn-block btn-lg">Buscar <span class="mbri-search"></span></button></div>
-               <div class="card p-3 col-12">
+               <div class="card col-12">
                   <h5 class="links">Datos del cliente</h5>
-
+                  <div class="row">
+                    <div class="col-md-4">
+                      <label class="links">Nombre</label>
+                      <div class="form-group">
+                        <select v-model="form.cedula" v-validate="'required'" name="tipo_envio" class="form-control" disabled >
+                          <option v-for="clientes in clientes" v-if="clientes.cliente_especial==='Si'" :value="clientes.cedula_cliente">{{clientes.nombre_cliente}}</option>
+                        </select>
+                        <p class="text-danger my-1 small" v-if="(errors.first('tipo_envio'))" >  Este dato es requerido  </p>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <label class="links">Departamento</label>
+                      <div class="form-group">
+                        <select v-model="form.cedula" v-validate="'required'" name="tipo_envio" class="form-control" disabled>
+                          <option v-for="clientes in clientes" v-if="clientes.cliente_especial==='Si'" :value="clientes.cedula_cliente">{{clientes.departamento}}</option>
+                        </select>
+                        <p class="text-danger my-1 small" v-if="(errors.first('tipo_envio'))" >  Este dato es requerido  </p>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <label class="links">Ciudad</label>
+                      <div class="form-group">
+                        <select v-model="form.cedula" v-validate="'required'" name="tipo_envio" class="form-control" disabled>
+                          <option v-for="clientes in clientes" v-if="clientes.cliente_especial==='Si'" :value="clientes.cedula_cliente">{{clientes.ciudad}}</option>
+                        </select>
+                        <p class="text-danger my-1 small" v-if="(errors.first('tipo_envio'))" >  Este dato es requerido  </p>
+                      </div>
+                    </div>
+                  </div>
                </div>
                <div class="card-body">
                        <form role="form" id="form" @submit.prevent="validateBeforeSubmit">
@@ -114,7 +141,7 @@
                               </div>
                            </div>
                              <div class="col-sm-3">
-                               <label class="links">Departamento origen</label>
+                               <label class="bold">Departamento origen</label>
                                <div class="form-group">
                                  <select v-model="form.dep" @change="depp()" class="form-control" :disabled="ver" >
                                    <option value=""></option>
@@ -360,6 +387,7 @@
          departamento:0,
          ver:false,
          cart:[],
+         imagenes:[],
          clientes:[],
          userFiles:[],
          editMode:false,
@@ -1688,7 +1716,7 @@
                       title: 'Exito!',
                       text: 'Agregado correctamente'
                     });
-                //    this.loadFotos();
+                   this.loadFotos();
                   }
                   else
                   {
@@ -1746,8 +1774,8 @@
             },
              async    loadFotos(){
              let data = new FormData();
-              data.append('id_pro',this.form.pro_id);
-        await      axios.post('index.php/Products/getimagenes/',data)
+              data.append('id_carga_cliente',this.form.id_carga_cliente);
+        await      axios.post('index.php/ClientesEspeciales/getimagenes/',data)
               .then(({data: {imagenes}}) => {
                     this.imagenes = imagenes;
                   });

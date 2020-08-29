@@ -104,7 +104,7 @@ class ClientesEspeciales extends MY_Controller {
 				}
 				function getimagenes() {
 
-				$id = $this->input->post('id_pro');
+				$id = $this->input->post('id_carga_cliente');
 				$data['imagenes'] = $this->historial->imagenes_get($id);
 				header('Content-Type: application/json');
 				echo json_encode(['imagenes' => $data['imagenes']]);
