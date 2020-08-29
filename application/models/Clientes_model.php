@@ -22,6 +22,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 'forma_pago'     => $data['forma_pago'],
                 'autorizador'     => $data['autorizador'],
                 'cliente_especial'     => $data['cliente_especial'],
+                'observacion'     => $data['observacion'],
             ));
             return $this->db->error();
         }
@@ -46,6 +47,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
               'forma_pago'     => $data['forma_pago'],
               'autorizador'     => $data['autorizador'],
               'cliente_especial'     => $data['cliente_especial'],
+              'observacion'     => $data['observacion'],
             ));
             return $this->db->error();
            }

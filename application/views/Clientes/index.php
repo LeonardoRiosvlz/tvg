@@ -23,8 +23,8 @@
           <a href="<?=base_url()?>Orders_admin">
             <div class="card-counter info p-2 zoom" style="opacity:0.9">
               <span class=" fa mbri-users" style="font-size:5em;opacity:0.6"></span>
-              <span class="count-numbers">5</span>
-              <span class="count-name links">Clientes activos</span>
+              <span class="count-numbers">{{parseInt(activos)+parseInt(inactivos)}}</span>
+              <span class="count-name links">Total de clientes</span>
             </div>
           </a>
           </div>
@@ -34,7 +34,7 @@
           <a href="<?=base_url()?>Orders_admin">
             <div class="card-counter success p-2 zoom" style="opacity:0.9">
               <span class=" fa mbri-users" style="font-size:5em;opacity:0.6"></span>
-              <span class="count-numbers">5</span>
+              <span class="count-numbers">{{activos}}</span>
               <span class="count-name links">Clientes activos</span>
             </div>
           </a>
@@ -45,7 +45,7 @@
             <a href="<?=base_url()?>Shipping">
             <div class="card-counter danger p-2 zoom" style="opacity:0.9;background-color:#red!important">
               <span class="mbri-users" style="font-size:5em;opacity:0.6"></span>
-              <span class="count-numbers">6</span>
+              <span class="count-numbers">{{inactivos}}</span>
               <span class="count-name links">Clientes inactivos</span>
             </div>
           </a>
@@ -256,6 +256,14 @@
                                  <p class="text-danger my-1 small" v-if="(errors.first('estado'))" >  Este dato es requerido/o es inválido  </p>
                                </div>
                              </div>
+                             <div class="col-md-6 col-sm-12" v-if="form.estado==='Inactivo'">
+                               <!-- textarea -->
+                               <div class="form-group">
+                                 <label class="links">Observación</label>
+                                  <textarea type="email" v-model="form.observacion" v-validate="'required'" name="observacion" class="form-control" id="" :disabled="ver"></textarea>
+                                 <p class="text-danger small my-1" v-if="(errors.first('observacion'))" >  Este dato es requerido/o es inválido  </p>
+                               </div>
+                             </div>
                             </div>
                            <button v-if="editMode===false"  class="button is-primary links btn btn-light float-right my-3" type="submit">Guardar</button>
                            <button v-if="editMode===true && !ver"  class="button is-primary btn btn-light links float-right my-3" type="submit">Editar</button>
@@ -270,7 +278,7 @@
         </div>
    <!-- fin del modal -->
    </div>
-<pre> {{form}}</pre>
+
 </div>
 <script>
      axios.defaults.baseURL = '<?PHP echo base_url(); ?>';
@@ -302,7 +310,10 @@
              'forma_pago':'',
              'autorizador':'',
              'cliente_especial':'',
+             'observacion':'',
          },
+         activos:0,
+         inactivos:0,
          formaspago:[],
          clientes:[],
          profiles:[],
@@ -1607,6 +1618,7 @@
           ]
           }
           ],
+
        },
        methods: {
            depp(){
@@ -1759,6 +1771,7 @@
                    this.form.forma_pago=this.clientes[index].forma_pago,
                    this.form.autorizador=this.clientes[index].autorizador,
                    this.form.cliente_especial=this.clientes[index].cliente_especial,
+                    this.form.observacion=this.clientes[index].observacion,
                    $('#modal-lg').modal('show');
                    this.editMode=true
                  },
@@ -1783,6 +1796,7 @@
                    this.form.forma_pago=this.clientes[index].forma_pago,
                    this.form.autorizador=this.clientes[index].autorizador,
                    this.form.cliente_especial=this.clientes[index].cliente_especial,
+                     this.form.observacion=this.clientes[index].observacion,
                    $('#myModal').modal('show');
                    this.editMode=false
                  },
@@ -1792,6 +1806,15 @@
                      this.clientes = clientes
                    });
                    $("#example1").DataTable();
+                   this.activos=0;this.inactivos=0;
+                   for (var i = 0; i < this.clientes.length; i++) {
+                     if (this.clientes[i].estado==='Activo') {
+                       this.activos=this.activos+1
+                     }else{
+                       this.inactivos=this.inactivos+1
+                     }
+
+                   }
                  },
              async loadSucursales() {
                 await   axios.get('index.php/Sucursales/getsucursales/')
