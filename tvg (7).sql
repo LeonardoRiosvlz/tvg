@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 28-08-2020 a las 23:59:06
+-- Tiempo de generación: 29-08-2020 a las 03:47:27
 -- Versión del servidor: 10.4.11-MariaDB
 -- Versión de PHP: 7.2.31
 
@@ -88,7 +88,11 @@ INSERT INTO `auth_sessions` (`id`, `user_id`, `login_time`, `modified_at`, `ip_a
 ('8ip7emuf5mr1m0qj04f7idf6ni5elch5', 2520322231, '2020-08-26 18:45:16', '2020-08-26 17:02:46', '::1', 'Chrome 84.0.4147.135 on Windows 8'),
 ('uh9dg6o8op3o9e6qvalu5n1bhf6qfr8j', 2520322231, '2020-08-28 22:18:40', '2020-08-28 21:46:18', '::1', 'Chrome 84.0.4147.135 on Windows 8'),
 ('hlhqsf3s8h8ggb5ucbu7htdojvt6kksj', 3581919691, '2020-08-28 23:01:42', '2020-08-28 21:13:12', '::1', 'Chrome 84.0.4147.135 on Windows 8'),
-('tc70ris15nc2klt7ctqkmhaqtmbj58q0', 3581919691, '2020-08-28 23:22:30', '2020-08-28 21:47:44', '::1', 'Chrome 84.0.4147.135 on Windows 8');
+('tc70ris15nc2klt7ctqkmhaqtmbj58q0', 3581919691, '2020-08-28 23:22:30', '2020-08-28 21:47:44', '::1', 'Chrome 84.0.4147.135 on Windows 8'),
+('0bm5129s5epblk8812e910j5n1jpa81r', 3581919691, '2020-08-29 04:09:01', '2020-08-29 02:59:52', '127.0.0.1', 'Chrome 84.0.4147.135 on Windows 8'),
+('0cl4hdmm32k61dn2e468a25c6hl8iqt1', 3581919691, '2020-08-29 13:55:43', '2020-08-29 14:17:23', '127.0.0.1', 'Chrome 84.0.4147.135 on Windows 8'),
+('1eblbhoki7ee4de8en88dhn2odjgh7ak', 3581919691, '2020-08-29 01:01:33', '2020-08-28 23:01:34', '::1', 'Chrome 85.0.4183.83 on Windows 8'),
+('r3jfitbhmb8iu83p2haufgif3vt33a9b', 3581919691, '2020-08-29 01:01:42', '2020-08-29 01:42:07', '::1', 'Chrome 85.0.4183.83 on Windows 8');
 
 -- --------------------------------------------------------
 
@@ -157,26 +161,53 @@ INSERT INTO `ci_sessions` (`id`, `ip_address`, `timestamp`, `data`) VALUES
 
 CREATE TABLE `clientes` (
   `id` int(15) NOT NULL,
-  `nit_cliente` varchar(15) NOT NULL,
-  `nombre_empresa` varchar(60) NOT NULL,
-  `r_legal` varchar(60) NOT NULL,
-  `nombre_cliente` varchar(60) NOT NULL,
-  `cedula_cliente` varchar(15) NOT NULL,
-  `telefono_cliente` varchar(15) NOT NULL,
-  `correo_cliente` varchar(35) NOT NULL,
-  `departamento` varchar(15) NOT NULL,
-  `ciudad` varchar(15) NOT NULL,
-  `dep` int(5) NOT NULL,
-  `direccion_cliente` varchar(150) NOT NULL,
-  `estado` enum('Activo','Inactivo') NOT NULL,
-  `fecha_registro` date NOT NULL,
-  `fecha_inactivo` date NOT NULL,
-  `tipo_cliente` enum('Persona natural','Persona jurídica') NOT NULL,
-  `sucursal` int(10) NOT NULL,
-  `forma_pago` int(10) NOT NULL,
-  `autorizador` varchar(50) NOT NULL,
-  `cliente_especial` enum('Si','No') NOT NULL
+  `nit_cliente` varchar(15) DEFAULT NULL,
+  `nombre_empresa` varchar(60) DEFAULT NULL,
+  `r_legal` varchar(60) DEFAULT NULL,
+  `nombre_cliente` varchar(60) DEFAULT NULL,
+  `cedula_cliente` varchar(15) DEFAULT NULL,
+  `telefono_cliente` varchar(15) DEFAULT NULL,
+  `correo_cliente` varchar(35) DEFAULT NULL,
+  `departamento` varchar(15) DEFAULT NULL,
+  `ciudad` varchar(15) DEFAULT NULL,
+  `dep` int(5) DEFAULT NULL,
+  `direccion_cliente` varchar(150) DEFAULT NULL,
+  `estado` enum('Activo','Inactivo') DEFAULT NULL,
+  `fecha_registro` datetime DEFAULT current_timestamp(),
+  `fecha_inactivo` date DEFAULT NULL,
+  `tipo_cliente` enum('Persona natural','Persona jurídica') DEFAULT NULL,
+  `sucursal` int(10) DEFAULT NULL,
+  `forma_pago` int(10) DEFAULT NULL,
+  `autorizador` int(15) UNSIGNED DEFAULT NULL,
+  `cliente_especial` enum('Si','No') DEFAULT NULL,
+  `observacion` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `clientes`
+--
+
+INSERT INTO `clientes` (`id`, `nit_cliente`, `nombre_empresa`, `r_legal`, `nombre_cliente`, `cedula_cliente`, `telefono_cliente`, `correo_cliente`, `departamento`, `ciudad`, `dep`, `direccion_cliente`, `estado`, `fecha_registro`, `fecha_inactivo`, `tipo_cliente`, `sucursal`, `forma_pago`, `autorizador`, `cliente_especial`, `observacion`) VALUES
+(17, 'No aplica', 'No aplica', 'No aplica', 'Luis Rios', '45678923', '04264472911', 'leoanrdo2718@hotmail.es', 'Antioquia', 'Abriaquí', 1, 'minas de arena #17', 'Inactivo', '2020-08-29 09:53:41', '2020-08-29', 'Persona natural', 2, 1, 3581919691, 'No', 'era mala paga'),
+(18, '5656566', 'komarca', 'leonardo rios', 'Luis Rios', '7894563', '04264472911', 'leoanrdo2718@hotmail.es', 'Meta', 'Mesetas', 19, 'calle real tronca 99', 'Activo', '2020-08-29 10:21:01', '2020-08-29', 'Persona jurídica', 2, 1, 3581919691, 'Si', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `coste_guia`
+--
+
+CREATE TABLE `coste_guia` (
+  `id` int(15) NOT NULL,
+  `valor` varchar(10) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `coste_guia`
+--
+
+INSERT INTO `coste_guia` (`id`, `valor`) VALUES
+(1, '500');
 
 -- --------------------------------------------------------
 
@@ -264,6 +295,30 @@ CREATE TABLE `empresa` (
 INSERT INTO `empresa` (`id`, `nombre_empresa`, `nit`, `departamento`, `ciudad`, `direccion`, `email`, `pbx`, `telefono_uno`, `telefono_dos`, `celular`, `web`, `logo_uno`, `logo_dos`, `dep`) VALUES
 (0, 'Tvg Cargo', 456464, 'Atlántico', 'Sabanalarga', 'direccion', 'lelita@gmail.com', '45678979', '1234567', '1234679', '4565321', 'http://www.antaresoft.com/', 'include/img/873ae59c6165e09fc14291628ba6082f4.png', 'include/img/linterna.jpg', 3),
 (0, 'Tvg Cargo', 456464, 'Atlántico', 'Sabanalarga', 'direccion', 'lelita@gmail.com', '45678979', '1234567', '1234679', '4565321', 'http://www.antaresoft.com/', 'include/img/873ae59c6165e09fc14291628ba6082f4.png', 'include/img/linterna.jpg', 3);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `factores`
+--
+
+CREATE TABLE `factores` (
+  `id` int(15) NOT NULL,
+  `escala` enum('Metros','Centímetros','Porcientos') NOT NULL,
+  `formula` varchar(50) NOT NULL,
+  `variable` varchar(10) NOT NULL,
+  `estado` enum('Activo','Inactivo') NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `factores`
+--
+
+INSERT INTO `factores` (`id`, `escala`, `formula`, `variable`, `estado`) VALUES
+(1, 'Centímetros', 'VOLUMEN=(AN * AL* LA) /300', '300', 'Activo'),
+(2, 'Centímetros', 'VOLUMEN=(AN * AL* LA) /600', '600', 'Activo'),
+(3, 'Metros', 'VOLUMEN=(AN * AL* LA) *300', '300', 'Activo'),
+(4, 'Porcientos', 'TOTAL KILOS + (TOTAL KILOS *60%)', '60', 'Activo');
 
 -- --------------------------------------------------------
 
@@ -388,7 +443,30 @@ CREATE TABLE `login_errors` (
 --
 
 INSERT INTO `login_errors` (`ai`, `username_or_email`, `ip_address`, `time`) VALUES
-(193, 'Leonardo2718', '127.0.0.1', '2020-08-28 14:18:25');
+(194, 'Leonardo2718', '127.0.0.1', '2020-08-29 13:55:31');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `notas`
+--
+
+CREATE TABLE `notas` (
+  `id` int(15) NOT NULL,
+  `numero` varchar(15) DEFAULT NULL,
+  `resumen` varchar(60) DEFAULT NULL,
+  `descripcion` varchar(255) DEFAULT NULL,
+  `tipo_transporte` int(25) DEFAULT NULL,
+  `estado` enum('Activo','Inactivo') DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `notas`
+--
+
+INSERT INTO `notas` (`id`, `numero`, `resumen`, `descripcion`, `tipo_transporte`, `estado`) VALUES
+(6, 'uno', 'el que te conte', 'asdasd', NULL, 'Activo'),
+(7, 'tres', 'el que te conte', 'asdasd', NULL, 'Activo');
 
 -- --------------------------------------------------------
 
@@ -580,7 +658,7 @@ INSERT INTO `users` (`user_id`, `username`, `email`, `auth_level`, `banned`, `ve
 (2192184043, 'LuzRios2718', 'Luz@gmail.com', 9, '0', 0, '$2y$11$zO3zdIrbm9YOSTEJgkBw6uLTrNCY.iPahnsUBxl.VNDy94pzeleUS', NULL, NULL, NULL, '2020-08-26 16:47:31', '$2y$11$Aehw7FozAqIaA1EfMViN0Oz/Jm.5BtN8OcFK83s/WElLvuOQD7wf2', '/include/img/user/72429-hospital-ghost-748x417.jpg', 'Luz', 'Rios', '25272381', 'Supervisor', '', '', '', '2020-08-26 16:47:08', '2020-08-26 14:47:31'),
 (2520322231, 'Diego', 'diego@gmail.com', 9, '0', 0, '$2y$11$YyIF9OW8OVOMVgGGTgeRYOSgW.ykjjKGMSPoezNlWWKqgFcY3StUK', NULL, NULL, NULL, '2020-08-28 22:18:40', '$2y$11$n2NBHXo0wwsBNj2Cdbugr.9hAGqd2antLVh5h/k5DbUvjcul1uH/6', '/include/img/user/IMG_20191225_184425.jpg', 'Diego', 'Morejon', '123', 'Supervisor', '7456156', '7456134', 'TVG Santa Marta', '2020-08-26 18:44:54', '2020-08-28 20:18:40'),
 (2822719046, 'Marina', 'marina@gmail.com', 9, '0', 0, '$2y$11$EVbi/7xHKdNVT8QMTq0GS.QOArGbi1T9G3sN559qbE1kkSkS.4tjK', NULL, NULL, NULL, NULL, '$2y$11$J3bxlg..o9pohVCgiwslXuYiYmS6zZY0Dvr6WcSYIRqDpDz0dlhpG', '/include/img/user/873ae59c6165e09fc14291628ba6082f3.png', 'Luz ', 'Marina', '258369147', 'Supervisor', '04264472911', '04264472911', 'TVG Barranquilla', '2020-08-26 17:10:34', '2020-08-26 15:10:34'),
-(3581919691, 'leonardo2718', 'leonardo2718@hotmail.es', 9, '0', 0, '$2y$11$jBiNpGCqGOoPRCBws90Ih.ApWPKQeN1S/rk12.R7baSpE4jqdsS7u', NULL, NULL, NULL, '2020-08-28 23:22:30', '$2y$11$LUi1aLY/hjkFUbWQ3Q2VKOXBoz5iqPmk5XxM8JxWb26t6nG7jg.xK', '', 'Tvg', 'Cargo', '203288614', '', '', '', '', '2020-08-16 01:06:25', '2020-08-28 21:22:30');
+(3581919691, 'leonardo2718', 'leonardo2718@hotmail.es', 9, '0', 0, '$2y$11$jBiNpGCqGOoPRCBws90Ih.ApWPKQeN1S/rk12.R7baSpE4jqdsS7u', NULL, NULL, NULL, '2020-08-29 01:01:42', '$2y$11$LUi1aLY/hjkFUbWQ3Q2VKOXBoz5iqPmk5XxM8JxWb26t6nG7jg.xK', '', 'Tvg', 'Cargo', '203288614', '', '', '', '', '2020-08-16 01:06:25', '2020-08-28 23:01:42');
 
 --
 -- Disparadores `users`
@@ -650,9 +728,17 @@ ALTER TABLE `ci_sessions`
 -- Indices de la tabla `clientes`
 --
 ALTER TABLE `clientes`
+  ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `cedula_cliente` (`cedula_cliente`),
   ADD KEY `sucursal` (`sucursal`),
-  ADD KEY `forma_pago` (`forma_pago`);
+  ADD KEY `forma_pago` (`forma_pago`),
+  ADD KEY `autorizador` (`autorizador`);
+
+--
+-- Indices de la tabla `coste_guia`
+--
+ALTER TABLE `coste_guia`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indices de la tabla `datos`
@@ -671,6 +757,12 @@ ALTER TABLE `denied_access`
 -- Indices de la tabla `document`
 --
 ALTER TABLE `document`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `factores`
+--
+ALTER TABLE `factores`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -702,6 +794,13 @@ ALTER TABLE `itinerarios`
 --
 ALTER TABLE `login_errors`
   ADD PRIMARY KEY (`ai`);
+
+--
+-- Indices de la tabla `notas`
+--
+ALTER TABLE `notas`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `tipo_transporte` (`tipo_transporte`);
 
 --
 -- Indices de la tabla `segurocarga`
@@ -788,6 +887,18 @@ ALTER TABLE `cargos`
   MODIFY `id` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
+-- AUTO_INCREMENT de la tabla `clientes`
+--
+ALTER TABLE `clientes`
+  MODIFY `id` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+
+--
+-- AUTO_INCREMENT de la tabla `coste_guia`
+--
+ALTER TABLE `coste_guia`
+  MODIFY `id` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT de la tabla `denied_access`
 --
 ALTER TABLE `denied_access`
@@ -798,6 +909,12 @@ ALTER TABLE `denied_access`
 --
 ALTER TABLE `document`
   MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT de la tabla `factores`
+--
+ALTER TABLE `factores`
+  MODIFY `id` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `forma_pago`
@@ -827,7 +944,13 @@ ALTER TABLE `itinerarios`
 -- AUTO_INCREMENT de la tabla `login_errors`
 --
 ALTER TABLE `login_errors`
-  MODIFY `ai` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=194;
+  MODIFY `ai` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=195;
+
+--
+-- AUTO_INCREMENT de la tabla `notas`
+--
+ALTER TABLE `notas`
+  MODIFY `id` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de la tabla `segurocarga`
@@ -893,13 +1016,20 @@ ALTER TABLE `acl_actions`
 --
 ALTER TABLE `clientes`
   ADD CONSTRAINT `clientes_ibfk_1` FOREIGN KEY (`sucursal`) REFERENCES `sucursales` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE,
-  ADD CONSTRAINT `clientes_ibfk_2` FOREIGN KEY (`forma_pago`) REFERENCES `forma_pago` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE;
+  ADD CONSTRAINT `clientes_ibfk_2` FOREIGN KEY (`forma_pago`) REFERENCES `forma_pago` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE,
+  ADD CONSTRAINT `clientes_ibfk_3` FOREIGN KEY (`autorizador`) REFERENCES `users` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Filtros para la tabla `datos`
 --
 ALTER TABLE `datos`
   ADD CONSTRAINT `datos_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `notas`
+--
+ALTER TABLE `notas`
+  ADD CONSTRAINT `notas_ibfk_1` FOREIGN KEY (`tipo_transporte`) REFERENCES `transportes` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

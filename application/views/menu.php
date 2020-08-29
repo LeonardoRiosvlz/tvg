@@ -92,7 +92,7 @@
                       Notas y Alertas
                     </button>
                     <div class="dropdown-menu">
-                      <a class="dropdown-item links" href="<?=base_url()?>notas"><i class="fa fa-sticky-note-o" aria-hidden="true"></i> Notas</a>
+                      <a class="dropdown-item links" href="<?=base_url()?>Notas"><i class="fa fa-sticky-note-o" aria-hidden="true"></i> Notas</a>
                       <a class="dropdown-item links" href="<?=base_url()?>alertas"><i class="fa fa-bell" aria-hidden="true"></i> Alertas</a>
                     </div>
                   </div>

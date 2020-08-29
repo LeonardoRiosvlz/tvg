@@ -1,4 +1,4 @@
-zz<div id="app" class="container">
+<div id="app" class="container">
   <div class="row">
     <div class="col-lg-12 my-5 ">
       <!-- Shopping cart table -->
@@ -7,7 +7,7 @@ zz<div id="app" class="container">
           <thead>
             <tr>
               <th scope="col" colspan="5" class="border-0 bg-white  text-center">
-                  <div class="bg-light rounded-pill px-4 py-3 text-uppercase font-weight-bold links">Cargos <i class="fa fa-street-view" aria-hidden="true"></i></div>
+                  <div class="bg-light rounded-pill px-4 py-3 text-uppercase font-weight-bold links">Notas <i class="fa fa-sticky-note-o" aria-hidden="true"></i></div>
               </th>
             </tr>
             <tr>
@@ -23,12 +23,21 @@ zz<div id="app" class="container">
           <table id="example1" class="table ">
             <thead>
             <tr>
-              <th class="links">Nombre del cargo</th>
+              <th class="links">Numero</th>
+              <th class="links">Asunto</th>
+              <th class="links">Descripcion</th>
+              <th class="links">Tipo de transporte</th>
+              <th class="links">Estado</th>
                 <th class="links">Action</th>
             </tr>
             </thead>
-              <tr v-for="(cargos,index) in cargos">
-                <td class="links">{{cargos.nombre_cargo}}</td>
+              <tr v-for="(notas,index) in notas">
+                <td class="links">{{notas.numero}}</td>
+                <td class="links">{{notas.resumen}}</td>
+                <td class="links">{{notas.descripcion}}</td>
+                <td class="links">{{notas.tipo_transporte}}</td>
+                <td class="links">{{notas.estado}}</td>
+
                   <td>
                     <div class="btn-group">
                         <button type="button" class="btn btn-default">Action</button>
@@ -37,7 +46,7 @@ zz<div id="app" class="container">
                           <div class="dropdown-menu" role="menu">
                             <a class="dropdown-item" href="#"@click="setear(index);ver=true">Ver</a>
                             <a class="dropdown-item" href="#" @click="setear(index);ver=false">Editar</a>
-                            <a class="dropdown-item" href="#" @click="eliminarcargos(index)">Eliminar</a>
+                            <a class="dropdown-item" href="#" @click="eliminarnotas(index)">Eliminar</a>
                           </div>
                         </button>
                     </div>
@@ -53,7 +62,7 @@ zz<div id="app" class="container">
          <div class="modal-dialog modal-lg">
            <div class="modal-content">
              <div class="modal-header">
-               <h4 class="modal-title links">Gestión de cargos  <i class="fa fa-street-view" aria-hidden="true"></i></h4>
+               <h4 class="modal-title links">Gestión de notas  <i class="fa fa-sticky-note-o" aria-hidden="true"></i></h4>
                <button type="button" @click="resete()" class="close" data-dismiss="modal" aria-label="Close">
                  <span class="mbri-close " ></span>
                </button>
@@ -63,12 +72,49 @@ zz<div id="app" class="container">
                <div class="card-body">
                        <form role="form" id="form" @submit.prevent="validateBeforeSubmit">
                          <div class="row">
-                             <div class="col-sm-12">
+                             <div class="col-md-4 col-sm-12">
                                <!-- textarea -->
                                <div class="form-group">
-                                 <label class="links">Nombre cargos</label>
-                                  <input type="text" v-model="form.nombre_cargo" v-validate="'required'" name="nombre_cargos" class="form-control" id="" :disabled="ver">
-                                 <p class="text-danger my-1" v-if="(errors.first('nombre_cargos'))" >  Este dato es requerido  </p>
+                                 <label class="links">Numero de nota</label>
+                                  <input type="text" v-model="form.numero" v-validate="'required'" name="numero" class="form-control" id="" :disabled="ver">
+                                 <p class="text-danger my-1" v-if="(errors.first('numero'))" >  Este dato es requerido  </p>
+                               </div>
+                             </div>
+                             <div class="col-md-8 col-sm-12">
+                               <!-- textarea -->
+                               <div class="form-group">
+                                 <label class="links">Asunto</label>
+                                  <input type="text" v-model="form.resumen" v-validate="'required'" name="resumen" class="form-control" id="" :disabled="ver">
+                                 <p class="text-danger my-1" v-if="(errors.first('resumen'))" >  Este dato es requerido  </p>
+                               </div>
+                             </div>
+                             <div class="col-md-12 col-sm-12">
+                               <!-- textarea -->
+                               <div class="form-group">
+                                 <label class="links">Asunto</label>
+                                  <textarea type="text" v-model="form.descripcion" v-validate="'required'" name="descripcion" class="form-control" id="" :disabled="ver"></textarea>
+                                 <p class="text-danger my-1" v-if="(errors.first('descripcion'))" >  Este dato es requerido  </p>
+                               </div>
+                             </div>
+                             <div class="col-md-5 col-sm-12">
+                               <label class="links">Tipo de transporte</label>
+                               <div class="form-group">
+                                 <select v-model="form.cargo" v-validate="'required'"  name="cargo" class="form-control" :disabled="ver" >
+                                  <option value=""></option>
+                                   <option v-for="transportes in transportes" :value="transportes.id">{{transportes.tipo_transporte}}</option>
+                                 </select>
+                                 <p class="text-danger my-1 small" v-if="(errors.first('cargo'))" >  Este dato es requerido  </p>
+                               </div>
+                             </div>
+                             <div class="col-md-7 col-sm-12">
+                               <label class="links">Estado</label>
+                               <div class="form-group">
+                                 <select @change="formula()" v-model="form.estado" v-validate="'required'"  name="estado" class="form-control" :disabled="ver" >
+                                  <option value="Activo">Activo</option>
+                                  <option value="Inactivo">Inactivo</option>
+
+                                 </select>
+                                 <p class="text-danger my-1 small" v-if="(errors.first('estado'))" >  Este dato es requerido  </p>
                                </div>
                              </div>
                             </div>
@@ -96,11 +142,16 @@ zz<div id="app" class="container">
          departamento:0,
          ver:false,
          cart:[],
-         cargos:[],
+         notas:[],
+         transportes:[],
          editMode:false,
          form:{
              'id':'',
-             'nombre_cargo':'',
+             'numero':'',
+             'resumen':'',
+             'descripcion':'',
+             'tipo_transporte':'',
+             'estado':'',
          }
        },
        methods: {
@@ -122,7 +173,7 @@ zz<div id="app" class="container">
                        let data = new FormData();
                        data.append('service_form',JSON.stringify(this.form));
                      if(!this.editMode){
-                       axios.post('index.php/cargos/insertar',data)
+                       axios.post('index.php/notas/insertar',data)
                        .then(response => {
                          if(response.data.status == 200){
                            Swal.fire({
@@ -131,7 +182,7 @@ zz<div id="app" class="container">
                              text: 'Agregado con exito'
                            })
                            $('#modal-lg').modal('hide');
-                           this.loadcargos();
+                           this.loadnotas();
                            this.resete();
                          }
                          else{
@@ -144,12 +195,12 @@ zz<div id="app" class="container">
                        })
                      }
                      else{
-                       axios.post('index.php/cargos/editar',data)
+                       axios.post('index.php/notas/editar',data)
                        .then(response => {
                          if(response.data.status == 200)
                          {
                            $('#modal-lg').modal('hide');
-                           this.loadcargos();
+                           this.loadnotas();
                            Swal.fire({
                              type: 'success',
                              title: 'Exito!',
@@ -177,7 +228,7 @@ zz<div id="app" class="container">
                      );
                    });
                  },
-                 eliminarcargos(index){
+                 eliminarnotas(index){
                    Swal({
                      title: '¿Estás seguro?',
                      text: "¡ será eliminado para siempre!",
@@ -189,8 +240,8 @@ zz<div id="app" class="container">
                    }).then((result) => {
                      if (result.value) {
                        let data = new FormData();
-                       data.append('id',this.cargos[index].id);
-                         axios.post('index.php/cargos/eliminar',data)
+                       data.append('id',this.notas[index].id);
+                         axios.post('index.php/notas/eliminar',data)
                          .then(response => {
                            if(response) {
                              Swal(
@@ -198,7 +249,7 @@ zz<div id="app" class="container">
                                'Ha sido eliminado.',
                                'success'
                              ).then(response => {
-                                   this.loadcargos();
+                                   this.loadnotas();
                              })
                            } else {
                              Swal(
@@ -206,7 +257,7 @@ zz<div id="app" class="container">
                                'Ha ocurrido un error.',
                                'warning'
                              ).then(response => {
-                               this.loadcargos();
+                               this.loadnotas();
                              })
                            }
                          })
@@ -222,21 +273,36 @@ zz<div id="app" class="container">
                    })
                  },
                  setear(index){
-                   this.form.id=this.cargos[index].id,
-                   this.form.nombre_cargo=this.cargos[index].nombre_cargo,
+                   this.form.id=this.notas[index].id,
+                   this.form.numero=this.notas[index].numero,
+                   this.form.resumen=this.notas[index].resumen,
+                   this.form.descripcion=this.notas[index].descripcion,
+                   this.form.tipo_transporte=this.notas[index].tipo_transporte,
+                   this.form.estado=this.notas[index].estado,
                    $('#modal-lg').modal('show');
                    this.editMode=true
                  },
                  ver(index){
-                   this.form.id=this.cargos[index].id,
-                   this.form.nombre_cargo=this.cargos[index].nombre_cargo,
+                   this.form.id=this.notas[index].id,
+                   this.form.numero=this.notas[index].numero,
+                   this.form.resumen=this.notas[index].resumen,
+                   this.form.descripcion=this.notas[index].descripcion,
+                   this.form.tipo_transporte=this.notas[index].tipo_transporte,
+                   this.form.estado=this.notas[index].estado,
                    $('#myModal').modal('show');
                    this.editMode=false
                  },
-                 async loadcargos() {
-                await   axios.get('index.php/cargos/getcargos/')
-                   .then(({data: {cargos}}) => {
-                     this.cargos = cargos
+                 async loadnotas() {
+                await   axios.get('index.php/notas/getnotas/')
+                   .then(({data: {notas}}) => {
+                     this.notas = notas
+                   });
+                   $("#example1").DataTable();
+                 },
+              async loadtransportes() {
+                await   axios.get('index.php/Transporte/gettransportes/')
+                   .then(({data: {transportes}}) => {
+                     this.transportes = transportes
                    });
                    $("#example1").DataTable();
                  },
@@ -253,7 +319,8 @@ zz<div id="app" class="container">
        },
 
        created(){
-            this.loadcargos();
+            this.loadtransportes();
+            this.loadnotas();
             this.loadCart();
        },
    })
