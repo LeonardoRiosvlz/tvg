@@ -103,7 +103,8 @@
                     <div class="dropdown-menu">
                       <a class="dropdown-item links" href="<?=base_url()?>remitentes"><i class="fa fa-paper-plane" aria-hidden="true"></i> Remitentes</a>
                       <a class="dropdown-item links" href="<?=base_url()?>Clientes"><i class="fa fa-user-o" aria-hidden="true"></i> Clientes de la empresa</a>
-                      <a class="dropdown-item links"  href="<?=base_url()?>dermatologia"><i class="fa fa-car" aria-hidden="true"></i> Proveedores de transporte</a>
+                      <a class="dropdown-item links" href="<?=base_url()?>ClientesEspeciales"><i class="fa fa-user-o" aria-hidden="true"></i> Clientes especiales</a>
+                      <a class="dropdown-item links"  href="<?=base_url()?>Proveedores"><i class="fa fa-car" aria-hidden="true"></i> Proveedores de transporte</a>
                       <a class="dropdown-item links"  href="<?=base_url()?>aparatologia"><i class="fa fa-home" aria-hidden="true"></i> Sedes de clientes</a>
                     </div>
                   </div>
