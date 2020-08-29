@@ -14,7 +14,7 @@ class User_model extends MY_Model {
 
   function get_profile($id){
     return $this->db
-    ->select('u.username, u.url_foto, u.nombre, u.apellido, u.cedula, u.cargo, u.telefono_personal, u.telefono_corporativo, u.sucursal, u.email')
+    ->select('u.user_id, u.username, u.url_foto, u.nombre, u.apellido, u.cedula, u.cargo, u.telefono_personal, u.telefono_corporativo, u.sucursal, u.email')
     ->from('users u')
     ->where('user_id', $id)
     ->get()

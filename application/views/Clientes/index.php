@@ -221,6 +221,26 @@
                                 <p class="text-danger my-1" v-if="(errors.first('ciudad'))" >  Este dato es requerido  </p>
                               </div>
                            </div>
+                           <div class="col-md-6 col-sm-12">
+                             <label class="links">Forma de pago</label>
+                             <div class="form-group">
+                               <select v-model="form.forma_pago" v-validate="'required'"  name="forma_pago" class="form-control" :disabled="ver" >
+                                <option value=""></option>
+                                <option v-for="formaspago in formaspago" :value="formaspago.id">{{formaspago.forma}} {{formaspago.dias}} dias</option>
+                               </select>
+                               <p class="text-danger my-1 small" v-if="(errors.first('forma_pago'))" >  Este dato es requerido/o es inválido  </p>
+                             </div>
+                           </div>
+                           <div class="col-md-6 col-sm-12">
+                             <label class="links">Forma de pago autorizada por</label>
+                             <div class="form-group">
+                               <select v-model="form.autorizador" v-validate="'required'"  name="autorizador" class="form-control" :disabled="ver" >
+                                <option value=""></option>
+                                <option v-for="profiles in profiles" :value="profiles.user_id">{{profiles.email}}</option>
+                               </select>
+                               <p class="text-danger my-1 small" v-if="(errors.first('autorizador'))" >  Este dato es requerido/o es inválido  </p>
+                             </div>
+                           </div>
                              <div class="col-md-6 col-sm-12">
                                <label class="links">Estado</label>
                                <div class="form-group">
@@ -257,7 +277,9 @@
          departamento:0,
          ver:false,
          cart:[],
+         formaspago:[],
          clientes:[],
+         profiles:[],
          sucursales:[],
          editMode:false,
          departamento:0,
@@ -1722,6 +1744,18 @@
                      this.sucursales = sucursales
                    });
                  },
+                async loadformaspago() {
+                    await   axios.get('index.php/formaspago/getformaspago/')
+                       .then(({data: {formaspago}}) => {
+                         this.formaspago = formaspago
+                       });
+                     },
+                     async loadProfiles() {
+                         await  axios.get('index.php/User/get_profile/')
+                          .then(({data: {profiles}}) => {
+                             this.profiles = profiles;
+                          });
+                        },
                  loadCart(){
 
                    if(localStorage.getItem('cart')) {
@@ -1735,6 +1769,8 @@
        },
 
        created(){
+            this.loadProfiles();
+            this.loadformaspago();
             this.loadSucursales();
             this.loadclientes();
             this.loadCart();
