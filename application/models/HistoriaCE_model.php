@@ -4,8 +4,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     class HistorialCE_model extends CI_Model {
         public function insertar($data){
             $this->db->insert('historial_Ce', array(
-                'nombre_cargo'     => $data['nombre_cargo'],
+
                 'id'  => $data['id'],
+                'f_recogida'  => $data['f_recogida'],
+                'f_ingreso'  => $data['f_ingreso'],
                 'cedula_cliente' => $data['cedula_cliente'],
                 'departamento_origen' => $data['departamento_origen'],
                 'ciudad_origen' => $data['ciudad_origen'],

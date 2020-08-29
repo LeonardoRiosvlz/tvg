@@ -25,9 +25,10 @@
     <link href="<?php echo base_url('../include/js/flatpickr.min.css');?>" rel="stylesheet">
     <script src="<?php echo base_url('../include/js/flatpickr.min.js');?>"></script>
     <!-- Lastly add this package -->
+    <script src="https://npmcdn.com/flatpickr/dist/l10n/es.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue-flatpickr-component@8"></script>
     <script src="<?php echo base_url('../include/js/sweetalert2.all.min.js"');?>" ></script>
-    
+
     <title>TECNOVITAL</title>
 </head>
 <body  style="width:100%!important">
