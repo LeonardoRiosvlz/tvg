@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 29-08-2020 a las 03:47:27
+-- Tiempo de generación: 29-08-2020 a las 12:57:21
 -- Versión del servidor: 10.4.11-MariaDB
 -- Versión de PHP: 7.2.31
 
@@ -92,7 +92,13 @@ INSERT INTO `auth_sessions` (`id`, `user_id`, `login_time`, `modified_at`, `ip_a
 ('0bm5129s5epblk8812e910j5n1jpa81r', 3581919691, '2020-08-29 04:09:01', '2020-08-29 02:59:52', '127.0.0.1', 'Chrome 84.0.4147.135 on Windows 8'),
 ('0cl4hdmm32k61dn2e468a25c6hl8iqt1', 3581919691, '2020-08-29 13:55:43', '2020-08-29 14:17:23', '127.0.0.1', 'Chrome 84.0.4147.135 on Windows 8'),
 ('1eblbhoki7ee4de8en88dhn2odjgh7ak', 3581919691, '2020-08-29 01:01:33', '2020-08-28 23:01:34', '::1', 'Chrome 85.0.4183.83 on Windows 8'),
-('r3jfitbhmb8iu83p2haufgif3vt33a9b', 3581919691, '2020-08-29 01:01:42', '2020-08-29 01:42:07', '::1', 'Chrome 85.0.4183.83 on Windows 8');
+('r3jfitbhmb8iu83p2haufgif3vt33a9b', 3581919691, '2020-08-29 01:01:42', '2020-08-29 01:42:07', '::1', 'Chrome 85.0.4183.83 on Windows 8'),
+('6jnanp83mga7g56v47sqh4k1pub6jvoi', 3581919691, '2020-08-29 08:28:01', '2020-08-29 06:28:01', '::1', 'Chrome 85.0.4183.83 on Windows 8'),
+('2fqip2738kpk51eq5m07ju5krln3acf2', 3581919691, '2020-08-29 08:39:03', '2020-08-29 07:03:13', '::1', 'Chrome 85.0.4183.83 on Windows 8'),
+('bbsrj5pkupsb3b65s48uu4e94vifp96j', 3581919691, '2020-08-29 09:14:37', '2020-08-29 07:33:49', '::1', 'Chrome 85.0.4183.83 on Windows 8'),
+('ootn7dgd1vm673nmqs4444rv02mg6sk7', 3581919691, '2020-08-29 09:40:41', '2020-08-29 08:36:43', '::1', 'Chrome 85.0.4183.83 on Windows 8'),
+('7hh9b49l7p0naqr6qpfc92cra5qo95mp', 3581919691, '2020-08-29 12:00:06', '2020-08-29 10:07:22', '::1', 'Chrome 85.0.4183.83 on Windows 8'),
+('o82sbk4lct2rolkhpb45go8pihg0ujva', 3581919691, '2020-08-29 12:45:33', '2020-08-29 10:54:20', '::1', 'Chrome 85.0.4183.83 on Windows 8');
 
 -- --------------------------------------------------------
 
@@ -188,8 +194,8 @@ CREATE TABLE `clientes` (
 --
 
 INSERT INTO `clientes` (`id`, `nit_cliente`, `nombre_empresa`, `r_legal`, `nombre_cliente`, `cedula_cliente`, `telefono_cliente`, `correo_cliente`, `departamento`, `ciudad`, `dep`, `direccion_cliente`, `estado`, `fecha_registro`, `fecha_inactivo`, `tipo_cliente`, `sucursal`, `forma_pago`, `autorizador`, `cliente_especial`, `observacion`) VALUES
-(17, 'No aplica', 'No aplica', 'No aplica', 'Luis Rios', '45678923', '04264472911', 'leoanrdo2718@hotmail.es', 'Antioquia', 'Abriaquí', 1, 'minas de arena #17', 'Inactivo', '2020-08-29 09:53:41', '2020-08-29', 'Persona natural', 2, 1, 3581919691, 'No', 'era mala paga'),
-(18, '5656566', 'komarca', 'leonardo rios', 'Luis Rios', '7894563', '04264472911', 'leoanrdo2718@hotmail.es', 'Meta', 'Mesetas', 19, 'calle real tronca 99', 'Activo', '2020-08-29 10:21:01', '2020-08-29', 'Persona jurídica', 2, 1, 3581919691, 'Si', NULL);
+(30, 'No aplica', 'No aplica', 'No aplica', 'Luis Rios', '456456464', '456467984', 'leoanrdo2718@hotmail.es', 'Huila', 'La Argentina', 16, 'asdaweqdqweqw', 'Activo', '2020-08-29 02:52:50', '0000-00-00', 'Persona natural', 2, 2, 3581919691, 'Si', ''),
+(31, '31231231', 'Tequeños vlz', 'Lenin Granado', 'Lelianis Granado', '789456145', '04127982255', 'granadolela@gmail.com', 'Córdoba', 'Planeta Rica', 13, 'lelianis', 'Activo', '2020-08-29 05:39:13', '0000-00-00', 'Persona jurídica', 3, 2, 3581919691, 'Si', '');
 
 -- --------------------------------------------------------
 
@@ -443,7 +449,8 @@ CREATE TABLE `login_errors` (
 --
 
 INSERT INTO `login_errors` (`ai`, `username_or_email`, `ip_address`, `time`) VALUES
-(194, 'Leonardo2718', '127.0.0.1', '2020-08-29 13:55:31');
+(194, 'Leonardo2718', '127.0.0.1', '2020-08-29 13:55:31'),
+(195, 'leonardo2718', '::1', '2020-08-29 12:00:00');
 
 -- --------------------------------------------------------
 
@@ -658,7 +665,7 @@ INSERT INTO `users` (`user_id`, `username`, `email`, `auth_level`, `banned`, `ve
 (2192184043, 'LuzRios2718', 'Luz@gmail.com', 9, '0', 0, '$2y$11$zO3zdIrbm9YOSTEJgkBw6uLTrNCY.iPahnsUBxl.VNDy94pzeleUS', NULL, NULL, NULL, '2020-08-26 16:47:31', '$2y$11$Aehw7FozAqIaA1EfMViN0Oz/Jm.5BtN8OcFK83s/WElLvuOQD7wf2', '/include/img/user/72429-hospital-ghost-748x417.jpg', 'Luz', 'Rios', '25272381', 'Supervisor', '', '', '', '2020-08-26 16:47:08', '2020-08-26 14:47:31'),
 (2520322231, 'Diego', 'diego@gmail.com', 9, '0', 0, '$2y$11$YyIF9OW8OVOMVgGGTgeRYOSgW.ykjjKGMSPoezNlWWKqgFcY3StUK', NULL, NULL, NULL, '2020-08-28 22:18:40', '$2y$11$n2NBHXo0wwsBNj2Cdbugr.9hAGqd2antLVh5h/k5DbUvjcul1uH/6', '/include/img/user/IMG_20191225_184425.jpg', 'Diego', 'Morejon', '123', 'Supervisor', '7456156', '7456134', 'TVG Santa Marta', '2020-08-26 18:44:54', '2020-08-28 20:18:40'),
 (2822719046, 'Marina', 'marina@gmail.com', 9, '0', 0, '$2y$11$EVbi/7xHKdNVT8QMTq0GS.QOArGbi1T9G3sN559qbE1kkSkS.4tjK', NULL, NULL, NULL, NULL, '$2y$11$J3bxlg..o9pohVCgiwslXuYiYmS6zZY0Dvr6WcSYIRqDpDz0dlhpG', '/include/img/user/873ae59c6165e09fc14291628ba6082f3.png', 'Luz ', 'Marina', '258369147', 'Supervisor', '04264472911', '04264472911', 'TVG Barranquilla', '2020-08-26 17:10:34', '2020-08-26 15:10:34'),
-(3581919691, 'leonardo2718', 'leonardo2718@hotmail.es', 9, '0', 0, '$2y$11$jBiNpGCqGOoPRCBws90Ih.ApWPKQeN1S/rk12.R7baSpE4jqdsS7u', NULL, NULL, NULL, '2020-08-29 01:01:42', '$2y$11$LUi1aLY/hjkFUbWQ3Q2VKOXBoz5iqPmk5XxM8JxWb26t6nG7jg.xK', '', 'Tvg', 'Cargo', '203288614', '', '', '', '', '2020-08-16 01:06:25', '2020-08-28 23:01:42');
+(3581919691, 'leonardo2718', 'leonardo2718@hotmail.es', 9, '0', 0, '$2y$11$jBiNpGCqGOoPRCBws90Ih.ApWPKQeN1S/rk12.R7baSpE4jqdsS7u', NULL, NULL, NULL, '2020-08-29 12:45:33', '$2y$11$LUi1aLY/hjkFUbWQ3Q2VKOXBoz5iqPmk5XxM8JxWb26t6nG7jg.xK', '', 'Tvg', 'Cargo', '203288614', '', '', '', '', '2020-08-16 01:06:25', '2020-08-29 10:45:33');
 
 --
 -- Disparadores `users`
@@ -890,7 +897,7 @@ ALTER TABLE `cargos`
 -- AUTO_INCREMENT de la tabla `clientes`
 --
 ALTER TABLE `clientes`
-  MODIFY `id` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- AUTO_INCREMENT de la tabla `coste_guia`
@@ -944,7 +951,7 @@ ALTER TABLE `itinerarios`
 -- AUTO_INCREMENT de la tabla `login_errors`
 --
 ALTER TABLE `login_errors`
-  MODIFY `ai` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=195;
+  MODIFY `ai` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=196;
 
 --
 -- AUTO_INCREMENT de la tabla `notas`
