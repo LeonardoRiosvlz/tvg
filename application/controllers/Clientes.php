@@ -12,6 +12,8 @@ class Clientes extends MY_Controller {
 		$this->load->library('CSVReader');
 		// Load file helper
 		$this->load->helper('file');
+
+	  $this->load->library('pdf');
 	  }
     public function index() {
 			if( ! $this->verify_min_level(9)){
@@ -322,6 +324,32 @@ public function excelexport(){
 			 exit;
 		}
  }
+
+
+			 public function to_pdf(){
+
+						if($this->uri->segment(3))
+
+						{
+
+							$hoy=date("d/m/y");
+
+							$name="Auditoria";
+
+							$customer_id = $this->uri->segment(3);
+
+							$html_content = $this->clientes->fetch_details();
+
+							$this->pdf->loadHtml($html_content);
+
+							$this->pdf->render();
+
+							$this->pdf->stream("Clientes.pdf");
+
+						}
+
+					}
+
 
 
 // checkFileValidation
