@@ -15,6 +15,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
       private $_ciudad;
       private $_dep;
       private $_fecha_inactivo;
+      private $_fecha_registro;
       private $_direccion_cliente;
       private $_estado;
       private $_tipo_cliente;
@@ -39,6 +40,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
           public function setNombreCliente($nombre_cliente) {
               $this->_nombre_cliente = $nombre_cliente;
           }
+          public function setCedulaCliente($cedula_cliente) {
+              $this->_cedula_cliente = $cedula_cliente;
+          }
           public function setTelefonoCliente($telefono_cliente) {
               $this->_telefono_cliente = $telefono_cliente;
           }
@@ -57,6 +61,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
           }
           public function setFechaInactivo($fecha_inactivo) {
               $this->_fecha_inactivo = $fecha_inactivo;
+          }
+          public function setFechaRegistro($fecha_registro) {
+              $this->_fecha_registro = $fecha_registro;
           }
           public function setDireccionCliente($direccion_cliente) {
               $this->_direccion_cliente = $direccion_cliente;
@@ -151,7 +158,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             return $this->db->error();
           }
 
-
+          // get customer List
+          public function getcustomerList() {
+              $this->db->select(array('*'));
+              $this->db->from('clientes as c');
+              $query = $this->db->get();
+              return $query->result_array();
+          }
           // create Customer
         public function createCustomer() {
             $tableName = 'clientes';

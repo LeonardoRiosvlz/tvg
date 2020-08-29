@@ -84,27 +84,65 @@ class Clientes extends MY_Controller {
 
 		 // export Data
      public function exportData() {
-			 //csv file name
-	 		$filename = 'clientes_'.date('Ymd').'.csv';
-	 		header("Content-Description: File Transfer");
-	 		header("Content-Disposition: attachment; filename=$filename");
-	 		header("Content-Type: application/csv; ");
+			 $storData = array();
+        $metaData[] = array('nit_cliente' => 'nit_cliente',
+															'nombre_empresa' => 'nombre_empresa',
+															'r_legal' => 'r_legal',
+															'nombre_cliente' => 'nombre_cliente',
+															'cedula_cliente' => 'cedula_cliente',
+															'telefono_cliente' => 'telefono_cliente',
+															'correo_cliente' => 'correo_cliente',
+															'departamento' => 'departamento',
+															'ciudad' => 'ciudad',
+															'dep' => 'dep',
+															'direccion_cliente' => 'direccion_cliente',
+															'estado' => 'estado',
+															'fecha_inactivo' => 'fecha_inactivo',
+															'fecha_registro' => 'fecha_registro',
+															'tipo_cliente' => 'tipo_cliente',
+															'sucursal' => 'sucursal',
+															'forma_pago' => 'forma_pago',
+															'autorizador' => 'autorizador',
+															'cliente_especial' => 'cliente_especial',
+															'observacion' => 'observacion',
+														 );
 
-	 		// get data
-	 		$usersData = $this->clientes->get_clientes();
-
-	 		// file creation
-	 		$file = fopen('php://output', 'w');
-
-	 		$header = array("id","nit_cliente","nombre_empresa","r_legal","nombre_cliente","cedula_cliente","telefono_cliente","correo_cliente","departamento","ciudad","dep","direccion_cliente","estado","fecha_inactivo","tipo_cliente","sucursal","forma_pago","autorizador","cliente_especial","observacion");
-	 		fputcsv($file, $header);
-
-	 		foreach ($usersData as $key=>$line){
-	 		 fputcsv($file,$line);
-	 		}
-
-	 		fclose($file);
-	 		exit;
+        $customerInfo = $this->clientes->getcustomerList();
+        foreach($customerInfo as $key=>$element) {
+            $storData[] = array(
+							'nit_cliente'     => $element['nit_cliente'],
+							'nombre_empresa'     => $element['nombre_empresa'],
+							'r_legal'     => $element['r_legal'],
+							'nombre_cliente'     => $element['nombre_cliente'],
+							'cedula_cliente'     => $element['cedula_cliente'],
+							'telefono_cliente'     => $element['telefono_cliente'],
+							'correo_cliente'     => $element['correo_cliente'],
+							'departamento'     => $element['departamento'],
+							'ciudad'     => $element['ciudad'],
+							'dep'     => $element['dep'],
+							'direccion_cliente'     => $element['direccion_cliente'],
+							'estado'     => $element['estado'],
+							'fecha_inactivo'     => $element['fecha_inactivo'],
+							'fecha_registro'     => $element['fecha_registro'],
+							'tipo_cliente'     => $element['tipo_cliente'],
+							'sucursal'     => $element['sucursal'],
+							'forma_pago'     => $element['forma_pago'],
+							'autorizador'     => $element['autorizador'],
+							'cliente_especial'     => $element['cliente_especial'],
+							'observacion'     => $element['observacion'],
+            );
+        }
+        $data = array_merge($metaData,$storData);
+        header("Content-type: application/csv");
+        header("Content-Disposition: attachment; filename=\"csv-sample-customer".".csv\"");
+        header("Pragma: no-cache");
+        header("Expires: 0");
+        $handle = fopen('php://output', 'w');
+        foreach ($data as $data) {
+            fputcsv($handle, $data);
+        }
+            fclose($handle);
+        exit;
      }
 
 
@@ -141,6 +179,7 @@ public function save() {
 				              'direccion_cliente'     => $element['direccion_cliente'],
 				              'estado'     => $element['estado'],
 				              'fecha_inactivo'     => $element['fecha_inactivo'],
+											'fecha_registro'     => $element['fecha_registro'],
 				              'tipo_cliente'     => $element['tipo_cliente'],
 				              'sucursal'     => $element['sucursal'],
 				              'forma_pago'     => $element['forma_pago'],
@@ -157,11 +196,13 @@ public function save() {
 						$this->clientes->setNombreEmpresa($element['nombre_empresa']);
 						$this->clientes->setReLegal($element['r_legal']);
 						$this->clientes->setNombreCliente($element['nombre_cliente']);
+						$this->clientes->setCedulaCliente($element['cedula_cliente']);
 						$this->clientes->setTelefonoCliente($element['telefono_cliente']);
 						$this->clientes->setCorreoCliente($element['correo_cliente']);
 						$this->clientes->setDepartamento($element['departamento']);
 						$this->clientes->setCiudad($element['ciudad']);
 						$this->clientes->setDep($element['dep']);
+						$this->clientes->setFechaRegistro($element['fecha_registro']);
 						$this->clientes->setFechaInactivo($element['fecha_inactivo']);
 						$this->clientes->setDireccionCliente($element['direccion_cliente']);
 						$this->clientes->setEstado($element['estado']);
@@ -173,7 +214,7 @@ public function save() {
 						$this->clientes->setObservacion($element['observacion']);
 						$this->clientes->createCustomer();
 				}
-
+				redirect('Clientes');
 		}
 }
 // checkFileValidation

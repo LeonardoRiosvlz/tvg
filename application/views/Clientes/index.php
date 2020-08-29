@@ -6,30 +6,49 @@
         <table id="example2" class="table">
           <thead>
             <tr>
-              <th scope="col" colspan="5" class="border-0 bg-white  text-center">
+              <th scope="col" colspan="6" class="border-0 bg-white  text-center">
                   <div class="bg-light rounded-pill px-4 py-1 text-uppercase font-weight-bold links">Clientes <i class="fa fa-user-o" aria-hidden="true"></i></div>
               </th>
             </tr>
             <tr>
-              <th scope="col" colspan="5" class="border-0 bg-white  text-center">
+              <th scope="col" colspan="2" class="border-0 bg-white  text-center">
+                <a href="<?=base_url();?>/Clientes/exportData"  class="btn btn-block btn-info btn-sm links" >Exportar CSV <span class="mbri-download"></span></a>
+              </th>
+              <th scope="col" colspan="2" class="border-0 bg-white  text-center">
+                <button type="button"  class="btn btn-block btn-primary btn-sm links" >Exportar Excel <span class="mbri-save"></span></button>
+              </th>
+              <th scope="col" colspan="2" class="border-0 bg-white  text-center">
+                <button type="button" class="btn btn-block btn-secondary btn-sm links" >Exportar PDF <span class="mbri-file"></span></button>
+              </th>
+            </tr>
+            <tr>
+              <th scope="col" colspan="3" class="border-0 bg-white  text-center">
                 <button type="button" @click="resete();ver=false" class="btn btn-block btn-light btn-sm links" >Agregar <span class="mbri-plus"></span></button>
+              </th>
+              <th scope="col" colspan="3" class="border-0 bg-white  text-center">
+                <button type="button" data-toggle="collapse" href="#collapseExample" class="btn btn-block btn-success btn-sm links" >Importar Clientes <span class="mbri-plus"></span></button>
               </th>
             </tr>
           </thead>
         </table>
-        <form action="<?php print site_url();?>Clientes/save" class="spsec-validation" id="spsec-validation" enctype="multipart/form-data" method="post" accept-charset="utf-8">
-        <div class="row">
-           <div class="col-sm-6 col-md-6">
-                      <input type="file" name="fileURL" id="file-url" class="filestyle" data-allowed-file-extensions="[CSV, csv]" accept=".CSV, .csv" data-buttontext="Choose File">
-           </div>
-
-           <div class="col-sm-6 col-md-6">
-               <div class="form-group text-right">
-                   <button type="submit" name="import_csv" id="import_csv" class="btn btn-primary mrgT">Import</button>
+        <div class="collapse" id="collapseExample">
+          <div class="card card-body">
+            <form action="<?php print site_url();?>Clientes/save" class="spsec-validation" id="spsec-validation" enctype="multipart/form-data" method="post" accept-charset="utf-8">
+            <div class="row">
+               <div class="col-sm-6 col-md-6">
+                          <input type="file" name="fileURL" id="file-url" class="filestyle" data-allowed-file-extensions="[CSV, csv]" accept=".CSV, .csv" data-buttontext="Choose File">
                </div>
-           </div>
+
+               <div class="col-sm-6 col-md-6">
+                   <div class="form-group text-right">
+                       <button type="submit" name="import_csv" id="import_csv" class="btn btn-block btn-lg btn-primary mrgT">Import</button>
+                   </div>
+               </div>
+            </div>
+            </form>
+          </div>
         </div>
-        </form>
+
         <div class="row">
           <div class="col-md-4">
 
