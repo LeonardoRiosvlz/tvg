@@ -17,6 +17,19 @@
             </tr>
           </thead>
         </table>
+        <form action="<?php print site_url();?>Clientes/save" class="spsec-validation" id="spsec-validation" enctype="multipart/form-data" method="post" accept-charset="utf-8">
+        <div class="row">
+           <div class="col-sm-6 col-md-6">
+                      <input type="file" name="fileURL" id="file-url" class="filestyle" data-allowed-file-extensions="[CSV, csv]" accept=".CSV, .csv" data-buttontext="Choose File">
+           </div>
+
+           <div class="col-sm-6 col-md-6">
+               <div class="form-group text-right">
+                   <button type="submit" name="import_csv" id="import_csv" class="btn btn-primary mrgT">Import</button>
+               </div>
+           </div>
+        </div>
+        </form>
         <div class="row">
           <div class="col-md-4">
 
