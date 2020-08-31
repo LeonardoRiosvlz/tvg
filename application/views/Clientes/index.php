@@ -18,7 +18,7 @@
                 <a href="<?=base_url();?>/Clientes/excelexport" type="button"  class="btn btn-block btn-primary btn-sm links" >Exportar Excel <span class="mbri-save"></span></a>
               </th>
               <th scope="col" colspan="2" class="border-0 bg-white  text-center">
-                <button type="button" class="btn btn-block btn-secondary btn-sm links" >Exportar PDF <span class="mbri-file"></span></button>
+                <a href="<?=base_url();?>/Clientes/pdf" type="button" class="btn btn-block btn-secondary btn-sm links" download>Exportar PDF <span class="mbri-file" ></span></a>
               </th>
             </tr>
             <tr>

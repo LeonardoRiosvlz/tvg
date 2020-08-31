@@ -13,7 +13,7 @@ class Clientes extends MY_Controller {
 		// Load file helper
 		$this->load->helper('file');
 
-	  $this->load->library('pdf');
+	  $this->load->library('Pdf');
 	  }
     public function index() {
 			if( ! $this->verify_min_level(9)){
@@ -326,29 +326,17 @@ public function excelexport(){
  }
 
 
-			 public function to_pdf(){
+			 public function pdf(){
+				 $this->load->library('Pdf');
 
-						if($this->uri->segment(3))
+     			$hoy=date("d/m/y");
+     			$html_content = $this->clientes->fetch_details();
+					$this->pdf->set_paper('letter', 'landscape');
+     			$this->pdf->loadHtml($html_content);
+     			$this->pdf->render();
+     			$this->pdf->stream("Clientes".$hoy.".pdf", array("Attachment"=>0));
 
-						{
-
-							$hoy=date("d/m/y");
-
-							$name="Auditoria";
-
-							$customer_id = $this->uri->segment(3);
-
-							$html_content = $this->clientes->fetch_details();
-
-							$this->pdf->loadHtml($html_content);
-
-							$this->pdf->render();
-
-							$this->pdf->stream("Clientes.pdf");
-
-						}
-
-					}
+			}
 
 
 
