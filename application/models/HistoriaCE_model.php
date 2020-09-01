@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-    class HistorialCE_model extends CI_Model {
+    class HistoriaCE_model extends CI_Model {
         public function insertar($data){
             $this->db->insert('historial_Ce', array(
 
@@ -58,4 +58,26 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             $this->db->delete('cargos');
             return $this->db->error();
           }
+          ////////////////
+          public function imagen_insert($data) {
+              $this->db->insert('documentos_historial', array(
+                  'id_carga_cliente'          => $data['id_carga_cliente'],
+                  'url'             => $data['url'],
+              ));
+              return $this->db->error();
+             }
+          public function imagenes_get($id){
+           return $this->db
+              ->select('*')
+               ->from('documentos_historial')
+               ->where('id_carga_cliente',$id)
+               ->get()
+               ->result();
+              }
+              public function eliminarImagen($id) {
+                $this->db->where('id', $id);
+                $this->db->delete('documentos_historial');
+                return $this->db->error();
+              }
+
     }

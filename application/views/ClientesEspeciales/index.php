@@ -249,7 +249,30 @@
                            </div>
                          </div>
                          <div class="card col-12">
-                              <h5>Soporte de entrega</h5>
+                           <div class="col-sm-12">
+                            <div class="form-group">
+                              <label for="colFormLabelSm" class="links">Fotos detalladas</label>
+                                     <div class="col-sm-12">
+                                       <div class="row ">
+                                           <div class="custom-file btn-group spl col-8">
+                                             <input type="file" class="custom-file-input"  id="imagenFoto" name="imagenFoto">
+                                             <label class="custom-file-label my-3" for="customFile">Buscar Archivo</label>
+                                           </div>
+                                           <div class="col-4 spl" >
+                                             <button class="btn btn-light links" type="button"  @click="uploadFoto()">Subir archivo</button>
+                                           </div>
+                                        </div>
+                                   </div>
+                             </div>
+                         </div>
+                         <div class="row">
+                           <div v-for="(img ,index) in imagenes" class="card col-lg-4 col-md-6 col-sm-12 col-xs-12" >
+                               <img :src="'<?=base_url();?>'+img.url" class="card-img-top" alt="...">
+                               <div class="card-body">
+                                 <a  class="list-group-item list-group-item-action" @click="eliminarImagen(index)"><span class="mbri-close"></span> Eliminar</a>
+                               </div>
+                             </div>
+                         </div>
                          </div>
                          <div class=" col-md-4 col-sm-12">
                            <div class="form-group">
@@ -312,10 +335,13 @@
              </div>
            </div>
            <!-- /.modal-content -->
+
          </div>
          <!-- /.modal-dialog -->
         </div>
    <!-- fin del modal -->
+
+   <pre>{{id_instancia}}</pre>
    </div>
 </div>
 <script>
@@ -335,8 +361,9 @@
          ver:false,
          cart:[],
          clientes:[],
+         userFiles:[],
          editMode:false,
-
+         id_instancia:'',
          form:{
              'id':'',
              'nombre_cargo':'',
@@ -346,6 +373,7 @@
              'dep_dos':0,
              'departamento_origen':'',
              'ciudad_origen':'',
+             'id_carga_cliente':'',
          },
         colombia:[
           {
@@ -1647,6 +1675,83 @@
           ],
        },
        methods: {
+         async    uploadFoto() {
+              this.file_data = $('#imagenFoto').prop('files')[0];
+              this.form_data = new FormData();
+              this.form_data.append('file', this.file_data);
+              this.form_data.append('id_carga_cliente', this.form.id_carga_cliente);
+          await      axios.post('index.php/ClientesEspeciales/detail_foto', this.form_data)
+                .then(response => {
+                  if(response.data.status == 201){
+                    Swal.fire({
+                      type: 'success',
+                      title: 'Exito!',
+                      text: 'Agregado correctamente'
+                    });
+                //    this.loadFotos();
+                  }
+                  else
+                  {
+                    Swal.fire({
+                      type: 'error',
+                      title: 'Lo sentimos',
+                      text: 'Ha ocurrido un error'
+                    })
+                  }
+                })
+            },
+            eliminarImagen(index){
+              Swal({
+                title: '¿Estás seguro?',
+                text: "¡ será eliminado para siempre!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonText: '¡Si! ¡eliminar!',
+                cancelButtonText: '¡No! ¡cancelar!',
+                reverseButtons: true
+              }).then((result) => {
+                if (result.value) {
+                  let data = new FormData();
+                  data.append('id',this.imagenes[index].id);
+                    axios.post('index.php/Products/eliminarImagen',data)
+                    .then(response => {
+                      if(response) {
+                        Swal(
+                          '¡Eliminado!',
+                          'Ha sido eliminado.',
+                          'success'
+                        ).then(response => {
+                              this.loadFotos();
+                        })
+                      } else {
+                        Swal(
+                          'Error',
+                          'Ha ocurrido un error.',
+                          'warning'
+                        ).then(response => {
+                          this.loadFotos();
+                        })
+                      }
+                    })
+                } else if (
+                  result.dismiss === Swal.DismissReason.cancel
+                ) {
+                  Swal(
+                    'Cancelado',
+                    'No fue eliminado.',
+                    'success'
+                  )
+                }
+              })
+            },
+             async    loadFotos(){
+             let data = new FormData();
+              data.append('id_pro',this.form.pro_id);
+        await      axios.post('index.php/Products/getimagenes/',data)
+              .then(({data: {imagenes}}) => {
+                    this.imagenes = imagenes;
+                  });
+              },
            depp(){
              this.form.departamento_origen=this.colombia[this.form.dep].departamento;
              console.log(this.form.dep);
@@ -1656,7 +1761,8 @@
              console.log(this.form.dep_dos);
            },
            resete(){
-
+                const dateTime = Date.now();
+                this.id_instancia = Math.floor(dateTime / 1000);
                this.$validator.reset();
                document.getElementById("form").reset();
                this.editMode=false;
