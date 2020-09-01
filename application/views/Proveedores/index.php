@@ -7,7 +7,7 @@
           <thead>
             <tr>
               <th scope="col" colspan="5" class="border-0 bg-white  text-center">
-                  <div class="bg-light rounded-pill px-4 py-3 text-uppercase font-weight-bold links">proveedores <i class="fa fa-street-view" aria-hidden="true"></i></div>
+                  <div class="bg-light rounded-pill px-4 py-3 text-uppercase font-weight-bold links">proveedores <i class="fa fa-car" aria-hidden="true"></i></div>
               </th>
             </tr>
             <tr>
@@ -64,7 +64,7 @@
          <div class="modal-dialog modal-lg">
            <div class="modal-content">
              <div class="modal-header">
-               <h4 class="modal-title links">Gestión de proveedores  <i class="fa fa-street-view" aria-hidden="true"></i></h4>
+               <h4 class="modal-title links">Gestión de proveedores  <i class="fa fa-car" aria-hidden="true"></i></h4>
                <button type="button" @click="resete()" class="close" data-dismiss="modal" aria-label="Close">
                  <span class="mbri-close " ></span>
                </button>

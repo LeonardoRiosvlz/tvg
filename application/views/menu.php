@@ -79,7 +79,7 @@
                       <a class="dropdown-item links" href="<?=base_url()?>transporte"><i class="fa fa-truck" aria-hidden="true"></i> Tipos de trasnporte</a>
                       <a class="dropdown-item links" href="<?=base_url()?>Itinerarios"><i class="fa fa-align-center" aria-hidden="true"></i> Itinerarios</a>
                       <a class="dropdown-item links" href="<?=base_url()?>Factores"><i class="fa fa-hashtag" aria-hidden="true"></i> Factores</a>
-                      <a class="dropdown-item links" href="<?=base_url()?>tipos_carga"><i class="fa fa-dropbox" aria-hidden="true"></i> Tipos de carga</a>
+                      <a class="dropdown-item links" href="<?=base_url()?>TipoCarga"><i class="fa fa-dropbox" aria-hidden="true"></i> Tipos de carga</a>
                       <a class="dropdown-item links" href="<?=base_url()?>TiposEnvios"><i class="fa fa-paper-plane-o" aria-hidden="true"></i> Tipos de envío</a>
                       <a class="dropdown-item links" href="<?=base_url()?>Tarifas"><i class="fa fa-usd" aria-hidden="true"></i> Tabla de tarifas</a>
                       <a class="dropdown-item links" href="<?=base_url()?>SeguroCarga"><i class="fa fa-shield" aria-hidden="true"></i> Seguros de carga</a>

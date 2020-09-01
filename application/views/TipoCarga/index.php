@@ -1,13 +1,13 @@
 <div id="app" class="container">
   <div class="row">
-    <div class="col-lg-12 mb-5 ">
+    <div class="col-lg-12 my-5 ">
       <!-- Shopping cart table -->
       <div class="table-responsive ">
         <table id="example2" class="table">
           <thead>
             <tr>
               <th scope="col" colspan="5" class="border-0 bg-white  text-center">
-                  <div class="bg-light rounded-pill px-4 py-3 text-uppercase font-weight-bold links">Tipos de trasnporte <i class="fa fa-truck" aria-hidden="true"></i></div>
+                  <div class="bg-light rounded-pill px-4 py-3 text-uppercase font-weight-bold links">Tipo de carga <i class="fa fa-dropbox" aria-hidden="true"></i></div>
               </th>
             </tr>
             <tr>
@@ -23,14 +23,16 @@
           <table id="example1" class="table ">
             <thead>
             <tr>
-              <th class="links">Tipo de transporte</th>
+              <th class="links">Nombre</th>
               <th class="links">Descripción</th>
+              <th class="links">Estado</th>
                 <th class="links">Action</th>
             </tr>
             </thead>
-              <tr v-for="(transportes,index) in transportes">
-                <td class="links">{{transportes.tipo_transporte}}</td>
-                <td class="links">{{transportes.descripcion_transporte}}</td>
+              <tr v-for="(tipocarga,index) in tipocarga">
+                <td class="links">{{tipocarga.nombre_tipocarga}}</td>
+                <td class="links">{{tipocarga.descripcion_tipocarga}}</td>
+                <td class="links"><span v-if="tipocarga.estado==='Activo'" class="badge badge-success">{{tipocarga.estado}}</span><span v-else class="badge badge-danger">{{tipocarga.estado}}</span></td>
                   <td>
                     <div class="btn-group">
                         <button type="button" class="btn btn-default">Action</button>
@@ -39,7 +41,7 @@
                           <div class="dropdown-menu" role="menu">
                             <a class="dropdown-item" href="#"@click="setear(index);ver=true">Ver</a>
                             <a class="dropdown-item" href="#" @click="setear(index);ver=false">Editar</a>
-                            <a class="dropdown-item" href="#" @click="eliminartransportes(index)">Eliminar</a>
+                            <a class="dropdown-item" href="#" @click="eliminartipocarga(index)">Eliminar</a>
                           </div>
                         </button>
                     </div>
@@ -55,7 +57,7 @@
          <div class="modal-dialog modal-lg">
            <div class="modal-content">
              <div class="modal-header">
-               <h4 class="modal-title links">Gestión de transportes  <i class="fa fa-truck" aria-hidden="true"></i></h4>
+               <h4 class="modal-title links">Tipo de carga <i class="fa fa-dropbox" aria-hidden="true"></i></h4>
                <button type="button" @click="resete()" class="close" data-dismiss="modal" aria-label="Close">
                  <span class="mbri-close " ></span>
                </button>
@@ -68,14 +70,28 @@
                              <div class="col-sm-12">
                                <!-- textarea -->
                                <div class="form-group">
-                                 <label class="links">Nombre transportes</label>
-                                  <input type="text" v-model="form.tipo_transporte" v-validate="'required'" name="tipo_transporte" class="form-control" id="" :disabled="ver">
-                                 <p class="text-danger my-1" v-if="(errors.first('tipo_transporte'))" >  Este dato es requerido  </p>
+                                 <label class="links">Nombre </label>
+                                  <input type="text" v-model="form.nombre_tipocarga" v-validate="'required'" name="nombre_tipocarga" class="form-control" id="" :disabled="ver">
+                                 <p class="text-danger my-1" v-if="(errors.first('nombre_tipocarga'))" >  Este dato es requerido  </p>
                                </div>
+                             </div>
+                             <div class="col-sm-12">
+                               <!-- textarea -->
                                <div class="form-group">
                                  <label class="links">Descripción</label>
-                                  <textarea type="text" v-model="form.descripcion_transporte" v-validate="'required'" name="descripcion_transporte" class="form-control" id="" :disabled="ver"></textarea>
-                                 <p class="text-danger my-1" v-if="(errors.first('descripcion_transporte'))" >  Este dato es requerido  </p>
+                                  <textarea type="text" v-model="form.descripcion_tipocarga" v-validate="'required'" name="descripcion_tipocarga" class="form-control" id="" :disabled="ver"></textarea>
+                                 <p class="text-danger my-1" v-if="(errors.first('descripcion_tipocarga'))" >  Este dato es requerido  </p>
+                               </div>
+                             </div>
+                             <div class="col-md-12">
+                               <label class="links">Estado</label>
+                               <div class="form-group">
+                                 <select v-model="form.estado" v-validate="'required'"  name="estado" class="form-control" :disabled="ver" >
+                                  <option value=""></option>
+                                  <option value="Activo">Activo</option>
+                                  <option value="Inactivo">Inactivo</option>
+                                 </select>
+                                 <p class="text-danger my-1 small" v-if="(errors.first('estado'))" >  Este dato es requerido/o es inválido  </p>
                                </div>
                              </div>
                             </div>
@@ -92,7 +108,6 @@
         </div>
    <!-- fin del modal -->
    </div>
-
 </div>
 <script>
      axios.defaults.baseURL = '<?PHP echo base_url(); ?>';
@@ -103,12 +118,11 @@
          departamento:0,
          ver:false,
          cart:[],
-         transportes:[],
+         tipocarga:[],
          editMode:false,
          form:{
              'id':'',
-             'tipo_transporte':'',
-             'descripcion_transporte':'',
+             'nombre_cargo':'',
          }
        },
        methods: {
@@ -117,8 +131,9 @@
                this.$validator.reset();
                document.getElementById("form").reset();
                this.editMode=false;
-               this.form.tipo_transporte='';
-                this.form.descripcion_transporte='';
+               this.form.nombre_tipocarga='';
+               this.form.descripcion_tipocarga='';
+               this.form.estado='';
                $('#modal-lg').modal('show');
            },
            validateBeforeSubmit() {
@@ -127,7 +142,7 @@
                        let data = new FormData();
                        data.append('service_form',JSON.stringify(this.form));
                      if(!this.editMode){
-                       axios.post('index.php/Transporte/insertar',data)
+                       axios.post('index.php/tipocarga/insertar',data)
                        .then(response => {
                          if(response.data.status == 200){
                            Swal.fire({
@@ -136,7 +151,7 @@
                              text: 'Agregado con exito'
                            })
                            $('#modal-lg').modal('hide');
-                           this.loadtransportes();
+                           this.loadtipocarga();
                            this.resete();
                          }
                          else{
@@ -149,12 +164,12 @@
                        })
                      }
                      else{
-                       axios.post('index.php/Transporte/editar',data)
+                       axios.post('index.php/tipocarga/editar',data)
                        .then(response => {
                          if(response.data.status == 200)
                          {
                            $('#modal-lg').modal('hide');
-                           this.loadtransportes();
+                           this.loadtipocarga();
                            Swal.fire({
                              type: 'success',
                              title: 'Exito!',
@@ -182,7 +197,7 @@
                      );
                    });
                  },
-                 eliminartransportes(index){
+                 eliminartipocarga(index){
                    Swal({
                      title: '¿Estás seguro?',
                      text: "¡ será eliminado para siempre!",
@@ -194,8 +209,8 @@
                    }).then((result) => {
                      if (result.value) {
                        let data = new FormData();
-                       data.append('id',this.transportes[index].id);
-                         axios.post('index.php/Transporte/eliminar',data)
+                       data.append('id',this.tipocarga[index].id);
+                         axios.post('index.php/tipocarga/eliminar',data)
                          .then(response => {
                            if(response) {
                              Swal(
@@ -203,7 +218,7 @@
                                'Ha sido eliminado.',
                                'success'
                              ).then(response => {
-                                   this.loadtransportes();
+                                   this.loadtipocarga();
                              })
                            } else {
                              Swal(
@@ -211,7 +226,7 @@
                                'Ha ocurrido un error.',
                                'warning'
                              ).then(response => {
-                               this.loadtransportes();
+                               this.loadtipocarga();
                              })
                            }
                          })
@@ -227,23 +242,25 @@
                    })
                  },
                  setear(index){
-                   this.form.id=this.transportes[index].id,
-                   this.form.tipo_transporte=this.transportes[index].tipo_transporte,
-                   this.form.descripcion_transporte=this.transportes[index].descripcion_transporte,
+                   this.form.id=this.tipocarga[index].id,
+                   this.form.nombre_tipocarga=this.tipocarga[index].nombre_tipocarga,
+                   this.form.descripcion_tipocarga=this.tipocarga[index].descripcion_tipocarga,
+                   this.form.estado=this.tipocarga[index].estado,
                    $('#modal-lg').modal('show');
                    this.editMode=true
                  },
                  ver(index){
-                   this.form.id=this.transportes[index].id,
-                   this.form.tipo_transporte=this.transportes[index].tipo_transporte,
-                   this.form.descripcion_transporte=this.transportes[index].descripcion_transporte,
+                   this.form.id=this.tipocarga[index].id,
+                   this.form.nombre_tipocarga=this.tipocarga[index].nombre_tipocarga,
+                   this.form.descripcion_tipocarga=this.tipocarga[index].descripcion_tipocarga,
+                   this.form.estado=this.tipocarga[index].estado,
                    $('#myModal').modal('show');
                    this.editMode=false
                  },
-                 async loadtransportes() {
-                await   axios.get('index.php/Transporte/gettransportes/')
-                   .then(({data: {transportes}}) => {
-                     this.transportes = transportes
+                 async loadtipocarga() {
+                await   axios.get('index.php/tipocarga/gettipocarga/')
+                   .then(({data: {tipocarga}}) => {
+                     this.tipocarga = tipocarga
                    });
                    $("#example1").DataTable();
                  },
@@ -260,7 +277,7 @@
        },
 
        created(){
-            this.loadtransportes();
+            this.loadtipocarga();
             this.loadCart();
        },
    })
