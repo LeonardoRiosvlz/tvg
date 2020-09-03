@@ -27,7 +27,8 @@
             <th class="links">Origen ciudad</th>
             <th class="links">Destino despartamento</th>
             <th class="links">Destino Ciudad</th>
-            <th class="links">Timpo de transporte</th>
+            <th class="links">Tipo de transporte</th>
+            <th class="links">Precio</th>
             <th class="links">Actions</th>
           </tr>
           </thead>
@@ -37,6 +38,7 @@
               <td class="links">{{tarifas.departamento_destino}}</td>
               <td class="links">{{tarifas.ciudad_destino}}</td>
               <td class="links">{{tarifas.tipo_transporte}}</td>
+              <td class="links">{{tarifas.precio}}</td>
               <td>
                 <div class="btn-group">
                     <button type="button" class="btn btn-default">Action</button>
