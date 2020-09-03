@@ -25,11 +25,11 @@ class ClientesEspeciales extends MY_Controller {
         $this->load->view('ClientesEspeciales/index');
         $this->load->view('footer',["js"=>[""]]);
       }
-			public function getclientes($id=0) {
+			public function getcarga($id=0) {
 
-				  $data['clientes'] = $this->clientes->getclientes();
+				  $data['cargas'] = $this->historial->getcarga();
 				  header('Content-Type: application/json');
-				  echo json_encode(['clientes' => $data['clientes']]);
+				  echo json_encode(['cargas' => $data['cargas']]);
 
 				}
 
@@ -39,7 +39,7 @@ class ClientesEspeciales extends MY_Controller {
 				}
 				$data = json_decode($this->input->post('service_form'),true);
 				$data['codigo']    = $this->historial->get_unused_id();
-				$result = $this->clientes->insertar($data);
+				$result = $this->historial->insertar($data);
 					if($result['code'] == 0){
 						echo json_encode(['status' => '200', 'message' => 'Agregado exitosamente']);
 					}

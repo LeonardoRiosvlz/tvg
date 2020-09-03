@@ -1,23 +1,15 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-    class HistoriaCE_model extends CI_Model {
+    class HistoriaCE_model extends MY_Model  {
         public function insertar($data){
             $this->db->insert('historial_Ce', array(
 
                 'id'  => $data['id'],
+                'codigo'  => $data['codigo'],
                 'f_recogida'  => $data['f_recogida'],
                 'f_ingreso'  => $data['f_ingreso'],
-                'cedula_cliente' => $data['cedula_cliente'],
-                'departamento_origen' => $data['departamento_origen'],
-                'ciudad_origen' => $data['ciudad_origen'],
-                'dep'=> $data['dep'],
-                'departamento_destino'  => $data['departamento_destino'],
-                'ciudad_destino'  => $data['ciudad_destino'],
-                'dep_dos'  => $data['dep_dos'],
-                'tipo_transporte'  => $data['tipo_transporte'],
-                'tipo_envio'  => $data['tipo_envio'],
-                'precio'  => $data['precio'],
+                'cedula_cliente' => $data['cedula'],
                 'id_carga_cliente'  => $data['id_carga_cliente'],
                 'tipo_carga' => $data['tipo_carga'],
                 'cantidad'  => $data['cantidad'],
@@ -36,6 +28,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 'numero_anexo_l' => $data['numero_anexo_l'],
                 'numero_factura'  => $data['numero_factura'],
                 'fecha_factura' => $data['fecha_factura'],
+                'id_tarifa' => $data['id_tarifa'],
             ));
             return $this->db->error();
         }
@@ -46,10 +39,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             ));
             return $this->db->error();
            }
-        public function getcargos() {
+        public function getcarga() {
             return $this->db
-            ->select('*')
-            ->from('cargos')
+            ->select('c.*,s.nombre_sede,t.*,k.nombre_cliente,p.nombre_proveedor')
+            ->from('historial_Ce c')
+            ->join('sedes s', 'c.sede_cliente = s.id')
+            ->join('tarifas t', 'c.id_tarifa = t.id')
+            ->join('clientes k', 'c.cedula_cliente = k.cedula_cliente')
+            ->join('proveedores p', 'c.proveedor = p.id')
             ->get()
             ->result();
           }
@@ -86,7 +83,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
             // Make sure the random user_id isn't already in use
             $query = $this->db->where( 'codigo', $random_unique_int )
-                ->get_where( $this->db_table('carga_table') );
+                ->get_where( $this->db_table('historial_ce_table') );
 
             if( $query->num_rows() > 0 )
             {

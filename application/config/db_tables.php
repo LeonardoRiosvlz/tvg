@@ -15,10 +15,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 // USER RELATED TABLES
 $config['user_table']                   = 'users';
-$config['datos_table']                   = 'datos';
-$config['empresa_table']                  = 'empresa';
-$config['products_table']                  = 'products';
-$config['carga_table']                  = 'historial_ce';
+$config['datos_table']                  = 'datos';
+$config['empresa_table']                = 'empresa';
+$config['products_table']               = 'products';
+$config['historial_ce_table']           = 'historial_ce';
 $config['cupon_table']                  = 'cupon';
 $config['pedido_table']                  = 'pedido';
 // LOGIN ERROR RELATED TABLES

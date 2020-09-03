@@ -17,24 +17,76 @@
             </tr>
           </thead>
         </table>
-        <div class="col-md-4">
-          <label class="links">Clientes</label>
-          <div class="form-group">
-            <select v-model="form.cedula" v-validate="'required'" name="tipo_envio" class="form-control" :disabled="ver" >
-              <option v-for="clientes in clientes" v-if="clientes.cliente_especial==='Si'" :value="clientes.cedula_cliente">{{clientes.cedula_cliente}}</option>
-            </select>
-            <p class="text-danger my-1 small" v-if="(errors.first('tipo_envio'))" >  Este dato es requerido  </p>
+        <div class="row">
+          <div class=" col-md-3 col-sm-12">
+            <div class="form-group">
+               <label class="links">Dede</label>
+                 <flat-pickr
+                     v-model="form.f_recogida"
+                     :config="config"
+                     class="form-control"
+                     placeholder="Selecciona fecha y hora"
+                     name="desde">
+               </flat-pickr>
+             </div>
+          </div>
+          <div class=" col-md-3 col-sm-12">
+            <div class="form-group">
+               <label class="links">Hasta</label>
+                 <flat-pickr
+                     v-model="form.f_recogida"
+                     :config="config"
+                     class="form-control"
+                     placeholder="Selecciona fecha y hora"
+                     name="hSasta">
+               </flat-pickr>
+             </div>
+          </div>
+        </div>
+        <div class="row p-3">
+          <div class="col-md-4">
+            <label class="links">Clientes</label>
+            <input list="encodings" v-model="form.cedula"  value="" class="form-control form-control-lg" placeholder="Escriba una cedula">
+              <datalist id="encodings">
+                  <option v-for="clientes in clientes" v-if="clientes.cliente_especial==='Si'" :value="clientes.cedula_cliente">{{clientes.nombre_cliente}}</option>
+              </datalist>
+          </div>
+          <div class="col-md-4">
+            <label class="links">Nº referencia cumplidos</label>
+            <input list="encodings" v-model="form.cedula" value="" class="form-control form-control-lg" placeholder="Escriba Nº referencia cumplidos">
+              <datalist id="encodings">
+                  <option v-for="clientes in clientes" v-if="clientes.cliente_especial==='Si'" :value="clientes.cedula_cliente">{{clientes.nombre_cliente}}</option>
+              </datalist>
+          </div>
+          <div class="col-md-4">
+            <label class="links">Anexo legalización</label>
+            <input list="encodings" v-model="form.cedula" value="" class="form-control form-control-lg" placeholder="Escriba anexo de legalización ">
+              <datalist id="encodings">
+                  <option v-for="clientes in clientes" v-if="clientes.cliente_especial==='Si'" :value="clientes.cedula_cliente">{{clientes.nombre_cliente}}</option>
+              </datalist>
           </div>
         </div>
           <table id="example1" class="table ">
             <thead>
             <tr>
-              <th class="links">Nombre del cargo</th>
-                <th class="links">Action</th>
+              <th class="links">Codigo</th>
+              <th class="links">Origen</th>
+              <th class="links">Destino</th>
+              <th class="links">Cliente</th>
+              <th class="links">Fecha de despacho</th>
+              <th class="links">Guia</th>
+              <th class="links">Proveedor</th>
+              <th class="links">Action</th>
             </tr>
             </thead>
-              <tr v-for="(clientes,index) in clientes">
-                <td class="links">{{clientes.nombre_cargo}}</td>
+              <tr v-for="(cargas,index) in cargas">
+                <td class="links">{{cargas.codigo}}</td>
+                <td class="links">{{cargas.ciudad_origen}}</td>
+                <td class="links">{{cargas.ciudad_destino}}</td>
+                <td class="links">{{cargas.nombre_cliente}}</td>
+                <td class="links">{{cargas.fecha_despacho}}</td>
+                <td class="links">{{cargas.n_guia_proveedor}}</td>
+                <td class="links">{{cargas.nombre_proveedor}}</td>
                   <td>
                     <div class="btn-group">
                         <button type="button" class="btn btn-default">Action</button>
@@ -78,8 +130,8 @@
                  </div>
                </div>
                <div class="col-md-4 py-4"><button type="button" class="btn btn-info btn-block btn-lg">Buscar <span class="mbri-search"></span></button></div>
-               <div class="card col-12">
-                  <h5 class="links">Datos del cliente</h5>
+               <div class="card col-12 p-3">
+                  <h5 >Datos del cliente</h5>
                   <div class="row">
                     <div class="col-md-4">
                       <label class="links">Nombre</label>
@@ -141,25 +193,27 @@
                                 <p class="text-danger my-1 small" v-if="(errors.first('f_ingreso'))" >  Este dato es requerido  </p>
                               </div>
                            </div>
-                           <div class="col-md-4">
+                           <div class="col-md-4" v-if="!form.id_tarifa">
                              <label class="links">Tipo de transporte</label>
                              <div class="form-group">
                                <select v-model="form.tipo_transporte" @change="form.tipo_envio=''" v-validate="'required'" name="tipo_transporte" class="form-control" :disabled="ver" >
+                                <option value=""></option>
                                  <option v-for="transportes in transportes" :value="transportes.tipo_transporte">{{transportes.tipo_transporte}}</option>
                                </select>
                                <p class="text-danger my-1 small" v-if="(errors.first('tipo_transporte'))" >  Este dato es requerido  </p>
                              </div>
                            </div>
-                           <div class="col-md-4">
+                           <div class="col-md-4" v-if="!form.id_tarifa">
                              <label class="links">Tipo de envío</label>
                              <div class="form-group">
                                <select v-model="form.tipo_envio" v-validate="'required'" name="tipo_envio" class="form-control" :disabled="ver" >
+                                 <option value=""></option>
                                  <option v-for="tiposenvios in tiposenvios" v-show="tiposenvios.tipo_transporte===form.tipo_transporte" :value="tiposenvios.nombre_tiposenvios">{{tiposenvios.nombre_tiposenvios}}</option>
                                </select>
                                <p class="text-danger my-1 small" v-if="(errors.first('tipo_envio'))" >  Este dato es requerido  </p>
                              </div>
                            </div>
-                           <div class="col-sm-4">
+                           <div class="col-sm-4" v-if="!form.id_tarifa">
                               <div class="form-group links">
                                 <label>Tarifa</label>
                                 <select v-model="form.id_tarifa" v-validate="'required'" name="ciudad_destino" class="form-control" disabled >
@@ -168,7 +222,7 @@
                                <p class="text-danger my-1 small" v-if="(errors.first('ciudad_destino'))" >  Este dato es requerido  </p>
                              </div>
                           </div>
-                             <div class="col-sm-3">
+                             <div class="col-sm-3" v-if="!form.id_tarifa">
                                <label class="bold">Departamento origen</label>
                                <div class="form-group">
                                  <select v-model="form.dep" @change="depp()" class="form-control" :disabled="ver" >
@@ -178,7 +232,7 @@
                                </div>
                              </div>
 
-                            <div class="col-sm-3">
+                            <div class="col-sm-3" v-if="!form.id_tarifa">
                                <div class="form-group links">
                                  <label>Ciudad origen</label>
                                 <select v-model="form.ciudad_origen" v-validate="'required'" name="ciudad_origen" class="form-control" :disabled="ver" >
@@ -187,7 +241,7 @@
                                 <p class="text-danger my-1 small" v-if="(errors.first('ciudad_origen'))" >  Este dato es requerido  </p>
                               </div>
                            </div>
-                           <div class="col-sm-3">
+                           <div class="col-sm-3" v-if="!form.id_tarifa">
                              <label class="links">Departamento destino</label>
                              <div class="form-group">
                                <select v-model="form.departamento_destino" @change="depp_dos()" class="form-control" :disabled="ver" >
@@ -197,7 +251,7 @@
                              </div>
                            </div>
 
-                          <div class="col-sm-3">
+                          <div class="col-sm-3" v-if="!form.id_tarifa">
                              <div class="form-group links">
                                <label>Ciudad destino</label>
                               <select v-model="form.id_tarifa" @change="tari()" v-validate="'required'" name="ciudad_destino" class="form-control" :disabled="ver" >
@@ -206,7 +260,75 @@
                               <p class="text-danger my-1 small" v-if="(errors.first('ciudad_destino'))" >  Este dato es requerido  </p>
                             </div>
                          </div>
-
+                         <div class="card col-12 p-3" v-if="form.id_tarifa">
+                          <h4 class="card-title">Tarifa Acorde</h4>
+                           <div class="card-body row sp">
+                             <div class="col-sm-3">
+                                <div class="form-group links">
+                                  <label>Depto. origen</label>
+                                 <select v-model="form.id_tarifa" @change="tari()" v-validate="'required'" name="ciudad_destino" class="form-control" disabled >
+                                   <option v-for="tarifas in tarifas" v-if="form.departamento_origen===tarifas.departamento_origen && form.departamento_destino===tarifas.departamento_destino && form.ciudad_origen===tarifas.ciudad_origen && form.tipo_envio===tarifas.tipo_envio" :value="tarifas.id">{{tarifas.departamento_origen}}</option>
+                                 </select>
+                                 <p class="text-danger my-1 small" v-if="(errors.first('ciudad_destino'))" >  Este dato es requerido  </p>
+                               </div>
+                            </div>
+                            <div class="col-sm-3">
+                               <div class="form-group links">
+                                 <label>Ciudad origen</label>
+                                <select v-model="form.id_tarifa" @change="tari()" v-validate="'required'" name="ciudad_destino" class="form-control" disabled >
+                                  <option v-for="tarifas in tarifas" v-if="form.departamento_origen===tarifas.departamento_origen && form.departamento_destino===tarifas.departamento_destino && form.ciudad_origen===tarifas.ciudad_origen && form.tipo_envio===tarifas.tipo_envio" :value="tarifas.id">{{tarifas.ciudad_origen}}</option>
+                                </select>
+                                <p class="text-danger my-1 small" v-if="(errors.first('ciudad_destino'))" >  Este dato es requerido  </p>
+                              </div>
+                           </div>
+                           <div class="col-sm-3">
+                              <div class="form-group links">
+                                <label>Depto. destino</label>
+                               <select v-model="form.id_tarifa" @change="tari()" v-validate="'required'" name="ciudad_destino" class="form-control" disabled >
+                                 <option v-for="tarifas in tarifas" v-if="form.departamento_origen===tarifas.departamento_origen && form.departamento_destino===tarifas.departamento_destino && form.ciudad_origen===tarifas.ciudad_origen && form.tipo_envio===tarifas.tipo_envio" :value="tarifas.id">{{tarifas.departamento_destino}}</option>
+                               </select>
+                               <p class="text-danger my-1 small" v-if="(errors.first('ciudad_destino'))" >  Este dato es requerido  </p>
+                             </div>
+                          </div>
+                          <div class="col-sm-3">
+                             <div class="form-group links">
+                               <label>Ciudad destino</label>
+                              <select v-model="form.id_tarifa" @change="tari()" v-validate="'required'" name="ciudad_destino" class="form-control" disabled >
+                                <option v-for="tarifas in tarifas" v-if="form.departamento_origen===tarifas.departamento_origen && form.departamento_destino===tarifas.departamento_destino && form.ciudad_origen===tarifas.ciudad_origen && form.tipo_envio===tarifas.tipo_envio" :value="tarifas.id">{{tarifas.ciudad_destino}}</option>
+                              </select>
+                              <p class="text-danger my-1 small" v-if="(errors.first('ciudad_destino'))" >  Este dato es requerido  </p>
+                            </div>
+                         </div>
+                         <div class="col-sm-4">
+                            <div class="form-group links">
+                              <label>Tipo de transporte</label>
+                             <select v-model="form.id_tarifa" @change="tari()" v-validate="'required'" name="ciudad_destino" class="form-control" disabled >
+                               <option v-for="tarifas in tarifas" v-if="form.departamento_origen===tarifas.departamento_origen && form.departamento_destino===tarifas.departamento_destino && form.ciudad_origen===tarifas.ciudad_origen && form.tipo_envio===tarifas.tipo_envio" :value="tarifas.id">{{tarifas.tipo_transporte}}</option>
+                             </select>
+                             <p class="text-danger my-1 small" v-if="(errors.first('ciudad_destino'))" >  Este dato es requerido  </p>
+                           </div>
+                        </div>
+                        <div class="col-sm-4">
+                           <div class="form-group links">
+                             <label>Tipo de envío</label>
+                            <select v-model="form.id_tarifa" @change="tari()" v-validate="'required'" name="ciudad_destino" class="form-control" disabled >
+                              <option v-for="tarifas in tarifas" v-if="form.departamento_origen===tarifas.departamento_origen && form.departamento_destino===tarifas.departamento_destino && form.ciudad_origen===tarifas.ciudad_origen && form.tipo_envio===tarifas.tipo_envio" :value="tarifas.id">{{tarifas.tipo_envio}}</option>
+                            </select>
+                            <p class="text-danger my-1 small" v-if="(errors.first('ciudad_destino'))" >  Este dato es requerido  </p>
+                          </div>
+                       </div>
+                       <div class="col-sm-4">
+                          <div class="form-group links">
+                            <label>Tarifa</label>
+                           <select v-model="form.id_tarifa" @change="tari()" v-validate="'required'" name="ciudad_destino" class="form-control" disabled >
+                             <option v-for="tarifas in tarifas" v-if="form.departamento_origen===tarifas.departamento_origen && form.departamento_destino===tarifas.departamento_destino && form.ciudad_origen===tarifas.ciudad_origen && form.tipo_envio===tarifas.tipo_envio" :value="tarifas.id">{{tarifas.precio}}</option>
+                           </select>
+                           <p class="text-danger my-1 small" v-if="(errors.first('ciudad_destino'))" >  Este dato es requerido  </p>
+                         </div>
+                      </div>
+                             <a href="#" @click="form.departamento_origen='Amazonas';form.ciudad_destino='';form.departamento_destino='';form.ciudad_destino='';form.tipo_transporte='';form.tipo_envio='';form.id_tarifa=''" class="card-link">Cambiar tarifa</a>
+                           </div>
+                         </div>
                          <div class="col-md-4">
                            <label class="links">Identificación Carga Cliente</label>
                            <div class="form-group">
@@ -393,7 +515,6 @@
                              <p class="text-danger my-1 small" v-if="(errors.first('fecha_factura'))" >  Este dato es requerido  </p>
                            </div>
                          </div>
-                         <pre>{{form}}</pre>
                             </div>
                            <button v-if="editMode===false"  class="button is-primary links btn btn-light float-right my-3" type="submit">Guardar</button>
                            <button v-if="editMode===true && !ver"  class="button is-primary btn btn-light links float-right my-3" type="submit">Editar</button>
@@ -408,8 +529,6 @@
          <!-- /.modal-dialog -->
         </div>
    <!-- fin del modal -->
-
-   <pre>{{proveedores}}</pre>
    </div>
 </div>
 <script>
@@ -428,6 +547,7 @@
          departamento:0,
          ver:false,
          cart:[],
+         cargas:[],
          tarifas:[],
          imagenes:[],
          clientes:[],
@@ -468,6 +588,7 @@
              'numero_anexo_l':'',
              'numero_factura':'',
              'fecha_factura':'',
+             'id_tarifa':'',
          },
         colombia:[
           {
@@ -1881,7 +2002,7 @@
                        let data = new FormData();
                        data.append('service_form',JSON.stringify(this.form));
                      if(!this.editMode){
-                       axios.post('index.php/clientes/insertar',data)
+                       axios.post('index.php/ClientesEspeciales/insertar',data)
                        .then(response => {
                          if(response.data.status == 200){
                            Swal.fire({
@@ -1890,7 +2011,7 @@
                              text: 'Agregado con exito'
                            })
                            $('#modal-lg').modal('hide');
-                           this.loadclientes();
+                           this.loadcargas();
                            this.resete();
                          }
                          else{
@@ -1992,10 +2113,10 @@
                    $('#myModal').modal('show');
                    this.editMode=false
                  },
-                 async loadclientes() {
-                await   axios.get('index.php/clientes/getclientes/')
-                   .then(({data: {clientes}}) => {
-                     this.clientes = clientes
+             async loadcargas() {
+                await   axios.get('index.php/ClientesEspeciales/getcarga/')
+                   .then(({data: {cargas}}) => {
+                     this.cargas = cargas
                    });
                    $("#example1").DataTable();
                  },
@@ -2056,12 +2177,12 @@
        },
 
        created(){
+         this.loadcargas();
             this.loadproveedores();
             this.loadtarifas();
             this.loadtipocarga();
             this.loadtiposenvios();
             this.loadtransportes();
-            this.loadclientes()
             this.loadclientes();
             this.loadCart();
        },
