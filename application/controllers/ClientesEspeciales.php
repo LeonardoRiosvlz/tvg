@@ -38,6 +38,7 @@ class ClientesEspeciales extends MY_Controller {
 					redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
 				}
 				$data = json_decode($this->input->post('service_form'),true);
+				$data['codigo']    = $this->historial->get_unused_id();
 				$result = $this->clientes->insertar($data);
 					if($result['code'] == 0){
 						echo json_encode(['status' => '200', 'message' => 'Agregado exitosamente']);

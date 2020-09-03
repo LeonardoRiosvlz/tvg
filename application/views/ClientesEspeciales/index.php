@@ -56,7 +56,7 @@
   </div>
         <!-- Modal agregar   -->
         <div class="modal fade" id="modal-lg" data-backdrop="static" data-keyboard="false">
-         <div class="modal-dialog modal-lg">
+         <div class="modal-dialog modal-lg"style="width:1000px!important;">
            <div class="modal-content">
              <div class="modal-header">
                <button type="button" @click="resete()" class="close" data-dismiss="modal" aria-label="Close">
@@ -66,7 +66,7 @@
              <div class="modal-body row">
                <div class="col-md-4">
                  <label class="links">Clientes</label>
-                 <input list="encodings" v-model="form.cedula" value="" class="form-control form-control-lg" placeholder="Escriba una cedula">
+                 <input list="encodings" v-model="form.cedula" @change="loadsedes" value="" class="form-control form-control-lg" placeholder="Escriba una cedula">
                    <datalist id="encodings">
                        <option v-for="clientes in clientes" v-if="clientes.cliente_especial==='Si'" :value="clientes.cedula_cliente">{{clientes.nombre_cliente}}</option>
                    </datalist>
@@ -74,8 +74,7 @@
                <div class="col-md-4">
                  <label class="links">Identificación de carga</label>
                  <div class="form-group">
-                   <input v-model="form.id_carga_cliente" v-validate="'required'" name="id_carga_cliente" class="form-control" :disabled="ver" >
-                   <p class="text-danger my-1 small" v-if="(errors.first('id_carga_cliente'))" >  Este dato es requerido  </p>
+                   <input v-model="form.id_carga_cliente" name="id_carga_cliente" class="form-control form-control-lg" >
                  </div>
                </div>
                <div class="col-md-4 py-4"><button type="button" class="btn btn-info btn-block btn-lg">Buscar <span class="mbri-search"></span></button></div>
@@ -118,24 +117,28 @@
                              <div class="form-group">
                                 <label class="links">Recogida carga donde cliente</label>
                                   <flat-pickr
+                                      v-validate="'required'"
                                       v-model="form.f_recogida"
                                       :config="config"
                                       class="form-control"
                                       placeholder="Selecciona fecha y hora"
-                                      name="date">
+                                      name="f_ingreso">
                                 </flat-pickr>
+                                <p class="text-danger my-1 small" v-if="(errors.first('f_ingreso'))" >  Este dato es requerido  </p>
                               </div>
                            </div>
                            <div class=" col-md-6 col-sm-12">
                              <div class="form-group">
                                 <label class="links">Llegada carga a TVG</label>
                                   <flat-pickr
+                                      v-validate="'required'"
                                       v-model="form.f_ingreso"
                                       :config="config"
                                       class="form-control"
                                       placeholder="Selecciona fecha y hora"
-                                      name="date">
+                                      name="f_ingreso">
                                 </flat-pickr>
+                                <p class="text-danger my-1 small" v-if="(errors.first('f_ingreso'))" >  Este dato es requerido  </p>
                               </div>
                            </div>
                            <div class="col-md-4">
@@ -159,9 +162,9 @@
                            <div class="col-sm-4">
                               <div class="form-group links">
                                 <label>Tarifa</label>
-                               <select v-model="form.ciudad_destino" v-validate="'required'" name="ciudad_destino" class="form-control" disabled>
-                                 <option v-for="tarifas in tarifas" v-if="form.departamento_origen===tarifas.departamento_origen && form.departamento_destino===tarifas.departamento_destino && form.ciudad_origen===tarifas.ciudad_origen && form.tipo_envio===tarifas.tipo_envio" :value="tarifas.departamento_destino">{{tarifas.precio}}</option>
-                               </select>
+                                <select v-model="form.id_tarifa" v-validate="'required'" name="ciudad_destino" class="form-control" disabled >
+                                  <option v-for="tarifas in tarifas" v-if="form.departamento_origen===tarifas.departamento_origen && form.departamento_destino===tarifas.departamento_destino && form.ciudad_origen===tarifas.ciudad_origen && form.tipo_envio===tarifas.tipo_envio" :value="tarifas.id">{{tarifas.precio}}</option>
+                                </select>
                                <p class="text-danger my-1 small" v-if="(errors.first('ciudad_destino'))" >  Este dato es requerido  </p>
                              </div>
                           </div>
@@ -197,8 +200,8 @@
                           <div class="col-sm-3">
                              <div class="form-group links">
                                <label>Ciudad destino</label>
-                              <select v-model="form.ciudad_destino" v-validate="'required'" name="ciudad_destino" class="form-control" :disabled="ver" >
-                                <option v-for="tarifas in tarifas" v-if="form.departamento_origen===tarifas.departamento_origen && form.departamento_destino===tarifas.departamento_destino && form.ciudad_origen===tarifas.ciudad_origen && form.tipo_envio===tarifas.tipo_envio" :value="tarifas.departamento_destino">{{tarifas.ciudad_destino}}</option>
+                              <select v-model="form.id_tarifa" @change="tari()" v-validate="'required'" name="ciudad_destino" class="form-control" :disabled="ver" >
+                                <option v-for="tarifas in tarifas" v-if="form.departamento_origen===tarifas.departamento_origen && form.departamento_destino===tarifas.departamento_destino && form.ciudad_origen===tarifas.ciudad_origen && form.tipo_envio===tarifas.tipo_envio" :value="tarifas.id">{{tarifas.ciudad_destino}}</option>
                               </select>
                               <p class="text-danger my-1 small" v-if="(errors.first('ciudad_destino'))" >  Este dato es requerido  </p>
                             </div>
@@ -215,6 +218,7 @@
                            <label class="links">Tipo de carga</label>
                            <div class="form-group">
                              <select v-model="form.tipo_carga" v-validate="'required'" name="tipo_envio" class="form-control" :disabled="ver" >
+                               <option value=""></option>
                                <option v-for="tipocarga in tipocarga" v-if="tipocarga.estado==='Activo'" :value="tipocarga.id">{{tipocarga.nombre_tipocarga}}</option>
                              </select>
                              <p class="text-danger my-1 small" v-if="(errors.first('tipo_envio'))" >  Este dato es requerido  </p>
@@ -223,7 +227,7 @@
                          <div class="col-md-4">
                            <label class="links">Cantidad</label>
                            <div class="form-group">
-                             <input v-model="form.cantidad" v-validate="'required'" name="cantidad" class="form-control" :disabled="ver" >
+                             <input v-model="form.cantidad" @change="fletetotal()"  v-validate="'required'" name="cantidad" class="form-control" :disabled="ver" >
                              <p class="text-danger my-1 small" v-if="(errors.first('cantidad'))" >  Este dato es requerido  </p>
                            </div>
                          </div>
@@ -237,22 +241,53 @@
                          <div class="col-md-4">
                            <label class="links">Kilos Cliente</label>
                            <div class="form-group">
-                             <input v-model="form.kilos_cliente" v-validate="'required'" name="kilos_cliente" class="form-control" :disabled="ver" >
+                             <input v-model="form.kilos_cliente" @change="fletetotal()" v-validate="'required'" name="kilos_cliente" class="form-control" :disabled="ver" >
                              <p class="text-danger my-1 small" v-if="(errors.first('kilos_cliente'))" >  Este dato es requerido  </p>
                            </div>
                          </div>
                          <div class="col-md-4">
                            <label class="links">Flete Fijo</label>
                            <div class="form-group">
-                             <input v-model="form.flete_fijo" v-validate="'required'" name="flete_fijo" class="form-control" :disabled="ver" >
+                             <input v-model="form.flete_fijo" @change="fletetotal()"  v-validate="'required'" name="flete_fijo" class="form-control" :disabled="ver" >
                              <p class="text-danger my-1 small" v-if="(errors.first('flete_fijo'))" >  Este dato es requerido  </p>
                            </div>
                          </div>
                          <div class="col-md-4">
                            <label class="links">Flete Total</label>
                            <div class="form-group">
-                             <input v-model="form.flete_total" v-validate="'required'" name="flete_total" class="form-control" :disabled="ver" >
+                             <input v-model="form.flete_total" v-validate="'required'" name="flete_total" class="form-control" disabled>
                              <p class="text-danger my-1 small" v-if="(errors.first('flete_total'))" >  Este dato es requerido  </p>
+                           </div>
+                         </div>
+                         <div class=" col-md-4 col-sm-12">
+                           <div class="form-group">
+                              <label class="links">Fecha despacho</label>
+                                <flat-pickr
+                                    v-validate="'required'"
+                                    v-model="form.fecha_despacho"
+                                    :config="config"
+                                    class="form-control"
+                                    placeholder="Selecciona fecha y hora"
+                                    name="fecha_despacho">
+                              </flat-pickr>
+                              <p class="text-danger my-1 small" v-if="(errors.first('fecha_despacho'))" >  Este dato es requerido  </p>
+                            </div>
+                         </div>
+                         <div class="col-md-4">
+                           <label class="links">Proveedor</label>
+                           <div class="form-group">
+                             <select v-model="form.proveedor" v-validate="'required'" name="proveedor" class="form-control" :disabled="ver" >
+                               <option value=""></option>
+                               <option v-for="proveedores in proveedores" :value="proveedores.id">{{proveedores.nombre_proveedor}}</option>
+                             </select>
+                             <p class="text-danger my-1 small" v-if="(errors.first('proveedor'))" >  Este dato es requerido  </p>
+                           </div>
+                         </div>
+                         <div class="col-md-4">
+                           <label class="links">Nº guía proveedor</label>
+                           <div class="form-group">
+                             <input v-model="form.n_guia_proveedor" v-validate="'required'" name="n_guia_proveedor" class="form-control" :disabled="ver" >
+                             <p class="text-danger my-1 small" v-if="(errors.first('n_guia_proveedor'))" >  Este dato es requerido  </p>
                            </div>
                          </div>
                          <div class=" col-md-4 col-sm-12">
@@ -263,15 +298,16 @@
                                     :config="config"
                                     class="form-control"
                                     placeholder="Selecciona fecha y hora"
-                                    name="date">
+                                    name="fecha_en_destino">
                               </flat-pickr>
+                              <p class="text-danger my-1 small" v-if="(errors.first('fecha_en_destino'))" >  Este dato es requerido  </p>
                             </div>
                          </div>
                          <div class="col-md-4">
                            <label class="links">Sede Cliente</label>
                            <div class="form-group">
-                             <select v-model="form.tipo_carga" v-validate="'required'" name="tipo_envio" class="form-control" :disabled="ver" >
-                               <option v-for="tipocarga in tipocarga" v-if="tipocarga.estado==='Activo'" :value="tipocarga.id">{{tipocarga.nombre_tipocarga}}</option>
+                             <select v-model="form.sede_cliente" v-validate="'required'" name="tipo_envio" class="form-control" :disabled="ver" >
+                               <option v-for="sedes in sedes" :value="sedes.id">{{sedes.nombre_sede}}</option>
                              </select>
                              <p class="text-danger my-1 small" v-if="(errors.first('tipo_envio'))" >  Este dato es requerido  </p>
                            </div>
@@ -306,12 +342,14 @@
                            <div class="form-group">
                               <label class="links">Fecha de conectividad</label>
                                 <flat-pickr
+                                    v-validate="'required'"
                                     v-model="form.fecha_conectividad"
                                     :config="config"
                                     class="form-control"
                                     placeholder="Selecciona fecha y hora"
-                                    name="date">
+                                    name="fecha_conectividad">
                               </flat-pickr>
+                              <p class="text-danger my-1 small" v-if="(errors.first('fecha_conectividad'))" >  Este dato es requerido  </p>
                             </div>
                          </div>
                          <div class="col-md-4">
@@ -325,12 +363,13 @@
                            <div class="form-group">
                               <label class="links">Fecha entrega cumplidos</label>
                                 <flat-pickr
-                                    v-model="form.fecha_conectividad"
+                                    v-model="form.f_entrega_c"
                                     :config="config"
                                     class="form-control"
                                     placeholder="Selecciona fecha y hora"
-                                    name="date">
+                                    name="numero_anexo_l">
                               </flat-pickr>
+                              <p class="text-danger my-1 small" v-if="(errors.first('numero_anexo_l'))" >  Este dato es requerido  </p>
                             </div>
                          </div>
                          <div class="col-md-4">
@@ -354,6 +393,7 @@
                              <p class="text-danger my-1 small" v-if="(errors.first('fecha_factura'))" >  Este dato es requerido  </p>
                            </div>
                          </div>
+                         <pre>{{form}}</pre>
                             </div>
                            <button v-if="editMode===false"  class="button is-primary links btn btn-light float-right my-3" type="submit">Guardar</button>
                            <button v-if="editMode===true && !ver"  class="button is-primary btn btn-light links float-right my-3" type="submit">Editar</button>
@@ -369,7 +409,7 @@
         </div>
    <!-- fin del modal -->
 
-   <pre>{{id_instancia}}</pre>
+   <pre>{{proveedores}}</pre>
    </div>
 </div>
 <script>
@@ -388,21 +428,46 @@
          departamento:0,
          ver:false,
          cart:[],
+         tarifas:[],
          imagenes:[],
          clientes:[],
          userFiles:[],
+         sedes:[],
          editMode:false,
          id_instancia:'',
          form:{
              'id':'',
-             'nombre_cargo':'',
              'dep':0,
              'departamento_destino':'',
              'ciudad_destino':'',
              'dep_dos':0,
-             'departamento_origen':'',
+             'departamento_origen':'Amazonas',
              'ciudad_origen':'',
              'id_carga_cliente':'',
+             'f_recogida':'',
+             'f_ingreso':'',
+             'cedula_cliente':'',
+             'tipo_transporte':'',
+             'tipo_envio':'',
+             'precio':'',
+             'id_carga_cliente':'',
+             'tipo_carga':'',
+             'cantidad':'',
+             'kilos_tvg':'',
+             'kilos_cliente':'',
+             'flete_fijo':'',
+             'flete_total':'',
+             'fecha_despacho':'',
+             'proveedor':'',
+             'n_guia_proveedor':'',
+             'fecha_en_destino':'',
+             'sede_cliente':'',
+             'fecha_conectividad':'',
+             'n_referencia_c':'',
+             'f_entrega_c':'',
+             'numero_anexo_l':'',
+             'numero_factura':'',
+             'fecha_factura':'',
          },
         colombia:[
           {
@@ -1704,6 +1769,18 @@
           ],
        },
        methods: {
+                 fletetotal(){
+                  this.form.flete_total=parseInt(this.form.cantidad)*parseInt(this.form.flete_fijo)*parseInt(this.form.kilos_cliente);
+                 },
+                 tari(){
+                   for (var i = 0; i < this.tarifas.length; i++) {
+                     if (this.tarifas[i].id===this.form.id_tarifa) {
+                        this.form.ciudad_destino=this.tarifas[i].ciudad_destino;
+                        this.form.precio=this.tarifas[i].precio;
+                        console.log(this.tarifas[i].ciudad_destino);
+                     }
+                   }
+                 },
          async    uploadFoto() {
               this.file_data = $('#imagenFoto').prop('files')[0];
               this.form_data = new FormData();
@@ -1952,6 +2029,20 @@
                     this.tarifas = tarifas
                   });
                 },
+          async loadsedes(){
+                  let data = new FormData();
+                   data.append('id_cliente',this.form.cedula);
+                   await axios.post('index.php/Sedes/getsedes/',data)
+                  .then(({data: {sedes}}) => {
+                    this.sedes = sedes
+                  });
+                },
+            async loadproveedores() {
+               await   axios.get('index.php/proveedores/getproveedores/')
+                  .then(({data: {proveedores}}) => {
+                    this.proveedores = proveedores
+                  });
+                },
                  loadCart(){
 
                    if(localStorage.getItem('cart')) {
@@ -1965,6 +2056,7 @@
        },
 
        created(){
+            this.loadproveedores();
             this.loadtarifas();
             this.loadtipocarga();
             this.loadtiposenvios();
