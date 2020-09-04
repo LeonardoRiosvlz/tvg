@@ -22,7 +22,6 @@
             <div class="form-group">
                <label class="links">Dede</label>
                  <flat-pickr
-                     @click="mathc()"
                      v-model="desde"
                      :config="config"
                      class="form-control"
@@ -35,7 +34,7 @@
             <div class="form-group">
                <label class="links">Hasta</label>
                  <flat-pickr
-                     @click="mathc()"
+
                      v-model="hasta"
                      :config="config"
                      class="form-control"
@@ -44,20 +43,23 @@
                </flat-pickr>
              </div>
           </div>
+          <div class=" col-md-6 col-sm-12 my-4 py-2">
+            <button type="button" @click="mathc()" class="btn btn-info btn-block" style="margin-top:6px;">Buscar <span class="mbri-search"></span></button>
+          </div>
         </div>
-        <div class="row p-3">
+        <div class="row ">
           <div class="col-md-4">
             <label class="links">Clientes</label>
-            <input list="encodings" v-model="form.cedula" @change="mathc()"  value="" class="form-control form-control-lg" placeholder="Escriba una cedula">
+            <input list="encodings" v-model="form.cedula"  value="" class="form-control form-control-lg" placeholder="Escriba una cedula">
               <datalist id="encodings">
                   <option v-for="clientes in clientes" v-if="clientes.cliente_especial==='Si'" :value="clientes.cedula_cliente">{{clientes.nombre_cliente}}</option>
               </datalist>
           </div>
           <div class="col-md-4">
             <label class="links">Nº referencia cumplidos</label>
-            <input list="encodings_d" v-model="numero" value="" @change="mathc()" class="form-control form-control-lg" placeholder="Escriba Nº referencia cumplidos">
+            <input list="encodings_d" v-model="numero" value=""  class="form-control form-control-lg" placeholder="Escriba Nº referencia cumplidos">
               <datalist id="encodings_d">
-                  <option v-for="cargas in cargas"  :value="cargas.n_referencia_c">{{cargas.n_referencia_c}}</option>
+                  <option v-for="cargas in cargas" v-if="cargas.cedula_cliente===form.cedula"  :value="cargas.n_referencia_c">{{cargas.n_referencia_c}}</option>
               </datalist>
           </div>
           <div class="col-md-4">
@@ -66,6 +68,16 @@
               <datalist id="encodings">
                   <option v-for="clientes in clientes" v-if="clientes.cliente_especial==='Si'" :value="clientes.cedula_cliente">{{clientes.nombre_cliente}}</option>
               </datalist>
+          </div>
+        </div>
+        <div class="row p-2">
+          <div class="col-2">
+            <th scope="col" colspan="2" class="border-0 bg-white  text-center">
+              <a href="<?=base_url();?>/Clientes/excelexport" type="button"  class="btn btn-block btn-primary btn-sm links" >Exportar Excel <span class="mbri-save"></span></a>
+            </th>
+            <th scope="col" colspan="2" class="border-0 bg-white  text-center">
+              <a href="<?=base_url();?>/Clientes/pdf" type="button" class="btn btn-block btn-secondary btn-sm links" download>Exportar PDF <span class="mbri-file" ></span></a>
+            </th>
           </div>
         </div>
           <table id="example1" class="table ">
@@ -97,7 +109,7 @@
                           <div class="dropdown-menu" role="menu">
                             <a class="dropdown-item" href="#"@click="setear(index);ver=true">Ver</a>
                             <a class="dropdown-item" href="#" @click="setear(index);ver=false">Editar</a>
-                            <a class="dropdown-item" href="#" @click="eliminarclientes(index)">Eliminar</a>
+                            <a class="dropdown-item" href="#" @click="eliminarcarga(index)">Eliminar</a>
                           </div>
                         </button>
                     </div>
@@ -176,7 +188,8 @@
                                       :config="config"
                                       class="form-control"
                                       placeholder="Selecciona fecha"
-                                      name="f_ingreso">
+                                      name="f_ingreso"
+                                      :disabled="ver">
                                 </flat-pickr>
                                 <p class="text-danger my-1 small" v-if="(errors.first('f_ingreso'))" >  Este dato es requerido  </p>
                               </div>
@@ -190,7 +203,8 @@
                                       :config="config"
                                       class="form-control"
                                       placeholder="Selecciona fecha"
-                                      name="f_ingreso">
+                                      name="f_ingreso"
+                                      :disabled="ver">
                                 </flat-pickr>
                                 <p class="text-danger my-1 small" v-if="(errors.first('f_ingreso'))" >  Este dato es requerido  </p>
                               </div>
@@ -392,7 +406,8 @@
                                     :config="config"
                                     class="form-control"
                                     placeholder="Selecciona fecha"
-                                    name="fecha_despacho">
+                                    name="fecha_despacho"
+                                    :disabled="ver">
                               </flat-pickr>
                               <p class="text-danger my-1 small" v-if="(errors.first('fecha_despacho'))" >  Este dato es requerido  </p>
                             </div>
@@ -422,7 +437,8 @@
                                     :config="config"
                                     class="form-control"
                                     placeholder="Selecciona fecha"
-                                    name="fecha_en_destino">
+                                    name="fecha_en_destino"
+                                    :disabled="ver">
                               </flat-pickr>
                               <p class="text-danger my-1 small" v-if="(errors.first('fecha_en_destino'))" >  Este dato es requerido  </p>
                             </div>
@@ -470,7 +486,8 @@
                                     :config="config"
                                     class="form-control"
                                     placeholder="Selecciona fecha"
-                                    name="fecha_conectividad">
+                                    name="fecha_conectividad"
+                                    :disabled="ver">
                               </flat-pickr>
                               <p class="text-danger my-1 small" v-if="(errors.first('fecha_conectividad'))" >  Este dato es requerido  </p>
                             </div>
@@ -490,7 +507,8 @@
                                     :config="config"
                                     class="form-control"
                                     placeholder="Selecciona fecha"
-                                    name="numero_anexo_l">
+                                    name="numero_anexo_l"
+                                    :disabled="ver">
                               </flat-pickr>
                               <p class="text-danger my-1 small" v-if="(errors.first('numero_anexo_l'))" >  Este dato es requerido  </p>
                             </div>
@@ -516,6 +534,7 @@
                              <p class="text-danger my-1 small" v-if="(errors.first('fecha_factura'))" >  Este dato es requerido  </p>
                            </div>
                          </div>
+
                             </div>
                            <button v-if="editMode===false"  class="button is-primary links btn btn-light float-right my-3" type="submit">Guardar</button>
                            <button v-if="editMode===true && !ver"  class="button is-primary btn btn-light links float-right my-3" type="submit">Editar</button>
@@ -530,8 +549,8 @@
          <!-- /.modal-dialog -->
         </div>
    <!-- fin del modal -->
-   <pre>{{desde}}</pre>
-   <pre>{{hasta}}</pre>
+
+
    </div>
 </div>
 <script>
@@ -1896,6 +1915,15 @@
           numero:'',
        },
        methods: {
+                alerta(){
+                  if (this.cargas.length<1) {
+                    Swal.fire({
+                      type: 'warning',
+                      title: '',
+                      text: 'No existen cocidencias'
+                    });
+                  }
+                },
                 mathc(){
                   if (!this.desde||!this.hasta) {
                     if (!this.numero) {
@@ -1968,7 +1996,7 @@
                 if (result.value) {
                   let data = new FormData();
                   data.append('id',this.imagenes[index].id);
-                    axios.post('index.php/Products/eliminarImagen',data)
+                    axios.post('index.php/ClientesEspeciales/eliminarImagen',data)
                     .then(response => {
                       if(response) {
                         Swal(
@@ -2077,12 +2105,12 @@
                        })
                      }
                      else{
-                       axios.post('index.php/clientes/editar',data)
+                       axios.post('index.php/ClientesEspeciales/editar',data)
                        .then(response => {
                          if(response.data.status == 200)
                          {
                            $('#modal-lg').modal('hide');
-                           this.loadclientes();
+                           this.loadcargas_cedulas();
                            Swal.fire({
                              type: 'success',
                              title: 'Exito!',
@@ -2110,7 +2138,7 @@
                      );
                    });
                  },
-                 eliminarclientes(index){
+                 eliminarcarga(index){
                    Swal({
                      title: '¿Estás seguro?',
                      text: "¡ será eliminado para siempre!",
@@ -2122,8 +2150,8 @@
                    }).then((result) => {
                      if (result.value) {
                        let data = new FormData();
-                       data.append('id',this.clientes[index].id);
-                         axios.post('index.php/clientes/eliminar',data)
+                       data.append('id',this.cargas[index].codigo);
+                         axios.post('index.php/ClientesEspeciales/eliminar',data)
                          .then(response => {
                            if(response) {
                              Swal(
@@ -2131,7 +2159,7 @@
                                'Ha sido eliminado.',
                                'success'
                              ).then(response => {
-                                   this.loadclientes();
+                                   this.loadcargas_cedulas();
                              })
                            } else {
                              Swal(
@@ -2139,7 +2167,7 @@
                                'Ha ocurrido un error.',
                                'warning'
                              ).then(response => {
-                               this.loadclientes();
+                               this.loadcargas();
                              })
                            }
                          })
@@ -2155,7 +2183,7 @@
                    })
                  },
                  setear(index){
-                   this.form.id=this.cargas[index].id,
+                   this.form.codigo=this.cargas[index].codigo,
                    this.form.nombre_cargo=this.cargas[index].nombre_cargo,
                    this.form.f_recogida=this.cargas[index].f_recogida,
                    this.form.f_ingreso=this.cargas[index].f_ingreso,
@@ -2186,8 +2214,33 @@
                    this.editMode=true
                  },
                  ver(index){
-                   this.form.id=this.clientes[index].id,
-                   this.form.nombre_cargo=this.clientes[index].nombre_cargo,
+                   this.form.id=this.cargas[index].id,
+                   this.form.nombre_cargo=this.cargas[index].nombre_cargo,
+                   this.form.f_recogida=this.cargas[index].f_recogida,
+                   this.form.f_ingreso=this.cargas[index].f_ingreso,
+                   this.form.cedula=this.cargas[index].cedula_cliente,
+                   this.form.id_carga_cliente=this.cargas[index].id_carga_cliente,
+                   this.form.tipo_carga=this.cargas[index].tipo_carga,
+                   this.form.cantidad=this.cargas[index].cantidad,
+                   this.form.kilos_tvg=this.cargas[index].kilos_tvg,
+                   this.form.kilos_cliente=this.cargas[index].kilos_cliente,
+                   this.form.flete_fijo=this.cargas[index].flete_fijo,
+                   this.form.flete_total=this.cargas[index].flete_total,
+                   this.form.fecha_despacho=this.cargas[index].fecha_despacho,
+                   this.form.proveedor=this.cargas[index].proveedor,
+                   this.form.n_guia_proveedor=this.cargas[index].n_guia_proveedor,
+                   this.form.fecha_en_destino=this.cargas[index].fecha_en_destino,
+                   this.form.sede_cliente=this.cargas[index].sede_cliente,
+                   this.form.fecha_conectividad=this.cargas[index].fecha_conectividad,
+                   this.form.n_referencia_c=this.cargas[index].n_referencia_c,
+                   this.form.f_entrega_c=this.cargas[index].f_entrega_c,
+                   this.form.numero_anexo_l=this.cargas[index].numero_anexo_l,
+                   this.form.numero_factura=this.cargas[index].numero_factura,
+                   this.form.fecha_factura=this.cargas[index].fecha_factura,
+                   this.form.id_tarifa=this.cargas[index].id_tarifa,
+                   this.loadsedes();
+                   this.loadFotos();
+                   this.tari();
                    $('#myModal').modal('show');
                    this.editMode=false
                  },
@@ -2205,6 +2258,7 @@
                           .then(({data: {cargas}}) => {
                             this.cargas = cargas
                           });
+                           this.alerta();
 
                        },
                        async loadcargas_cedulas_tiempo(){
@@ -2216,7 +2270,7 @@
                                 .then(({data: {cargas}}) => {
                                   this.cargas = cargas
                                 });
-
+                              this.alerta();
                              },
              async loadcargas_cedulas_nc(){
                      let data = new FormData();
@@ -2226,7 +2280,7 @@
                       .then(({data: {cargas}}) => {
                         this.cargas = cargas
                       });
-
+                       this.alerta();
                    },
                    async loadcargas_cedulas_nc(){
                            let data = new FormData();
@@ -2236,7 +2290,7 @@
                             .then(({data: {cargas}}) => {
                               this.cargas = cargas
                             });
-
+                             this.alerta();
                          },
            async loadclientes() {
                 await   axios.get('index.php/clientes/getclientes/')
