@@ -262,9 +262,19 @@ class ClientesEspeciales extends MY_Controller {
 			 					$this->excel->getActiveSheet()->setCellValue("M{$contador}", $l->kilos_tvg);
 			 					$this->excel->getActiveSheet()->setCellValue("N{$contador}", $l->kilos_cliente);
 			 					$this->excel->getActiveSheet()->setCellValue("O{$contador}", $l->flete_fijo);
-			 					$this->excel->getActiveSheet()->setCellValue("P{$contador}", $l->nombre." ".$l->apellido);
-			 					$this->excel->getActiveSheet()->setCellValue("Q{$contador}", $l->cliente_especial);
-			 					$this->excel->getActiveSheet()->setCellValue("R{$contador}", $l->observacion);
+			 					$this->excel->getActiveSheet()->setCellValue("P{$contador}", $l->fecha_despacho);
+			 					$this->excel->getActiveSheet()->setCellValue("Q{$contador}", $l->nombre_proveedor);
+			 					$this->excel->getActiveSheet()->setCellValue("R{$contador}", $l->n_guia_proveedor);
+											 					$this->excel->getActiveSheet()->setCellValue("R{$contador}", $l->n_guia_proveedor);
+																			 					$this->excel->getActiveSheet()->setCellValue("R{$contador}", $l->n_guia_proveedor);
+																											 					$this->excel->getActiveSheet()->setCellValue("R{$contador}", $l->n_guia_proveedor);
+																																			 					$this->excel->getActiveSheet()->setCellValue("R{$contador}", $l->n_guia_proveedor);
+																																											 					$this->excel->getActiveSheet()->setCellValue("R{$contador}", $l->n_guia_proveedor);
+																																																			 					$this->excel->getActiveSheet()->setCellValue("R{$contador}", $l->n_guia_proveedor);
+																																																											 					$this->excel->getActiveSheet()->setCellValue("R{$contador}", $l->n_guia_proveedor);
+																																																																			 					$this->excel->getActiveSheet()->setCellValue("R{$contador}", $l->n_guia_proveedor);
+																																																																											 					$this->excel->getActiveSheet()->setCellValue("R{$contador}", $l->n_guia_proveedor);
+
 			 			 }
 			 			 //Le ponemos un nombre al archivo que se va a generar.
 			 			 $archivo = "Clientes_excel.xls";
