@@ -25,13 +25,35 @@ class ClientesEspeciales extends MY_Controller {
         $this->load->view('ClientesEspeciales/index');
         $this->load->view('footer',["js"=>[""]]);
       }
-			public function getcarga($id=0) {
 
+			/////global
+			public function getcarga($id=0) {
 				  $data['cargas'] = $this->historial->getcarga();
 				  header('Content-Type: application/json');
 				  echo json_encode(['cargas' => $data['cargas']]);
-
 				}
+				public function getcarga_cedula($id=0) {
+						$id = $this->input->post('cedula');
+						$data['cargas'] = $this->historial->getcarga_cedula($id);
+						header('Content-Type: application/json');
+						echo json_encode(['cargas' => $data['cargas']]);
+					}
+					public function getcarga_cedula_tiempo($id=0) {
+							$datas['cedula'] = $this->input->post('cedula');
+							$datas['desde'] = $this->input->post('desde');
+							$datas['hasta'] = $this->input->post('hasta');
+							$data['cargas'] = $this->historial->getcarga_cedula_tiempo($datas);
+							header('Content-Type: application/json');
+							echo json_encode(['cargas' => $data['cargas']]);
+						}
+					public function getcarga_cedula_numero($id=0) {
+							$id = $this->input->post('cedula');
+							$numero = $this->input->post('n_referencia_c');
+							$data['cargas'] = $this->historial->getcarga_cedula_numero($id,$numero);
+							header('Content-Type: application/json');
+							echo json_encode(['cargas' => $data['cargas']]);
+						}
+
 
 			public function insertar() {
 				if( ! $this->verify_min_level(9)){

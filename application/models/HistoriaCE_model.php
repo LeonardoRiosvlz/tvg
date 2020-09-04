@@ -50,6 +50,48 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             ->get()
             ->result();
           }
+          public function getcarga_cedula($id) {
+              return $this->db
+              ->select('c.*,s.nombre_sede,t.*,k.nombre_cliente,p.nombre_proveedor')
+              ->from('historial_Ce c')
+              ->where('c.cedula_cliente', $id)
+              ->join('sedes s', 'c.sede_cliente = s.id')
+              ->join('tarifas t', 'c.id_tarifa = t.id')
+              ->join('clientes k', 'c.cedula_cliente = k.cedula_cliente')
+              ->join('proveedores p', 'c.proveedor = p.id')
+              ->get()
+              ->result();
+            }
+            public function getcarga_cedula_tiempo($datas) {
+                return $this->db
+                ->select('c.*,s.nombre_sede,t.*,k.nombre_cliente,p.nombre_proveedor')
+                ->from('historial_Ce c')
+                ->where('c.cedula_cliente', $datas['cedula'])
+  //              ->where('fecha_despacho <=',$datas['desde'])
+  //              ->where('fecha_despacho >=',$datas['hasta'])
+                ->where('fecha_despacho >=', $datas['desde'])
+                ->where('fecha_despacho <=', $datas['hasta'])
+                ->join('sedes s', 'c.sede_cliente = s.id')
+                ->join('tarifas t', 'c.id_tarifa = t.id')
+                ->join('clientes k', 'c.cedula_cliente = k.cedula_cliente')
+                ->join('proveedores p', 'c.proveedor = p.id')
+                ->get()
+                ->result();
+              }
+
+            public function getcarga_cedula_numero($id,$numero) {
+                return $this->db
+                ->select('c.*,s.nombre_sede,t.*,k.nombre_cliente,p.nombre_proveedor')
+                ->from('historial_Ce c')
+                ->where('c.cedula_cliente', $id)
+                ->where('n_referencia_c', $numero)
+                ->join('sedes s', 'c.sede_cliente = s.id')
+                ->join('tarifas t', 'c.id_tarifa = t.id')
+                ->join('clientes k', 'c.cedula_cliente = k.cedula_cliente')
+                ->join('proveedores p', 'c.proveedor = p.id')
+                ->get()
+                ->result();
+              }
           public function deletecargos($id) {
             $this->db->where('historial_Ce', $id);
             $this->db->delete('cargos');

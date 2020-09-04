@@ -22,10 +22,11 @@
             <div class="form-group">
                <label class="links">Dede</label>
                  <flat-pickr
-                     v-model="form.f_recogida"
+                     @click="mathc()"
+                     v-model="desde"
                      :config="config"
                      class="form-control"
-                     placeholder="Selecciona fecha y hora"
+                     placeholder="Selecciona fecha"
                      name="desde">
                </flat-pickr>
              </div>
@@ -34,10 +35,11 @@
             <div class="form-group">
                <label class="links">Hasta</label>
                  <flat-pickr
-                     v-model="form.f_recogida"
+                     @click="mathc()"
+                     v-model="hasta"
                      :config="config"
                      class="form-control"
-                     placeholder="Selecciona fecha y hora"
+                     placeholder="Selecciona fecha"
                      name="hSasta">
                </flat-pickr>
              </div>
@@ -46,16 +48,16 @@
         <div class="row p-3">
           <div class="col-md-4">
             <label class="links">Clientes</label>
-            <input list="encodings" v-model="form.cedula"  value="" class="form-control form-control-lg" placeholder="Escriba una cedula">
+            <input list="encodings" v-model="form.cedula" @change="mathc()"  value="" class="form-control form-control-lg" placeholder="Escriba una cedula">
               <datalist id="encodings">
                   <option v-for="clientes in clientes" v-if="clientes.cliente_especial==='Si'" :value="clientes.cedula_cliente">{{clientes.nombre_cliente}}</option>
               </datalist>
           </div>
           <div class="col-md-4">
             <label class="links">Nº referencia cumplidos</label>
-            <input list="encodings" v-model="form.cedula" value="" class="form-control form-control-lg" placeholder="Escriba Nº referencia cumplidos">
-              <datalist id="encodings">
-                  <option v-for="clientes in clientes" v-if="clientes.cliente_especial==='Si'" :value="clientes.cedula_cliente">{{clientes.nombre_cliente}}</option>
+            <input list="encodings_d" v-model="numero" value="" @change="mathc()" class="form-control form-control-lg" placeholder="Escriba Nº referencia cumplidos">
+              <datalist id="encodings_d">
+                  <option v-for="cargas in cargas"  :value="cargas.n_referencia_c">{{cargas.n_referencia_c}}</option>
               </datalist>
           </div>
           <div class="col-md-4">
@@ -116,7 +118,7 @@
                </button>
              </div>
              <div class="modal-body row">
-               <div class="col-md-4">
+               <div class="col-md-4" >
                  <label class="links">Clientes</label>
                  <input list="encodings" v-model="form.cedula" @change="loadsedes" value="" class="form-control form-control-lg" placeholder="Escriba una cedula">
                    <datalist id="encodings">
@@ -129,7 +131,7 @@
                    <input v-model="form.id_carga_cliente" name="id_carga_cliente" class="form-control form-control-lg" >
                  </div>
                </div>
-               <div class="col-md-4 py-4"><button type="button" class="btn btn-info btn-block btn-lg">Buscar <span class="mbri-search"></span></button></div>
+               <div class="col-md-4 my-4 py-2"><button type="button" class="btn btn-light btn-block btn-lg">Buscar <span class="mbri-search"></span></button></div>
                <div class="card col-12 p-3">
                   <h5 >Datos del cliente</h5>
                   <div class="row">
@@ -173,7 +175,7 @@
                                       v-model="form.f_recogida"
                                       :config="config"
                                       class="form-control"
-                                      placeholder="Selecciona fecha y hora"
+                                      placeholder="Selecciona fecha"
                                       name="f_ingreso">
                                 </flat-pickr>
                                 <p class="text-danger my-1 small" v-if="(errors.first('f_ingreso'))" >  Este dato es requerido  </p>
@@ -187,7 +189,7 @@
                                       v-model="form.f_ingreso"
                                       :config="config"
                                       class="form-control"
-                                      placeholder="Selecciona fecha y hora"
+                                      placeholder="Selecciona fecha"
                                       name="f_ingreso">
                                 </flat-pickr>
                                 <p class="text-danger my-1 small" v-if="(errors.first('f_ingreso'))" >  Este dato es requerido  </p>
@@ -267,7 +269,7 @@
                                 <div class="form-group links">
                                   <label>Depto. origen</label>
                                  <select v-model="form.id_tarifa" @change="tari()" v-validate="'required'" name="ciudad_destino" class="form-control" disabled >
-                                   <option v-for="tarifas in tarifas" v-if="form.departamento_origen===tarifas.departamento_origen && form.departamento_destino===tarifas.departamento_destino && form.ciudad_origen===tarifas.ciudad_origen && form.tipo_envio===tarifas.tipo_envio" :value="tarifas.id">{{tarifas.departamento_origen}}</option>
+                                   <option v-for="tarifas in tarifas"  :value="tarifas.id">{{tarifas.departamento_origen}}</option>
                                  </select>
                                  <p class="text-danger my-1 small" v-if="(errors.first('ciudad_destino'))" >  Este dato es requerido  </p>
                                </div>
@@ -276,7 +278,7 @@
                                <div class="form-group links">
                                  <label>Ciudad origen</label>
                                 <select v-model="form.id_tarifa" @change="tari()" v-validate="'required'" name="ciudad_destino" class="form-control" disabled >
-                                  <option v-for="tarifas in tarifas" v-if="form.departamento_origen===tarifas.departamento_origen && form.departamento_destino===tarifas.departamento_destino && form.ciudad_origen===tarifas.ciudad_origen && form.tipo_envio===tarifas.tipo_envio" :value="tarifas.id">{{tarifas.ciudad_origen}}</option>
+                                  <option v-for="tarifas in tarifas"  :value="tarifas.id">{{tarifas.ciudad_origen}}</option>
                                 </select>
                                 <p class="text-danger my-1 small" v-if="(errors.first('ciudad_destino'))" >  Este dato es requerido  </p>
                               </div>
@@ -285,7 +287,7 @@
                               <div class="form-group links">
                                 <label>Depto. destino</label>
                                <select v-model="form.id_tarifa" @change="tari()" v-validate="'required'" name="ciudad_destino" class="form-control" disabled >
-                                 <option v-for="tarifas in tarifas" v-if="form.departamento_origen===tarifas.departamento_origen && form.departamento_destino===tarifas.departamento_destino && form.ciudad_origen===tarifas.ciudad_origen && form.tipo_envio===tarifas.tipo_envio" :value="tarifas.id">{{tarifas.departamento_destino}}</option>
+                                 <option v-for="tarifas in tarifas"  :value="tarifas.id">{{tarifas.departamento_destino}}</option>
                                </select>
                                <p class="text-danger my-1 small" v-if="(errors.first('ciudad_destino'))" >  Este dato es requerido  </p>
                              </div>
@@ -294,7 +296,7 @@
                              <div class="form-group links">
                                <label>Ciudad destino</label>
                               <select v-model="form.id_tarifa" @change="tari()" v-validate="'required'" name="ciudad_destino" class="form-control" disabled >
-                                <option v-for="tarifas in tarifas" v-if="form.departamento_origen===tarifas.departamento_origen && form.departamento_destino===tarifas.departamento_destino && form.ciudad_origen===tarifas.ciudad_origen && form.tipo_envio===tarifas.tipo_envio" :value="tarifas.id">{{tarifas.ciudad_destino}}</option>
+                                <option v-for="tarifas in tarifas" :value="tarifas.id">{{tarifas.ciudad_destino}}</option>
                               </select>
                               <p class="text-danger my-1 small" v-if="(errors.first('ciudad_destino'))" >  Este dato es requerido  </p>
                             </div>
@@ -303,7 +305,7 @@
                             <div class="form-group links">
                               <label>Tipo de transporte</label>
                              <select v-model="form.id_tarifa" @change="tari()" v-validate="'required'" name="ciudad_destino" class="form-control" disabled >
-                               <option v-for="tarifas in tarifas" v-if="form.departamento_origen===tarifas.departamento_origen && form.departamento_destino===tarifas.departamento_destino && form.ciudad_origen===tarifas.ciudad_origen && form.tipo_envio===tarifas.tipo_envio" :value="tarifas.id">{{tarifas.tipo_transporte}}</option>
+                               <option v-for="tarifas in tarifas"  :value="tarifas.id">{{tarifas.tipo_transporte}}</option>
                              </select>
                              <p class="text-danger my-1 small" v-if="(errors.first('ciudad_destino'))" >  Este dato es requerido  </p>
                            </div>
@@ -312,7 +314,7 @@
                            <div class="form-group links">
                              <label>Tipo de envío</label>
                             <select v-model="form.id_tarifa" @change="tari()" v-validate="'required'" name="ciudad_destino" class="form-control" disabled >
-                              <option v-for="tarifas in tarifas" v-if="form.departamento_origen===tarifas.departamento_origen && form.departamento_destino===tarifas.departamento_destino && form.ciudad_origen===tarifas.ciudad_origen && form.tipo_envio===tarifas.tipo_envio" :value="tarifas.id">{{tarifas.tipo_envio}}</option>
+                              <option v-for="tarifas in tarifas"  :value="tarifas.id">{{tarifas.tipo_envio}}</option>
                             </select>
                             <p class="text-danger my-1 small" v-if="(errors.first('ciudad_destino'))" >  Este dato es requerido  </p>
                           </div>
@@ -321,7 +323,7 @@
                           <div class="form-group links">
                             <label>Tarifa</label>
                            <select v-model="form.id_tarifa" @change="tari()" v-validate="'required'" name="ciudad_destino" class="form-control" disabled >
-                             <option v-for="tarifas in tarifas" v-if="form.departamento_origen===tarifas.departamento_origen && form.departamento_destino===tarifas.departamento_destino && form.ciudad_origen===tarifas.ciudad_origen && form.tipo_envio===tarifas.tipo_envio" :value="tarifas.id">{{tarifas.precio}}</option>
+                             <option v-for="tarifas in tarifas"  :value="tarifas.id">{{tarifas.precio}}</option>
                            </select>
                            <p class="text-danger my-1 small" v-if="(errors.first('ciudad_destino'))" >  Este dato es requerido  </p>
                          </div>
@@ -332,7 +334,7 @@
                          <div class="col-md-4">
                            <label class="links">Identificación Carga Cliente</label>
                            <div class="form-group">
-                             <input v-model="form.id_carga_cliente" v-validate="'required'" name="id_carga_cliente" class="form-control" :disabled="ver" >
+                             <input v-model="form.id_carga_cliente" v-validate="'required'" name="id_carga_cliente" class="form-control" :disabled="ver||editMode" >
                              <p class="text-danger my-1 small" v-if="(errors.first('id_carga_cliente'))" >  Este dato es requerido  </p>
                            </div>
                          </div>
@@ -389,7 +391,7 @@
                                     v-model="form.fecha_despacho"
                                     :config="config"
                                     class="form-control"
-                                    placeholder="Selecciona fecha y hora"
+                                    placeholder="Selecciona fecha"
                                     name="fecha_despacho">
                               </flat-pickr>
                               <p class="text-danger my-1 small" v-if="(errors.first('fecha_despacho'))" >  Este dato es requerido  </p>
@@ -419,7 +421,7 @@
                                     v-model="form.fecha_en_destino"
                                     :config="config"
                                     class="form-control"
-                                    placeholder="Selecciona fecha y hora"
+                                    placeholder="Selecciona fecha"
                                     name="fecha_en_destino">
                               </flat-pickr>
                               <p class="text-danger my-1 small" v-if="(errors.first('fecha_en_destino'))" >  Este dato es requerido  </p>
@@ -440,13 +442,12 @@
                               <label for="colFormLabelSm" class="links">Fotos detalladas</label>
                                      <div class="col-sm-12">
                                        <div class="row ">
-                                           <div class="custom-file btn-group spl col-8">
-                                             <input type="file" class="custom-file-input"  id="imagenFoto" name="imagenFoto">
-                                             <label class="custom-file-label my-3" for="customFile">Buscar Archivo</label>
-                                           </div>
-                                           <div class="col-4 spl" >
-                                             <button class="btn btn-light links" type="button"  @click="uploadFoto()">Subir archivo</button>
-                                           </div>
+                                         <div class="col-8">
+                                           <input type="file"   id="imagenFoto" name="imagenFoto">
+                                         </div>
+                                           <div class="col-4">
+                                           <button class="btn btn-light links btn-lg" type="button"  @click="uploadFoto()">Subir archivo</button>
+                                         </div>
                                         </div>
                                    </div>
                              </div>
@@ -468,7 +469,7 @@
                                     v-model="form.fecha_conectividad"
                                     :config="config"
                                     class="form-control"
-                                    placeholder="Selecciona fecha y hora"
+                                    placeholder="Selecciona fecha"
                                     name="fecha_conectividad">
                               </flat-pickr>
                               <p class="text-danger my-1 small" v-if="(errors.first('fecha_conectividad'))" >  Este dato es requerido  </p>
@@ -488,7 +489,7 @@
                                     v-model="form.f_entrega_c"
                                     :config="config"
                                     class="form-control"
-                                    placeholder="Selecciona fecha y hora"
+                                    placeholder="Selecciona fecha"
                                     name="numero_anexo_l">
                               </flat-pickr>
                               <p class="text-danger my-1 small" v-if="(errors.first('numero_anexo_l'))" >  Este dato es requerido  </p>
@@ -529,6 +530,8 @@
          <!-- /.modal-dialog -->
         </div>
    <!-- fin del modal -->
+   <pre>{{desde}}</pre>
+   <pre>{{hasta}}</pre>
    </div>
 </div>
 <script>
@@ -540,8 +543,8 @@
        data: {
          config: {
             wrap: true,
-            enableTime: true,
-            dateFormat: 'yy-m-d H:i',
+            enableTime: false,
+            dateFormat: 'yy-m-d',
             locale: flatpickr.l10ns.es
           },
          departamento:0,
@@ -1888,8 +1891,32 @@
           ]
           }
           ],
+          desde:'',
+          hasta:'',
+          numero:'',
        },
        methods: {
+                mathc(){
+                  if (!this.desde||!this.hasta) {
+                    if (!this.numero) {
+                      this.loadcargas_cedulas();
+                      console.log("sin numero");
+                    }else{
+                      console.log("con numero");
+                      this.loadcargas_cedulas_nc();
+                    }
+
+                  }else if (this.desde && this.hasta && this.form.cedula || this.numero) {
+
+                    if (!this.numero) {
+                      this.loadcargas_cedulas_tiempo();
+                      console.log("sin numero fecha");
+                    }else{
+                      console.log("con numero");
+                      this.loadcargas_cedulas_nc();
+                    }
+                  }
+                },
                  fletetotal(){
                   this.form.flete_total=parseInt(this.form.cantidad)*parseInt(this.form.flete_fijo)*parseInt(this.form.kilos_cliente);
                  },
@@ -1916,6 +1943,7 @@
                       text: 'Agregado correctamente'
                     });
                    this.loadFotos();
+                   document.getElementById("imagenFoto").value = "";
                   }
                   else
                   {
@@ -1994,6 +2022,31 @@
                document.getElementById("form").reset();
                this.editMode=false;
                this.form.nombre_cargo='';
+               this.form.id='';
+               this.form.nombre_cargo='';
+               this.form.f_recogida='';
+               this.form.f_ingreso='';
+               this.form.cedula='';
+               this.form.id_carga_cliente='';
+               this.form.tipo_carga='';
+               this.form.cantidad='';
+               this.form.kilos_tvg='';
+               this.form.kilos_cliente='';
+               this.form.flete_fijo='';
+               this.form.flete_total='';
+               this.form.fecha_despacho='';
+               this.form.proveedor='';
+               this.form.n_guia_proveedor='';
+               this.form.fecha_en_destino='';
+               this.form.sede_cliente='';
+               this.form.fecha_conectividad='';
+               this.form.n_referencia_c='';
+               this.form.f_entrega_c='';
+               this.form.numero_anexo_l='';
+               this.form.numero_factura='';
+               this.form.fecha_factura='';
+               this.form.id_tarifa='';
+               this.imagenes='';
                $('#modal-lg').modal('show');
            },
            validateBeforeSubmit() {
@@ -2102,8 +2155,33 @@
                    })
                  },
                  setear(index){
-                   this.form.id=this.clientes[index].id,
-                   this.form.nombre_cargo=this.clientes[index].nombre_cargo,
+                   this.form.id=this.cargas[index].id,
+                   this.form.nombre_cargo=this.cargas[index].nombre_cargo,
+                   this.form.f_recogida=this.cargas[index].f_recogida,
+                   this.form.f_ingreso=this.cargas[index].f_ingreso,
+                   this.form.cedula=this.cargas[index].cedula_cliente,
+                   this.form.id_carga_cliente=this.cargas[index].id_carga_cliente,
+                   this.form.tipo_carga=this.cargas[index].tipo_carga,
+                   this.form.cantidad=this.cargas[index].cantidad,
+                   this.form.kilos_tvg=this.cargas[index].kilos_tvg,
+                   this.form.kilos_cliente=this.cargas[index].kilos_cliente,
+                   this.form.flete_fijo=this.cargas[index].flete_fijo,
+                   this.form.flete_total=this.cargas[index].flete_total,
+                   this.form.fecha_despacho=this.cargas[index].fecha_despacho,
+                   this.form.proveedor=this.cargas[index].proveedor,
+                   this.form.n_guia_proveedor=this.cargas[index].n_guia_proveedor,
+                   this.form.fecha_en_destino=this.cargas[index].fecha_en_destino,
+                   this.form.sede_cliente=this.cargas[index].sede_cliente,
+                   this.form.fecha_conectividad=this.cargas[index].fecha_conectividad,
+                   this.form.n_referencia_c=this.cargas[index].n_referencia_c,
+                   this.form.f_entrega_c=this.cargas[index].f_entrega_c,
+                   this.form.numero_anexo_l=this.cargas[index].numero_anexo_l,
+                   this.form.numero_factura=this.cargas[index].numero_factura,
+                   this.form.fecha_factura=this.cargas[index].fecha_factura,
+                   this.form.id_tarifa=this.cargas[index].id_tarifa,
+                   this.loadsedes();
+                   this.loadFotos();
+                   this.tari();
                    $('#modal-lg').modal('show');
                    this.editMode=true
                  },
@@ -2118,8 +2196,48 @@
                    .then(({data: {cargas}}) => {
                      this.cargas = cargas
                    });
-                   $("#example1").DataTable();
+
                  },
+                 async loadcargas_cedulas(){
+                         let data = new FormData();
+                          data.append('cedula',this.form.cedula);
+                          await axios.post('index.php/ClientesEspeciales/getcarga_cedula/',data)
+                          .then(({data: {cargas}}) => {
+                            this.cargas = cargas
+                          });
+
+                       },
+                       async loadcargas_cedulas_tiempo(){
+                               let data = new FormData();
+                                data.append('cedula',this.form.cedula);
+                                data.append('desde',this.desde);
+                                data.append('hasta',this.hasta);
+                                await axios.post('index.php/ClientesEspeciales/getcarga_cedula_tiempo/',data)
+                                .then(({data: {cargas}}) => {
+                                  this.cargas = cargas
+                                });
+
+                             },
+             async loadcargas_cedulas_nc(){
+                     let data = new FormData();
+                      data.append('cedula',this.form.cedula);
+                      data.append('n_referencia_c',this.numero);
+                      await axios.post('index.php/ClientesEspeciales/getcarga_cedula_numero/',data)
+                      .then(({data: {cargas}}) => {
+                        this.cargas = cargas
+                      });
+
+                   },
+                   async loadcargas_cedulas_nc(){
+                           let data = new FormData();
+                            data.append('cedula',this.form.cedula);
+                            data.append('n_referencia_c',this.numero);
+                            await axios.post('index.php/ClientesEspeciales/getcarga_cedula_numero/',data)
+                            .then(({data: {cargas}}) => {
+                              this.cargas = cargas
+                            });
+
+                         },
            async loadclientes() {
                 await   axios.get('index.php/clientes/getclientes/')
                    .then(({data: {clientes}}) => {
