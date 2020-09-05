@@ -69,6 +69,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             ->get()
             ->result();
           }
+          public function get_anexo($id) {
+              return $this->db
+              ->select('c.*,s.nombre_sede,t.*,k.nombre_cliente,p.nombre_proveedor')
+              ->from('historial_Ce c')
+              ->where('numero_anexo_l', $id)
+              ->join('sedes s', 'c.sede_cliente = s.id')
+              ->join('tarifas t', 'c.id_tarifa = t.id')
+              ->join('clientes k', 'c.cedula_cliente = k.cedula_cliente')
+              ->join('proveedores p', 'c.proveedor = p.id')
+              ->get()
+              ->result();
+            }
           public function getcarga_cedula($id) {
               return $this->db
               ->select('c.*,s.nombre_sede,t.*,k.nombre_cliente,p.nombre_proveedor')
@@ -111,6 +123,22 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 ->get()
                 ->result();
               }
+              public function getcarga_cedula_numero_tiempo($datas) {
+                return $this->db
+                ->select('c.*,s.nombre_sede,t.*,k.nombre_cliente,p.nombre_proveedor')
+                ->from('historial_Ce c')
+                ->where('n_referencia_c', $datas['n_referencia_c'])
+  //              ->where('fecha_despacho <=',$datas['desde'])
+  //              ->where('fecha_despacho >=',$datas['hasta'])
+                ->where('fecha_despacho >=', $datas['desde'])
+                ->where('fecha_despacho <=', $datas['hasta'])
+                ->join('sedes s', 'c.sede_cliente = s.id')
+                ->join('tarifas t', 'c.id_tarifa = t.id')
+                ->join('clientes k', 'c.cedula_cliente = k.cedula_cliente')
+                ->join('proveedores p', 'c.proveedor = p.id')
+                ->get()
+                ->result();
+                }
           public function deletecarga($id) {
             $this->db->where('codigo', $id);
             $this->db->delete('historial_ce');

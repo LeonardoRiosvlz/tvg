@@ -1,4 +1,21 @@
 <div id="app" class="container">
+  <div id="mydiv">
+    <div id="mydivheader">ANEXOS PARA FACTURAR</div>
+    <table  class="table ">
+      <thead>
+      <tr>
+        <th class="links">Anexo legalización</th>
+        <th class="links">Valor</th>
+        <th class="links">Action</th>
+      </tr>
+      <tr v-for="(factura,index) in factura">
+        <td>{{factura.numero_anexo_l}}</td>
+        <td>{{factura.flete_total}}$</td>
+        <td><span class="badge badge-primary links" @click="factura.splice(index, 1)"> X</span></td>
+      </tr>
+    </table>
+    <button v-if="factura.length>0" type="button" class="btn-primary btn-block" name="button">Generar Factura</button>
+  </div>
   <div class="row">
     <div class="col-lg-12 my-1 ">
       <!-- Shopping cart table -->
@@ -62,18 +79,27 @@
                   <option v-for="cargas in cargas" v-if="cargas.cedula_cliente===form.cedula"  :value="cargas.n_referencia_c">{{cargas.n_referencia_c}}</option>
               </datalist>
           </div>
-          <div class="col-md-4">
+          <div class="col-md-3 ">
             <label class="links">Anexo legalización</label>
-            <input list="encodings" v-model="form.cedula" value="" class="form-control form-control-lg" placeholder="Escriba anexo de legalización ">
-              <datalist id="encodings">
-                  <option v-for="clientes in clientes" v-if="clientes.cliente_especial==='Si'" :value="clientes.cedula_cliente">{{clientes.nombre_cliente}}</option>
+            <input list="encodingss" v-model="anexo" class="form-control form-control-lg" placeholder="Escriba anexo de legalización ">
+              <datalist id="encodingss">
+                  <option v-for="cargas_t in cargas_t"  :value="cargas_t.numero_anexo_l">{{cargas_t.numero_anexo_l}}</option>
               </datalist>
+          </div>
+          <div class="col-1 py-5">
+            <input type="checkbox" id="check17" v-model="facturar"/>
+             <label class="labels" for="check17"></label>
           </div>
         </div>
         <div class="row p-2">
           <div class="col-2">
             <th scope="col" colspan="2" class="border-0 bg-white  text-center">
-              <a href="<?=base_url();?>/Clientes/excelexport" type="button"  class="btn btn-block btn-primary btn-sm links" >Exportar Excel <span class="mbri-save"></span></a>
+              <a v-if="exceluno && cargas.length>0 " :href="'<?=base_url();?>ClientesEspeciales/excelexport_cedula/'+form.cedula" type="button"  class="btn btn-block btn-primary btn-sm links" >Exportar Excel <span class="mbri-save"></span></a>
+              <a v-if="exceldos && cargas.length>0 " :href="'<?=base_url();?>ClientesEspeciales/excelexport_cedula_numero/'+form.cedula+'/'+numero" type="button"  class="btn btn-block btn-primary btn-sm links" >Exportar Excel <span class="mbri-save"></span></a>
+              <a v-if="exceltres && cargas.length>0 " :href="'<?=base_url();?>ClientesEspeciales/excelexport_cedula_tiempo/'+form.cedula+'/'+desde+'/'+hasta" type="button"  class="btn btn-block btn-primary btn-sm links" >Exportar Excel <span class="mbri-save"></span></a>
+              <a v-if="excelcuatro && cargas.length>0 " :href="'<?=base_url();?>ClientesEspeciales/excelexport_cedulant/'+numero+'/'+desde+'/'+hasta" type="button"  class="btn btn-block btn-primary btn-sm links" >Exportar Excel <span class="mbri-save"></span></a>
+              <a v-if="excelcinco && cargas.length>0 " :href="'<?=base_url();?>ClientesEspeciales/excelexport_anexo/'+anexo" type="button"  class="btn btn-block btn-primary btn-sm links" >Exportar Excel <span class="mbri-save"></span></a>
+
             </th>
             <th scope="col" colspan="2" class="border-0 bg-white  text-center">
               <a href="<?=base_url();?>/Clientes/pdf" type="button" class="btn btn-block btn-secondary btn-sm links" download>Exportar PDF <span class="mbri-file" ></span></a>
@@ -357,7 +383,7 @@
                            <div class="form-group">
                              <select v-model="form.tipo_carga" v-validate="'required'" name="tipo_envio" class="form-control" :disabled="ver" >
                                <option value=""></option>
-                               <option v-for="tipocarga in tipocarga" v-if="tipocarga.estado==='Activo'" :value="tipocarga.id">{{tipocarga.nombre_tipocarga}}</option>
+                               <option v-for="tipocarga in tipocarga" v-if="tipocarga.estado==='Activo'" :value="tipocarga.nombre_tipocarga">{{tipocarga.nombre_tipocarga}}</option>
                              </select>
                              <p class="text-danger my-1 small" v-if="(errors.first('tipo_envio'))" >  Este dato es requerido  </p>
                            </div>
@@ -549,8 +575,6 @@
          <!-- /.modal-dialog -->
         </div>
    <!-- fin del modal -->
-
-
    </div>
 </div>
 <script>
@@ -569,7 +593,10 @@
          departamento:0,
          ver:false,
          cart:[],
+         factura:[],
          cargas:[],
+         legalizaciones:[],
+         cargas_t:[],
          tarifas:[],
          imagenes:[],
          clientes:[],
@@ -1913,6 +1940,13 @@
           desde:'',
           hasta:'',
           numero:'',
+          exceluno:false,
+          exceldos:false,
+          exceltres:false,
+          excelcuatro:false,
+          excelcinco:false,
+          anexo:'',
+          facturar:false,
        },
        methods: {
                 alerta(){
@@ -1926,22 +1960,57 @@
                 },
                 mathc(){
                   if (!this.desde||!this.hasta) {
-                    if (!this.numero) {
-                      this.loadcargas_cedulas();
-                      console.log("sin numero");
+                    if (this.anexo) {
+                      if (this.facturar==true) {
+                        this.loadAnexos();
+                      }
+                      this.loadcargas_anexos();
+                      this.exceluno=false;
+                      this.exceldos=false;
+                      this.exceltres=false;
+                      this.excelcuatro=false;
+                      this.excelcinco=true;
+                      this.numero="";
+                      this.form.cedula="";
+                      this.desde="";
+                      this.hasta="";
                     }else{
-                      console.log("con numero");
-                      this.loadcargas_cedulas_nc();
+                      if (!this.numero) {
+                        this.loadcargas_cedulas();
+                        this.exceluno=true;
+                        this.exceldos=false;
+                        this.exceltres=false;
+                        this.excelcuatro=false;
+                        this.excelcinco=false;
+                        this.anexo="";
+                      }else{
+                        this.loadcargas_cedulas_nc();
+                        this.exceluno=false;
+                        this.exceldos=true;
+                        this.exceltres=false;
+                        this.excelcuatro=false;
+                        this.excelcinco=false;
+                        this.anexo="";
+                      }
                     }
-
                   }else if (this.desde && this.hasta && this.form.cedula || this.numero) {
 
                     if (!this.numero) {
                       this.loadcargas_cedulas_tiempo();
-                      console.log("sin numero fecha");
+                      this.exceluno=false;
+                      this.exceldos=false;
+                      this.exceltres=true;
+                      this.excelcuatro=false;
+                      this.excelcinco=false;
+                      this.anexo="";
                     }else{
-                      console.log("con numero");
-                      this.loadcargas_cedulas_nc();
+                      this.loadcargas_cedulas_nc_tiempo();
+                      this.exceluno=false;
+                      this.exceldos=false;
+                      this.exceltres=false;
+                      this.excelcuatro=true;
+                      this.excelcinco=false;
+                      this.anexo="";
                     }
                   }
                 },
@@ -2247,7 +2316,7 @@
              async loadcargas() {
                 await   axios.get('index.php/ClientesEspeciales/getcarga/')
                    .then(({data: {cargas}}) => {
-                     this.cargas = cargas
+                     this.cargas_t = cargas
                    });
 
                  },
@@ -2261,6 +2330,49 @@
                            this.alerta();
 
                        },
+             async loadcargas_anexos(){
+                     let data = new FormData();
+                      data.append('anexo',this.anexo);
+                      await axios.post('index.php/ClientesEspeciales/get_anexo/',data)
+                      .then(({data: {cargas}}) => {
+                        this.cargas = cargas
+                      });
+                  this.alerta();
+                   },
+        /////anexos///////////
+            async loadAnexos(){
+                 let data = new FormData();
+                  data.append('anexo',this.anexo);
+                  await axios.post('index.php/ClientesEspeciales/get_anexo/',data)
+                  .then(({data: {cargas}}) => {
+                    this.legalizaciones = cargas
+                  });
+
+                  if (this.legalizaciones.length>0) {
+                    if (this.factura.length<1) {
+                      for (var i = 0; i < this.legalizaciones.length; i++) {
+                      this.factura.push(this.legalizaciones[i])
+                     }
+                   }else{
+                     for (var i = 0; i < this.legalizaciones.length; i++) {
+                       for (var j = 0; j < this.factura.length; j++) {
+                         var contador=0;
+                         if (this.legalizaciones[i].codigo===this.factura[j].codigo) {
+                           contador=1;
+                         }
+                       }
+                       if (contador==0) {
+                         this.factura.push(this.legalizaciones[i])
+                       }
+                   }
+
+
+                    }
+                  }
+
+               },
+
+               /////////anexos////////////
                        async loadcargas_cedulas_tiempo(){
                                let data = new FormData();
                                 data.append('cedula',this.form.cedula);
@@ -2282,6 +2394,18 @@
                       });
                        this.alerta();
                    },
+                   async loadcargas_cedulas_nc_tiempo(){
+                           let data = new FormData();
+                            data.append('cedula',this.form.cedula);
+                            data.append('n_referencia_c',this.numero);
+                            data.append('desde',this.desde);
+                            data.append('hasta',this.hasta);
+                            await axios.post('index.php/ClientesEspeciales/getcarga_cedula_numero_tiempo/',data)
+                            .then(({data: {cargas}}) => {
+                              this.cargas = cargas
+                            });
+                             this.alerta();
+                         },
                    async loadcargas_cedulas_nc(){
                            let data = new FormData();
                             data.append('cedula',this.form.cedula);
@@ -2349,7 +2473,7 @@
        },
 
        created(){
-         this.loadcargas();
+            this.loadcargas();
             this.loadproveedores();
             this.loadtarifas();
             this.loadtipocarga();
@@ -2359,4 +2483,51 @@
             this.loadCart();
        },
    })
+ </script>
+
+
+ <script>
+ //Make the DIV element draggagle:
+ dragElement(document.getElementById("mydiv"));
+
+ function dragElement(elmnt) {
+   var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+   if (document.getElementById(elmnt.id + "header")) {
+     /* if present, the header is where you move the DIV from:*/
+     document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
+   } else {
+     /* otherwise, move the DIV from anywhere inside the DIV:*/
+     elmnt.onmousedown = dragMouseDown;
+   }
+
+   function dragMouseDown(e) {
+     e = e || window.event;
+     e.preventDefault();
+     // get the mouse cursor position at startup:
+     pos3 = e.clientX;
+     pos4 = e.clientY;
+     document.onmouseup = closeDragElement;
+     // call a function whenever the cursor moves:
+     document.onmousemove = elementDrag;
+   }
+
+   function elementDrag(e) {
+     e = e || window.event;
+     e.preventDefault();
+     // calculate the new cursor position:
+     pos1 = pos3 - e.clientX;
+     pos2 = pos4 - e.clientY;
+     pos3 = e.clientX;
+     pos4 = e.clientY;
+     // set the element's new position:
+     elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+     elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+   }
+
+   function closeDragElement() {
+     /* stop moving when mouse button is released:*/
+     document.onmouseup = null;
+     document.onmousemove = null;
+   }
+ }
  </script>
