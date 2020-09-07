@@ -85,6 +85,7 @@
                       <a class="dropdown-item links" href="<?=base_url()?>SeguroCarga"><i class="fa fa-shield" aria-hidden="true"></i> Seguros de carga</a>
                       <a class="dropdown-item links" href="<?=base_url()?>CosteGuia"><i class="fa fa-credit-card-alt" aria-hidden="true"></i> Coste de guía</a>
                       <a class="dropdown-item links" href="<?=base_url()?>satelites"><i class="fa fa-podcast" aria-hidden="true"></i> Satélites</a>
+                      <a class="dropdown-item links" href="<?=base_url()?>Cotizaciones"><i class="fa fa-calculator" aria-hidden="true"></i> Cotizaciones</a>
                     </div>
                   </div>
                   <div class="dropdown">

@@ -1,5 +1,5 @@
 <div id="app" class="container">
-  <div id="mydiv">
+  <div id="mydiv" v-show="facturar">
     <div id="mydivheader">ANEXOS PARA FACTURAR</div>
     <table  class="table ">
       <thead>
@@ -11,7 +11,7 @@
       <tr v-for="(factura,index) in factura">
         <td>{{factura.numero_anexo_l}}</td>
         <td>{{factura.flete_total}}$</td>
-        <td><span class="badge badge-primary links" @click="factura.splice(index, 1)"> X</span></td>
+        <td><button class="btn btn-danger" @click="eliminarItem(index)"><span class="mbri-trash"></span></button></td>
       </tr>
     </table>
     <button v-if="factura.length>0" type="button" class="btn-primary btn-block" name="button">Generar Factura</button>
@@ -91,7 +91,7 @@
              <label class="labels" for="check17"></label>
           </div>
         </div>
-        <div class="row p-2">
+        <div class="row p-1">
           <div class="col-2">
             <th scope="col" colspan="2" class="border-0 bg-white  text-center">
               <a v-if="exceluno && cargas.length>0 " :href="'<?=base_url();?>ClientesEspeciales/excelexport_cedula/'+form.cedula" type="button"  class="btn btn-block btn-primary btn-sm links" >Exportar Excel <span class="mbri-save"></span></a>
@@ -100,9 +100,6 @@
               <a v-if="excelcuatro && cargas.length>0 " :href="'<?=base_url();?>ClientesEspeciales/excelexport_cedulant/'+numero+'/'+desde+'/'+hasta" type="button"  class="btn btn-block btn-primary btn-sm links" >Exportar Excel <span class="mbri-save"></span></a>
               <a v-if="excelcinco && cargas.length>0 " :href="'<?=base_url();?>ClientesEspeciales/excelexport_anexo/'+anexo" type="button"  class="btn btn-block btn-primary btn-sm links" >Exportar Excel <span class="mbri-save"></span></a>
 
-            </th>
-            <th scope="col" colspan="2" class="border-0 bg-white  text-center">
-              <a href="<?=base_url();?>/Clientes/pdf" type="button" class="btn btn-block btn-secondary btn-sm links" download>Exportar PDF <span class="mbri-file" ></span></a>
             </th>
           </div>
         </div>
@@ -2251,6 +2248,28 @@
                      }
                    })
                  },
+                 eliminarItem(index){
+                   Swal({
+                     title: '¿Estás seguro?',
+                     type: 'warning',
+                     showCancelButton: true,
+                     confirmButtonText: '¡Si! ¡eliminar!',
+                     cancelButtonText: '¡No! ¡cancelar!',
+                     reverseButtons: true
+                   }).then((result) => {
+                     if (result.value) {
+                       this.factura.splice(index, 1);
+                     } else if (
+                       result.dismiss === Swal.DismissReason.cancel
+                     ) {
+                       Swal(
+                         'Cancelado',
+                         'No fue eliminado.',
+                         'success'
+                       )
+                     }
+                   })
+                 },
                  setear(index){
                    this.form.codigo=this.cargas[index].codigo,
                    this.form.nombre_cargo=this.cargas[index].nombre_cargo,
@@ -2358,10 +2377,10 @@
                        for (var j = 0; j < this.factura.length; j++) {
                          var contador=0;
                          if (this.legalizaciones[i].codigo===this.factura[j].codigo) {
-                           contador=1;
+                           this.legalizaciones.splice(i, 1)
                          }
                        }
-                       if (contador==0) {
+                       if (this.legalizaciones.length>0) {
                          this.factura.push(this.legalizaciones[i])
                        }
                    }
