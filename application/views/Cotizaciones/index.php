@@ -193,6 +193,142 @@
                        </div>
                      </div>
                   </div>
+                  <div class="col-md-4" v-if="!form.id_tarifa">
+                    <label class="links">Tipo de transporte</label>
+                    <div class="form-group">
+                      <select v-model="form.tipo_transporte" @change="form.tipo_envio=''" v-validate="'required'" name="tipo_transporte" class="form-control" :disabled="ver" >
+                       <option value=""></option>
+                        <option v-for="transportes in transportes" :value="transportes.tipo_transporte">{{transportes.tipo_transporte}}</option>
+                      </select>
+                      <p class="text-danger my-1 small" v-if="(errors.first('tipo_transporte'))" >  Este dato es requerido  </p>
+                    </div>
+                  </div>
+                  <div class="col-md-4" v-if="!form.id_tarifa">
+                    <label class="links">Tipo de envío</label>
+                    <div class="form-group">
+                      <select v-model="form.tipo_envio" v-validate="'required'" name="tipo_envio" class="form-control" :disabled="ver" >
+                        <option value=""></option>
+                        <option v-for="tiposenvios in tiposenvios" v-show="tiposenvios.tipo_transporte===form.tipo_transporte" :value="tiposenvios.nombre_tiposenvios">{{tiposenvios.nombre_tiposenvios}}</option>
+                      </select>
+                      <p class="text-danger my-1 small" v-if="(errors.first('tipo_envio'))" >  Este dato es requerido  </p>
+                    </div>
+                  </div>
+                  <div class="col-sm-4" v-if="!form.id_tarifa">
+                     <div class="form-group links">
+                       <label>Tarifa</label>
+                       <select v-model="form.id_tarifa" v-validate="'required'" name="ciudad_destino" class="form-control" disabled >
+                         <option v-for="tarifas in tarifas" v-if="form.departamento_origen===tarifas.departamento_origen && form.departamento_destino===tarifas.departamento_destino && form.ciudad_origen===tarifas.ciudad_origen && form.tipo_envio===tarifas.tipo_envio" :value="tarifas.id">{{tarifas.precio}}</option>
+                       </select>
+                      <p class="text-danger my-1 small" v-if="(errors.first('ciudad_destino'))" >  Este dato es requerido  </p>
+                    </div>
+                 </div>
+                    <div class="col-sm-3" v-if="!form.id_tarifa">
+                      <label class="bold">Departamento origen</label>
+                      <div class="form-group">
+                        <select v-model="form.dep" @change="depp()" class="form-control" :disabled="ver" >
+                          <option value=""></option>
+                          <option v-for="colombia in colombia" :value="colombia.id">{{colombia.departamento}}</option>
+                        </select>
+                      </div>
+                    </div>
+
+                   <div class="col-sm-3" v-if="!form.id_tarifa">
+                      <div class="form-group links">
+                        <label>Ciudad origen</label>
+                       <select v-model="form.ciudad_origen" v-validate="'required'" name="ciudad_origen" class="form-control" :disabled="ver" >
+                           <option v-for="tarifas in tarifas" v-if="form.departamento_origen===tarifas.departamento_origen && form.tipo_envio===tarifas.tipo_envio" :value="tarifas.ciudad_origen">{{tarifas.ciudad_origen}}</option>
+                       </select>
+                       <p class="text-danger my-1 small" v-if="(errors.first('ciudad_origen'))" >  Este dato es requerido  </p>
+                     </div>
+                  </div>
+                  <div class="col-sm-3" v-if="!form.id_tarifa">
+                    <label class="links">Departamento destino</label>
+                    <div class="form-group">
+                      <select v-model="form.departamento_destino" @change="depp_dos()" class="form-control" :disabled="ver" >
+                        <option value=""></option>
+                        <option v-for="tarifas in tarifas" v-if="form.departamento_origen===tarifas.departamento_origen && form.ciudad_origen===tarifas.ciudad_origen && form.tipo_envio===tarifas.tipo_envio" :value="tarifas.departamento_destino">{{tarifas.departamento_destino}}</option>
+                      </select>
+                    </div>
+                  </div>
+
+                 <div class="col-sm-3" v-if="!form.id_tarifa">
+                    <div class="form-group links">
+                      <label>Ciudad destino</label>
+                     <select v-model="form.id_tarifa" @change="tari()" v-validate="'required'" name="ciudad_destino" class="form-control" :disabled="ver" >
+                       <option v-for="tarifas in tarifas" v-if="form.departamento_origen===tarifas.departamento_origen && form.departamento_destino===tarifas.departamento_destino && form.ciudad_origen===tarifas.ciudad_origen && form.tipo_envio===tarifas.tipo_envio" :value="tarifas.id">{{tarifas.ciudad_destino}}</option>
+                     </select>
+                     <p class="text-danger my-1 small" v-if="(errors.first('ciudad_destino'))" >  Este dato es requerido  </p>
+                   </div>
+                </div>
+                <div class="card col-12 p-3" v-if="form.id_tarifa">
+                 <h4 class="card-title">Tarifa Acorde</h4>
+                  <div class="card-body row sp">
+                    <div class="col-sm-3">
+                       <div class="form-group links">
+                         <label>Depto. origen</label>
+                        <select v-model="form.id_tarifa" @change="tari()" v-validate="'required'" name="ciudad_destino" class="form-control" disabled >
+                          <option v-for="tarifas in tarifas"  :value="tarifas.id">{{tarifas.departamento_origen}}</option>
+                        </select>
+                        <p class="text-danger my-1 small" v-if="(errors.first('ciudad_destino'))" >  Este dato es requerido  </p>
+                      </div>
+                   </div>
+                   <div class="col-sm-3">
+                      <div class="form-group links">
+                        <label>Ciudad origen</label>
+                       <select v-model="form.id_tarifa" @change="tari()" v-validate="'required'" name="ciudad_destino" class="form-control" disabled >
+                         <option v-for="tarifas in tarifas"  :value="tarifas.id">{{tarifas.ciudad_origen}}</option>
+                       </select>
+                       <p class="text-danger my-1 small" v-if="(errors.first('ciudad_destino'))" >  Este dato es requerido  </p>
+                     </div>
+                  </div>
+                  <div class="col-sm-3">
+                     <div class="form-group links">
+                       <label>Depto. destino</label>
+                      <select v-model="form.id_tarifa" @change="tari()" v-validate="'required'" name="ciudad_destino" class="form-control" disabled >
+                        <option v-for="tarifas in tarifas"  :value="tarifas.id">{{tarifas.departamento_destino}}</option>
+                      </select>
+                      <p class="text-danger my-1 small" v-if="(errors.first('ciudad_destino'))" >  Este dato es requerido  </p>
+                    </div>
+                 </div>
+                 <div class="col-sm-3">
+                    <div class="form-group links">
+                      <label>Ciudad destino</label>
+                     <select v-model="form.id_tarifa" @change="tari()" v-validate="'required'" name="ciudad_destino" class="form-control" disabled >
+                       <option v-for="tarifas in tarifas" :value="tarifas.id">{{tarifas.ciudad_destino}}</option>
+                     </select>
+                     <p class="text-danger my-1 small" v-if="(errors.first('ciudad_destino'))" >  Este dato es requerido  </p>
+                   </div>
+                </div>
+                <div class="col-sm-4">
+                   <div class="form-group links">
+                     <label>Tipo de transporte</label>
+                    <select v-model="form.id_tarifa" @change="tari()" v-validate="'required'" name="ciudad_destino" class="form-control" disabled >
+                      <option v-for="tarifas in tarifas"  :value="tarifas.id">{{tarifas.tipo_transporte}}</option>
+                    </select>
+                    <p class="text-danger my-1 small" v-if="(errors.first('ciudad_destino'))" >  Este dato es requerido  </p>
+                  </div>
+               </div>
+               <div class="col-sm-4">
+                  <div class="form-group links">
+                    <label>Tipo de envío</label>
+                   <select v-model="form.id_tarifa" @change="tari()" v-validate="'required'" name="ciudad_destino" class="form-control" disabled >
+                     <option v-for="tarifas in tarifas"  :value="tarifas.id">{{tarifas.tipo_envio}}</option>
+                   </select>
+                   <p class="text-danger my-1 small" v-if="(errors.first('ciudad_destino'))" >  Este dato es requerido  </p>
+                 </div>
+              </div>
+              <div class="col-sm-4">
+                 <div class="form-group links">
+                   <label>Tarifa</label>
+                  <select v-model="form.id_tarifa" @change="tari()" v-validate="'required'" name="ciudad_destino" class="form-control" disabled >
+                    <option v-for="tarifas in tarifas"  :value="tarifas.id">{{tarifas.precio}}</option>
+                  </select>
+                  <p class="text-danger my-1 small" v-if="(errors.first('ciudad_destino'))" >  Este dato es requerido  </p>
+                </div>
+             </div>
+                    <a href="#" @click="form.departamento_origen='Amazonas';form.ciudad_destino='';form.departamento_destino='';form.ciudad_destino='';form.tipo_transporte='';form.tipo_envio='';form.id_tarifa=''" class="card-link">Cambiar tarifa</a>
+                  </div>
+                </div>
                 </div>
                 <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">...</div>
               </div>
