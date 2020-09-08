@@ -102,6 +102,7 @@
       <!-- End -->
     </div>
   </div>
+  <pre>{{clientes}}</pre>
         <!-- Modal agregar   -->
         <div class="modal fade" id="modal-lg" data-backdrop="static" data-keyboard="false">
          <div class="modal-dialog modal-lg">
@@ -113,6 +114,88 @@
                </button>
              </div>
              <div class="modal-body">
+               <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item">
+                  <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Crear Cotización</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Recalcuar Cotización</a>
+                </li>
+              </ul>
+              <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                  <div class="row py-3 pt-3">
+                    <div class="col-md-4">
+                      <label class="links">Clientes</label>
+                      <input list="encodings" v-model="form.cedula"  value="" class="form-control form-control-lg" placeholder="Escriba una cedula">
+                        <datalist id="encodings">
+                            <option v-for="clientes in clientes"   :value="clientes.cedula_cliente">{{clientes.nombre_cliente}}</option>
+                        </datalist>
+                    </div>
+
+                  </div>
+                  <div class="card col-12 p-3">
+                     <h5 >Datos del cliente</h5>
+                     <div class="row">
+                       <div class="col-md-4">
+                         <label class="links">Empresa</label>
+                         <div class="form-group">
+                           <select v-model="form.cedula" v-validate="'required'" name="tipo_envio" class="form-control" disabled >
+                             <option v-for="clientes in clientes" v-if="clientes.cliente_especial==='No'" :value="clientes.cedula_cliente">{{clientes.nombre_empresa}}</option>
+                           </select>
+                           <p class="text-danger my-1 small" v-if="(errors.first('tipo_envio'))" >  Este dato es requerido  </p>
+                         </div>
+                       </div>
+                       <div class="col-md-4">
+                         <label class="links">Representante Legal</label>
+                         <div class="form-group">
+                           <select v-model="form.cedula" v-validate="'required'" name="tipo_envio" class="form-control" disabled>
+                             <option v-for="clientes in clientes" v-if="clientes.cliente_especial==='No'" :value="clientes.cedula_cliente">{{clientes.r_legal}}</option>
+                           </select>
+                           <p class="text-danger my-1 small" v-if="(errors.first('tipo_envio'))" >  Este dato es requerido  </p>
+                         </div>
+                       </div>
+                       <div class="col-md-4">
+                         <label class="links">Telefono</label>
+                         <div class="form-group">
+                           <select v-model="form.cedula" v-validate="'required'" name="tipo_envio" class="form-control" disabled>
+                             <option v-for="clientes in clientes" v-if="clientes.cliente_especial==='No'" :value="clientes.cedula_cliente">{{clientes.ciudad}}</option>
+                           </select>
+                           <p class="text-danger my-1 small" v-if="(errors.first('tipo_envio'))" >  Este dato es requerido  </p>
+                         </div>
+                       </div>
+                       <div class="col-md-4">
+                         <label class="links">Telefono</label>
+                         <div class="form-group">
+                           <select v-model="form.cedula" v-validate="'required'" name="tipo_envio" class="form-control" disabled>
+                             <option v-for="clientes in clientes" v-if="clientes.cliente_especial==='No'" :value="clientes.cedula_cliente">{{clientes.correo_cliente}}</option>
+                           </select>
+                           <p class="text-danger my-1 small" v-if="(errors.first('tipo_envio'))" >  Este dato es requerido  </p>
+                         </div>
+                       </div>
+                       <div class="col-md-4">
+                         <label class="links">Telefono</label>
+                         <div class="form-group">
+                           <select v-model="form.cedula" v-validate="'required'" name="tipo_envio" class="form-control" disabled>
+                             <option v-for="clientes in clientes" v-if="clientes.cliente_especial==='No'" :value="clientes.cedula_cliente">{{clientes.telefono_cliente}}</option>
+                           </select>
+                           <p class="text-danger my-1 small" v-if="(errors.first('tipo_envio'))" >  Este dato es requerido  </p>
+                         </div>
+                       </div>
+                       <div class="col-md-4">
+                         <label class="links">Ciudad</label>
+                         <div class="form-group">
+                           <select v-model="form.cedula" v-validate="'required'" name="tipo_envio" class="form-control" disabled>
+                             <option v-for="clientes in clientes" v-if="clientes.cliente_especial==='No'" :value="clientes.cedula_cliente">{{clientes.ciudad}}</option>
+                           </select>
+                           <p class="text-danger my-1 small" v-if="(errors.first('tipo_envio'))" >  Este dato es requerido  </p>
+                         </div>
+                       </div>
+                     </div>
+                  </div>
+                </div>
+                <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">...</div>
+              </div>
          <!-- Incio de formulario -->
                <div class="card-body">
                        <form role="form" id="form" @submit.prevent="validateBeforeSubmit">
@@ -150,6 +233,15 @@
          departamento:0,
          ver:false,
          cart:[],
+         factura:[],
+         cargas:[],
+         legalizaciones:[],
+         cargas_t:[],
+         tarifas:[],
+         imagenes:[],
+         clientes:[],
+         userFiles:[],
+         sedes:[],
          cotizaciones:[],
          editMode:false,
          form:{
@@ -294,6 +386,50 @@
                    });
                    $("#example1").DataTable();
                  },
+                 async loadclientes() {
+                      await   axios.get('index.php/clientes/getclientes/')
+                         .then(({data: {clientes}}) => {
+                           this.clientes = clientes
+                         });
+                       },
+                   async loadtransportes() {
+                      await   axios.get('index.php/Transporte/gettransportes/')
+                         .then(({data: {transportes}}) => {
+                           this.transportes = transportes
+                         });
+                       },
+                    async loadtiposenvios() {
+                      await   axios.get('index.php/tiposenvios/gettiposenvios/')
+                         .then(({data: {tiposenvios}}) => {
+                           this.tiposenvios = tiposenvios
+                         });
+                       },
+                  async loadtipocarga() {
+                      await   axios.get('index.php/tipocarga/gettipocarga/')
+                         .then(({data: {tipocarga}}) => {
+                           this.tipocarga = tipocarga
+                         });
+                       },
+                 async loadtarifas() {
+                     await   axios.get('index.php/tarifas/gettarifas/')
+                        .then(({data: {tarifas}}) => {
+                          this.tarifas = tarifas
+                        });
+                      },
+                async loadsedes(){
+                        let data = new FormData();
+                         data.append('id_cliente',this.form.cedula);
+                         await axios.post('index.php/Sedes/getsedes/',data)
+                        .then(({data: {sedes}}) => {
+                          this.sedes = sedes
+                        });
+                      },
+                  async loadproveedores() {
+                     await   axios.get('index.php/proveedores/getproveedores/')
+                        .then(({data: {proveedores}}) => {
+                          this.proveedores = proveedores
+                        });
+                      },
                  loadCart(){
 
                    if(localStorage.getItem('cart')) {
@@ -307,6 +443,13 @@
        },
 
        created(){
+
+           this.loadproveedores();
+           this.loadtarifas();
+           this.loadtipocarga();
+           this.loadtiposenvios();
+           this.loadtransportes();
+           this.loadclientes();
             this.loadcotizaciones();
             this.loadCart();
        },

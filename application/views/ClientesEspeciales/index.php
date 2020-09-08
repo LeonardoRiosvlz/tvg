@@ -145,7 +145,7 @@
   </div>
         <!-- Modal agregar   -->
         <div class="modal fade" id="modal-lg" data-backdrop="static" data-keyboard="false">
-         <div class="modal-dialog modal-lg"style="width:1000px!important;">
+         <div class="modal-dialog modal-lg">
            <div class="modal-content">
              <div class="modal-header">
                <button type="button" @click="resete()" class="close" data-dismiss="modal" aria-label="Close">
