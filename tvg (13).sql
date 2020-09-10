@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 03-09-2020 a las 17:22:32
+-- Tiempo de generación: 10-09-2020 a las 04:14:02
 -- Versión del servidor: 10.4.11-MariaDB
 -- Versión de PHP: 7.2.31
 
@@ -105,7 +105,23 @@ INSERT INTO `auth_sessions` (`id`, `user_id`, `login_time`, `modified_at`, `ip_a
 ('2hpu5a5do9bpc07jlcq1tgerkrnpbvb9', 3581919691, '2020-09-02 14:07:34', '2020-09-02 14:27:31', '127.0.0.1', 'Chrome 85.0.4183.83 on Windows 8'),
 ('lt1prrluge7c8pqcfojildk10bo6usd8', 3581919691, '2020-09-02 16:33:41', '2020-09-02 15:44:11', '127.0.0.1', 'Chrome 85.0.4183.83 on Windows 8'),
 ('b9fnkvpl280la13saqvau7d0hlruacs8', 3581919691, '2020-09-03 02:43:28', '2020-09-03 05:18:14', '127.0.0.1', 'Chrome 85.0.4183.83 on Windows 8'),
-('aq3v9bpm4okdu3riec0sdt893o8arj9s', 3581919691, '2020-09-03 14:12:54', '2020-09-03 15:16:52', '127.0.0.1', 'Chrome 85.0.4183.83 on Windows 8');
+('aq3v9bpm4okdu3riec0sdt893o8arj9s', 3581919691, '2020-09-03 14:12:54', '2020-09-03 15:16:52', '127.0.0.1', 'Chrome 85.0.4183.83 on Windows 8'),
+('g48h4dbfk48sbjdjniptpli5i6v89jbt', 3581919691, '2020-09-04 02:16:53', '2020-09-04 01:53:16', '127.0.0.1', 'Chrome 85.0.4183.83 on Windows 8'),
+('eqp89he0im3egfvsv5juhfu7anmnpr6b', 3581919691, '2020-09-04 13:25:58', '2020-09-04 12:27:40', '127.0.0.1', 'Chrome 85.0.4183.83 on Windows 8'),
+('ivk2aoin47cf588v95ehjg3i9i2vg6g8', 3581919691, '2020-09-04 15:09:54', '2020-09-04 15:23:04', '127.0.0.1', 'Chrome 85.0.4183.83 on Android'),
+('5bgm5gcdqqogk5mi8mfdh3oeq4im7pcg', 3581919691, '2020-09-05 02:25:37', '2020-09-05 03:41:27', '127.0.0.1', 'Chrome 85.0.4183.83 on Windows 8'),
+('edh26kvrd5fks12c3kuup1h4vju9nodk', 3581919691, '2020-09-05 05:51:01', '2020-09-05 03:51:01', '127.0.0.1', 'Chrome 85.0.4183.83 on Windows 8'),
+('pmoski3ul28e7l5sn2tu1o7eceobddas', 3581919691, '2020-09-05 06:09:23', '2020-09-05 06:17:16', '127.0.0.1', 'Chrome 85.0.4183.83 on Windows 8'),
+('ucduuihdma4js9era2jkod8m5smud39p', 3581919691, '2020-09-05 15:26:12', '2020-09-05 14:53:43', '127.0.0.1', 'Chrome 85.0.4183.83 on Windows 8'),
+('98it1s3mf9ttkqadhqi2blctrvufpl72', 3581919691, '2020-09-06 15:29:49', '2020-09-06 13:29:49', '127.0.0.1', 'Chrome 85.0.4183.83 on Windows 8'),
+('q3nlpio70ib6pabi2ohnbvh72dikpreb', 3581919691, '2020-09-07 03:54:42', '2020-09-07 03:23:08', '127.0.0.1', 'Chrome 85.0.4183.83 on Windows 8'),
+('0p4h80vm2avbeg72anmbmks8srl6luhp', 3581919691, '2020-09-07 05:28:59', '2020-09-07 03:46:54', '127.0.0.1', 'Chrome 85.0.4183.83 on Windows 8'),
+('4hhfd5uj9k1plt0le1ug9f78iuevth96', 3581919691, '2020-09-08 01:35:49', '2020-09-07 23:35:49', '127.0.0.1', 'Chrome 85.0.4183.83 on Windows 8'),
+('1qda69qdkjmq1fjlbi6juavphpf2abvl', 3581919691, '2020-09-08 04:39:05', '2020-09-08 02:50:21', '127.0.0.1', 'Chrome 85.0.4183.83 on Windows 8'),
+('7kr8rdd3u4er5edo9ge8dm764ef3mnff', 3581919691, '2020-09-08 14:18:34', '2020-09-08 14:08:52', '127.0.0.1', 'Chrome 85.0.4183.83 on Windows 8'),
+('j0jka3omejjrocgbfl05ehmidntpk3ut', 3581919691, '2020-09-08 19:11:52', '2020-09-08 17:49:47', '127.0.0.1', 'Chrome 85.0.4183.83 on Windows 8'),
+('v2eksc1uolalhisnmkif8v4qf50f0r8r', 3581919691, '2020-09-08 22:44:09', '2020-09-09 02:26:53', '127.0.0.1', 'Chrome 85.0.4183.83 on Windows 8'),
+('1e2iqr1nh18d810nqtrlqbpoi802calg', 3581919691, '2020-09-09 15:03:02', '2020-09-10 02:01:38', '127.0.0.1', 'Chrome 85.0.4183.102 on Windows 8');
 
 -- --------------------------------------------------------
 
@@ -203,7 +219,7 @@ CREATE TABLE `clientes` (
 INSERT INTO `clientes` (`id`, `nit_cliente`, `nombre_empresa`, `r_legal`, `nombre_cliente`, `cedula_cliente`, `telefono_cliente`, `correo_cliente`, `departamento`, `ciudad`, `dep`, `direccion_cliente`, `estado`, `fecha_registro`, `fecha_inactivo`, `tipo_cliente`, `sucursal`, `forma_pago`, `autorizador`, `cliente_especial`, `observacion`) VALUES
 (30, 'No aplica', 'No aplica', 'No aplica', 'Luis Rios', 456456464, '456467984', 'leoanrdo2718@hotmail.es', 'Huila', 'La Argentina', 16, 'asdaweqdqweqw', 'Activo', '2020-08-29 02:52:50', '0000-00-00', 'Persona natural', 2, 2, 3581919691, 'Si', ''),
 (31, '31231231', 'Tequeños vlz', 'Lenin Granado', 'Lelianis Granado', 789456145, '04127982255', 'granadolela@gmail.com', 'Córdoba', 'Planeta Rica', 13, 'lelianis', 'Activo', '2020-08-29 05:39:13', '0000-00-00', 'Persona jurídica', 3, 2, 3581919691, 'Si', ''),
-(32, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, 0, NULL, NULL, '2020-09-03 09:07:52', NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+(36, '258147369', 'SEAPEX C.A.', 'Leonardo Rios', 'Jose Rios', 2147483647, '04264472911', 'leoanrdo@hotmail.es', 'Magdalena', 'Plato', 18, 'minas de arena #17', 'Activo', '2020-09-08 09:36:54', '0000-00-00', 'Persona jurídica', 4, 2, 3581919691, 'No', '');
 
 -- --------------------------------------------------------
 
@@ -222,6 +238,36 @@ CREATE TABLE `coste_guia` (
 
 INSERT INTO `coste_guia` (`id`, `valor`) VALUES
 (1, '500');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `cotizaciones`
+--
+
+CREATE TABLE `cotizaciones` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `user_id` int(10) UNSIGNED NOT NULL,
+  `cedula` varchar(15) NOT NULL,
+  `fecha_creación` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `items` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL CHECK (json_valid(`items`)),
+  `codigo` varchar(150) NOT NULL,
+  `status` enum('Borrador','Generado','Enviado') NOT NULL,
+  `estatus_gestion` enum('En estudio','Aceptada','Rechazada','Anulada','Borrador') NOT NULL,
+  `vnota` varchar(15) NOT NULL,
+  `tiempo` varchar(15) NOT NULL,
+  `notas` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL CHECK (json_valid(`notas`)),
+  `saludo` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL CHECK (json_valid(`saludo`))
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `cotizaciones`
+--
+
+INSERT INTO `cotizaciones` (`id`, `user_id`, `cedula`, `fecha_creación`, `items`, `codigo`, `status`, `estatus_gestion`, `vnota`, `tiempo`, `notas`, `saludo`) VALUES
+(2438123338, 3581919691, '2147483647', '2020-09-10 01:59:43', '[{\"id_tarifa\":\"2\",\"departamento_destino\":\"Atl\\u00e1ntico\",\"departamento_origen\":\"Antioquia\",\"ciudad_origen\":\"Abriaqu\\u00ed\",\"cedula_cliente\":\"\",\"tipo_transporte\":\"Aereo\",\"tipo_envio\":\"Sobre menor a 900gr\",\"precio\":\"150000\",\"itinerarios\":\"Lunes-Miercoles-Viernes\",\"tiempos\":\"Express\",\"segurocarga\":\"5\",\"costeguia\":\"500\",\"escala\":\"Metros\",\"formula\":\"VOLUMEN=(AN * AL* LA) *300\",\"variable\":\"300\"},{\"id_tarifa\":\"5\",\"departamento_destino\":\"Amazonas\",\"departamento_origen\":\"Amazonas\",\"ciudad_origen\":\"Leticia\",\"cedula_cliente\":\"\",\"tipo_transporte\":\"Terrestre\",\"tipo_envio\":\"Sobre menor a 1000gr\",\"precio\":\"200000\",\"itinerarios\":\"Lunes-Miercoles-Viernes\",\"tiempos\":\"Normal\",\"segurocarga\":\"5\",\"costeguia\":\"500\",\"escala\":\"Cent\\u00edmetros\",\"formula\":\"VOLUMEN=(AN * AL* LA) \\/300\",\"variable\":\"300\"}]', 'd5b63s3d', 'Borrador', 'En estudio', 'Si', '1599694031', '[{\"id\":\"6\",\"numero\":\"uno\",\"resumen\":\"Nota para transporte a\\u00e9reo\",\"descripcion\":\"Descripci\\u00f3n larga de nota para transporte a\\u00e9reo..\",\"tipo_transporte\":\"Aereo\",\"estado\":\"Activo\"},{\"id\":\"7\",\"numero\":\"tres\",\"resumen\":\"el que te conte\",\"descripcion\":\"asdasd\",\"tipo_transporte\":\"Terrestre\",\"estado\":\"Activo\"},{\"id\":\"8\",\"numero\":\"cuatro\",\"resumen\":\"Nota de respaldo para terrestre\",\"descripcion\":\"nota para transporte terrestre\",\"tipo_transporte\":\"Terrestre\",\"estado\":\"Activo\"}]', '[{\"id\":\"10\",\"numero\":\"Saludo\",\"resumen\":\"Saludo corto editado\",\"descripcion\":\"Saludo largo editado\",\"tipo_transporte\":\"Saludo\",\"estado\":\"Activo\"}]'),
+(3585488189, 3581919691, '2147483647', '2020-09-10 01:14:38', '[{\"id_tarifa\":\"5\",\"departamento_destino\":\"Amazonas\",\"departamento_origen\":\"Amazonas\",\"ciudad_origen\":\"Leticia\",\"cedula_cliente\":\"\",\"tipo_transporte\":\"Terrestre\",\"tipo_envio\":\"Sobre menor a 1000gr\",\"precio\":\"200000\",\"itinerarios\":\"Lunes-Miercoles-Viernes\",\"tiempos\":\"Normal\",\"segurocarga\":\"5\",\"costeguia\":\"500\",\"escala\":\"Cent\\u00edmetros\",\"formula\":\"VOLUMEN=(AN * AL* LA) \\/300\",\"variable\":\"300\"}]', 'd5b6353d', 'Borrador', 'Borrador', 'Si', '1599700455', '[{\"id\":\"7\",\"numero\":\"tres\",\"resumen\":\"el que te conte\",\"descripcion\":\"asdasd\",\"tipo_transporte\":\"Terrestre\",\"estado\":\"Activo\"},{\"id\":\"8\",\"numero\":\"cuatro\",\"resumen\":\"Nota de respaldo para terrestre\",\"descripcion\":\"nota para transporte terrestre\",\"tipo_transporte\":\"Terrestre\",\"estado\":\"Activo\"}]', '[{\"id\":\"10\",\"numero\":\"Saludo\",\"resumen\":\"Saludo corto editado\",\"descripcion\":\"Saludo largo editado\",\"tipo_transporte\":\"Saludo\",\"estado\":\"Activo\"}]'),
+(4133719398, 3581919691, '2147483647', '2020-09-10 01:59:50', '[{\"id_tarifa\":\"2\",\"departamento_destino\":\"Atl\\u00e1ntico\",\"departamento_origen\":\"Antioquia\",\"ciudad_origen\":\"Abriaqu\\u00ed\",\"cedula_cliente\":\"\",\"tipo_transporte\":\"Aereo\",\"tipo_envio\":\"Sobre menor a 900gr\",\"precio\":\"150000\",\"itinerarios\":\"Lunes-Miercoles-Viernes\",\"tiempos\":\"Express\",\"segurocarga\":\"3\",\"costeguia\":\"500\",\"escala\":\"Cent\\u00edmetros\",\"formula\":\"VOLUMEN=(AN * AL* LA) \\/300\",\"variable\":\"300\"}]', 'd5sb6353d', 'Borrador', 'Borrador', 'Si', '1599697865', '[{\"id\":\"6\",\"numero\":\"uno\",\"resumen\":\"Nota para transporte a\\u00e9reo\",\"descripcion\":\"Descripci\\u00f3n larga de nota para transporte a\\u00e9reo..\",\"tipo_transporte\":\"Aereo\",\"estado\":\"Activo\"}]', '[{\"id\":\"10\",\"numero\":\"Saludo\",\"resumen\":\"Saludo corto editado\",\"descripcion\":\"Saludo largo editado\",\"tipo_transporte\":\"Saludo\",\"estado\":\"Activo\"}]');
 
 -- --------------------------------------------------------
 
@@ -281,6 +327,38 @@ INSERT INTO `document` (`id`, `name`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `documentos_cotizaciones`
+--
+
+CREATE TABLE `documentos_cotizaciones` (
+  `id` int(15) NOT NULL,
+  `tiempo` varchar(15) NOT NULL,
+  `id_cliente` varchar(25) NOT NULL,
+  `url` varchar(250) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `documentos_cotizaciones`
+--
+
+INSERT INTO `documentos_cotizaciones` (`id`, `tiempo`, `id_cliente`, `url`) VALUES
+(2, '1599687515', 'undefined', '/include/files/tvg-cargo-logo3.png'),
+(3, '1599687916', '2147483647', '/include/files/tvg-cargo-logo4.png'),
+(4, '1599688044', 'undefined', '/include/files/Sin_título-1.png'),
+(5, '1599691154', '2147483647', '/include/files/Sin_título-11.png'),
+(6, '1599691983', '2147483647', '/include/files/Sin_título-12.png'),
+(7, '1599694031', '2147483647', '/include/files/tvg-cargo-logo5.png'),
+(8, '1599697357', '2147483647', '/include/files/tvg-cargo-logo6.png'),
+(10, '1599697573', '2147483647', '/include/files/Sin_título-13.png'),
+(11, '1599697633', '2147483647', '/include/files/Sin_título-14.png'),
+(12, '1599697697', '2147483647', '/include/files/Sin_título-15.png'),
+(13, '1599697797', '2147483647', '/include/files/Sin_título-16.png'),
+(14, '1599697865', '2147483647', '/include/files/Sin_título-17.png'),
+(15, '1599700455', '2147483647', '/include/files/Sin_título-18.png');
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `documentos_historial`
 --
 
@@ -296,7 +374,12 @@ CREATE TABLE `documentos_historial` (
 
 INSERT INTO `documentos_historial` (`id`, `id_carga_cliente`, `url`) VALUES
 (1, 0, '/include/files/7418917_orig.jpg'),
-(2, 20328861, '/include/files/33992369_1736254336481634_8203510014942380032_n.jpg');
+(2, 20328861, '/include/files/33992369_1736254336481634_8203510014942380032_n.jpg'),
+(3, 38945687, '/include/files/7418917_orig1.jpg'),
+(4, 0, '/include/files/aasdasdasda.png'),
+(5, 38945687, '/include/files/aasdasdasda1.png'),
+(6, 38945687, '/include/files/34102368_1756365637813202_7431407042675343360_n3.png'),
+(7, 0, '/include/files/tvg-cargo-logo1.png');
 
 -- --------------------------------------------------------
 
@@ -393,7 +476,7 @@ CREATE TABLE `historial_ce` (
   `f_recogida` date NOT NULL,
   `f_ingreso` date NOT NULL,
   `id_carga_cliente` varchar(25) NOT NULL,
-  `tipo_carga` int(15) NOT NULL,
+  `tipo_carga` varchar(15) NOT NULL,
   `cantidad` varchar(50) NOT NULL,
   `kilos_tvg` varchar(25) NOT NULL,
   `kilos_cliente` varchar(25) NOT NULL,
@@ -418,9 +501,10 @@ CREATE TABLE `historial_ce` (
 --
 
 INSERT INTO `historial_ce` (`id`, `codigo`, `cedula_cliente`, `f_recogida`, `f_ingreso`, `id_carga_cliente`, `tipo_carga`, `cantidad`, `kilos_tvg`, `kilos_cliente`, `flete_fijo`, `flete_total`, `fecha_despacho`, `proveedor`, `n_guia_proveedor`, `fecha_en_destino`, `sede_cliente`, `fecha_conectividad`, `n_referencia_c`, `f_entrega_c`, `numero_anexo_l`, `numero_factura`, `fecha_factura`, `id_tarifa`) VALUES
-(4, 4118347882, 789456145, '2020-09-05', '2020-09-11', '20328861', 1, '15', '60', '600', '350000', '3150000000', '2020-09-04', 1, '1560000789', '2020-09-04', 1, '2020-09-19', '15987657954', '2020-09-04', '5465789', '56464546', '25-08-2020', 3),
-(5, 2286577589, 456456464, '2020-09-04', '2020-09-11', '20328861', 1, '15', '60', '600', '350000', '3150000000', '2020-09-19', 1, '1560000789', '2020-09-17', 2, '2020-09-25', '755467', '2020-09-25', '6656576', '35498989', '4987499948', 3),
-(6, 2105523902, 456456464, '2020-09-04', '2020-09-04', '20328861', 1, '2', '20', '100', '50000', '10000000', '2020-09-24', 1, '1560000789', '2020-09-10', 2, '2020-09-24', '87565464', '2020-09-24', '755464', '4564646', '4579464', 3);
+(4, 4118347882, 789456145, '2020-09-05', '2020-09-11', '20328861', 'Caja', '15', '60', '600', '350000', '3150000000', '2020-09-04', 1, '1560000789', '2020-09-04', 1, '2020-09-19', '15987657954', '2020-09-04', '5465789', '56464546', '25-08-2020', 3),
+(5, 2286577589, 456456464, '2020-09-04', '2020-09-11', '20328861', 'Caja', '15', '60', '600', '350000', '3150000000', '2020-09-19', 1, '1560000789', '2020-09-17', 2, '2020-09-25', '755467', '2020-09-25', '6656576', '35498989', '4987499948', 3),
+(6, 2105523902, 456456464, '2020-09-04', '2020-09-04', '20328861', 'Caja', '2', '20', '100', '50000', '10000000', '2020-09-24', 1, '1560000789', '2020-09-10', 2, '2020-09-24', '87565464', '2020-09-24', '5646567', '4564646', '4579464', 3),
+(7, 1332210380, 456456464, '2020-09-03', '2020-09-26', '38945687', 'Caja', '15', '60', '600', '350000', '3150000000', '2020-09-23', 1, '456797987', '2020-09-10', 2, '2020-09-25', '7879879', '2020-09-23', '5646567', '5612344', '4987499948', 3);
 
 -- --------------------------------------------------------
 
@@ -519,8 +603,8 @@ CREATE TABLE `login_errors` (
 --
 
 INSERT INTO `login_errors` (`ai`, `username_or_email`, `ip_address`, `time`) VALUES
-(194, 'Leonardo2718', '127.0.0.1', '2020-08-29 13:55:31'),
-(195, 'leonardo2718', '::1', '2020-08-29 12:00:00');
+(201, 'leonardo2718', '127.0.0.1', '2020-09-08 14:18:25'),
+(200, 'leonardo2718', '127.0.0.1', '2020-09-08 14:18:18');
 
 -- --------------------------------------------------------
 
@@ -533,7 +617,7 @@ CREATE TABLE `notas` (
   `numero` varchar(15) DEFAULT NULL,
   `resumen` varchar(60) DEFAULT NULL,
   `descripcion` varchar(255) DEFAULT NULL,
-  `tipo_transporte` int(25) DEFAULT NULL,
+  `tipo_transporte` varchar(25) NOT NULL,
   `estado` enum('Activo','Inactivo') DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -542,8 +626,11 @@ CREATE TABLE `notas` (
 --
 
 INSERT INTO `notas` (`id`, `numero`, `resumen`, `descripcion`, `tipo_transporte`, `estado`) VALUES
-(6, 'uno', 'el que te conte', 'asdasd', NULL, 'Activo'),
-(7, 'tres', 'el que te conte', 'asdasd', NULL, 'Activo');
+(6, 'uno', 'Nota para transporte aéreo', 'Descripción larga de nota para transporte aéreo..', 'Aereo', 'Activo'),
+(7, 'tres', 'el que te conte', 'asdasd', 'Terrestre', 'Activo'),
+(8, 'cuatro', 'Nota de respaldo para terrestre', 'nota para transporte terrestre', 'Terrestre', 'Activo'),
+(9, 'cinco', 'Nota de respaldo para terrestre otra', 'nota inactiva', 'Terrestre', 'Inactivo'),
+(10, 'Saludo', 'Saludo corto editado', 'Saludo largo editado', 'Saludo', 'Activo');
 
 -- --------------------------------------------------------
 
@@ -617,7 +704,8 @@ CREATE TABLE `segurocarga` (
 --
 
 INSERT INTO `segurocarga` (`id`, `porcentaje`, `status`) VALUES
-(1, '30', 'Inactivo');
+(1, '3', 'Activo'),
+(2, '5', 'Activo');
 
 -- --------------------------------------------------------
 
@@ -814,7 +902,7 @@ INSERT INTO `users` (`user_id`, `username`, `email`, `auth_level`, `banned`, `ve
 (2192184043, 'LuzRios2718', 'Luz@gmail.com', 9, '0', 0, '$2y$11$zO3zdIrbm9YOSTEJgkBw6uLTrNCY.iPahnsUBxl.VNDy94pzeleUS', NULL, NULL, NULL, '2020-08-26 16:47:31', '$2y$11$Aehw7FozAqIaA1EfMViN0Oz/Jm.5BtN8OcFK83s/WElLvuOQD7wf2', '/include/img/user/72429-hospital-ghost-748x417.jpg', 'Luz', 'Rios', '25272381', 'Supervisor', '', '', '', '2020-08-26 16:47:08', '2020-08-26 14:47:31'),
 (2520322231, 'Diego', 'diego@gmail.com', 9, '0', 0, '$2y$11$YyIF9OW8OVOMVgGGTgeRYOSgW.ykjjKGMSPoezNlWWKqgFcY3StUK', NULL, NULL, NULL, '2020-08-28 22:18:40', '$2y$11$n2NBHXo0wwsBNj2Cdbugr.9hAGqd2antLVh5h/k5DbUvjcul1uH/6', '/include/img/user/IMG_20191225_184425.jpg', 'Diego', 'Morejon', '123', 'Supervisor', '7456156', '7456134', 'TVG Santa Marta', '2020-08-26 18:44:54', '2020-08-28 20:18:40'),
 (2822719046, 'Marina', 'marina@gmail.com', 9, '0', 0, '$2y$11$EVbi/7xHKdNVT8QMTq0GS.QOArGbi1T9G3sN559qbE1kkSkS.4tjK', NULL, NULL, NULL, NULL, '$2y$11$J3bxlg..o9pohVCgiwslXuYiYmS6zZY0Dvr6WcSYIRqDpDz0dlhpG', '/include/img/user/873ae59c6165e09fc14291628ba6082f3.png', 'Luz ', 'Marina', '258369147', 'Supervisor', '04264472911', '04264472911', 'TVG Barranquilla', '2020-08-26 17:10:34', '2020-08-26 15:10:34'),
-(3581919691, 'leonardo2718', 'leonardo2718@hotmail.es', 9, '0', 0, '$2y$11$jBiNpGCqGOoPRCBws90Ih.ApWPKQeN1S/rk12.R7baSpE4jqdsS7u', NULL, NULL, NULL, '2020-09-03 14:12:54', '$2y$11$LUi1aLY/hjkFUbWQ3Q2VKOXBoz5iqPmk5XxM8JxWb26t6nG7jg.xK', '', 'Tvg', 'Cargo', '203288614', '', '', '', '', '2020-08-16 01:06:25', '2020-09-03 12:12:54');
+(3581919691, 'leonardo2718', 'leonardo2718@hotmail.es', 9, '0', 0, '$2y$11$jBiNpGCqGOoPRCBws90Ih.ApWPKQeN1S/rk12.R7baSpE4jqdsS7u', NULL, NULL, NULL, '2020-09-09 15:03:02', '$2y$11$LUi1aLY/hjkFUbWQ3Q2VKOXBoz5iqPmk5XxM8JxWb26t6nG7jg.xK', '', 'Tvg', 'Cargo', '203288614', '', '', '', '', '2020-08-16 01:06:25', '2020-09-09 13:03:02');
 
 --
 -- Disparadores `users`
@@ -897,6 +985,12 @@ ALTER TABLE `coste_guia`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indices de la tabla `cotizaciones`
+--
+ALTER TABLE `cotizaciones`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indices de la tabla `datos`
 --
 ALTER TABLE `datos`
@@ -913,6 +1007,12 @@ ALTER TABLE `denied_access`
 -- Indices de la tabla `document`
 --
 ALTER TABLE `document`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `documentos_cotizaciones`
+--
+ALTER TABLE `documentos_cotizaciones`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -970,8 +1070,7 @@ ALTER TABLE `login_errors`
 -- Indices de la tabla `notas`
 --
 ALTER TABLE `notas`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `tipo_transporte` (`tipo_transporte`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indices de la tabla `proveedores`
@@ -1079,7 +1178,7 @@ ALTER TABLE `cargos`
 -- AUTO_INCREMENT de la tabla `clientes`
 --
 ALTER TABLE `clientes`
-  MODIFY `id` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+  MODIFY `id` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
 -- AUTO_INCREMENT de la tabla `coste_guia`
@@ -1100,10 +1199,16 @@ ALTER TABLE `document`
   MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
+-- AUTO_INCREMENT de la tabla `documentos_cotizaciones`
+--
+ALTER TABLE `documentos_cotizaciones`
+  MODIFY `id` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+
+--
 -- AUTO_INCREMENT de la tabla `documentos_historial`
 --
 ALTER TABLE `documentos_historial`
-  MODIFY `id` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de la tabla `factores`
@@ -1121,7 +1226,7 @@ ALTER TABLE `forma_pago`
 -- AUTO_INCREMENT de la tabla `historial_ce`
 --
 ALTER TABLE `historial_ce`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de la tabla `img_pro`
@@ -1145,13 +1250,13 @@ ALTER TABLE `itinerarios`
 -- AUTO_INCREMENT de la tabla `login_errors`
 --
 ALTER TABLE `login_errors`
-  MODIFY `ai` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=196;
+  MODIFY `ai` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=202;
 
 --
 -- AUTO_INCREMENT de la tabla `notas`
 --
 ALTER TABLE `notas`
-  MODIFY `id` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT de la tabla `proveedores`
@@ -1169,7 +1274,7 @@ ALTER TABLE `sedes`
 -- AUTO_INCREMENT de la tabla `segurocarga`
 --
 ALTER TABLE `segurocarga`
-  MODIFY `id` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `sucursales`
@@ -1251,12 +1356,6 @@ ALTER TABLE `historial_ce`
   ADD CONSTRAINT `historial_ce_ibfk_1` FOREIGN KEY (`id_tarifa`) REFERENCES `tarifas` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `historial_ce_ibfk_2` FOREIGN KEY (`sede_cliente`) REFERENCES `sedes` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `historial_ce_ibfk_3` FOREIGN KEY (`cedula_cliente`) REFERENCES `clientes` (`cedula_cliente`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Filtros para la tabla `notas`
---
-ALTER TABLE `notas`
-  ADD CONSTRAINT `notas_ibfk_1` FOREIGN KEY (`tipo_transporte`) REFERENCES `transportes` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

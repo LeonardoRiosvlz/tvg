@@ -83,7 +83,7 @@
                              <div class="col-md-8 col-sm-12">
                                <!-- textarea -->
                                <div class="form-group">
-                                 <label class="links">Asunto</label>
+                                 <label class="links">Resumen</label>
                                   <input type="text" v-model="form.resumen" v-validate="'required'" name="resumen" class="form-control" id="" :disabled="ver">
                                  <p class="text-danger my-1" v-if="(errors.first('resumen'))" >  Este dato es requerido  </p>
                                </div>
@@ -91,19 +91,19 @@
                              <div class="col-md-12 col-sm-12">
                                <!-- textarea -->
                                <div class="form-group">
-                                 <label class="links">Asunto</label>
+                                 <label class="links">Descripcion</label>
                                   <textarea type="text" v-model="form.descripcion" v-validate="'required'" name="descripcion" class="form-control" id="" :disabled="ver"></textarea>
                                  <p class="text-danger my-1" v-if="(errors.first('descripcion'))" >  Este dato es requerido  </p>
                                </div>
                              </div>
-                             <div class="col-md-5 col-sm-12">
+                             <div class="col-md-5 col-sm-12" v-if="!form.tipo_transporte==='Saludo'">
                                <label class="links">Tipo de transporte</label>
                                <div class="form-group">
-                                 <select v-model="form.cargo" v-validate="'required'"  name="cargo" class="form-control" :disabled="ver" >
+                                 <select v-model="form.tipo_transporte" v-validate="'required'"  name="tipo_transporte" class="form-control" :disabled="ver" >
                                   <option value=""></option>
-                                   <option v-for="transportes in transportes" :value="transportes.id">{{transportes.tipo_transporte}}</option>
+                                   <option v-for="transportes in transportes" :value="transportes.tipo_transporte">{{transportes.tipo_transporte}}</option>
                                  </select>
-                                 <p class="text-danger my-1 small" v-if="(errors.first('cargo'))" >  Este dato es requerido  </p>
+                                 <p class="text-danger my-1 small" v-if="(errors.first('tipo_transporte'))" >  Este dato es requerido  </p>
                                </div>
                              </div>
                              <div class="col-md-7 col-sm-12">
@@ -304,7 +304,6 @@
                    .then(({data: {transportes}}) => {
                      this.transportes = transportes
                    });
-                   $("#example1").DataTable();
                  },
                  loadCart(){
 

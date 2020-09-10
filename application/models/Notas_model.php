@@ -23,13 +23,21 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             ));
             return $this->db->error();
            }
-        public function getnotas() {
+        public function getnotass() {
             return $this->db
             ->select('*')
             ->from('notas')
+            ->where('estado', 'Activo')
             ->get()
             ->result();
           }
+          public function getnotas() {
+              return $this->db
+              ->select('*')
+              ->from('notas')
+              ->get()
+              ->result();
+            }
           public function deletenotas($id) {
             $this->db->where('id', $id);
             $this->db->delete('notas');

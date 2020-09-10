@@ -22,7 +22,13 @@ class Notas extends MY_Controller {
 				  echo json_encode(['notas' => $data['notas']]);
 
 				}
+				public function getnotass($id=0) {
 
+					  $data['notas'] = $this->notas->getnotass();
+					  header('Content-Type: application/json');
+					  echo json_encode(['notas' => $data['notas']]);
+
+					}
 			public function insertar() {
 				if( ! $this->verify_min_level(9)){
 					redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));

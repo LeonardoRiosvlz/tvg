@@ -299,7 +299,7 @@
                               <p class="text-danger my-1 small" v-if="(errors.first('ciudad_destino'))" >  Este dato es requerido  </p>
                             </div>
                          </div>
-                         <div class="card col-12 p-3" v-if="form.id_tarifa">
+                         <div class="card col-12 p-3 " v-if="form.id_tarifa">
                           <h4 class="card-title">Tarifa Acorde</h4>
                            <div class="card-body row sp">
                              <div class="col-sm-3">

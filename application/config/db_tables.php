@@ -19,6 +19,7 @@ $config['datos_table']                  = 'datos';
 $config['empresa_table']                = 'empresa';
 $config['products_table']               = 'products';
 $config['historial_ce_table']           = 'historial_ce';
+$config['cotizaciones_table']           = 'cotizaciones';
 $config['cupon_table']                  = 'cupon';
 $config['pedido_table']                  = 'pedido';
 // LOGIN ERROR RELATED TABLES

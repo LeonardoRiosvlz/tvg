@@ -77,12 +77,18 @@
           <table id="example1" class="table ">
             <thead>
             <tr>
-              <th class="links">Nombre del cargo</th>
+              <th class="links">Nº  COTIZACIÓN</th>
+              <th class="links">EMPRESA</th>
+              <th class="links">TELEFONO</th>
+              <th class="links">ESTADO</th>
                 <th class="links">Action</th>
             </tr>
             </thead>
               <tr v-for="(cotizaciones,index) in cotizaciones">
-                <td class="links">{{cotizaciones.nombre_cargo}}</td>
+                <td class="links">{{cotizaciones.username}}-{{cotizaciones.id}}</td>
+                <td class="links">{{cotizaciones.nombre_empresa}}</td>
+                <td class="links">{{cotizaciones.telefono_cliente}}</td>
+                <td class="links"><span class="badge badge-pill badge-info">{{cotizaciones.estatus_gestion}}</span></td>
                   <td>
                     <div class="btn-group">
                         <button type="button" class="btn btn-default">Action</button>
@@ -90,8 +96,11 @@
                           <span class="sr-only">Toggle Dropdown</span>
                           <div class="dropdown-menu" role="menu">
                             <a class="dropdown-item" href="#"@click="setear(index);ver=true">Ver</a>
+                            <a class="dropdown-item" href="#" @click="setearEmail(index)">Enviar</a>
                             <a class="dropdown-item" href="#" @click="setear(index);ver=false">Editar</a>
-                            <a class="dropdown-item" href="#" @click="eliminarcotizaciones(index)">Eliminar</a>
+                            <a class="dropdown-item" href="#" @click="setear(index);ver=false">Duplicar</a>
+                            <a class="dropdown-item" href="#" @click="setear(index);ver=false">Rechazar</a>
+                            <a class="dropdown-item" href="#" @click="eliminarcotizaciones(index)">Anular</a>
                           </div>
                         </button>
                     </div>
@@ -102,7 +111,7 @@
       <!-- End -->
     </div>
   </div>
-  <pre>{{clientes}}</pre>
+  <pre>{{email}}</pre>
         <!-- Modal agregar   -->
         <div class="modal fade" id="modal-lg" data-backdrop="static" data-keyboard="false">
          <div class="modal-dialog modal-lg">
@@ -122,6 +131,7 @@
                   <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Recalcuar Cotización</a>
                 </li>
               </ul>
+              <form role="form" id="form" @submit.prevent="validateBeforeSubmit">
               <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                   <div class="row py-3 pt-3">
@@ -129,10 +139,9 @@
                       <label class="links">Clientes</label>
                       <input list="encodings" v-model="form.cedula"  value="" class="form-control form-control-lg" placeholder="Escriba una cedula">
                         <datalist id="encodings">
-                            <option v-for="clientes in clientes"   :value="clientes.cedula_cliente">{{clientes.nombre_cliente}}</option>
+                            <option v-for="clientes in clientes"  v-if="clientes.cliente_especial==='No'" :value="clientes.cedula_cliente">{{clientes.nombre_cliente}}</option>
                         </datalist>
                     </div>
-
                   </div>
                   <div class="card col-12 p-3">
                      <h5 >Datos del cliente</h5>
@@ -140,7 +149,7 @@
                        <div class="col-md-4">
                          <label class="links">Empresa</label>
                          <div class="form-group">
-                           <select v-model="form.cedula" v-validate="'required'" name="tipo_envio" class="form-control" disabled >
+                           <select v-model="form.cedula"  name="tipo_envio" class="form-control" disabled >
                              <option v-for="clientes in clientes" v-if="clientes.cliente_especial==='No'" :value="clientes.cedula_cliente">{{clientes.nombre_empresa}}</option>
                            </select>
                            <p class="text-danger my-1 small" v-if="(errors.first('tipo_envio'))" >  Este dato es requerido  </p>
@@ -149,7 +158,7 @@
                        <div class="col-md-4">
                          <label class="links">Representante Legal</label>
                          <div class="form-group">
-                           <select v-model="form.cedula" v-validate="'required'" name="tipo_envio" class="form-control" disabled>
+                           <select v-model="form.cedula"  name="tipo_envio" class="form-control" disabled>
                              <option v-for="clientes in clientes" v-if="clientes.cliente_especial==='No'" :value="clientes.cedula_cliente">{{clientes.r_legal}}</option>
                            </select>
                            <p class="text-danger my-1 small" v-if="(errors.first('tipo_envio'))" >  Este dato es requerido  </p>
@@ -158,16 +167,16 @@
                        <div class="col-md-4">
                          <label class="links">Telefono</label>
                          <div class="form-group">
-                           <select v-model="form.cedula" v-validate="'required'" name="tipo_envio" class="form-control" disabled>
+                           <select v-model="form.cedula"  name="tipo_envio" class="form-control" disabled>
                              <option v-for="clientes in clientes" v-if="clientes.cliente_especial==='No'" :value="clientes.cedula_cliente">{{clientes.ciudad}}</option>
                            </select>
                            <p class="text-danger my-1 small" v-if="(errors.first('tipo_envio'))" >  Este dato es requerido  </p>
                          </div>
                        </div>
                        <div class="col-md-4">
-                         <label class="links">Telefono</label>
+                         <label class="links">Correo</label>
                          <div class="form-group">
-                           <select v-model="form.cedula" v-validate="'required'" name="tipo_envio" class="form-control" disabled>
+                           <select v-model="form.cedula"  name="tipo_envio" class="form-control" disabled>
                              <option v-for="clientes in clientes" v-if="clientes.cliente_especial==='No'" :value="clientes.cedula_cliente">{{clientes.correo_cliente}}</option>
                            </select>
                            <p class="text-danger my-1 small" v-if="(errors.first('tipo_envio'))" >  Este dato es requerido  </p>
@@ -176,7 +185,7 @@
                        <div class="col-md-4">
                          <label class="links">Telefono</label>
                          <div class="form-group">
-                           <select v-model="form.cedula" v-validate="'required'" name="tipo_envio" class="form-control" disabled>
+                           <select v-model="form.cedula"  name="tipo_envio" class="form-control" disabled>
                              <option v-for="clientes in clientes" v-if="clientes.cliente_especial==='No'" :value="clientes.cedula_cliente">{{clientes.telefono_cliente}}</option>
                            </select>
                            <p class="text-danger my-1 small" v-if="(errors.first('tipo_envio'))" >  Este dato es requerido  </p>
@@ -185,7 +194,7 @@
                        <div class="col-md-4">
                          <label class="links">Ciudad</label>
                          <div class="form-group">
-                           <select v-model="form.cedula" v-validate="'required'" name="tipo_envio" class="form-control" disabled>
+                           <select v-model="form.cedula"  name="tipo_envio" class="form-control" disabled>
                              <option v-for="clientes in clientes" v-if="clientes.cliente_especial==='No'" :value="clientes.cedula_cliente">{{clientes.ciudad}}</option>
                            </select>
                            <p class="text-danger my-1 small" v-if="(errors.first('tipo_envio'))" >  Este dato es requerido  </p>
@@ -193,162 +202,245 @@
                        </div>
                      </div>
                   </div>
-                  <div class="col-md-4" v-if="!form.id_tarifa">
-                    <label class="links">Tipo de transporte</label>
-                    <div class="form-group">
-                      <select v-model="form.tipo_transporte" @change="form.tipo_envio=''" v-validate="'required'" name="tipo_transporte" class="form-control" :disabled="ver" >
-                       <option value=""></option>
-                        <option v-for="transportes in transportes" :value="transportes.tipo_transporte">{{transportes.tipo_transporte}}</option>
-                      </select>
-                      <p class="text-danger my-1 small" v-if="(errors.first('tipo_transporte'))" >  Este dato es requerido  </p>
-                    </div>
-                  </div>
-                  <div class="col-md-4" v-if="!form.id_tarifa">
-                    <label class="links">Tipo de envío</label>
-                    <div class="form-group">
-                      <select v-model="form.tipo_envio" v-validate="'required'" name="tipo_envio" class="form-control" :disabled="ver" >
-                        <option value=""></option>
-                        <option v-for="tiposenvios in tiposenvios" v-show="tiposenvios.tipo_transporte===form.tipo_transporte" :value="tiposenvios.nombre_tiposenvios">{{tiposenvios.nombre_tiposenvios}}</option>
-                      </select>
-                      <p class="text-danger my-1 small" v-if="(errors.first('tipo_envio'))" >  Este dato es requerido  </p>
-                    </div>
-                  </div>
-                  <div class="col-sm-4" v-if="!form.id_tarifa">
-                     <div class="form-group links">
-                       <label>Tarifa</label>
-                       <select v-model="form.id_tarifa" v-validate="'required'" name="ciudad_destino" class="form-control" disabled >
-                         <option v-for="tarifas in tarifas" v-if="form.departamento_origen===tarifas.departamento_origen && form.departamento_destino===tarifas.departamento_destino && form.ciudad_origen===tarifas.ciudad_origen && form.tipo_envio===tarifas.tipo_envio" :value="tarifas.id">{{tarifas.precio}}</option>
-                       </select>
-                      <p class="text-danger my-1 small" v-if="(errors.first('ciudad_destino'))" >  Este dato es requerido  </p>
-                    </div>
-                 </div>
-                    <div class="col-sm-3" v-if="!form.id_tarifa">
-                      <label class="bold">Departamento origen</label>
-                      <div class="form-group">
-                        <select v-model="form.dep" @change="depp()" class="form-control" :disabled="ver" >
-                          <option value=""></option>
-                          <option v-for="colombia in colombia" :value="colombia.id">{{colombia.departamento}}</option>
-                        </select>
+                  <div class="row">
+
+                  <div class="card col-12 p-3 " >
+                   <h4 class="card-title">Tarifa Acorde</h4>
+                    <div class="card-body row sp">
+                      <div class="col-md-6" >
+                        <label class="links">Tipo de transporte</label>
+                        <div class="form-group">
+                          <select v-model="item.tipo_transporte" @change="item.tipo_envio=''"  name="tipo_transporte" class="form-control" :disabled="ver" >
+                           <option value=""></option>
+                            <option v-for="transportes in transportes" :value="transportes.tipo_transporte">{{transportes.tipo_transporte}}</option>
+                          </select>
+
+                        </div>
                       </div>
-                    </div>
+                      <div class="col-md-6" >
+                        <label class="links">Tipo de envío</label>
+                        <div class="form-group">
+                          <select v-model="item.tipo_envio"  name="tipo_envio" class="form-control" :disabled="ver" >
+                            <option value=""></option>
+                            <option v-for="tiposenvios in tiposenvios" v-show="tiposenvios.tipo_transporte===item.tipo_transporte" :value="tiposenvios.nombre_tiposenvios">{{tiposenvios.nombre_tiposenvios}}</option>
+                          </select>
 
-                   <div class="col-sm-3" v-if="!form.id_tarifa">
-                      <div class="form-group links">
-                        <label>Ciudad origen</label>
-                       <select v-model="form.ciudad_origen" v-validate="'required'" name="ciudad_origen" class="form-control" :disabled="ver" >
-                           <option v-for="tarifas in tarifas" v-if="form.departamento_origen===tarifas.departamento_origen && form.tipo_envio===tarifas.tipo_envio" :value="tarifas.ciudad_origen">{{tarifas.ciudad_origen}}</option>
-                       </select>
-                       <p class="text-danger my-1 small" v-if="(errors.first('ciudad_origen'))" >  Este dato es requerido  </p>
+                        </div>
+                      </div>
+                        <div class="col-sm-12">
+
+                            <label class="links">Trazabilidad</label>
+                            <input list="tarifas" v-model="item.id_tarifa" @change="tari()"  value="" class="form-control form-control-lg" placeholder="Escriba una ruta">
+                              <datalist id="tarifas">
+                                  <option v-for="tarifas in tarifas" v-if="tarifas.tipo_envio===item.tipo_envio"  :value="tarifas.id">De {{tarifas.ciudad_origen}} a {{tarifas.ciudad_destino}} Tiempo:{{tarifas.tiempos}}</option>
+                              </datalist>
+
+                        </div>
+                      <div class="col-sm-3">
+                         <div class="form-group links">
+                           <label>Depto. origen</label>
+                          <select v-model="item.id_tarifa" @change="tari()"  name="ciudad_destino" class="form-control" disabled >
+                            <option v-for="tarifas in tarifas"  :value="tarifas.id">{{tarifas.departamento_origen}}</option>
+                          </select>
+
+                        </div>
                      </div>
-                  </div>
-                  <div class="col-sm-3" v-if="!form.id_tarifa">
-                    <label class="links">Departamento destino</label>
-                    <div class="form-group">
-                      <select v-model="form.departamento_destino" @change="depp_dos()" class="form-control" :disabled="ver" >
-                        <option value=""></option>
-                        <option v-for="tarifas in tarifas" v-if="form.departamento_origen===tarifas.departamento_origen && form.ciudad_origen===tarifas.ciudad_origen && form.tipo_envio===tarifas.tipo_envio" :value="tarifas.departamento_destino">{{tarifas.departamento_destino}}</option>
-                      </select>
-                    </div>
-                  </div>
+                     <div class="col-sm-3">
+                        <div class="form-group links">
+                          <label>Ciudad origen</label>
+                         <select v-model="item.id_tarifa" @change="tari()" name="ciudad_destino" class="form-control" disabled >
+                           <option v-for="tarifas in tarifas"  :value="tarifas.id">{{tarifas.ciudad_origen}}</option>
+                         </select>
 
-                 <div class="col-sm-3" v-if="!form.id_tarifa">
-                    <div class="form-group links">
-                      <label>Ciudad destino</label>
-                     <select v-model="form.id_tarifa" @change="tari()" v-validate="'required'" name="ciudad_destino" class="form-control" :disabled="ver" >
-                       <option v-for="tarifas in tarifas" v-if="form.departamento_origen===tarifas.departamento_origen && form.departamento_destino===tarifas.departamento_destino && form.ciudad_origen===tarifas.ciudad_origen && form.tipo_envio===tarifas.tipo_envio" :value="tarifas.id">{{tarifas.ciudad_destino}}</option>
-                     </select>
-                     <p class="text-danger my-1 small" v-if="(errors.first('ciudad_destino'))" >  Este dato es requerido  </p>
-                   </div>
-                </div>
-                <div class="card col-12 p-3" v-if="form.id_tarifa">
-                 <h4 class="card-title">Tarifa Acorde</h4>
-                  <div class="card-body row sp">
+                       </div>
+                    </div>
                     <div class="col-sm-3">
                        <div class="form-group links">
-                         <label>Depto. origen</label>
-                        <select v-model="form.id_tarifa" @change="tari()" v-validate="'required'" name="ciudad_destino" class="form-control" disabled >
-                          <option v-for="tarifas in tarifas"  :value="tarifas.id">{{tarifas.departamento_origen}}</option>
+                         <label>Depto. destino</label>
+                        <select v-model="item.id_tarifa" @change="tari()"  name="ciudad_destino" class="form-control" disabled >
+                          <option v-for="tarifas in tarifas"  :value="tarifas.id">{{tarifas.departamento_destino}}</option>
                         </select>
-                        <p class="text-danger my-1 small" v-if="(errors.first('ciudad_destino'))" >  Este dato es requerido  </p>
+
                       </div>
                    </div>
                    <div class="col-sm-3">
                       <div class="form-group links">
-                        <label>Ciudad origen</label>
-                       <select v-model="form.id_tarifa" @change="tari()" v-validate="'required'" name="ciudad_destino" class="form-control" disabled >
-                         <option v-for="tarifas in tarifas"  :value="tarifas.id">{{tarifas.ciudad_origen}}</option>
+                        <label>Ciudad destino</label>
+                       <select v-model="item.id_tarifa" @change="tari()" name="ciudad_destino" class="form-control" disabled >
+                         <option v-for="tarifas in tarifas" :value="tarifas.id">{{tarifas.ciudad_destino}}</option>
                        </select>
-                       <p class="text-danger my-1 small" v-if="(errors.first('ciudad_destino'))" >  Este dato es requerido  </p>
+
                      </div>
                   </div>
-                  <div class="col-sm-3">
+                  <div class="col-sm-4">
                      <div class="form-group links">
-                       <label>Depto. destino</label>
-                      <select v-model="form.id_tarifa" @change="tari()" v-validate="'required'" name="ciudad_destino" class="form-control" disabled >
-                        <option v-for="tarifas in tarifas"  :value="tarifas.id">{{tarifas.departamento_destino}}</option>
+                       <label>itinerarios</label>
+                      <select v-model="item.id_tarifa" @change="tari()"  name="ciudad_destino" class="form-control" disabled >
+                        <option v-for="tarifas in tarifas"  :value="tarifas.id">{{tarifas.itinerarios}}</option>
                       </select>
-                      <p class="text-danger my-1 small" v-if="(errors.first('ciudad_destino'))" >  Este dato es requerido  </p>
+
                     </div>
                  </div>
-                 <div class="col-sm-3">
+                 <div class="col-sm-4">
                     <div class="form-group links">
-                      <label>Ciudad destino</label>
-                     <select v-model="form.id_tarifa" @change="tari()" v-validate="'required'" name="ciudad_destino" class="form-control" disabled >
-                       <option v-for="tarifas in tarifas" :value="tarifas.id">{{tarifas.ciudad_destino}}</option>
+                      <label>Tiempos de entrega</label>
+                     <select v-model="item.id_tarifa" @change="tari()"  name="ciudad_destino" class="form-control" disabled >
+                       <option v-for="tarifas in tarifas"  :value="tarifas.id">{{tarifas.tiempos}}</option>
                      </select>
-                     <p class="text-danger my-1 small" v-if="(errors.first('ciudad_destino'))" >  Este dato es requerido  </p>
                    </div>
                 </div>
                 <div class="col-sm-4">
                    <div class="form-group links">
-                     <label>Tipo de transporte</label>
-                    <select v-model="form.id_tarifa" @change="tari()" v-validate="'required'" name="ciudad_destino" class="form-control" disabled >
-                      <option v-for="tarifas in tarifas"  :value="tarifas.id">{{tarifas.tipo_transporte}}</option>
+                     <label>Tarifa</label>
+                    <select v-model="item.id_tarifa" @change="tari()"  name="ciudad_destino" class="form-control" disabled >
+                      <option v-for="tarifas in tarifas"  :value="tarifas.id">{{tarifas.precio}}</option>
                     </select>
-                    <p class="text-danger my-1 small" v-if="(errors.first('ciudad_destino'))" >  Este dato es requerido  </p>
+
                   </div>
                </div>
-               <div class="col-sm-4">
-                  <div class="form-group links">
-                    <label>Tipo de envío</label>
-                   <select v-model="form.id_tarifa" @change="tari()" v-validate="'required'" name="ciudad_destino" class="form-control" disabled >
-                     <option v-for="tarifas in tarifas"  :value="tarifas.id">{{tarifas.tipo_envio}}</option>
-                   </select>
-                   <p class="text-danger my-1 small" v-if="(errors.first('ciudad_destino'))" >  Este dato es requerido  </p>
-                 </div>
-              </div>
-              <div class="col-sm-4">
+
+          </div>
+          <div class="card col-12">
+            <div class="row">
+              <div class="col-sm-6">
                  <div class="form-group links">
-                   <label>Tarifa</label>
-                  <select v-model="form.id_tarifa" @change="tari()" v-validate="'required'" name="ciudad_destino" class="form-control" disabled >
-                    <option v-for="tarifas in tarifas"  :value="tarifas.id">{{tarifas.precio}}</option>
+                   <label>Seguro de carga</label>
+                  <select v-model="item.segurocarga" name="segurocarga" class="form-control" >
+                    <option v-for="segurocarga in segurocarga"  :value="segurocarga.porcentaje">{{segurocarga.porcentaje}} %</option>
                   </select>
-                  <p class="text-danger my-1 small" v-if="(errors.first('ciudad_destino'))" >  Este dato es requerido  </p>
+
                 </div>
              </div>
-                    <a href="#" @click="form.departamento_origen='Amazonas';form.ciudad_destino='';form.departamento_destino='';form.ciudad_destino='';form.tipo_transporte='';form.tipo_envio='';form.id_tarifa=''" class="card-link">Cambiar tarifa</a>
-                  </div>
-                </div>
-                </div>
-                <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">...</div>
+             <div class="col-sm-6">
+                <div class="form-group links">
+                  <label>Coste de guía</label>
+                 <select v-model="item.costeguia"  name="costeguia" class="form-control" >
+                   <option v-for="costeguia in costeguia"   :value="costeguia.valor">{{costeguia.valor}} $</option>
+                 </select>
+
+               </div>
+            </div>
+             <div class="col-sm-6">
+               <label class="links">Medida</label>
+               <div class="form-group">
+                 <select v-model="item.escala"   name="escala" class="form-control" :disabled="ver" >
+                   <option value=""></option>
+                  <option value="Metros">Metros</option>
+                  <option value="Centímetros">Centímetros</option>
+                  <option value="Porcientos">Porcientos</option>
+                 </select>
+
+               </div>
+             </div>
+             <div class="col-sm-6">
+                <div class="form-group links">
+                  <label>Factor</label>
+                 <select v-model="item.factor" @change="facto()" name="segurocarga" class="form-control" >
+                   <option v-for="factores in factores" v-if="factores.escala===item.escala"  :value="factores.id">{{factores.formula}} </option>
+                 </select>
+
+               </div>
+            </div>
+          </div>
+          </div>
+        </div>
+        </div>
+        <button
+        v-if="item.id_tarifa && item.segurocarga && item.costeguia && item.escala && item.formula && item.variable"
+         type="button" class="btn btn-success btn-lg btn-block my-2" @click="pushearItem()">Agregar <span class="mbri-save"></span></button>
+          <div class="table-responsive my-2">
+            <table class="table table-striped table-bordered table condensed table-hover table-responsive  ">
+              <thead>
+                <tr>
+                  <th>ORIGEN</th>
+                  <th>DESTINO</th>
+                  <th>TRANSPORTE</th>
+                  <th style="white-space: nowrap;">TIPO DE ENVÍO</th>
+                  <th>PRECIO</th>
+                  <th>ITINERARIOS</th>
+                  <th style="white-space: nowrap;">TIEMPOS DE ENTREGA</th>
+                  <th>SEGURO</th>
+                  <th style="white-space: nowrap;">MEDIDADS EN</th>
+                  <th>FACTOR</th>
+                  <th style="white-space: nowrap;">COSTE DE GUÍA</th>
+                  <th>ACTION</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(elemento ,index) in form.items">
+                  <td style="white-space: nowrap;">{{elemento.departamento_origen}}-{{item.ciudad_origen}}</td>
+                  <td style="white-space: nowrap;">{{elemento.departamento_destino}}-{{item.ciudad_destino}}</td>
+                  <td style="white-space: nowrap;">{{elemento.tipo_transporte}}</td>
+                  <td style="white-space: nowrap;">{{elemento.tipo_envio}}</td>
+                  <td style="white-space: nowrap;">{{elemento.precio}} $</td>
+                  <td style="white-space: nowrap;">{{elemento.itinerarios}}</td>
+                  <td style="white-space: nowrap;">{{elemento.tiempos}}</td>
+                  <td style="white-space: nowrap;">{{elemento.segurocarga}} %</td>
+                  <td style="white-space: nowrap;">{{elemento.escala}}</td>
+                  <td style="white-space: nowrap;">{{elemento.formula}}</td>
+                  <td style="white-space: nowrap;">{{elemento.costeguia}} $</td>
+                  <td>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default">Action</button>
+                        <button type="button" class="btn btn-default dropdown-toggle dropdown-icon" data-toggle="dropdown">
+                          <span class="sr-only">Toggle Dropdown</span>
+                          <div class="dropdown-menu" role="menu">
+                            <a class="dropdown-item" href="#" @click="eliminarItem(index)">Quitar</a>
+                          </div>
+                        </button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <label class="switch pull-right col-12">
+            <input type="checkbox" v-model="form.vernota" checked @change="verNotas()">
+            <span class="slider round"></span>
+          </label>
+          <div class="card col-12" v-if="form.vernota">
+            <div class="card-body p-3">
+              <h5 class="card-title">Notas</h5>
+              <div v-for="notas in form.notas" class="card p-3 m-3">
+                <h6 class="card-subtitle mb-2 ">{{notas.resumen}}</h6>
+                <p class="card-text links">{{notas.descripcion}}</p>
               </div>
+            </div>
+          </div>
+          <div class="card col-12 my-3" v-if="form.cedula">
+            <div class="col-sm-12">
+             <div class="form-group">
+               <label for="colFormLabelSm" class="links">Fotos detalladas</label>
+                      <div class="col-sm-12">
+                        <div class="row ">
+                          <div class="col-8">
+                            <input type="file"   id="imagenFoto" name="imagenFoto">
+                          </div>
+                            <div class="col-4">
+                            <button class="btn btn-light links btn-lg" type="button"  @click="uploadFoto()">Subir archivo</button>
+                          </div>
+                         </div>
+                    </div>
+              </div>
+          </div>
+          </div>
+          <div class="row" v-if="form.cedula">
+            <div v-for="(img ,index) in imagenes" class="p-2 card col-lg-2 col-md-2 col-sm-12 col-xs-12" >
+                <img :src="'<?=base_url();?>'+img.url" class="card-img-top" alt="...">
+                  <a  class="" @click="eliminarImagen(index)"><span class="mbri-trash"></span></a>
+              </div>
+          </div>
+        </div>
+        <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">...</div>
+      </div>
+    </div>
          <!-- Incio de formulario -->
-               <div class="card-body">
-                       <form role="form" id="form" @submit.prevent="validateBeforeSubmit">
-                         <div class="row">
-                             <div class="col-sm-12">
-                               <!-- textarea -->
-                               <div class="form-group">
-                                 <label class="links">Nombre cotizaciones</label>
-                                  <input type="text" v-model="form.nombre_cargo" v-validate="'required'" name="nombre_cotizaciones" class="form-control" id="" :disabled="ver">
-                                 <p class="text-danger my-1" v-if="(errors.first('nombre_cotizaciones'))" >  Este dato es requerido  </p>
-                               </div>
-                             </div>
-                            </div>
-                           <button v-if="editMode===false"  class="button is-primary links btn btn-light float-right my-3" type="submit">Guardar</button>
-                           <button v-if="editMode===true && !ver"  class="button is-primary btn btn-light links float-right my-3" type="submit">Editar</button>
-                       </form>
-                     </div>
+
+
+                 <button v-if="editMode===false"  class="button is-primary links btn btn-light float-right my-3" @click="cargarCotizacion()">Guardar</button>
+                 <button v-if="editMode===true && !ver"  class="button is-primary btn btn-light links float-right my-3" type="submit">Editar</button>
+             </form>
+
          <!-- Fin del formulario -->
              </div>
            </div>
@@ -371,21 +463,63 @@
          cart:[],
          factura:[],
          cargas:[],
+         notas:[],
          legalizaciones:[],
          cargas_t:[],
          tarifas:[],
+         factores:[],
+         segurocarga:[],
          imagenes:[],
          clientes:[],
+         costeguia:[],
          userFiles:[],
          sedes:[],
          cotizaciones:[],
          editMode:false,
+         item:{
+           'departamento_destino':'',
+           'ciudad_destino':'',
+           'departamento_origen':'',
+           'ciudad_origen':'',
+           'cedula_cliente':'',
+           'tipo_transporte':'',
+           'tipo_envio':'',
+           'precio':'',
+           'tipo_carga':'',
+           'itinerarios':'',
+           'tiempos':'',
+           'segurocarga':'',
+           'costeguia':'',
+           'escala':'',
+           'formula':'',
+           'variable':'',
+         },
+         email:{
+           'correo_cliente':'',
+           'nombre_empresa':'',
+           'codigo':'',
+           'id':'',
+         },
          form:{
              'id':'',
-             'nombre_cargo':'',
-         }
+             'user_id':'<?=$auth_user_id;?>',
+             'vnota':'Si',
+             'tiempo':'',
+             'vernota':true,
+             'items':[],
+             'notas':[],
+             'saludo':[],
+         },
        },
        methods: {
+         verNotas(){
+           if (this.form.vernota) {
+             this.form.vnota="Si";
+           }else{
+             this.form.vnota="No";
+           }
+         },
+
            depp(){
              this.form.departamento=this.colombia[this.form.dep].departamento;
              console.log(this.form.dep);
@@ -394,70 +528,287 @@
 
                this.$validator.reset();
                document.getElementById("form").reset();
+               const dateTime = Date.now();
+               if (!this.form.tiempo) {
+                 this.form.tiempo = Math.floor(dateTime / 1000);
+               }
+               this.loadFotos();
                this.editMode=false;
                this.form.nombre_cargo='';
                $('#modal-lg').modal('show');
            },
-           validateBeforeSubmit() {
-                   this.$validator.validateAll().then((result) => {
-                     if (result) {
-                       let data = new FormData();
-                       data.append('service_form',JSON.stringify(this.form));
-                     if(!this.editMode){
-                       axios.post('index.php/cotizaciones/insertar',data)
-                       .then(response => {
-                         if(response.data.status == 200){
-                           Swal.fire({
-                             type: 'success',
-                             title: 'Exito!',
-                             text: 'Agregado con exito'
-                           })
-                           $('#modal-lg').modal('hide');
-                           this.loadcotizaciones();
-                           this.resete();
-                         }
-                         else{
-                           Swal.fire({
-                             type: 'error',
-                             title: 'Lo sentimos',
-                             text: 'Ha ocurrido un error'
-                           })
-                         }
+           async    uploadFoto() {
+                this.file_data = $('#imagenFoto').prop('files')[0];
+                this.form_data = new FormData();
+                this.form_data.append('file', this.file_data);
+                this.form_data.append('cedula', this.form.cedula);
+                this.form_data.append('tiempo', this.form.tiempo);
+            await      axios.post('index.php/Cotizaciones/detail_foto', this.form_data)
+                  .then(response => {
+                    if(response.data.status == 201){
+                      Swal.fire({
+                        type: 'success',
+                        title: 'Exito!',
+                        text: 'Agregado correctamente'
+                      });
+                     this.loadFotos();
+                     document.getElementById("imagenFoto").value = "";
+                    }
+                    else
+                    {
+                      Swal.fire({
+                        type: 'error',
+                        title: 'Lo sentimos',
+                        text: 'Ha ocurrido un error'
+                      })
+                    }
+                  })
+              },
+              eliminarImagen(index){
+                Swal({
+                  title: '¿Estás seguro?',
+                  text: "¡ será eliminado para siempre!",
+                  type: 'warning',
+                  showCancelButton: true,
+                  confirmButtonText: '¡Si! ¡eliminar!',
+                  cancelButtonText: '¡No! ¡cancelar!',
+                  reverseButtons: true
+                }).then((result) => {
+                  if (result.value) {
+                    let data = new FormData();
+                    data.append('id',this.imagenes[index].id);
+                      axios.post('index.php/Cotizaciones/eliminarImagen',data)
+                      .then(response => {
+                        if(response) {
+                          Swal(
+                            '¡Eliminado!',
+                            'Ha sido eliminado.',
+                            'success'
+                          ).then(response => {
+                                this.loadFotos();
+                          })
+                        } else {
+                          Swal(
+                            'Error',
+                            'Ha ocurrido un error.',
+                            'warning'
+                          ).then(response => {
+                            this.loadFotos();
+                          })
+                        }
+                      })
+                  } else if (
+                    result.dismiss === Swal.DismissReason.cancel
+                  ) {
+                    Swal(
+                      'Cancelado',
+                      'No fue eliminado.',
+                      'success'
+                    )
+                  }
+                })
+              },
+              async loadFotos(){
+                 let data = new FormData();
+                    data.append('cedula',this.form.cedula);
+                    data.append('tiempo',this.form.tiempo);
+                    await  axios.post('index.php/Cotizaciones/getimagenes/',data)
+                    .then(({data: {imagenes}}) => {
+                          this.imagenes = imagenes;
+                  });
+                },
+           tari(){
+             for (var i = 0; i < this.tarifas.length; i++) {
+               if (this.tarifas[i].id===this.item.id_tarifa) {
+                 this.item.departamento_origen=this.tarifas[i].departamento_origen;
+                 this.item.departamento_destino=this.tarifas[i].departamento_destino;
+                 this.item.ciudad_origen=this.tarifas[i].ciudad_origen;
+                 this.item.destino=this.tarifas[i].destino;
+                  this.item.ciudad_destino=this.tarifas[i].ciudad_destino;
+                  this.item.tipo_carga=this.tarifas[i].tipo_carga;
+                  this.item.itinerarios=this.tarifas[i].itinerarios;
+                  this.item.tiempos=this.tarifas[i].tiempos;
+                  this.item.precio=this.tarifas[i].precio;
+               }
+             }
+           },
+           facto(){
+             for (var i = 0; i < this.factores.length; i++) {
+               if (this.factores[i].id===this.item.factor) {
+                 this.item.escala=this.factores[i].escala;
+                 this.item.formula=this.factores[i].formula;
+                 this.item.variable=this.factores[i].variable;
+               }
+             }
+           },
+           cargarCotizacion(index){
+             if (this.imagenes.length<1) {
+               Swal.fire({
+                 type: 'warning',
+                 title: '',
+                 text: 'Debes agregar al menos un documento'
+               });
+               return;
+             }
+             if (this.form.items.length<1) {
+               Swal.fire({
+                 type: 'warning',
+                 title: '',
+                 text: 'Debes agregar al menos un item a la cotización'
+               });
+               return;
+             }
+             if (!this.form.cedula) {
+               Swal.fire({
+                 type: 'warning',
+                 title: '',
+                 text: 'Debes agregar la cedula del cliente'
+               });
+               return;
+             }
+               Swal({
+                 title: '¿Estás seguro?',
+                 text: "",
+                 type: 'warning',
+                 showCancelButton: true,
+                 confirmButtonText: '¡Si! ¡eliminar!',
+                 cancelButtonText: '¡No! ¡cancelar!',
+                 reverseButtons: true
+               }).then((result) => {
+                 if (result.value) {
+                   let data = new FormData();
+                   data.append('service_form',JSON.stringify(this.form));
+                   axios.post('index.php/Cotizaciones/insertar',data)
+                   .then(response => {
+                     if(response.data.status == 200){
+                       Swal.fire({
+                         type: 'success',
+                         title: 'Exito!',
+                         text: 'Agregado con exito'
                        })
+                       $('#modal-lg').modal('hide');
+                       this.loadcotizaciones();
+                       this.resete();
                      }
                      else{
-                       axios.post('index.php/cotizaciones/editar',data)
-                       .then(response => {
-                         if(response.data.status == 200)
-                         {
-                           $('#modal-lg').modal('hide');
-                           this.loadcotizaciones();
-                           Swal.fire({
-                             type: 'success',
-                             title: 'Exito!',
-                             text: 'Editado correctamente'
-                          });
-                          this.editMode=false;
-                          this.resete();
-                         }
-                         else{
-                           Swal.fire({
-                             type: 'error',
-                             title: 'Lo sentimos',
-                             text: 'Ha ocurrido un error'
-                           })
-                         }
+                       Swal.fire({
+                         type: 'error',
+                         title: 'Lo sentimos',
+                         text: 'Ha ocurrido un error'
                        })
                      }
-                     return;
-                     }
+                   })
+                 } else if (
+                   result.dismiss === Swal.DismissReason.cancel
+                 ) {
+                   Swal(
+                     'Cancelado',
+                     'No fue eliminado.',
+                     'success'
+                   )
+                 }
+               })
+             },
 
-                     Swal(
-                       'Error',
-                       'Debes llenar todos los datos.',
-                       'warning'
-                     );
-                   });
+                 pushearItem(index){
+                   Swal({
+                     title: '¿Estás seguro?',
+                     type: 'warning',
+                     showCancelButton: true,
+                     confirmButtonText: '¡Si!',
+                     cancelButtonText: '¡No!',
+                     reverseButtons: true
+                   }).then((result) => {
+                     if (result.value) {
+                       this.form.items.push({
+                          id_tarifa:this.item.id_tarifa,
+                          departamento_destino:this.item.departamento_destino,
+                          departamento_origen:this.item.departamento_origen,
+                          ciudad_origen:this.item.ciudad_origen,
+                          cedula_cliente:this.item.cedula_cliente,
+                          tipo_transporte:this.item.tipo_transporte,
+                          tipo_envio:this.item.tipo_envio,
+                          precio:this.item.precio,
+                          tipo_carga:this.item.tipo_carga,
+                          itinerarios:this.item.itinerarios,
+                          tiempos:this.item.tiempos,
+                          segurocarga:this.item.segurocarga,
+                          costeguia:this.item.costeguia,
+                          escala:this.item.escala,
+                          formula:this.item.formula,
+                          variable:this.item.variable,
+                        });
+                        if (this.form.notas.length<1) {
+                          for (var i = 0; i < this.notas.length; i++) {
+                            if (this.notas[i].tipo_transporte===this.item.tipo_transporte && this.notas[i].estado==='Activo') {
+                                this.form.notas.push(this.notas[i]);
+                            }
+                          }
+                        }else if (this.form.notas.length>0) {
+                          this.copiaNotas=this.notas;
+                          for (var i = 0; i < this.form.notas.length; i++) {
+                            for (var j = 0; j < this.copiaNotas.length; j++) {
+                              if (this.copiaNotas[j].tipo_transporte===this.item.tipo_transporte && this.copiaNotas[i].estado==='Activo') {
+                                  if (this.form.notas[i].id===this.copiaNotas[j].id || this.copiaNotas[i].estado==='Inactivo') {
+                                    this.copiaNotas.splice(j, 1);
+                                  }else{
+                                    this.form.notas.push(this.copiaNotas[j]);
+                                    this.copiaNotas.splice(j, 1);
+                                  }
+                              }
+                            }
+
+                          }
+                        }
+                        this.item.id_tarifa="";
+                        this.item.departamento_destino="";
+                        this.item.departamento_origen="";
+                        this.item.ciudad_origen="";
+                        this.item.cedula_cliente="";
+                        this.item.tipo_transporte="";
+                        this.item.tipo_envio="";
+                        this.item.precio="";
+                        this.item.tipo_carga="";
+                        this.item.itinerarios="";
+                        this.item.tiempos="";
+                        this.item.segurocarga="";
+                        this.item.costeguia="";
+                        this.item.escala="";
+                        this.item.formula="";
+                        this.item.variable="";
+
+                     } else if (
+                       result.dismiss === Swal.DismissReason.cancel
+                     ) {
+                       Swal(
+                         'Cancelado',
+                         'No fue eliminado.',
+                         'success'
+                       )
+                     }
+                   })
+                 },
+                 eliminarItem(index){
+                   Swal({
+                     title: '¿Estás seguro?',
+                     type: 'warning',
+                     showCancelButton: true,
+                     confirmButtonText: '¡Si! ¡eliminar!',
+                     cancelButtonText: '¡No! ¡cancelar!',
+                     reverseButtons: true
+                   }).then((result) => {
+                     if (result.value) {
+                       this.form.items.splice(index, 1);
+                     } else if (
+                       result.dismiss === Swal.DismissReason.cancel
+                     ) {
+                       Swal(
+                         'Cancelado',
+                         'No fue eliminado.',
+                         'success'
+                       )
+                     }
+                   })
                  },
                  eliminarcotizaciones(index){
                    Swal({
@@ -508,6 +859,12 @@
                    this.form.nombre_cargo=this.cotizaciones[index].nombre_cargo,
                    $('#modal-lg').modal('show');
                    this.editMode=true
+                 },
+                 setearEmail(index){
+                   this.email.correo_cliente=this.cotizaciones[index].correo_cliente;
+                   this.email.id=this.cotizaciones[index].id;
+                   this.email.nombre_empresa=this.cotizaciones[index].nombre_empresa;
+                   this.email.codigo=this.cotizaciones[index].codigo;
                  },
                  ver(index){
                    this.form.id=this.cotizaciones[index].id,
@@ -566,6 +923,38 @@
                           this.proveedores = proveedores
                         });
                       },
+                      async loadsegurocarga() {
+                        await   axios.get('index.php/Segurocarga/getsegurocarga/')
+                           .then(({data: {segurocarga}}) => {
+                             this.segurocarga = segurocarga
+                           });
+
+                         },
+                      async loadfactores() {
+                        await   axios.get('index.php/factores/getfactores/')
+                           .then(({data: {factores}}) => {
+                             this.factores = factores
+                           });
+
+                         },
+                         async loadcosteguia() {
+                        await   axios.get('index.php/costeguia/getcosteguia/')
+                           .then(({data: {costeguia}}) => {
+                             this.costeguia = costeguia
+                           });
+
+                         },
+                      async loadnotas() {
+                            await   axios.get('index.php/notas/getnotass/')
+                               .then(({data: {notas}}) => {
+                                 this.notas = notas
+                               });
+                               for (var i = 0; i < this.notas.length; i++) {
+                                 if (this.notas[i].tipo_transporte==='Saludo') {
+                                  this.form.saludo.push(this.notas[i]);
+                                 }
+                               }
+                             },
                  loadCart(){
 
                    if(localStorage.getItem('cart')) {
@@ -579,15 +968,18 @@
        },
 
        created(){
-
+           this.loadnotas();
+           this.loadcosteguia();
+           this.loadfactores();
+           this.loadsegurocarga();
            this.loadproveedores();
            this.loadtarifas();
            this.loadtipocarga();
            this.loadtiposenvios();
            this.loadtransportes();
            this.loadclientes();
-            this.loadcotizaciones();
-            this.loadCart();
+           this.loadcotizaciones();
+           this.loadCart();
        },
    })
  </script>
