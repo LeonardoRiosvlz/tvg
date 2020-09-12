@@ -15,9 +15,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 'items'      => json_encode($data['items']),
                 'notas'      => json_encode($data['notas']),
                 'saludo'     => json_encode($data['saludo']),
+                'contrato'     => json_encode($data['contrato']),
             ));
             return $this->db->error();
         }
+        public function generar_enviar($data) {
+            $this->db->where('id',$data['id']);
+            $this->db->update('cotizaciones', array(
+              'status'     => 'Enviado',
+              'estatus_gestion'     => 'Enviado',
+            ));
+            return $this->db->error();
+           }
         public function editar($data) {
             $this->db->where('id',$data['id']);
             $this->db->update('cotizaciones', array(
@@ -81,4 +90,181 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
                     return $random_unique_int;
                 }
+
+
+////////////////////////// pdf ///////////////////////
+//////////PDF
+                function fetch_details($codigo,$id){
+                 $this->db->select('*')
+                  ->from('empresa')
+                  ->where('id', 1);
+                  $datos=$this->db->get();
+
+
+                    $this->db->select('c.*, u.username,u.nombre,u.apellido,u.cargo,cl.correo_cliente, cl.nombre_empresa, cl.telefono_cliente, cl.tipo_cliente, cl.nombre_cliente, cl.telefono_cliente, cl.ciudad')
+                    ->from('cotizaciones c')
+                    ->where('c.id', $id)
+                    ->where('c.codigo',$codigo)
+                    ->join('users u', 'c.user_id = u.user_id')
+                    ->join('clientes cl', 'c.cedula = cl.cedula_cliente');
+                    $data = $this->db->get();
+
+                    $output = '<html lang="en">
+                              <head>
+                              <meta charset="utf-8">
+                              <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+                              <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
+                              <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+                              <title>COTIZACIÓN TVG CARGOS</title>
+                              <style media="screen">
+                                .bounce-enter-active {
+                                  animation: bounce-in .5s;
+                                }
+                                .bounce-leave-active {
+                                  animation: bounce-out .5s;
+                                }
+                                @keyframes bounce-in {
+                                  0% {
+                                    transform: scale(0);
+                                  }
+                                  50% {
+                                    transform: scale(1.5);
+                                  }
+                                  100% {
+                                    transform: scale(1);
+                                  }
+                                }
+                                @keyframes bounce-out {
+                                  0% {
+                                    transform: scale(1);
+                                  }
+                                  50% {
+                                    transform: scale(1.5);
+                                  }
+                                  100% {
+                                    transform: scale(0);
+                                  }
+                                }
+                                @page { margin: 100px 30px; }
+                                  #header { position: fixed; left: 0px; top: -100px; right: 0px; height: 70px; background-color: white; text-align: left; padding-top:30px; }
+                                  #footer { position: fixed; left: 0px; bottom: -105px; right: 0px; height: 70px; background-color: white; }
+                                  #footer .page:after { content: counter(page, upper-roman); }
+                              </style>
+                            </head>
+                        <body >
+                          <style type="text/css">
+                          .tftable {font-size:12px;color:#333333;width:100%;border-width: 1px;border-color: #729ea5;border-collapse: collapse;}
+                          .tftable th {font-size:12px;background-color:#acc8cc;border-width: 1px;padding: 8px;border-style: solid;border-color: #729ea5;text-align:left;}
+                          .tftable tr {background-color:#ffffff;}
+                          .tftable td {font-size:12px;border-width: 1px;padding: 4px;border-style: solid;border-color: #729ea5;}
+                          .tftable tr:hover {background-color:#ffffff;}
+                          .verticalText {
+                          -webkit-transform: rotate(-90deg);
+                          -moz-transform: rotate(-90deg);
+                          .titulos {font-family: "Roboto", sans-serif;}
+                          }
+                          </style>';
+
+                          foreach($datos->result() as $row){
+                              $output .= '
+                              <div id="header">
+                                <img class="adapt-img" src="'.base_url($row->logo_uno).'" alt style="display: block;" width="100%" height="68px"></a>
+                              </div>
+                              <div id="footer">
+                                <img class="adapt-img" src="'.base_url($row->logo_dos).'" alt style="display: block;" width="100%" height="68px"></a>
+                              </div>';
+                              }
+
+                         foreach($data->result() as $row){
+                             $output .= '
+                                <span style="float:right;color:red;font-size:17px;">COT-'.$row->id.'</span></BR>
+                                <span style="font-weight: bold;font-size:17px;">Bogotá, D.C. '.$row->fecha_creacion.'</span></BR>
+                                    ';
+                                    if ($row->tipo_cliente==="Persona jurídica") {
+                                      $output .= '
+                                          <p style="font-weight: bold;font-size:17px;"> Señores '.$row->nombre_empresa.'</p></BR>
+                                             ';
+                                    }
+                             $output .= '
+                                    <p style="font-weight: bold;font-size:15px;"> Estimad@ '.$row->nombre_cliente.'</p></BR>
+                                    <p style="font-weight: bold;font-size:15px;"> Teléfono: '.$row->telefono_cliente.'</p></BR>
+                                    <p style="font-weight: bold;font-size:15px;"> Correo electrónico:'.$row->correo_cliente.'</p></BR>
+                                    <p style="font-weight: bold;font-size:15px;"> Ciudad:'.$row->ciudad.'</p></BR>
+                                    <h5 class="titulos" style="font-weight: bold;font-size:14px;;"> REF: COTIZACIÓN TRANSPORTE A DIFERENTES DESTINO </h5>
+                                    <h5 class="titulos" style="font-weight: bold;font-size:16px;">Estimados Señores:</h5>
+                                    ';
+                                  }
+                        foreach($data->result() as $row){
+                            $saludo=$row->saludo;
+                              foreach(json_decode($saludo) as $row){
+                                $output .= '
+                                      <p style="font-weight: bold;text-indent: 40px;text-align: justify; font-size:17px;">'.$row->resumen.'</p></BR>
+                                      <p style="text-indent: 40px;text-align: justify;font-size:17px;">'.$row->descripcion.'</p></BR>
+                                      <div style="page-break-after:always;"></div>
+                                ';}
+                          }
+                          foreach($data->result() as $row){
+                              $items=$row->items;
+                                foreach(json_decode($items) as $row){
+                                  $output .= '
+                                  <h4 class="titulos" style="font-weight: bold;"> Tarifa de transporte '.$row->tipo_transporte.'</h4>
+                                  <div id="content">
+                                    <table class="tftable" border="1">
+                                      <tr>
+                                        <td>ORIGEN</td>
+                                        <td>DESTINO</td>
+                                        <td>VALOR KILO</td>
+                                        <td>VALOR SEGURO</td>
+                                        <td>COSTE DE GUIA</td>
+                                        <td>ITINERARIO</td>
+                                      </tr>
+                                      <tr>
+                                        <td>'.$row->ciudad_origen.'</td>
+                                        <td>'.$row->ciudad_destino.'</td>
+                                        <td>$'.$row->precio.'</td>
+                                        <td>'.$row->segurocarga.'% del valor declarado de la mercancía</td>
+                                        <td>$'.$row->costeguia.'</td>
+                                        <td>'.$row->itinerarios.'</td>
+                                      </tr>
+                                    </table>
+                                  ';}
+                            }
+                            $output .= '<div style="page-break-after:always;"></div>
+                            <h5 class="titulos" style="font-weight: bold;font-size:19px;;">NOTAS REALCIONADAS A EL TIPO DE TRANSPORTE </h5>';
+                            foreach($data->result() as $row){
+                                $notas=$row->notas;
+                                  foreach(json_decode($notas) as $row){
+                                    $output .= '
+                                      <h5 style="font-weight: bold;text-indent: 10px;font-size:19px;" >Nota transporte '.$row->tipo_transporte.'</h5>
+                                      <p style="font-weight: bold;text-indent: 10px;text-align: justify; font-size:15px;">'.$row->resumen.'</p></BR>
+                                      <p style="text-indent: 10px;text-align: justify; font-size:15px;">'.$row->descripcion.'</p></BR>
+                                    ';}
+                              }
+                              $output .= '<div style="page-break-after:always;"></div>
+                              <h5 class="titulos" style="font-weight: bold;font-size:19px;;">NOTAS DE CONTRATO</h5>';
+                              foreach($data->result() as $row){
+                                  $contrato=$row->contrato;
+                                    foreach(json_decode($contrato) as $row){
+                                      $output .= '
+                                        <p style="font-weight: bold;text-indent: 20px;text-align: justify; font-size:15px;">'.$row->resumen.'</p><p style="text-indent: 40px;text-align: justify; font-size:12px;">'.$row->descripcion.'</p></BR>
+                                      ';}
+                                }
+                              $output .= '<p style="font-weight: bold;text-indent: 40px;text-align: justify; font-size:15px;">De requerir información sobre otras rutas, tarifas y condiciones por favor indíquenos la información y con gusto le presentaremos la Propuesta comercial.</p>
+                              <p>Estaremos muy atentos a sus comentarios y requerimientos;</p>
+                              <p> Cordialmente, </p>';
+                              foreach($data->result() as $row){
+                                  $output .= '
+                                     <p style="font-size:17px;">'.$row->nombre.' '.$row->apellido.'</p></BR>
+                                     <p style="font-weight: bold;font-size:17px;">'.$row->cargo.'</p></BR>
+                                         ';
+                                       }
+                        $output .= '
+                           </body>
+                          </html>';
+
+                          return $output;
+
+                }
+
+
     }

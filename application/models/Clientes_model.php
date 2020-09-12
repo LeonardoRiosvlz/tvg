@@ -228,6 +228,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         }
 //////////PDF
 function fetch_details(){
+ $this->db->select('*')
+  ->from('empresa')
+  ->where('id', 1);
+  $datos=$this->db->get();
 
     $this->db->select('c.*,u.nombre,u.apellido, s.nombre_sucursal, f.forma')
     ->from('clientes C')
@@ -240,6 +244,7 @@ function fetch_details(){
               <head>
               <meta charset="utf-8">
               <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+              <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
               <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
               <title>Auto Soft</title>
               <style media="screen">
@@ -271,23 +276,40 @@ function fetch_details(){
                     transform: scale(0);
                   }
                 }
+                @page { margin: 100px 30px; }
+                  #header { position: fixed; left: 0px; top: -100px; right: 0px; height: 70px; background-color: white; text-align: left; padding-top:30px; }
+                  #footer { position: fixed; left: 0px; bottom: -100px; right: 0px; height: 70px; background-color: white; }
+                  #footer .page:after { content: counter(page, upper-roman); }
               </style>
             </head>
         <body >
           <style type="text/css">
           .tftable {font-size:12px;color:#333333;width:100%;border-width: 1px;border-color: #729ea5;border-collapse: collapse;}
           .tftable th {font-size:12px;background-color:#acc8cc;border-width: 1px;padding: 8px;border-style: solid;border-color: #729ea5;text-align:left;}
-          .tftable tr {background-color:#d4e3e5;}
+          .tftable tr {background-color:#ffffff;}
           .tftable td {font-size:12px;border-width: 1px;padding: 4px;border-style: solid;border-color: #729ea5;}
           .tftable tr:hover {background-color:#ffffff;}
           .verticalText {
           -webkit-transform: rotate(-90deg);
           -moz-transform: rotate(-90deg);
+          .titulos {font-family: "Roboto", sans-serif;}
           }
           </style>';
 
-          $output .= '
+          foreach($datos->result() as $row){
+              $output .= '
+              <div id="header">
+                <img class="adapt-img" src="'.base_url($row->logo_uno).'" alt style="display: block;" width="100%" height="68px"></a>
+              </div>
+              <div id="footer">
+                <img class="adapt-img" src="'.base_url($row->logo_dos).'" alt style="display: block;" width="100%" height="68px"></a>
+              </div>';
+              }
 
+
+          $output .= '
+          <h4 class="titulos"> CLIENTES TVGCARGOS</h4>
+          <div id="content">
             <table class="tftable" border="1">
             <tr>
               <td>NIT</td>

@@ -80,4 +80,7 @@
   'abel' => array(
     'normal' => $fontDir . '\14058eb9eb98eb1a18b8fc17d924cdb0',
   ),
+  'roboto' => array(
+    'normal' => $fontDir . '\560416baba154a183b2ccc6468b2c118',
+  ),
 ) ?>

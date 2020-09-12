@@ -54,8 +54,8 @@ class DatosEmpresa extends MY_Controller {
 								$config['upload_path']          = './include/img/';
 								$config['allowed_types']        = 'jpg|png|jpeg';
 								$config['max_size']             = 7500;
-								$config['max_width']            = 2500;
-								$config['max_height']           = 1400;
+								$config['max_width']            = 12500;
+								$config['max_height']           = 11400;
 								$this->load->library('upload', $config);
 								if ( ! $this->upload->do_upload('file')) {
 									$error = array('error' => $this->upload->display_errors());
@@ -72,8 +72,8 @@ class DatosEmpresa extends MY_Controller {
 								$config['upload_path']          = './include/img/';
 								$config['allowed_types']        = 'jpg|png|jpeg';
 								$config['max_size']             = 7500;
-								$config['max_width']            = 2500;
-								$config['max_height']           = 1400;
+								$config['max_width']            = 12500;
+								$config['max_height']           = 11400;
 								$this->load->library('upload', $config);
 								if ( ! $this->upload->do_upload('file')) {
 									$error = array('error' => $this->upload->display_errors());

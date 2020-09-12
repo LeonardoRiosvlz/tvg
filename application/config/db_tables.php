@@ -21,7 +21,8 @@ $config['products_table']               = 'products';
 $config['historial_ce_table']           = 'historial_ce';
 $config['cotizaciones_table']           = 'cotizaciones';
 $config['cupon_table']                  = 'cupon';
-$config['pedido_table']                  = 'pedido';
+$config['pedido_table']                 = 'pedido';
+$config['archivos_table']               = 'archivos';
 // LOGIN ERROR RELATED TABLES
 $config['errors_table']                 = 'login_errors';
 $config['IP_hold_table']                = 'ips_on_hold';

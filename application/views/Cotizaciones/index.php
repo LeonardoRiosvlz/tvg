@@ -111,7 +111,7 @@
       <!-- End -->
     </div>
   </div>
-  <pre>{{email}}</pre>
+  <pre>{{form}}</pre>
         <!-- Modal agregar   -->
         <div class="modal fade" id="modal-lg" data-backdrop="static" data-keyboard="false">
          <div class="modal-dialog modal-lg">
@@ -145,7 +145,7 @@
                   </div>
                   <div class="card col-12 p-3">
                      <h5 >Datos del cliente</h5>
-                     <div class="row">
+                     <div class="row" v-if="form.cedula">
                        <div class="col-md-4">
                          <label class="links">Empresa</label>
                          <div class="form-group">
@@ -168,7 +168,7 @@
                          <label class="links">Telefono</label>
                          <div class="form-group">
                            <select v-model="form.cedula"  name="tipo_envio" class="form-control" disabled>
-                             <option v-for="clientes in clientes" v-if="clientes.cliente_especial==='No'" :value="clientes.cedula_cliente">{{clientes.ciudad}}</option>
+                             <option v-for="clientes in clientes" v-if="clientes.cliente_especial==='No'" :value="clientes.cedula_cliente">{{clientes.telefono_cliente}}</option>
                            </select>
                            <p class="text-danger my-1 small" v-if="(errors.first('tipo_envio'))" >  Este dato es requerido  </p>
                          </div>
@@ -401,8 +401,11 @@
           <div class="card col-12" v-if="form.vernota">
             <div class="card-body p-3">
               <h5 class="card-title">Notas</h5>
-              <div v-for="notas in form.notas" class="card p-3 m-3">
-                <h6 class="card-subtitle mb-2 ">{{notas.resumen}}</h6>
+              <div v-for="(notas ,index) in form.notas" class="card p-3 m-3">
+                <div class="d-flex justify-content-between">
+                  <h6 class="card-subtitle mb-2 ">{{notas.resumen}}</h6>
+                  <button type="button" class="btn btn-danger pull-right" name="button"  @click="eliminarNota(index)">Eliminar <span class="mbri-trash"></span></button>
+                </div>
                 <p class="card-text links">{{notas.descripcion}}</p>
               </div>
             </div>
@@ -509,6 +512,7 @@
              'items':[],
              'notas':[],
              'saludo':[],
+             'contrato':[],
          },
        },
        methods: {
@@ -671,8 +675,8 @@
                  text: "",
                  type: 'warning',
                  showCancelButton: true,
-                 confirmButtonText: '¡Si! ¡eliminar!',
-                 cancelButtonText: '¡No! ¡cancelar!',
+                 confirmButtonText: '¡Si!',
+                 cancelButtonText: '¡No! ',
                  reverseButtons: true
                }).then((result) => {
                  if (result.value) {
@@ -725,6 +729,7 @@
                           departamento_destino:this.item.departamento_destino,
                           departamento_origen:this.item.departamento_origen,
                           ciudad_origen:this.item.ciudad_origen,
+                          ciudad_destino:this.item.ciudad_destino,
                           cedula_cliente:this.item.cedula_cliente,
                           tipo_transporte:this.item.tipo_transporte,
                           tipo_envio:this.item.tipo_envio,
@@ -810,6 +815,28 @@
                      }
                    })
                  },
+                 eliminarNota(index){
+                   Swal({
+                     title: '¿Estás seguro?',
+                     type: 'warning',
+                     showCancelButton: true,
+                     confirmButtonText: '¡Si! ¡eliminar!',
+                     cancelButtonText: '¡No! ¡cancelar!',
+                     reverseButtons: true
+                   }).then((result) => {
+                     if (result.value) {
+                       this.form.notas.splice(index, 1);
+                     } else if (
+                       result.dismiss === Swal.DismissReason.cancel
+                     ) {
+                       Swal(
+                         'Cancelado',
+                         'No fue eliminado.',
+                         'success'
+                       )
+                     }
+                   })
+                 },
                  eliminarcotizaciones(index){
                    Swal({
                      title: '¿Estás seguro?',
@@ -854,6 +881,50 @@
                      }
                    })
                  },
+                 enviarCotizacion(index){
+                   Swal({
+                     title: '¿Estás seguro?',
+                     text: "",
+                     type: 'warning',
+                     showCancelButton: true,
+                     confirmButtonText: '¡Si! ¡enviar!',
+                     cancelButtonText: '¡No!',
+                     reverseButtons: true
+                   }).then((result) => {
+                     if (result.value) {
+                       let data = new FormData();
+                       data.append('service_form',JSON.stringify(this.email));
+                         axios.post('index.php/cotizaciones/enviar_cotizacion',data)
+                         .then(response => {
+                           if(response) {
+                             Swal(
+                               '¡Enviado !',
+                               'Ha sido enviado con exito .',
+                               'success'
+                             ).then(response => {
+                                   this.loadcotizaciones();
+                             })
+                           } else {
+                             Swal(
+                               'Error',
+                               'Ha ocurrido un error.',
+                               'warning'
+                             ).then(response => {
+                               this.loadcotizaciones();
+                             })
+                           }
+                         })
+                     } else if (
+                       result.dismiss === Swal.DismissReason.cancel
+                     ) {
+                       Swal(
+                         'Cancelado',
+                         'No fue enviado.',
+                         'success'
+                       )
+                     }
+                   })
+                 },
                  setear(index){
                    this.form.id=this.cotizaciones[index].id,
                    this.form.nombre_cargo=this.cotizaciones[index].nombre_cargo,
@@ -864,7 +935,14 @@
                    this.email.correo_cliente=this.cotizaciones[index].correo_cliente;
                    this.email.id=this.cotizaciones[index].id;
                    this.email.nombre_empresa=this.cotizaciones[index].nombre_empresa;
+                   this.email.url_pdf='Cotizaciones_to_pdf/'+this.cotizaciones[index].codigo+'/'+this.cotizaciones[index].id;
+                   this.email.url_gestion='Cotizaciones_gestion/'+this.cotizaciones[index].codigo+'/'+this.cotizaciones[index].id;
+                   this.email.nombre_archivo=this.cotizaciones[index].nombre_empresa+'-COT-'+this.cotizaciones[index].id;
                    this.email.codigo=this.cotizaciones[index].codigo;
+                   this.email.usuario_responsable=this.cotizaciones[index].user_id;
+                   this.email.saludos=JSON.parse(this.cotizaciones[index].saludo);
+                   this.email.saludo=this.email.saludos[0].descripcion;
+                   this.enviarCotizacion();
                  },
                  ver(index){
                    this.form.id=this.cotizaciones[index].id,
@@ -872,13 +950,13 @@
                    $('#myModal').modal('show');
                    this.editMode=false
                  },
-                 async loadcotizaciones() {
-                await   axios.get('index.php/cotizaciones/getcotizaciones/')
-                   .then(({data: {cotizaciones}}) => {
-                     this.cotizaciones = cotizaciones
-                   });
-                   $("#example1").DataTable();
-                 },
+                 async loadcotizaciones(){
+                   await   axios.get('index.php/cotizaciones/getcotizaciones/')
+                    .then(({data: {cotizaciones}}) => {
+                      this.cotizaciones = cotizaciones
+                    });
+                    $("#example1").DataTable();
+                  },
                  async loadclientes() {
                       await   axios.get('index.php/clientes/getclientes/')
                          .then(({data: {clientes}}) => {
@@ -952,6 +1030,11 @@
                                for (var i = 0; i < this.notas.length; i++) {
                                  if (this.notas[i].tipo_transporte==='Saludo') {
                                   this.form.saludo.push(this.notas[i]);
+                                 }
+                               }
+                               for (var i = 0; i < this.notas.length; i++) {
+                                 if (this.notas[i].tipo_transporte==='Contrato' && this.notas[i].estado==='Activo') {
+                                  this.form.contrato.push(this.notas[i]);
                                  }
                                }
                              },

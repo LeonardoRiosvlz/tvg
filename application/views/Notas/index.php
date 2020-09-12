@@ -96,11 +96,13 @@
                                  <p class="text-danger my-1" v-if="(errors.first('descripcion'))" >  Este dato es requerido  </p>
                                </div>
                              </div>
-                             <div class="col-md-5 col-sm-12" v-if="!form.tipo_transporte==='Saludo'">
-                               <label class="links">Tipo de transporte</label>
+                             <div class="col-md-5 col-sm-12" >
+                               <label class="links">Tipo de transporte/Tipo de Nota</label>
                                <div class="form-group">
                                  <select v-model="form.tipo_transporte" v-validate="'required'"  name="tipo_transporte" class="form-control" :disabled="ver" >
                                   <option value=""></option>
+                                  <option value="Saludo">Saludo</option>
+                                  <option value="Contrato">Contrato</option>
                                    <option v-for="transportes in transportes" :value="transportes.tipo_transporte">{{transportes.tipo_transporte}}</option>
                                  </select>
                                  <p class="text-danger my-1 small" v-if="(errors.first('tipo_transporte'))" >  Este dato es requerido  </p>

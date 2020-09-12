@@ -334,7 +334,7 @@ public function excelexport(){
 					$this->pdf->set_paper('letter', 'landscape');
      			$this->pdf->loadHtml($html_content);
      			$this->pdf->render();
-     			$this->pdf->stream("Clientes".$hoy.".pdf", array("Attachment"=>0));
+     			$this->pdf->stream("Clientestvgcargos.pdf", array("Attachment"=>0));
 
 			}
 

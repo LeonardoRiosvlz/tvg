@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     class DatosEmpresa_model extends CI_Model {
 
         public function editar($data) {
-            $this->db->where('id',0);
+            $this->db->where('id',1);
             $this->db->update('empresa', array(
               'nombre_empresa'     => $data['nombre_empresa'],
               'nit'                 => $data['nit'],
@@ -25,19 +25,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
               return $this->db
               ->select('*')
               ->from('empresa')
-              ->where('id', 0)
+              ->where('id', 1)
               ->get()
               ->result();
             }
             public function logo_uno($data) {
-                $this->db->where('id',0);
+                $this->db->where('id',1);
                 $this->db->update('empresa', array(
                     'logo_uno'     => $data['logo_uno'],
                 ));
                 return $this->db->error();
             }
             public function logo_dos($data) {
-                $this->db->where('id',0);
+                $this->db->where('id',1);
                 $this->db->update('empresa', array(
                     'logo_dos'     => $data['logo_dos'],
                 ));
