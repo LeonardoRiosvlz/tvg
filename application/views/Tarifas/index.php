@@ -58,7 +58,7 @@
       <!-- End -->
     </div>
   </div>
-
+<pre>{{form}}</pre>
         <!-- Modal agregar   -->
         <div class="modal fade" id="modal-lg" data-backdrop="static" data-keyboard="false">
          <div class="modal-dialog modal-xl">
@@ -1655,7 +1655,7 @@
                        this.form.dep=this.tarifas[index].dep,
                        this.form.ciudad_origen=this.tarifas[index].ciudad_origen,
                        this.form.departamento_origen=this.tarifas[index].departamento_origen,
-                       this.form.dep_dos=this.tarifas[index].dep,
+                       this.form.dep_dos=this.tarifas[index].dep_dos,
                        this.form.ciudad_destino=this.tarifas[index].ciudad_destino,
                        this.form.departamento_destino=this.tarifas[index].departamento_destino,
                        this.form.tipo_envio=this.tarifas[index].tipo_envio,
@@ -1672,7 +1672,7 @@
                    this.form.dep=this.tarifas[index].dep,
                    this.form.ciudad_origen=this.tarifas[index].ciudad_origen,
                    this.form.departamento_origen=this.tarifas[index].departamento_origen,
-                   this.form.dep_dos=this.tarifas[index].dep,
+                   this.form.dep_dos=this.tarifas[index].dep_dos,
                    this.form.ciudad_destino=this.tarifas[index].ciudad_destino,
                    this.form.departamento_destino=this.tarifas[index].departamento_destino,
                    this.form.tipo_envio=this.tarifas[index].tipo_envio,

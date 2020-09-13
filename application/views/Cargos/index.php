@@ -1,4 +1,4 @@
-zz<div id="app" class="container">
+<div id="app" class="container">
   <div class="row">
     <div class="col-lg-12 my-5 ">
       <!-- Shopping cart table -->

@@ -88,7 +88,8 @@
                 <td class="links">{{cotizaciones.username}}-{{cotizaciones.id}}</td>
                 <td class="links">{{cotizaciones.nombre_empresa}}</td>
                 <td class="links">{{cotizaciones.telefono_cliente}}</td>
-                <td class="links"><span class="badge badge-pill badge-info">{{cotizaciones.estatus_gestion}}</span></td>
+                <td class="links" v-if="cotizaciones.status==='Generado' && cotizaciones.estatus_gestion==='Borrador'">Generado por enviar...</td>
+                <td class="links" v-else>{{cotizaciones.estatus_gestion}}</td>
                   <td>
                     <div class="btn-group">
                         <button type="button" class="btn btn-default">Action</button>
@@ -96,7 +97,9 @@
                           <span class="sr-only">Toggle Dropdown</span>
                           <div class="dropdown-menu" role="menu">
                             <a class="dropdown-item" href="#"@click="setear(index);ver=true">Ver</a>
-                            <a class="dropdown-item" href="#" @click="setearEmail(index)">Enviar</a>
+                            <a v-if="cotizaciones.estatus_gestion==='Borrador' && cotizaciones.status==='Borrador'" class="dropdown-item" href="#" @click="enviarCotizacion(index);setearEmail(index)">Enviar y Generar</a>
+                            <a v-if="cotizaciones.status==='Borrador'" class="dropdown-item" href="#" @click="generar(index);setearEmail(index)">Generar</a>
+                            <a v-if="cotizaciones.status==='Generado'" class="dropdown-item" href="#" @click="soloEnviar(index);setearEmail(index)">Enviar</a>
                             <a class="dropdown-item" href="#" @click="setear(index);ver=false">Editar</a>
                             <a class="dropdown-item" href="#" @click="setear(index);ver=false">Duplicar</a>
                             <a class="dropdown-item" href="#" @click="setear(index);ver=false">Rechazar</a>
@@ -111,7 +114,7 @@
       <!-- End -->
     </div>
   </div>
-  <pre>{{form}}</pre>
+  <pre>{{email}}</pre>
         <!-- Modal agregar   -->
         <div class="modal fade" id="modal-lg" data-backdrop="static" data-keyboard="false">
          <div class="modal-dialog modal-lg">
@@ -232,7 +235,7 @@
                             <label class="links">Trazabilidad</label>
                             <input list="tarifas" v-model="item.id_tarifa" @change="tari()"  value="" class="form-control form-control-lg" placeholder="Escriba una ruta">
                               <datalist id="tarifas">
-                                  <option v-for="tarifas in tarifas" v-if="tarifas.tipo_envio===item.tipo_envio"  :value="tarifas.id">De {{tarifas.ciudad_origen}} a {{tarifas.ciudad_destino}} Tiempo:{{tarifas.tiempos}}</option>
+                                  <option v-for="tarifas in tarifas" v-if="tarifas.tipo_envio===item.tipo_envio && tarifas.tipo_transporte===item.tipo_transporte"  :value="tarifas.id">De {{tarifas.ciudad_origen}} a {{tarifas.ciudad_destino}} Tiempo:{{tarifas.tiempos}}</option>
                               </datalist>
 
                         </div>
@@ -336,6 +339,7 @@
                 <div class="form-group links">
                   <label>Factor</label>
                  <select v-model="item.factor" @change="facto()" name="segurocarga" class="form-control" >
+                   <option value=""></option>
                    <option v-for="factores in factores" v-if="factores.escala===item.escala"  :value="factores.id">{{factores.formula}} </option>
                  </select>
 
@@ -368,8 +372,8 @@
               </thead>
               <tbody>
                 <tr v-for="(elemento ,index) in form.items">
-                  <td style="white-space: nowrap;">{{elemento.departamento_origen}}-{{item.ciudad_origen}}</td>
-                  <td style="white-space: nowrap;">{{elemento.departamento_destino}}-{{item.ciudad_destino}}</td>
+                  <td style="white-space: nowrap;">{{elemento.departamento_origen}}-{{elemento.ciudad_origen}}</td>
+                  <td style="white-space: nowrap;">{{elemento.departamento_destino}}-{{elemento.ciudad_destino}}</td>
                   <td style="white-space: nowrap;">{{elemento.tipo_transporte}}</td>
                   <td style="white-space: nowrap;">{{elemento.tipo_envio}}</td>
                   <td style="white-space: nowrap;">{{elemento.precio}} $</td>
@@ -627,7 +631,6 @@
                  this.item.departamento_origen=this.tarifas[i].departamento_origen;
                  this.item.departamento_destino=this.tarifas[i].departamento_destino;
                  this.item.ciudad_origen=this.tarifas[i].ciudad_origen;
-                 this.item.destino=this.tarifas[i].destino;
                   this.item.ciudad_destino=this.tarifas[i].ciudad_destino;
                   this.item.tipo_carga=this.tarifas[i].tipo_carga;
                   this.item.itinerarios=this.tarifas[i].itinerarios;
@@ -691,6 +694,11 @@
                          text: 'Agregado con exito'
                        })
                        $('#modal-lg').modal('hide');
+                       this.form.tiempo="";
+                       this.form.cedula="";
+                       this.form.notas=[];
+                       this.form.items=[];
+                       this.loadFotos();
                        this.loadcotizaciones();
                        this.resete();
                      }
@@ -887,7 +895,7 @@
                      text: "",
                      type: 'warning',
                      showCancelButton: true,
-                     confirmButtonText: '¡Si! ¡enviar!',
+                     confirmButtonText: '¡Si! ¡enviar y generar!',
                      cancelButtonText: '¡No!',
                      reverseButtons: true
                    }).then((result) => {
@@ -895,6 +903,94 @@
                        let data = new FormData();
                        data.append('service_form',JSON.stringify(this.email));
                          axios.post('index.php/cotizaciones/enviar_cotizacion',data)
+                         .then(response => {
+                           if(response) {
+                             Swal(
+                               '¡Enviado !',
+                               'Ha sido enviado con exito .',
+                               'success'
+                             ).then(response => {
+                                   this.loadcotizaciones();
+                             })
+                           } else {
+                             Swal(
+                               'Error',
+                               'Ha ocurrido un error.',
+                               'warning'
+                             ).then(response => {
+                               this.loadcotizaciones();
+                             })
+                           }
+                         })
+                     } else if (
+                       result.dismiss === Swal.DismissReason.cancel
+                     ) {
+                       Swal(
+                         'Cancelado',
+                         'No fue enviado.',
+                         'success'
+                       )
+                     }
+                   })
+                 },
+                 soloEnviar(index){
+                   Swal({
+                     title: '¿Estás seguro?',
+                     text: "",
+                     type: 'warning',
+                     showCancelButton: true,
+                     confirmButtonText: '¡Si! ¡enviar!',
+                     cancelButtonText: '¡No!',
+                     reverseButtons: true
+                   }).then((result) => {
+                     if (result.value) {
+                       let data = new FormData();
+                       data.append('service_form',JSON.stringify(this.email));
+                         axios.post('index.php/cotizaciones/soloenviar',data)
+                         .then(response => {
+                           if(response) {
+                             Swal(
+                               '¡Enviado !',
+                               'Ha sido enviado con exito .',
+                               'success'
+                             ).then(response => {
+                                   this.loadcotizaciones();
+                             })
+                           } else {
+                             Swal(
+                               'Error',
+                               'Ha ocurrido un error.',
+                               'warning'
+                             ).then(response => {
+                               this.loadcotizaciones();
+                             })
+                           }
+                         })
+                     } else if (
+                       result.dismiss === Swal.DismissReason.cancel
+                     ) {
+                       Swal(
+                         'Cancelado',
+                         'No fue enviado.',
+                         'success'
+                       )
+                     }
+                   })
+                 },
+                 generar(index){
+                   Swal({
+                     title: '¿Estás seguro?',
+                     text: "",
+                     type: 'warning',
+                     showCancelButton: true,
+                     confirmButtonText: '¡Si! ¡generar!',
+                     cancelButtonText: '¡No!',
+                     reverseButtons: true
+                   }).then((result) => {
+                     if (result.value) {
+                       let data = new FormData();
+                       data.append('service_form',JSON.stringify(this.email));
+                         axios.post('index.php/cotizaciones/generar',data)
                          .then(response => {
                            if(response) {
                              Swal(
@@ -935,14 +1031,13 @@
                    this.email.correo_cliente=this.cotizaciones[index].correo_cliente;
                    this.email.id=this.cotizaciones[index].id;
                    this.email.nombre_empresa=this.cotizaciones[index].nombre_empresa;
-                   this.email.url_pdf='Cotizaciones_to_pdf/'+this.cotizaciones[index].codigo+'/'+this.cotizaciones[index].id;
-                   this.email.url_gestion='Cotizaciones_gestion/'+this.cotizaciones[index].codigo+'/'+this.cotizaciones[index].id;
-                   this.email.nombre_archivo=this.cotizaciones[index].nombre_empresa+'-COT-'+this.cotizaciones[index].id;
+                   this.email.url_pdf='Cotizaciones/Cotizaciones_to_pdf/'+this.cotizaciones[index].codigo+'/'+this.cotizaciones[index].id;
+                   this.email.url_gestion='Cotizaciones/Cot?ref_cot='+this.cotizaciones[index].id+'&ref_cod='+this.cotizaciones[index].codigo;
+                   this.email.nombre_archivo='COT-'+this.cotizaciones[index].id;
                    this.email.codigo=this.cotizaciones[index].codigo;
                    this.email.usuario_responsable=this.cotizaciones[index].user_id;
                    this.email.saludos=JSON.parse(this.cotizaciones[index].saludo);
                    this.email.saludo=this.email.saludos[0].descripcion;
-                   this.enviarCotizacion();
                  },
                  ver(index){
                    this.form.id=this.cotizaciones[index].id,

@@ -1,6 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-
+ 
     class Archivos_model extends My_Model {
         public function insertar_cotizacion($data){
             $this->db->insert('archivos', array(

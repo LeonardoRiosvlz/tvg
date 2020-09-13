@@ -27,6 +27,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             ));
             return $this->db->error();
            }
+           public function generar($data) {
+               $this->db->where('id',$data['id']);
+               $this->db->update('cotizaciones', array(
+                 'status'     => 'Generado',
+               ));
+               return $this->db->error();
+              }
+          public function estudio($data) {
+              $this->db->where('id',$data['id']);
+              $this->db->update('cotizaciones', array(
+                'estatus_gestion'     => 'En estudio',
+              ));
+              return $this->db->error();
+             }
         public function editar($data) {
             $this->db->where('id',$data['id']);
             $this->db->update('cotizaciones', array(
@@ -43,6 +57,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             ->get()
             ->result();
           }
+          public function getcotizacion($data) {
+              return $this->db
+              ->select('c.*,u.nombre,u.apellido,u.cargo, u.username,cl.*')
+              ->from('cotizaciones c')
+              ->where('c.id',$data['id'])
+              ->where('codigo',$data['codigo'])
+              ->join('users u', 'c.user_id = u.user_id')
+              ->join('clientes cl', 'c.cedula = cl.cedula_cliente')
+              ->get()
+              ->result();
+            }
           public function deletecotizaciones($id) {
             $this->db->where('id', $id);
             $this->db->delete('cotizaciones');
@@ -182,14 +207,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                     ';
                                     if ($row->tipo_cliente==="Persona jurídica") {
                                       $output .= '
-                                          <p style="font-weight: bold;font-size:17px;"> Señores '.$row->nombre_empresa.'</p></BR>
+                                          <p style="font-weight: bold;font-size:17px; padding: 0;margin: 0;" > Señores '.$row->nombre_empresa.'</p></BR>
                                              ';
                                     }
+
                              $output .= '
-                                    <p style="font-weight: bold;font-size:15px;"> Estimad@ '.$row->nombre_cliente.'</p></BR>
-                                    <p style="font-weight: bold;font-size:15px;"> Teléfono: '.$row->telefono_cliente.'</p></BR>
-                                    <p style="font-weight: bold;font-size:15px;"> Correo electrónico:'.$row->correo_cliente.'</p></BR>
-                                    <p style="font-weight: bold;font-size:15px;"> Ciudad:'.$row->ciudad.'</p></BR>
+                                    <p style="font-weight: bold;font-size:15px; padding: 0;margin: 0;"> Estimad@ '.$row->nombre_cliente.'</p></BR>
+                                    <p style="font-weight: bold;font-size:15px; padding: 0;margin: 0;"> Teléfono: '.$row->telefono_cliente.'</p></BR>
+                                    <p style="font-weight: bold;font-size:15px; padding: 0;margin: 0;"> Correo electrónico:'.$row->correo_cliente.'</p></BR>
+                                    <p style="font-weight: bold;font-size:15px; padding: 0;margin: 0;"> Ciudad:'.$row->ciudad.'</p></BR>
                                     <h5 class="titulos" style="font-weight: bold;font-size:14px;;"> REF: COTIZACIÓN TRANSPORTE A DIFERENTES DESTINO </h5>
                                     <h5 class="titulos" style="font-weight: bold;font-size:16px;">Estimados Señores:</h5>
                                     ';
@@ -235,9 +261,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 $notas=$row->notas;
                                   foreach(json_decode($notas) as $row){
                                     $output .= '
-                                      <h5 style="font-weight: bold;text-indent: 10px;font-size:19px;" >Nota transporte '.$row->tipo_transporte.'</h5>
-                                      <p style="font-weight: bold;text-indent: 10px;text-align: justify; font-size:15px;">'.$row->resumen.'</p></BR>
-                                      <p style="text-indent: 10px;text-align: justify; font-size:15px;">'.$row->descripcion.'</p></BR>
+                                      <p style="font-weight: bold;text-indent: 10px;font-size:16px;" >Nota transporte '.$row->tipo_transporte.'</p>
+                                      <p style="text-indent: 40px;text-align: justify; font-size:15px;"><span style="font-weight: bold;">'.$row->resumen.'</span>:'.$row->descripcion.'</p>
                                     ';}
                               }
                               $output .= '<div style="page-break-after:always;"></div>
@@ -246,12 +271,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                   $contrato=$row->contrato;
                                     foreach(json_decode($contrato) as $row){
                                       $output .= '
-                                        <p style="font-weight: bold;text-indent: 20px;text-align: justify; font-size:15px;">'.$row->resumen.'</p><p style="text-indent: 40px;text-align: justify; font-size:12px;">'.$row->descripcion.'</p></BR>
+                                        <p style="text-indent: 40px;text-align: justify; font-size:10px;"><span style="font-weight: bold;">'.$row->resumen.'</span>:'.$row->descripcion.'</p></BR>
                                       ';}
                                 }
-                              $output .= '<p style="font-weight: bold;text-indent: 40px;text-align: justify; font-size:15px;">De requerir información sobre otras rutas, tarifas y condiciones por favor indíquenos la información y con gusto le presentaremos la Propuesta comercial.</p>
-                              <p>Estaremos muy atentos a sus comentarios y requerimientos;</p>
-                              <p> Cordialmente, </p>';
+                              $output .= '<p style="font-weight: bold;text-indent: 40px;text-align: justify; font-size:10px;">De requerir información sobre otras rutas, tarifas y condiciones por favor indíquenos la información y con gusto le presentaremos la Propuesta comercial.</p>
+                              <p style="font-size:10px;">Estaremos muy atentos a sus comentarios y requerimientos;</p>
+                              <p  style="font-size:10px;"> Cordialmente, </p>';
                               foreach($data->result() as $row){
                                   $output .= '
                                      <p style="font-size:17px;">'.$row->nombre.' '.$row->apellido.'</p></BR>
