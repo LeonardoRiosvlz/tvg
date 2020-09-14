@@ -12,7 +12,7 @@
             </tr>
             <tr>
               <th scope="col" colspan="5" class="border-0 bg-white  text-center">
-                <button type="button" @click="resete();ver=false" class="btn btn-block btn-light btn-sm links" >Agregar <span class="mbri-plus"></span></button>
+                <button type="button" @click="resete();ver=false;" class="btn btn-block btn-light btn-sm links" >Agregar <span class="mbri-plus"></span></button>
               </th>
             </tr>
         </thead>
@@ -114,7 +114,7 @@
       <!-- End -->
     </div>
   </div>
-  <pre>{{email}}</pre>
+
         <!-- Modal agregar   -->
         <div class="modal fade" id="modal-lg" data-backdrop="static" data-keyboard="false">
          <div class="modal-dialog modal-lg">
@@ -128,10 +128,10 @@
              <div class="modal-body">
                <ul class="nav nav-tabs" id="myTab" role="tablist">
                 <li class="nav-item">
-                  <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Crear Cotización</a>
+                  <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true" > Cotización</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Recalcuar Cotización</a>
+                  <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false" v-show="!ver">Recalcuar Cotización</a>
                 </li>
               </ul>
               <form role="form" id="form" @submit.prevent="validateBeforeSubmit">
@@ -140,7 +140,7 @@
                   <div class="row py-3 pt-3">
                     <div class="col-md-4">
                       <label class="links">Clientes</label>
-                      <input list="encodings" v-model="form.cedula"  value="" class="form-control form-control-lg" placeholder="Escriba una cedula">
+                      <input list="encodings" v-model="form.cedula"  value="" class="form-control form-control-lg" placeholder="Escriba una cedula" :disabled="ver">
                         <datalist id="encodings">
                             <option v-for="clientes in clientes"  v-if="clientes.cliente_especial==='No'" :value="clientes.cedula_cliente">{{clientes.nombre_cliente}}</option>
                         </datalist>
@@ -205,9 +205,9 @@
                        </div>
                      </div>
                   </div>
-                  <div class="row">
+                  <div class="row" v-show="!ver">
 
-                  <div class="card col-12 p-3 " >
+                  <div class="card col-12 p-3 border-0" >
                    <h4 class="card-title">Tarifa Acorde</h4>
                     <div class="card-body row sp">
                       <div class="col-md-6" >
@@ -367,7 +367,7 @@
                   <th style="white-space: nowrap;">MEDIDADS EN</th>
                   <th>FACTOR</th>
                   <th style="white-space: nowrap;">COSTE DE GUÍA</th>
-                  <th>ACTION</th>
+                  <th v-show="!ver">ACTION</th>
                 </tr>
               </thead>
               <tbody>
@@ -383,7 +383,7 @@
                   <td style="white-space: nowrap;">{{elemento.escala}}</td>
                   <td style="white-space: nowrap;">{{elemento.formula}}</td>
                   <td style="white-space: nowrap;">{{elemento.costeguia}} $</td>
-                  <td>
+                  <td v-show="!ver">
                     <div class="btn-group">
                         <button type="button" class="btn btn-default">Action</button>
                         <button type="button" class="btn btn-default dropdown-toggle dropdown-icon" data-toggle="dropdown">
@@ -399,7 +399,7 @@
             </table>
           </div>
           <label class="switch pull-right col-12">
-            <input type="checkbox" v-model="form.vernota" checked @change="verNotas()">
+            <input type="checkbox" v-model="form.vernota" checked @change="verNotas()" :disabled="ver">
             <span class="slider round"></span>
           </label>
           <div class="card col-12" v-if="form.vernota">
@@ -408,17 +408,17 @@
               <div v-for="(notas ,index) in form.notas" class="card p-3 m-3">
                 <div class="d-flex justify-content-between">
                   <h6 class="card-subtitle mb-2 ">{{notas.resumen}}</h6>
-                  <button type="button" class="btn btn-danger pull-right" name="button"  @click="eliminarNota(index)">Eliminar <span class="mbri-trash"></span></button>
+                  <button v-show="!ver" type="button" class="btn btn-danger pull-right" name="button"  @click="eliminarNota(index)">Eliminar <span class="mbri-trash"></span></button>
                 </div>
                 <p class="card-text links">{{notas.descripcion}}</p>
               </div>
             </div>
           </div>
           <div class="card col-12 my-3" v-if="form.cedula">
-            <div class="col-sm-12">
+            <div class="col-sm-12 p-2">
              <div class="form-group">
-               <label for="colFormLabelSm" class="links">Fotos detalladas</label>
-                      <div class="col-sm-12">
+               <label for="colFormLabelSm" class="links">Documentos Relacionados</label>
+                      <div v-if="!ver"  class="col-sm-12">
                         <div class="row ">
                           <div class="col-8">
                             <input type="file"   id="imagenFoto" name="imagenFoto">
@@ -430,15 +430,321 @@
                     </div>
               </div>
           </div>
+          <div class="row pl-5 pr-5" v-if="form.cedula">
+           <table class="table">
+             <tr v-for="(img , id) in imagenes">
+               <th scope="row"><a :href="'<?=base_url()?>'+img.url" download>{{img.nombre}}</a></th>
+               <td v-if="!ver"><a href="#"  class="" @click="eliminarImagen(index)"><span class="mbri-trash"></span></a></td>
+             </tr>
+           </table>
           </div>
-          <div class="row" v-if="form.cedula">
-            <div v-for="(img ,index) in imagenes" class="p-2 card col-lg-2 col-md-2 col-sm-12 col-xs-12" >
-                <img :src="'<?=base_url();?>'+img.url" class="card-img-top" alt="...">
-                  <a  class="" @click="eliminarImagen(index)"><span class="mbri-trash"></span></a>
-              </div>
           </div>
         </div>
-        <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">...</div>
+        <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+          <div class="row py-3 pt-3">
+            <div class="col-md-4">
+              <label class="links">Clientes</label>
+              <input list="encodings" v-model="form.cedula"  value="" class="form-control form-control-lg" placeholder="Escriba una cedula" :disabled="ver">
+                <datalist id="encodings">
+                    <option v-for="clientes in clientes"  v-if="clientes.cliente_especial==='No'" :value="clientes.cedula_cliente">{{clientes.nombre_cliente}}</option>
+                </datalist>
+            </div>
+          </div>
+          <div class="card col-12 p-3">
+             <h5 >Datos del cliente</h5>
+             <div class="row" v-if="form.cedula">
+               <div class="col-md-4">
+                 <label class="links">Empresa</label>
+                 <div class="form-group">
+                   <select v-model="form.cedula"  name="tipo_envio" class="form-control" disabled >
+                     <option v-for="clientes in clientes" v-if="clientes.cliente_especial==='No'" :value="clientes.cedula_cliente">{{clientes.nombre_empresa}}</option>
+                   </select>
+                   <p class="text-danger my-1 small" v-if="(errors.first('tipo_envio'))" >  Este dato es requerido  </p>
+                 </div>
+               </div>
+               <div class="col-md-4">
+                 <label class="links">Representante Legal</label>
+                 <div class="form-group">
+                   <select v-model="form.cedula"  name="tipo_envio" class="form-control" disabled>
+                     <option v-for="clientes in clientes" v-if="clientes.cliente_especial==='No'" :value="clientes.cedula_cliente">{{clientes.r_legal}}</option>
+                   </select>
+                   <p class="text-danger my-1 small" v-if="(errors.first('tipo_envio'))" >  Este dato es requerido  </p>
+                 </div>
+               </div>
+               <div class="col-md-4">
+                 <label class="links">Telefono</label>
+                 <div class="form-group">
+                   <select v-model="form.cedula"  name="tipo_envio" class="form-control" disabled>
+                     <option v-for="clientes in clientes" v-if="clientes.cliente_especial==='No'" :value="clientes.cedula_cliente">{{clientes.telefono_cliente}}</option>
+                   </select>
+                   <p class="text-danger my-1 small" v-if="(errors.first('tipo_envio'))" >  Este dato es requerido  </p>
+                 </div>
+               </div>
+               <div class="col-md-4">
+                 <label class="links">Correo</label>
+                 <div class="form-group">
+                   <select v-model="form.cedula"  name="tipo_envio" class="form-control" disabled>
+                     <option v-for="clientes in clientes" v-if="clientes.cliente_especial==='No'" :value="clientes.cedula_cliente">{{clientes.correo_cliente}}</option>
+                   </select>
+                   <p class="text-danger my-1 small" v-if="(errors.first('tipo_envio'))" >  Este dato es requerido  </p>
+                 </div>
+               </div>
+               <div class="col-md-4">
+                 <label class="links">Telefono</label>
+                 <div class="form-group">
+                   <select v-model="form.cedula"  name="tipo_envio" class="form-control" disabled>
+                     <option v-for="clientes in clientes" v-if="clientes.cliente_especial==='No'" :value="clientes.cedula_cliente">{{clientes.telefono_cliente}}</option>
+                   </select>
+                   <p class="text-danger my-1 small" v-if="(errors.first('tipo_envio'))" >  Este dato es requerido  </p>
+                 </div>
+               </div>
+               <div class="col-md-4">
+                 <label class="links">Ciudad</label>
+                 <div class="form-group">
+                   <select v-model="form.cedula"  name="tipo_envio" class="form-control" disabled>
+                     <option v-for="clientes in clientes" v-if="clientes.cliente_especial==='No'" :value="clientes.cedula_cliente">{{clientes.ciudad}}</option>
+                   </select>
+                   <p class="text-danger my-1 small" v-if="(errors.first('tipo_envio'))" >  Este dato es requerido  </p>
+                 </div>
+               </div>
+             </div>
+          </div>
+          <div class="row" v-show="!ver">
+
+          <div class="card col-12 p-3 border-0" >
+           <h4 class="card-title">Tarifa Acorde</h4>
+            <div class="card-body row sp">
+              <div class="col-md-6" >
+                <label class="links">Tipo de transporte</label>
+                <div class="form-group">
+                  <select v-model="item.tipo_transporte" @change="item.tipo_envio=''"  name="tipo_transporte" class="form-control" :disabled="ver" >
+                   <option value=""></option>
+                    <option v-for="transportes in transportes" :value="transportes.tipo_transporte">{{transportes.tipo_transporte}}</option>
+                  </select>
+
+                </div>
+              </div>
+              <div class="col-md-6" >
+                <label class="links">Tipo de envío</label>
+                <div class="form-group">
+                  <select v-model="item.tipo_envio"  name="tipo_envio" class="form-control" :disabled="ver" >
+                    <option value=""></option>
+                    <option v-for="tiposenvios in tiposenvios" v-show="tiposenvios.tipo_transporte===item.tipo_transporte" :value="tiposenvios.nombre_tiposenvios">{{tiposenvios.nombre_tiposenvios}}</option>
+                  </select>
+
+                </div>
+              </div>
+                <div class="col-sm-12">
+
+                    <label class="links">Trazabilidad</label>
+                    <input list="tarifas" v-model="item.id_tarifa" @change="tari()"  value="" class="form-control form-control-lg" placeholder="Escriba una ruta">
+                      <datalist id="tarifas">
+                          <option v-for="tarifas in tarifas" v-if="tarifas.tipo_envio===item.tipo_envio && tarifas.tipo_transporte===item.tipo_transporte"  :value="tarifas.id">De {{tarifas.ciudad_origen}} a {{tarifas.ciudad_destino}} Tiempo:{{tarifas.tiempos}}</option>
+                      </datalist>
+
+                </div>
+              <div class="col-sm-3">
+                 <div class="form-group links">
+                   <label>Depto. origen</label>
+                  <select v-model="item.id_tarifa" @change="tari()"  name="ciudad_destino" class="form-control" disabled >
+                    <option v-for="tarifas in tarifas"  :value="tarifas.id">{{tarifas.departamento_origen}}</option>
+                  </select>
+
+                </div>
+             </div>
+             <div class="col-sm-3">
+                <div class="form-group links">
+                  <label>Ciudad origen</label>
+                 <select v-model="item.id_tarifa" @change="tari()" name="ciudad_destino" class="form-control" disabled >
+                   <option v-for="tarifas in tarifas"  :value="tarifas.id">{{tarifas.ciudad_origen}}</option>
+                 </select>
+
+               </div>
+            </div>
+            <div class="col-sm-3">
+               <div class="form-group links">
+                 <label>Depto. destino</label>
+                <select v-model="item.id_tarifa" @change="tari()"  name="ciudad_destino" class="form-control" disabled >
+                  <option v-for="tarifas in tarifas"  :value="tarifas.id">{{tarifas.departamento_destino}}</option>
+                </select>
+
+              </div>
+           </div>
+           <div class="col-sm-3">
+              <div class="form-group links">
+                <label>Ciudad destino</label>
+               <select v-model="item.id_tarifa" @change="tari()" name="ciudad_destino" class="form-control" disabled >
+                 <option v-for="tarifas in tarifas" :value="tarifas.id">{{tarifas.ciudad_destino}}</option>
+               </select>
+
+             </div>
+          </div>
+          <div class="col-sm-4">
+             <div class="form-group links">
+               <label>itinerarios</label>
+              <select v-model="item.id_tarifa" @change="tari()"  name="ciudad_destino" class="form-control" disabled >
+                <option v-for="tarifas in tarifas"  :value="tarifas.id">{{tarifas.itinerarios}}</option>
+              </select>
+
+            </div>
+         </div>
+         <div class="col-sm-4">
+            <div class="form-group links">
+              <label>Tiempos de entrega</label>
+             <select v-model="item.id_tarifa" @change="tari()"  name="ciudad_destino" class="form-control" disabled >
+               <option v-for="tarifas in tarifas"  :value="tarifas.id">{{tarifas.tiempos}}</option>
+             </select>
+           </div>
+        </div>
+        <div class="col-sm-4">
+           <div class="form-group links">
+             <label>Tarifa</label>
+            <select v-model="item.id_tarifa" @change="tari()"  name="ciudad_destino" class="form-control" disabled >
+              <option v-for="tarifas in tarifas"  :value="tarifas.id">{{tarifas.precio}}</option>
+            </select>
+
+          </div>
+       </div>
+
+  </div>
+  <div class="card col-12">
+    <div class="row">
+      <div class="col-sm-6">
+         <div class="form-group links">
+           <label>Seguro de carga</label>
+          <select v-model="item.segurocarga" name="segurocarga" class="form-control" >
+            <option v-for="segurocarga in segurocarga"  :value="segurocarga.porcentaje">{{segurocarga.porcentaje}} %</option>
+          </select>
+
+        </div>
+     </div>
+     <div class="col-sm-6">
+        <div class="form-group links">
+          <label>Coste de guía</label>
+         <select v-model="item.costeguia"  name="costeguia" class="form-control" >
+           <option v-for="costeguia in costeguia"   :value="costeguia.valor">{{costeguia.valor}} $</option>
+         </select>
+
+       </div>
+    </div>
+     <div class="col-sm-6">
+       <label class="links">Medida</label>
+       <div class="form-group">
+         <select v-model="item.escala"   name="escala" class="form-control" :disabled="ver" >
+           <option value=""></option>
+          <option value="Metros">Metros</option>
+          <option value="Centímetros">Centímetros</option>
+          <option value="Porcientos">Porcientos</option>
+         </select>
+
+       </div>
+     </div>
+     <div class="col-sm-6">
+        <div class="form-group links">
+          <label>Factor</label>
+         <select v-model="item.factor" @change="facto()" name="segurocarga" class="form-control" >
+           <option value=""></option>
+           <option v-for="factores in factores" v-if="factores.escala===item.escala"  :value="factores.id">{{factores.formula}} </option>
+         </select>
+
+       </div>
+    </div>
+  </div>
+  </div>
+</div>
+</div>
+<button
+v-if="item.id_tarifa && item.segurocarga && item.costeguia && item.escala && item.formula && item.variable"
+ type="button" class="btn btn-success btn-lg btn-block my-2" @click="pushearItem()">Agregar <span class="mbri-save"></span></button>
+  <div class="table-responsive my-2">
+    <table class="table table-striped table-bordered table condensed table-hover table-responsive  ">
+      <thead>
+        <tr>
+          <th>ORIGEN</th>
+          <th>DESTINO</th>
+          <th>TRANSPORTE</th>
+          <th style="white-space: nowrap;">TIPO DE ENVÍO</th>
+          <th>PRECIO</th>
+          <th>ITINERARIOS</th>
+          <th style="white-space: nowrap;">TIEMPOS DE ENTREGA</th>
+          <th>SEGURO</th>
+          <th style="white-space: nowrap;">MEDIDADS EN</th>
+          <th>FACTOR</th>
+          <th style="white-space: nowrap;">COSTE DE GUÍA</th>
+          <th v-show="!ver">ACTION</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="(elemento ,index) in form.items">
+          <td style="white-space: nowrap;">{{elemento.departamento_origen}}-{{elemento.ciudad_origen}}</td>
+          <td style="white-space: nowrap;">{{elemento.departamento_destino}}-{{elemento.ciudad_destino}}</td>
+          <td style="white-space: nowrap;">{{elemento.tipo_transporte}}</td>
+          <td style="white-space: nowrap;">{{elemento.tipo_envio}}</td>
+          <td style="white-space: nowrap;">{{elemento.precio}} $</td>
+          <td style="white-space: nowrap;">{{elemento.itinerarios}}</td>
+          <td style="white-space: nowrap;">{{elemento.tiempos}}</td>
+          <td style="white-space: nowrap;">{{elemento.segurocarga}} %</td>
+          <td style="white-space: nowrap;">{{elemento.escala}}</td>
+          <td style="white-space: nowrap;">{{elemento.formula}}</td>
+          <td style="white-space: nowrap;">{{elemento.costeguia}} $</td>
+          <td v-show="!ver">
+            <div class="btn-group">
+                <button type="button" class="btn btn-default">Action</button>
+                <button type="button" class="btn btn-default dropdown-toggle dropdown-icon" data-toggle="dropdown">
+                  <span class="sr-only">Toggle Dropdown</span>
+                  <div class="dropdown-menu" role="menu">
+                    <a class="dropdown-item" href="#" @click="eliminarItem(index)">Quitar</a>
+                    <a class="dropdown-item" href="#" @click="corregir(index)">Corregir</a>
+                  </div>
+                </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <label class="switch pull-right col-12">
+    <input type="checkbox" v-model="form.vernota" checked @change="verNotas()" :disabled="ver">
+    <span class="slider round"></span>
+  </label>
+  <div class="card col-12" v-if="form.vernota">
+    <div class="card-body p-3">
+      <h5 class="card-title">Notas</h5>
+      <div v-for="(notas ,index) in form.notas" class="card p-3 m-3">
+        <div class="d-flex justify-content-between">
+          <h6 class="card-subtitle mb-2 ">{{notas.resumen}}</h6>
+          <button v-show="!ver" type="button" class="btn btn-danger pull-right" name="button"  @click="eliminarNota(index)">Eliminar <span class="mbri-trash"></span></button>
+        </div>
+        <p class="card-text links">{{notas.descripcion}}</p>
+      </div>
+    </div>
+  </div>
+  <div class="card col-12 my-3" v-if="form.cedula">
+    <div class="col-sm-12 p-2">
+     <div class="form-group">
+       <label for="colFormLabelSm" class="links">Documentos Relacionados</label>
+              <div v-if="!ver"  class="col-sm-12">
+                <div class="row ">
+                  <div class="col-8">
+                    <input type="file"   id="imagenFoto" name="imagenFoto">
+                  </div>
+                    <div class="col-4">
+                    <button class="btn btn-light links btn-lg" type="button"  @click="uploadFoto()">Subir archivo</button>
+                  </div>
+                 </div>
+            </div>
+      </div>
+  </div>
+  <div class="row pl-5 pr-5" v-if="form.cedula">
+   <table class="table">
+     <tr v-for="(img , id) in imagenes">
+       <th scope="row"><a :href="'<?=base_url()?>'+img.url" download>{{img.nombre}}</a></th>
+       <td v-if="!ver"><a href="#"  class="" @click="eliminarImagen(index)"><span class="mbri-trash"></span></a></td>
+     </tr>
+   </table>
+  </div>
+  </div>
+        </div>
       </div>
     </div>
          <!-- Incio de formulario -->
@@ -537,10 +843,11 @@
                this.$validator.reset();
                document.getElementById("form").reset();
                const dateTime = Date.now();
-               if (!this.form.tiempo) {
                  this.form.tiempo = Math.floor(dateTime / 1000);
-               }
-               this.loadFotos();
+                 this.loadFotos();
+                 this.form.cedula="";
+                 this.form.notas=[];
+                 this.form.items=[];
                this.editMode=false;
                this.form.nombre_cargo='';
                $('#modal-lg').modal('show');
@@ -1023,9 +1330,24 @@
                  },
                  setear(index){
                    this.form.id=this.cotizaciones[index].id,
-                   this.form.nombre_cargo=this.cotizaciones[index].nombre_cargo,
+                   this.form.cedula=this.cotizaciones[index].cedula,
+                   this.form.fecha_creacion=this.cotizaciones[index].fecha_creacion,
+                   this.items=JSON.parse(this.cotizaciones[index].items),
+                   this.form.estatus=this.cotizaciones[index].estatus,
+                   this.form.vnota=this.cotizaciones[index].vnota,
+                   this.form.tiempo=this.cotizaciones[index].tiempo,
+                   this.form.items=JSON.parse(this.cotizaciones[index].items),
+                   this.form.notas=JSON.parse(this.cotizaciones[index].notas),
+                   this.form.contrato=JSON.parse(this.cotizaciones[index].contrato),
+                   this.form.saludo=JSON.parse(this.cotizaciones[index].saludo),
                    $('#modal-lg').modal('show');
-                   this.editMode=true
+                   if (this.form.vnota==='Si') {
+                     this.form.vernota=true;
+                   }else{
+                     this.form.vernota=false;
+                   }
+                   this.loadFotos();
+                   this.editMode=true;
                  },
                  setearEmail(index){
                    this.email.correo_cliente=this.cotizaciones[index].correo_cliente;

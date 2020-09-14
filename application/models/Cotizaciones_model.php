@@ -79,6 +79,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                   'tiempo'          => $data['tiempo'],
                   'id_cliente'          => $data['id_cliente'],
                   'url'             => $data['url'],
+                  'nombre'             => $data['nombre'],
               ));
               return $this->db->error();
              }
@@ -229,22 +230,26 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                       <div style="page-break-after:always;"></div>
                                 ';}
                           }
+                          $output .= '
+                          <h4 class="titulos" style="font-weight: bold;"> Resumen de Tarifas</h4>
+                          <div id="content">
+                            <table class="tftable" border="1">
+                              <tr
+                              <tr>
+                                <td>TRANSPORTE</td>
+                                <td>ORIGEN</td>
+                                <td>DESTINO</td>
+                                <td>VALOR KILO</td>
+                                <td>VALOR SEGURO</td>
+                                <td>COSTE DE GUIA</td>
+                                <td>ITINERARIO</td>
+                              </tr>';
                           foreach($data->result() as $row){
                               $items=$row->items;
                                 foreach(json_decode($items) as $row){
                                   $output .= '
-                                  <h4 class="titulos" style="font-weight: bold;"> Tarifa de transporte '.$row->tipo_transporte.'</h4>
-                                  <div id="content">
-                                    <table class="tftable" border="1">
                                       <tr>
-                                        <td>ORIGEN</td>
-                                        <td>DESTINO</td>
-                                        <td>VALOR KILO</td>
-                                        <td>VALOR SEGURO</td>
-                                        <td>COSTE DE GUIA</td>
-                                        <td>ITINERARIO</td>
-                                      </tr>
-                                      <tr>
+                                        <td>'.$row->tipo_transporte.'</td>
                                         <td>'.$row->ciudad_origen.'</td>
                                         <td>'.$row->ciudad_destino.'</td>
                                         <td>$'.$row->precio.'</td>
@@ -252,19 +257,25 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                         <td>$'.$row->costeguia.'</td>
                                         <td>'.$row->itinerarios.'</td>
                                       </tr>
-                                    </table>
                                   ';}
                             }
-                            $output .= '<div style="page-break-after:always;"></div>
-                            <h5 class="titulos" style="font-weight: bold;font-size:19px;;">NOTAS REALCIONADAS A EL TIPO DE TRANSPORTE </h5>';
+                            $output .= '</table>';
                             foreach($data->result() as $row){
-                                $notas=$row->notas;
-                                  foreach(json_decode($notas) as $row){
-                                    $output .= '
-                                      <p style="font-weight: bold;text-indent: 10px;font-size:16px;" >Nota transporte '.$row->tipo_transporte.'</p>
-                                      <p style="text-indent: 40px;text-align: justify; font-size:15px;"><span style="font-weight: bold;">'.$row->resumen.'</span>:'.$row->descripcion.'</p>
-                                    ';}
+                              if ($row->vnota==="Si") {
+                                $output .= '<div style="page-break-after:always;"></div>
+                                <h5 class="titulos" style="font-weight: bold;font-size:19px;;">NOTAS REALCIONADAS A EL TIPO DE TRANSPORTE </h5>';
+                                foreach($data->result() as $row){
+                                    $notas=$row->notas;
+                                      foreach(json_decode($notas) as $row){
+                                        $output .= '
+                                          <p style="font-weight: bold;text-indent: 10px;font-size:16px;" >Nota transporte '.$row->tipo_transporte.'</p>
+                                          <p style="text-indent: 40px;text-align: justify; font-size:15px;"><span style="font-weight: bold;">'.$row->resumen.'</span>:'.$row->descripcion.'</p>
+                                        ';}
+                                  }
                               }
+
+                             }
+
                               $output .= '<div style="page-break-after:always;"></div>
                               <h5 class="titulos" style="font-weight: bold;font-size:19px;;">NOTAS DE CONTRATO</h5>';
                               foreach($data->result() as $row){

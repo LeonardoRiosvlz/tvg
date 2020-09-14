@@ -58,7 +58,7 @@
       <!-- End -->
     </div>
   </div>
-<pre>{{form}}</pre>
+
         <!-- Modal agregar   -->
         <div class="modal fade" id="modal-lg" data-backdrop="static" data-keyboard="false">
          <div class="modal-dialog modal-xl">

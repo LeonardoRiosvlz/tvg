@@ -102,6 +102,7 @@ class Cotizaciones extends MY_Controller {
 						 $data['url'] ="/include/files/".$file_name;
 						 $data['id_cliente'] = $this->input->post('cedula');
 						 $data['tiempo'] = $this->input->post('tiempo');
+						  $data['nombre'] = $upload_data['file_name'];
 						 $rut=$this->cotizaciones->imagen_insert($data);
 						 echo json_encode(['status' => '201', 'message' => 'Imagen creada exitosamente']);
 					 }
