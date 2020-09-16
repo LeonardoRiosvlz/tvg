@@ -11,7 +11,23 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 'status'      => 'Borrador',
                 'estatus_gestion' => 'Borrador',
                 'cedula'      => $data['cedula'],
-                'tiempo'     => json_encode($data['tiempo']),
+                'tiempo'     => $data['tiempo'],
+                'items'      => json_encode($data['items']),
+                'notas'      => json_encode($data['notas']),
+                'saludo'     => json_encode($data['saludo']),
+                'contrato'     => json_encode($data['contrato']),
+            ));
+            return $this->db->error();
+        }
+        public function inseRecalculada($data){
+            $this->db->insert('historialcotizaciones', array(
+                'id_cotizacion'         => $data['id'],
+                'user_id'    => $data['user_id'],
+                'vnota'      => $data['vnota'],
+                'status'      => 'Borrador',
+                'estatus_gestion' => 'Borrador',
+                'cedula'      => $data['cedula'],
+                'tiempo'     => $data['tiempo'],
                 'items'      => json_encode($data['items']),
                 'notas'      => json_encode($data['notas']),
                 'saludo'     => json_encode($data['saludo']),
@@ -41,13 +57,41 @@ defined('BASEPATH') OR exit('No direct script access allowed');
               ));
               return $this->db->error();
              }
+             public function editarEstads($data) {
+               $this->db->where('id',$data['id']);
+               $this->db->update('cotizaciones', array(
+                 'estatus_gestion'     => $data['estatus_gestion'],
+               ));
+               return $this->db->error();
+                }
         public function editar($data) {
             $this->db->where('id',$data['id']);
             $this->db->update('cotizaciones', array(
-              'nombre_cargo'     => $data['nombre_cargo'],
+              'user_id'    => $data['user_id'],
+              'vnota'      => $data['vnota'],
+              'status'      => 'Borrador',
+              'estatus_gestion' => $data['estatus_gestion'],
+              'items'      => json_encode($data['items']),
+              'notas'      => json_encode($data['notas']),
+              'saludo'     => json_encode($data['saludo']),
+              'contrato'     => json_encode($data['contrato']),
             ));
             return $this->db->error();
            }
+           public function renegociar($data) {
+               $this->db->where('id',$data['id']);
+               $this->db->update('cotizaciones', array(
+                 'user_id'    => $data['user_id'],
+                 'vnota'      => $data['vnota'],
+                 'status'      => 'Borrador',
+                 'estatus_gestion' => 'Editado',
+                 'items'      => json_encode($data['items']),
+                 'notas'      => json_encode($data['notas']),
+                 'saludo'     => json_encode($data['saludo']),
+                 'contrato'     => json_encode($data['contrato']),
+               ));
+               return $this->db->error();
+              }
         public function getcotizaciones() {
             return $this->db
             ->select('c.*, u.username,cl.correo_cliente, cl.nombre_empresa, cl.telefono_cliente')

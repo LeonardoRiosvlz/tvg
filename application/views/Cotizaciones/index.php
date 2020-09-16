@@ -1,4 +1,4 @@
-<div id="app" class="container-fluid">
+<div id="app" class="container">
   <div class="row">
     <div class="col-lg-12 my-5 ">
       <!-- Shopping cart table -->
@@ -18,57 +18,57 @@
         </thead>
 
        </table>
-       <div class="row">
+       <div class="row" >
          <div class="col-md-2">
-           <a href="<?=base_url()?>Orders_admin">
-             <div class="card-counter info p-2 zoom" style="opacity:0.9">
-               <span class=" fa mbri-briefcase" style="font-size:5em;opacity:0.6"></span>
-               <span class="count-numbers">4</span>
-               <span class="count-name links">Borrador</span>
+           <a href="#">
+             <div class="card-counter  p-2 zoom" style="opacity:0.9;background:#3333FF;">
+               <span class=" fa mbri-briefcase text-white" style="font-size:3em;opacity:0.6"></span>
+               <span class="count-numbers text-white">{{estados.borrador}}</span>
+               <span class="count-name links text-white my-2">Borrador</span>
              </div>
            </a>
          </div>
          <div class="col-md-2">
-           <a href="<?=base_url()?>Orders_admin">
-             <div class="card-counter info p-2 zoom" style="opacity:0.9">
-               <span class=" fa mbri-help" style="font-size:5em;opacity:0.6"></span>
-               <span class="count-numbers">4</span>
-               <span class="count-name links">Enviadas</span>
+           <a href="#">
+             <div class="card-counter muted p-2 zoom" style="opacity:0.9;background:#FFA226;">
+               <span class=" fa mbri-help text-white" style="font-size:3em;opacity:0.6"></span>
+               <span class="count-numbers text-white">{{estados.enviado}}</span>
+               <span class="count-name links text-white">Enviadas</span>
              </div>
            </a>
          </div>
          <div class="col-md-2">
-           <a href="<?=base_url()?>Orders_admin">
-             <div class="card-counter info p-2 zoom" style="opacity:0.9">
-               <span class=" fa mbri-preview" style="font-size:5em;opacity:0.6"></span>
-               <span class="count-numbers">4</span>
+           <a href="#">
+             <div class="card-counter primary p-2 zoom" style="opacity:0.9">
+               <span class=" fa mbri-preview" style="font-size:3em;opacity:0.6"></span>
+               <span class="count-numbers">{{estados.estudio}}</span>
                <span class="count-name links">En estudio</span>
              </div>
            </a>
          </div>
          <div class="col-md-2">
-           <a href="<?=base_url()?>Orders_admin">
-             <div class="card-counter info p-2 zoom" style="opacity:0.9">
-               <span class=" fa mbri-like" style="font-size:5em;opacity:0.6"></span>
-               <span class="count-numbers">4</span>
+           <a href="#">
+             <div class="card-counter success p-2 zoom" style="opacity:0.9">
+               <span class=" fa mbri-like" style="font-size:3em;opacity:0.6"></span>
+               <span class="count-numbers">{{estados.aceptadas}}</span>
                <span class="count-name links">Aceptadas</span>
              </div>
            </a>
          </div>
          <div class="col-md-2">
-           <a href="<?=base_url()?>Orders_admin">
-             <div class="card-counter info p-2 zoom" style="opacity:0.9">
-               <span class=" fa mbri-error" style="font-size:5em;opacity:0.6"></span>
-               <span class="count-numbers">4</span>
+           <a href="#">
+             <div class="card-counter danger p-2 zoom" style="opacity:0.9">
+               <span class=" fa mbri-error" style="font-size:3em;opacity:0.6"></span>
+               <span class="count-numbers">{{estados.rechazadas}}</span>
                <span class="count-name links">Rechazadas</span>
              </div>
            </a>
          </div>
          <div class="col-md-2">
-           <a href="<?=base_url()?>Orders_admin">
+           <a href="#">
              <div class="card-counter info p-2 zoom" style="opacity:0.9">
-               <span class=" fa mbri-sad-face" style="font-size:5em;opacity:0.6"></span>
-               <span class="count-numbers">4</span>
+               <span class=" fa mbri-sad-face" style="font-size:3em;opacity:0.6"></span>
+               <span class="count-numbers">{{estados.anuladas}}</span>
                <span class="count-name links">Anuladas</span>
              </div>
            </a>
@@ -98,12 +98,13 @@
                           <div class="dropdown-menu" role="menu">
                             <a class="dropdown-item" href="#"@click="setear(index);ver=true">Ver</a>
                             <a v-if="cotizaciones.estatus_gestion==='Borrador' && cotizaciones.status==='Borrador'" class="dropdown-item" href="#" @click="enviarCotizacion(index);setearEmail(index)">Enviar y Generar</a>
-                            <a v-if="cotizaciones.status==='Borrador'" class="dropdown-item" href="#" @click="generar(index);setearEmail(index)">Generar</a>
-                            <a v-if="cotizaciones.status==='Generado'" class="dropdown-item" href="#" @click="soloEnviar(index);setearEmail(index)">Enviar</a>
-                            <a class="dropdown-item" href="#" @click="setear(index);ver=false">Editar</a>
-                            <a class="dropdown-item" href="#" @click="setear(index);ver=false">Duplicar</a>
-                            <a class="dropdown-item" href="#" @click="setear(index);ver=false">Rechazar</a>
-                            <a class="dropdown-item" href="#" @click="eliminarcotizaciones(index)">Anular</a>
+                            <a v-if="cotizaciones.status==='Borrador' && cotizaciones.estatus_gestion==='Borrador'" class="dropdown-item" href="#" @click="generar(index);setearEmail(index)">Generar</a>
+                            <a v-if="cotizaciones.status==='Generado'|| cotizaciones.estatus_gestion==='Renegociado'" class="dropdown-item" href="#" @click="soloEnviar(index);setearEmail(index)">Enviar</a>
+                            <a v-if="cotizaciones.estatus_gestion==='Borrador'" class="dropdown-item" href="#" @click="setear(index);ver=false;form.renegociar='No'">Editar</a>
+                            <a v-if="cotizaciones.estatus_gestion==='Rechazada'" class="dropdown-item" href="#" @click="setear(index);ver=false;form.renegociar='Si'">Renegociar</a>
+                            <a class="dropdown-item" href="#" @click="duplicar(index);ver=false;editMode=false;">Duplicar</a>
+                            <a class="dropdown-item" href="#" @click="editarEstad(index);estado='Rechazada'">Rechazar</a>
+                            <a class="dropdown-item" href="#" @click="editarEstad(index);estado='Anulada'">Anular</a>
                           </div>
                         </button>
                     </div>
@@ -128,10 +129,10 @@
              <div class="modal-body">
                <ul class="nav nav-tabs" id="myTab" role="tablist">
                 <li class="nav-item">
-                  <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true" > Cotización</a>
+                  <a class="nav-link active" @click="form.recalculada='No'" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true" > Cotización</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false" v-show="!ver">Recalcuar Cotización</a>
+                  <a class="nav-link" @click="form.recalculada='Si'" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false" v-show="!ver">Recalcuar Cotización</a>
                 </li>
               </ul>
               <form role="form" id="form" @submit.prevent="validateBeforeSubmit">
@@ -421,7 +422,7 @@
                       <div v-if="!ver"  class="col-sm-12">
                         <div class="row ">
                           <div class="col-8">
-                            <input type="file"   id="imagenFoto" name="imagenFoto">
+                            <input type="file"   id="imagenFoto" name="imagenFoto" v-if="form.recalculada==='No'">
                           </div>
                             <div class="col-4">
                             <button class="btn btn-light links btn-lg" type="button"  @click="uploadFoto()">Subir archivo</button>
@@ -605,7 +606,18 @@
 
           </div>
        </div>
-
+       <div class="col-sm-6">
+          <div class="form-group">
+            <label>Precio Cotizado</label>
+           <input v-model="item.precio"  name="nuevo_precio" class="form-control" disabled>
+         </div>
+      </div>
+      <div class="col-sm-6">
+         <div class="form-group">
+           <label>Nuevo Precio</label>
+          <input v-model="item.nuevo_precio"  name="nuevo_precio" class="form-control" >
+        </div>
+     </div>
   </div>
   <div class="card col-12">
     <div class="row">
@@ -649,13 +661,17 @@
 
        </div>
     </div>
+
   </div>
   </div>
 </div>
 </div>
 <button
-v-if="item.id_tarifa && item.segurocarga && item.costeguia && item.escala && item.formula && item.variable"
+v-if="item.id_tarifa && item.segurocarga && item.costeguia && item.escala && item.formula && item.variable && item.nuevo_precio && !corregirMode"
  type="button" class="btn btn-success btn-lg btn-block my-2" @click="pushearItem()">Agregar <span class="mbri-save"></span></button>
+ <button
+ v-if="item.id_tarifa && item.segurocarga && item.costeguia && item.escala && item.formula && item.variable && item.nuevo_precio && corregirMode"
+  type="button" class="btn btn-success btn-lg btn-block my-2" @click="editarItem()">Editar <span class="mbri-save"></span></button>
   <div class="table-responsive my-2">
     <table class="table table-striped table-bordered table condensed table-hover table-responsive  ">
       <thead>
@@ -694,7 +710,7 @@ v-if="item.id_tarifa && item.segurocarga && item.costeguia && item.escala && ite
                   <span class="sr-only">Toggle Dropdown</span>
                   <div class="dropdown-menu" role="menu">
                     <a class="dropdown-item" href="#" @click="eliminarItem(index)">Quitar</a>
-                    <a class="dropdown-item" href="#" @click="corregir(index)">Corregir</a>
+                    <a class="dropdown-item" href="#" @click="corregir(index);corregirMode=true;">Correguir</a>
                   </div>
                 </button>
             </div>
@@ -726,7 +742,7 @@ v-if="item.id_tarifa && item.segurocarga && item.costeguia && item.escala && ite
               <div v-if="!ver"  class="col-sm-12">
                 <div class="row ">
                   <div class="col-8">
-                    <input type="file"   id="imagenFoto" name="imagenFoto">
+                    <input type="file"   id="imagenFoto" name="imagenFoto" v-if="form.recalculada==='Si'">
                   </div>
                     <div class="col-4">
                     <button class="btn btn-light links btn-lg" type="button"  @click="uploadFoto()">Subir archivo</button>
@@ -751,7 +767,7 @@ v-if="item.id_tarifa && item.segurocarga && item.costeguia && item.escala && ite
 
 
                  <button v-if="editMode===false"  class="button is-primary links btn btn-light float-right my-3" @click="cargarCotizacion()">Guardar</button>
-                 <button v-if="editMode===true && !ver"  class="button is-primary btn btn-light links float-right my-3" type="submit">Editar</button>
+                 <button v-if="editMode===true && !ver"  class="button is-primary btn btn-light links float-right my-3" @click="editarCotizacion()" >Editar</button>
              </form>
 
          <!-- Fin del formulario -->
@@ -761,6 +777,7 @@ v-if="item.id_tarifa && item.segurocarga && item.costeguia && item.escala && ite
          </div>
          <!-- /.modal-dialog -->
         </div>
+
    <!-- fin del modal -->
    </div>
 
@@ -771,6 +788,15 @@ v-if="item.id_tarifa && item.segurocarga && item.costeguia && item.escala && ite
      new Vue({
        el: '#app',
        data: {
+         estados:{
+           'enviado':0,
+           'borrador':0,
+           'estudio':0,
+           'aceptadas':0,
+           'rechazadas':0,
+           'anuladas':0,
+         },
+         estado:'',
          departamento:0,
          ver:false,
          cart:[],
@@ -782,6 +808,8 @@ v-if="item.id_tarifa && item.segurocarga && item.costeguia && item.escala && ite
          tarifas:[],
          factores:[],
          segurocarga:[],
+         trasnportes:[],
+         tiposenvios:[],
          imagenes:[],
          clientes:[],
          costeguia:[],
@@ -789,6 +817,7 @@ v-if="item.id_tarifa && item.segurocarga && item.costeguia && item.escala && ite
          sedes:[],
          cotizaciones:[],
          editMode:false,
+         corregirMode:false,
          item:{
            'departamento_destino':'',
            'ciudad_destino':'',
@@ -806,6 +835,7 @@ v-if="item.id_tarifa && item.segurocarga && item.costeguia && item.escala && ite
            'escala':'',
            'formula':'',
            'variable':'',
+           'factor':'',
          },
          email:{
            'correo_cliente':'',
@@ -817,6 +847,8 @@ v-if="item.id_tarifa && item.segurocarga && item.costeguia && item.escala && ite
              'id':'',
              'user_id':'<?=$auth_user_id;?>',
              'vnota':'Si',
+             'recalculada':'No',
+             'renegociar':'No',
              'tiempo':'',
              'vernota':true,
              'items':[],
@@ -833,7 +865,21 @@ v-if="item.id_tarifa && item.segurocarga && item.costeguia && item.escala && ite
              this.form.vnota="No";
            }
          },
+         corregir(index){
 
+           this.item.id_tarifa=this.form.items[index].id_tarifa;
+           this.item.segurocarga=this.form.items[index].segurocarga;
+           this.item.costeguia=this.form.items[index].costeguia;
+           this.item.escala=this.form.items[index].escala;
+           this.item.factor=this.form.items[index].factor;
+           this.item.variable=this.form.items[index].variable;
+           this.tari();
+           this.facto();
+           this.item.tipo_transporte=this.form.items[index].tipo_transporte;
+           this.item.tipo_envio=this.form.items[index].tipo_envio;
+           this.item.llave=index;
+           this.item.precio=this.form.items[index].precio;
+         },
            depp(){
              this.form.departamento=this.colombia[this.form.dep].departamento;
              console.log(this.form.dep);
@@ -952,6 +998,7 @@ v-if="item.id_tarifa && item.segurocarga && item.costeguia && item.escala && ite
                  this.item.escala=this.factores[i].escala;
                  this.item.formula=this.factores[i].formula;
                  this.item.variable=this.factores[i].variable;
+                  this.item.factor=this.item.factor;
                }
              }
            },
@@ -1028,7 +1075,206 @@ v-if="item.id_tarifa && item.segurocarga && item.costeguia && item.escala && ite
                  }
                })
              },
+             editarEstad(index){
+                 Swal({
+                   title: '¿Estás seguro?',
+                   text: "",
+                   type: 'warning',
+                   showCancelButton: true,
+                   confirmButtonText: '¡Si!',
+                   cancelButtonText: '¡No! ',
+                   reverseButtons: true
+                 }).then((result) => {
+                   if (result.value) {
+                     let data = new FormData();
+                     data.append('estatus_gestion',this.estado);
+                     data.append('id',this.cotizaciones[index].id);
+                     console.log(this.cotizaciones[index].id);
+                     axios.post('index.php/Cotizaciones/editarEstad',data)
+                     .then(response => {
+                       if(response.data.status == 200){
+                         Swal.fire({
+                           type: 'success',
+                           title: 'Exito!',
+                           text: 'Editado con exito'
+                         });
+                         this.loadcotizaciones();
+                       }
+                       else{
+                         Swal.fire({
+                           type: 'error',
+                           title: 'Lo sentimos',
+                           text: 'Ha ocurrido un error'
+                         })
+                       }
+                     })
+                   } else if (
+                     result.dismiss === Swal.DismissReason.cancel
+                   ) {
+                     Swal(
+                       'Cancelado',
+                       'No fue eliminado.',
+                       'success'
+                     )
+                   }
+                 })
+               },
+               editarCotizacion(index){
+                 if (this.imagenes.length<1) {
+                   Swal.fire({
+                     type: 'warning',
+                     title: '',
+                     text: 'Debes agregar al menos un documento'
+                   });
+                   return;
+                 }
+                 if (this.form.items.length<1) {
+                   Swal.fire({
+                     type: 'warning',
+                     title: '',
+                     text: 'Debes agregar al menos un item a la cotización'
+                   });
+                   return;
+                 }
+                 if (!this.form.cedula) {
+                   Swal.fire({
+                     type: 'warning',
+                     title: '',
+                     text: 'Debes agregar la cedula del cliente'
+                   });
+                   return;
+                 }
+                   Swal({
+                     title: '¿Estás seguro?',
+                     text: "",
+                     type: 'warning',
+                     showCancelButton: true,
+                     confirmButtonText: '¡Si!',
+                     cancelButtonText: '¡No! ',
+                     reverseButtons: true
+                   }).then((result) => {
+                     if (result.value) {
+                       let data = new FormData();
+                       data.append('service_form',JSON.stringify(this.form));
+                       axios.post('index.php/Cotizaciones/editar',data)
+                       .then(response => {
+                         if(response.data.status == 200){
+                           Swal.fire({
+                             type: 'success',
+                             title: 'Exito!',
+                             text: 'Editado con exito'
+                           })
+                           $('#modal-lg').modal('hide');
+                           this.form.tiempo="";
+                           this.form.cedula="";
+                           this.form.notas=[];
+                           this.form.items=[];
+                           this.loadFotos();
+                           this.loadcotizaciones();
+                           this.resete();
+                         }
+                         else{
+                           Swal.fire({
+                             type: 'error',
+                             title: 'Lo sentimos',
+                             text: 'Ha ocurrido un error'
+                           })
+                         }
+                       })
+                     } else if (
+                       result.dismiss === Swal.DismissReason.cancel
+                     ) {
+                       Swal(
+                         'Cancelado',
+                         'No fue eliminado.',
+                         'success'
+                       )
+                     }
+                   })
+                 },
+             editarItem(index){
+               Swal({
+                 title: '¿Estás seguro?',
+                 type: 'warning',
+                 showCancelButton: true,
+                 confirmButtonText: '¡Si!',
+                 cancelButtonText: '¡No!',
+                 reverseButtons: true
+               }).then((result) => {
+                 if (result.value) {
+                   this.form.items.splice(this.item.llave, 1);
+                   this.form.items.push({
+                      id_tarifa:this.item.id_tarifa,
+                      departamento_destino:this.item.departamento_destino,
+                      departamento_origen:this.item.departamento_origen,
+                      ciudad_origen:this.item.ciudad_origen,
+                      ciudad_destino:this.item.ciudad_destino,
+                      cedula_cliente:this.item.cedula_cliente,
+                      tipo_transporte:this.item.tipo_transporte,
+                      tipo_envio:this.item.tipo_envio,
+                      precio:this.item.nuevo_precio,
+                      factor:this.item.factor,
+                      tipo_carga:this.item.tipo_carga,
+                      itinerarios:this.item.itinerarios,
+                      tiempos:this.item.tiempos,
+                      segurocarga:this.item.segurocarga,
+                      costeguia:this.item.costeguia,
+                      escala:this.item.escala,
+                      formula:this.item.formula,
+                      variable:this.item.variable,
 
+                    });
+                    if (this.form.notas.length<1) {
+                      for (var i = 0; i < this.notas.length; i++) {
+                        if (this.notas[i].tipo_transporte===this.item.tipo_transporte && this.notas[i].estado==='Activo') {
+                            this.form.notas.push(this.notas[i]);
+                        }
+                      }
+                    }else if (this.form.notas.length>0) {
+                      this.copiaNotas=this.notas;
+                      for (var i = 0; i < this.form.notas.length; i++) {
+                        for (var j = 0; j < this.copiaNotas.length; j++) {
+                          if (this.copiaNotas[j].tipo_transporte===this.item.tipo_transporte && this.copiaNotas[i].estado==='Activo') {
+                              if (this.form.notas[i].id===this.copiaNotas[j].id || this.copiaNotas[i].estado==='Inactivo') {
+                                this.copiaNotas.splice(j, 1);
+                              }else{
+                                this.form.notas.push(this.copiaNotas[j]);
+                                this.copiaNotas.splice(j, 1);
+                              }
+                          }
+                        }
+
+                      }
+                    }
+                    this.item.id_tarifa="";
+                    this.item.departamento_destino="";
+                    this.item.departamento_origen="";
+                    this.item.ciudad_origen="";
+                    this.item.cedula_cliente="";
+                    this.item.tipo_transporte="";
+                    this.item.tipo_envio="";
+                    this.item.precio="";
+                    this.item.tipo_carga="";
+                    this.item.itinerarios="";
+                    this.item.tiempos="";
+                    this.item.segurocarga="";
+                    this.item.costeguia="";
+                    this.item.escala="";
+                    this.item.formula="";
+                    this.item.variable="";
+                    this.item.nuevo_precio="";
+                    this.corregirMode=false;
+                 } else if (
+                   result.dismiss === Swal.DismissReason.cancel
+                 ) {
+                   Swal(
+                     'Cancelado',
+                     'No fue eliminado.',
+                     'success'
+                   )
+                 }
+               })
+             },
                  pushearItem(index){
                    Swal({
                      title: '¿Estás seguro?',
@@ -1049,6 +1295,7 @@ v-if="item.id_tarifa && item.segurocarga && item.costeguia && item.escala && ite
                           tipo_transporte:this.item.tipo_transporte,
                           tipo_envio:this.item.tipo_envio,
                           precio:this.item.precio,
+                          factor:this.item.factor,
                           tipo_carga:this.item.tipo_carga,
                           itinerarios:this.item.itinerarios,
                           tiempos:this.item.tiempos,
@@ -1349,6 +1596,25 @@ v-if="item.id_tarifa && item.segurocarga && item.costeguia && item.escala && ite
                    this.loadFotos();
                    this.editMode=true;
                  },
+                 duplicar(index){
+                   this.form.cedula=this.cotizaciones[index].cedula,
+                   this.form.fecha_creacion=this.cotizaciones[index].fecha_creacion,
+                   this.items=JSON.parse(this.cotizaciones[index].items),
+                   this.form.estatus=this.cotizaciones[index].estatus,
+                   this.form.vnota=this.cotizaciones[index].vnota,
+                   this.form.tiempo=this.cotizaciones[index].tiempo,
+                   this.form.items=JSON.parse(this.cotizaciones[index].items),
+                   this.form.notas=JSON.parse(this.cotizaciones[index].notas),
+                   this.form.contrato=JSON.parse(this.cotizaciones[index].contrato),
+                   this.form.saludo=JSON.parse(this.cotizaciones[index].saludo),
+                   $('#modal-lg').modal('show');
+                   if (this.form.vnota==='Si') {
+                     this.form.vernota=true;
+                   }else{
+                     this.form.vernota=false;
+                   }
+                   this.loadFotos();
+                 },
                  setearEmail(index){
                    this.email.correo_cliente=this.cotizaciones[index].correo_cliente;
                    this.email.id=this.cotizaciones[index].id;
@@ -1373,6 +1639,28 @@ v-if="item.id_tarifa && item.segurocarga && item.costeguia && item.escala && ite
                       this.cotizaciones = cotizaciones
                     });
                     $("#example1").DataTable();
+                    this.estado.enviados=0;
+                    this.estado.anuladas=0;
+                    this.estado.rechazadas=0;
+                    this.estado.estudio=0;
+                    this.estado.borrador=0;
+                    this.estado.aceptadas=0;
+                    for (var i = 0; i < this.cotizaciones.length; i++) {
+                      if (this.cotizaciones[i].estatus_gestion==='Enviado') {
+                        this.estados.enviados=this.estados.enviados+1;
+                      }else if (this.cotizaciones[i].estatus_gestion==='Anulada') {
+                        this.estados.anuladas=this.estados.anuladas+1;
+                      }else if (this.cotizaciones[i].estatus_gestion==='Borrador' || this.cotizaciones[i].estatus_gestion==='Renegociado') {
+                        this.estados.borrador=this.estados.borrador+1;
+                      }else if (this.cotizaciones[i].estatus_gestion==='Rechazada') {
+                        this.estados.rechazadas=this.estados.rechazadas+1;
+                      }else if (this.cotizaciones[i].estatus_gestion==='En estudio') {
+                        this.estados.estudio=this.estados.estudio+1;
+                      }else if (this.cotizaciones[i].estatus_gestion==='Aprobada') {
+                        this.estados.aceptadas=this.estados.aceptadas+1;
+                      }
+
+                    }
                   },
                  async loadclientes() {
                       await   axios.get('index.php/clientes/getclientes/')

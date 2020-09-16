@@ -232,7 +232,7 @@
                                 <p class="text-danger my-1 small" v-if="(errors.first('f_ingreso'))" >  Este dato es requerido  </p>
                               </div>
                            </div>
-                           <div class="col-md-4" v-if="!form.id_tarifa">
+                           <div class="col-md-6" v-if="!form.id_tarifa">
                              <label class="links">Tipo de transporte</label>
                              <div class="form-group">
                                <select v-model="form.tipo_transporte" @change="form.tipo_envio=''" v-validate="'required'" name="tipo_transporte" class="form-control" :disabled="ver" >
@@ -242,7 +242,7 @@
                                <p class="text-danger my-1 small" v-if="(errors.first('tipo_transporte'))" >  Este dato es requerido  </p>
                              </div>
                            </div>
-                           <div class="col-md-4" v-if="!form.id_tarifa">
+                           <div class="col-md-6" v-if="!form.id_tarifa">
                              <label class="links">Tipo de envío</label>
                              <div class="form-group">
                                <select v-model="form.tipo_envio" v-validate="'required'" name="tipo_envio" class="form-control" :disabled="ver" >
@@ -251,6 +251,15 @@
                                </select>
                                <p class="text-danger my-1 small" v-if="(errors.first('tipo_envio'))" >  Este dato es requerido  </p>
                              </div>
+                           </div>
+                           <div class="col-sm-12" v-if="!form.id_tarifa">
+
+                               <label class="links">Trazabilidad</label>
+                               <input list="tarifas" v-model="form.id_tarifa" @change="tari()"  value="" class="form-control form-control-lg" placeholder="Escriba una ruta">
+                                 <datalist id="tarifas">
+                                     <option v-for="tarifas in tarifas" v-if="tarifas.tipo_envio===form.tipo_envio && tarifas.tipo_transporte===form.tipo_transporte"  :value="tarifas.id">De {{tarifas.ciudad_origen}} a {{tarifas.ciudad_destino}} Tiempo:{{tarifas.tiempos}}</option>
+                                 </datalist>
+
                            </div>
                            <div class="col-sm-4" v-if="!form.id_tarifa">
                               <div class="form-group links">

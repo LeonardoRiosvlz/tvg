@@ -10,7 +10,7 @@
 }
 </style>
 <div id="app" class="container">
-  <div class="row">
+  <div class="row" v-if="cotizaciones.length>0 && estatus_gestion==='En estudio'|| cotizaciones.length>0 && estatus_gestion==='Enviado'">
     <div class="col-lg-12 my-5 ">
       <!-- Shopping cart table -->
       <div class="car border-0 p-2">
@@ -88,14 +88,14 @@
               <p class="lead jus links" style="font-weight: bold;">  {{cargo}}</p>
               <div class="row mb-4">
                   <div class="col-6">
-                    <button type="button" class="btn btn-danger btn-lg btn-block">RECHAZAR</button>
+                    <button type="button" class="btn btn-danger btn-lg btn-block" @click="editarEstad();estado='Rechazada'">RECHAZAR</button>
                   </div>
                   <div class="col-6">
-                    <button type="button" class="btn btn-success btn-lg btn-block">ACEPTAR</button>
+                    <button type="button" class="btn btn-success btn-lg btn-block" @click="editarEstad();estado='Aprobada'">ACEPTAR</button>
                   </div>
               </div>
               </div>
-
+                <pre>{{estado}}</pre>
             </div>
 
           <img v-for="empresa in empresa" :src="'<?=base_url();?>'+empresa.logo_dos" alt="" width="100%"  class="mx-auto  img-fluid">
@@ -103,6 +103,10 @@
       <!-- End -->
     </div>
   </div>
+  <div v-else class="col-12 my-5" style="height:1000px;">
+    <img src="<?=base_url();?>/img/404.svg" alt="">
+  </div>
+
 
    </div>
 
@@ -113,6 +117,7 @@
      new Vue({
        el: '#app',
        data: {
+         estado:'',
          departamento:0,
          ver:false,
          ref_cot:'<?=$_GET["ref_cot"];?>',
@@ -130,7 +135,7 @@
          correo_cliente:'',
          ciudad:'',
          fecha_creacion:'',
-
+         estatus_gestion:'',
          form:{
              'fecha_creacion':'',
              'nombre_cargo':'',
@@ -266,6 +271,49 @@
                    $('#myModal').modal('show');
                    this.editMode=false
                  },
+                 editarEstad(index){
+                     Swal({
+                       title: '¿Estás seguro?',
+                       text: "",
+                       type: 'warning',
+                       showCancelButton: true,
+                       confirmButtonText: '¡Si!',
+                       cancelButtonText: '¡No! ',
+                       reverseButtons: true
+                     }).then((result) => {
+                       if (result.value) {
+                         let data = new FormData();
+                         data.append('estatus_gestion',this.estado);
+                         data.append('id',this.ref_cot);
+                         axios.post('index.php/Cotizaciones/editarEstad',data)
+                         .then(response => {
+                           if(response.data.status == 200){
+                             Swal.fire({
+                               type: 'success',
+                               title: 'Exito!',
+                               text: 'Editado con exito'
+                             });
+                             this.loadcotizaciones();
+                           }
+                           else{
+                             Swal.fire({
+                               type: 'error',
+                               title: 'Lo sentimos',
+                               text: 'Ha ocurrido un error'
+                             })
+                           }
+                         })
+                       } else if (
+                         result.dismiss === Swal.DismissReason.cancel
+                       ) {
+                         Swal(
+                           'Cancelado',
+                           'No fue eliminado.',
+                           'success'
+                         )
+                       }
+                     })
+                   },
                  async loadcotizaciones(){
                     let data = new FormData();
                        data.append('id',this.ref_cot);
@@ -281,6 +329,7 @@
                      this.correo_cliente=this.cotizaciones[0].correo_cliente;
                      this.ciudad=this.cotizaciones[0].ciudad;
                      this.nombre=this.cotizaciones[0].nombre;
+                     this.estatus_gestion=this.cotizaciones[0].estatus_gestion;
                      this.apellido=this.cotizaciones[0].apellido;
                      this.cargo=this.cotizaciones[0].cargo;
                      this.saludo=JSON.parse(this.cotizaciones[0].saludo);

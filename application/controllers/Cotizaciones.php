@@ -42,6 +42,9 @@ class Cotizaciones extends MY_Controller {
 				$data['codigo']= dechex($data['id']);
 				$result = $this->cotizaciones->insertar($data);
 					if($result['code'] == 0){
+						if ($data['recalculada']==="Si") {
+							$result = $this->cotizaciones->inseRecalculada($data);
+						}
 						echo json_encode(['status' => '200', 'message' => 'Agregado exitosamente']);
 					}
 					else{
@@ -52,9 +55,17 @@ class Cotizaciones extends MY_Controller {
 				if( ! $this->verify_min_level(9)){
 					redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
 				}
-			    $data = json_decode($this->input->post('service_form'),true);
+			  $data = json_decode($this->input->post('service_form'),true);
+				if ($data['renegociar']==="Si") {
+					$data['estatus_gestion']="Renegociado";
+				}else{
+					$data['estatus_gestion']="Borrador";
+				}
 				$result = $this->cotizaciones->editar($data);
 					if($result['code'] == 0){
+						if ($data['recalculada']==="Si") {
+							$results = $this->cotizaciones->inseRecalculada($data);
+						}
 						echo json_encode(['status' => '200', 'message' => 'editado exitosamente']);
 					}
 					else{
@@ -525,6 +536,7 @@ class Cotizaciones extends MY_Controller {
 
 											 </html>');
 											 if($this->email->send()){
+												 $data = json_decode($this->input->post('service_form'),true);
 												 $data['id_archivo']= $this->archivos->get_unused_id();
 												 $data['tipo']="Cotizacion";
 												 $data['tipo_archivo']="PDF";
@@ -979,6 +991,17 @@ class Cotizaciones extends MY_Controller {
 								echo json_encode(['status' => '500', 'message' => 'no creado, ha ocurrido un error']);
 							}
 						}
+						public function editarEstad() {
+							$data['id']= $this->input->post('id');
+							$data['estatus_gestion'] = $this->input->post('estatus_gestion');
+							$result = $this->cotizaciones->editarEstads($data);
+								if($result['code'] == 0){
+									echo json_encode(['status' => '200', 'message' => 'editado exitosamente']);
+								}
+								else{
+									echo json_encode(['status' => '500', 'message' => 'no creado, ha ocurrido un error']);
+								}
+							}
 					public function verid(){
 						echo $this->archivos->get_unused_id();
 					}
