@@ -151,7 +151,7 @@
           </div>
         </div>
      </div>
-     <div class="col-7 row card  border-0 " v-if="item.escala===''">
+     <div class="col-7 row card  border-0 " v-if="item.escala==='' || item.escala==='Porcientos'">
        <label class="links lead">Volumen</label>
        <div class="col-12 row p-2">
          <div class="col-3">
@@ -238,7 +238,7 @@
          </div>
        </div>
      </div>
-     <div class="col-5 row">
+     <div class="col-5 row" v-if="item.escala===''||item.escala==='Centímetros'|| item.escala==='Metros'">
        <label class="links lead">Peso</label>
        <div class="row">
          <div class="col-5">
@@ -259,22 +259,45 @@
          </div>
        </div>
      </div>
+     <div class="col-5 row" v-if="item.escala==='Porcientos'">
+       <label class="links lead">Peso</label>
+       <div class="row">
+         <div class="col-5">
+        <label class="links">KILOS BASC</label>
+           <div class="input-group">
+             <input @change="kilos();procientos();" v-model="item.kilosbascula" type="number" class="form-control" placeholder="">
+           </div>
+         </div>
+         <div class="col-6">
+           <label class="links">TOT. KILOS</label>
+           <div class="input-group">
+             <input v-model="item.kilostotal" type="number" class="form-control" placeholder="" disabled>
+           </div>
+         </div>
+         <div class="col-1 " style="margin-top:39px;">
+           <input type="checkbox" id="check17" />
+            <label class="labels" for="check17"></label>
+         </div>
+       </div>
+     </div>
   </div>
-    <table class="table table-striped table-bordered table condensed table-hover table-responsive  ">
+  <button
+  v-if="item.id_tarifa && item.escala && item.formula && item.variable && !corregirMode && item.kilostotal && item.volumen"
+   type="button" class="btn btn-success btn-lg btn-block my-2" @click="pushearItem()">Agregar <span class="mbri-save"></span></button>
+   <button
+   v-if="item.id_tarifa  && item.escala && item.formula && item.variable && corregirMode "
+    type="button" class="btn btn-success btn-lg btn-block my-2" @click="editarItem()">Editar <span class="mbri-save"></span></button>
+    <table class="table table-striped table-bordered table condensed table-hover table-responsive  && kilostotal && volumen">
       <thead>
         <tr>
           <th>ORIGEN</th>
           <th>DESTINO</th>
           <th>TRANSPORTE</th>
           <th style="white-space: nowrap;">TIPO DE ENVÍO</th>
-          <th>PRECIO</th>
-          <th>ITINERARIOS</th>
-          <th style="white-space: nowrap;">TIEMPOS DE ENTREGA</th>
-          <th>SEGURO</th>
-          <th style="white-space: nowrap;">MEDIDADS EN</th>
-          <th>FACTOR</th>
-          <th style="white-space: nowrap;">COSTE DE GUÍA</th>
-          <th v-show="!ver">ACTION</th>
+          <th style="white-space: nowrap;">TIPO DE CARGA</th>
+          <th style="white-space: nowrap;">TOTAL VOLUMEN</th>
+          <th style="white-space: nowrap;">TOTAL PESO</th>
+          <th style="white-space: nowrap;"></th>
         </tr>
       </thead>
       <tbody>
@@ -283,13 +306,9 @@
           <td style="white-space: nowrap;">{{elemento.departamento_destino}}-{{elemento.ciudad_destino}}</td>
           <td style="white-space: nowrap;">{{elemento.tipo_transporte}}</td>
           <td style="white-space: nowrap;">{{elemento.tipo_envio}}</td>
-          <td style="white-space: nowrap;">{{elemento.precio}} $</td>
-          <td style="white-space: nowrap;">{{elemento.itinerarios}}</td>
-          <td style="white-space: nowrap;">{{elemento.tiempos}}</td>
-          <td style="white-space: nowrap;">{{elemento.segurocarga}} %</td>
-          <td style="white-space: nowrap;">{{elemento.escala}}</td>
-          <td style="white-space: nowrap;">{{elemento.formula}}</td>
-          <td style="white-space: nowrap;">{{elemento.costeguia}} $</td>
+          <td style="white-space: nowrap;">{{elemento.tipocarga}}</td>
+          <td style="white-space: nowrap;">{{elemento.volumen}}</td>
+          <td style="white-space: nowrap;">{{elemento.kilostotal}}</td>
           <td v-show="!ver">
             <div class="btn-group">
                 <button type="button" class="btn btn-default">Action</button>
@@ -353,6 +372,7 @@
      new Vue({
        el: '#app',
        data: {
+         corregirMode:false,
          departamento:0,
          cart:[],
          cargos:[],
@@ -398,43 +418,211 @@
            'kilostotal':'',
          },
          form:{
-             'id':'',
-             'dep':0,
-             'departamento_destino':'',
-             'ciudad_destino':'',
-             'dep_dos':0,
-             'departamento_origen':'Amazonas',
-             'ciudad_origen':'',
-             'id_carga_cliente':'',
-             'f_recogida':'',
-             'f_ingreso':'',
-             'cedula_cliente':'',
-             'tipo_transporte':'',
-             'tipo_envio':'',
-             'precio':'',
-             'id_carga_cliente':'',
-             'tipo_carga':'',
-             'cantidad':'',
-             'kilos_tvg':'',
-             'kilos_cliente':'',
-             'flete_fijo':'',
-             'flete_total':'',
-             'fecha_despacho':'',
-             'proveedor':'',
-             'n_guia_proveedor':'',
-             'fecha_en_destino':'',
-             'sede_cliente':'',
-             'fecha_conectividad':'',
-             'n_referencia_c':'',
-             'f_entrega_c':'',
-             'numero_anexo_l':'',
-             'numero_factura':'',
-             'fecha_factura':'',
-             'id_tarifa':'',
+             'items':[],
+
          },
 
        },
        methods: {
+         editarItem(index){
+           Swal({
+             title: '¿Estás seguro?',
+             type: 'warning',
+             showCancelButton: true,
+             confirmButtonText: '¡Si!',
+             cancelButtonText: '¡No!',
+             reverseButtons: true
+           }).then((result) => {
+             if (result.value) {
+               this.form.items.splice(this.item.llave, 1);
+               this.form.items.push({
+                  id_tarifa:this.item.id_tarifa,
+                  departamento_destino:this.item.departamento_destino,
+                  departamento_origen:this.item.departamento_origen,
+                  ciudad_origen:this.item.ciudad_origen,
+                  ciudad_destino:this.item.ciudad_destino,
+                  cedula_cliente:this.item.cedula_cliente,
+                  tipo_transporte:this.item.tipo_transporte,
+                  tipo_envio:this.item.tipo_envio,
+                  precio:this.item.nuevo_precio,
+                  factor:this.item.factor,
+                  tipo_carga:this.item.tipo_carga,
+                  itinerarios:this.item.itinerarios,
+                  tiempos:this.item.tiempos,
+                  segurocarga:this.item.segurocarga,
+                  costeguia:this.item.costeguia,
+                  escala:this.item.escala,
+                  formula:this.item.formula,
+                  variable:this.item.variable,
+                  an:this.item.an,
+                  al:this.item.al,
+                  la:this.item.la,
+                  cantidad:this.item.cantidad,
+                  kilosbascula:this.item.kilosbascula,
+                  kilostotal:this.item.kilostotal,
+                  volumen:this.item.volumen,
+                  kilostotal:this.item.kilostotal,
+                  tipocarga:this.item.tipocarga,
+                });
+                this.item.id_tarifa="";
+                this.item.departamento_destino="";
+                this.item.departamento_origen="";
+                this.item.ciudad_origen="";
+                this.item.cedula_cliente="";
+                this.item.tipo_transporte="";
+                this.item.tipo_envio="";
+                this.item.precio="";
+                this.item.tipo_carga="";
+                this.item.itinerarios="";
+                this.item.tiempos="";
+                this.item.segurocarga="";
+                this.item.costeguia="";
+                this.item.escala="";
+                this.item.formula="";
+                this.item.variable="";
+                this.item.nuevo_precio="";
+                this.corregirMode=false;
+                this.item.an="";
+                this.item.al="";
+                this.item.la="";
+                this.item.cantidad="";
+                this.item.kilosbascula="";
+                this.item.kilostotal="";
+                this.item.volumen="";
+                this.item.kilostotal="";
+                this.item.tipocarga="";
+             } else if (
+               result.dismiss === Swal.DismissReason.cancel
+             ) {
+               Swal(
+                 'Cancelado',
+                 'No fue eliminado.',
+                 'success'
+               )
+             }
+           })
+         },
+         corregir(index){
+
+           this.item.id_tarifa=this.form.items[index].id_tarifa;
+           this.item.tipocarga=this.form.items[index].tipocarga;
+           this.item.escala=this.form.items[index].escala;
+           this.item.factor=this.form.items[index].factor;
+           this.item.variable=this.form.items[index].variable;
+           this.tari();
+           this.facto();
+           this.item.tipo_transporte=this.form.items[index].tipo_transporte;
+           this.item.tipo_envio=this.form.items[index].tipo_envio;
+           this.item.llave=index;
+           this.item.precio=this.form.items[index].precio;
+           this.item.an=this.form.items[index].an;
+           this.item.al=this.form.items[index].al;
+           this.item.la=this.form.items[index].la;
+           this.item.cantidad=this.form.items[index].cantidad;
+           this.item.kilosbascula=this.form.items[index].kilosbascula;
+           this.item.kilostotal=this.form.items[index].kilostotal;
+           this.item.volumen=this.form.items[index].volumen;
+           this.item.kilostotal=this.form.items[index].kilostotal;
+           this.item.tipocarga=this.form.items[index].tipocarga;
+           this.selector();
+         },
+             pushearItem(index){
+               Swal({
+                 title: '¿Estás seguro?',
+                 type: 'warning',
+                 showCancelButton: true,
+                 confirmButtonText: '¡Si!',
+                 cancelButtonText: '¡No!',
+                 reverseButtons: true
+               }).then((result) => {
+                 if (result.value) {
+                   this.form.items.push({
+                      id_tarifa:this.item.id_tarifa,
+                      departamento_destino:this.item.departamento_destino,
+                      departamento_origen:this.item.departamento_origen,
+                      ciudad_origen:this.item.ciudad_origen,
+                      ciudad_destino:this.item.ciudad_destino,
+                      cedula_cliente:this.item.cedula_cliente,
+                      tipo_transporte:this.item.tipo_transporte,
+                      tipo_envio:this.item.tipo_envio,
+                      precio:this.item.precio,
+                      factor:this.item.factor,
+                      tipo_carga:this.item.tipo_carga,
+                      itinerarios:this.item.itinerarios,
+                      tiempos:this.item.tiempos,
+                      segurocarga:this.item.segurocarga,
+                      costeguia:this.item.costeguia,
+                      escala:this.item.escala,
+                      formula:this.item.formula,
+                      variable:this.item.variable,
+                      an:this.item.an,
+                      al:this.item.al,
+                      la:this.item.la,
+                      cantidad:this.item.cantidad,
+                      kilosbascula:this.item.kilosbascula,
+                      kilostotal:this.item.kilostotal,
+                      volumen:this.item.volumen,
+                      kilostotal:this.item.kilostotal,
+                      tipocarga:this.item.tipocarga,
+                    });
+                    this.item.id_tarifa="";
+                    this.item.departamento_destino="";
+                    this.item.departamento_origen="";
+                    this.item.ciudad_origen="";
+                    this.item.cedula_cliente="";
+                    this.item.tipo_transporte="";
+                    this.item.tipo_envio="";
+                    this.item.precio="";
+                    this.item.tipo_carga="";
+                    this.item.itinerarios="";
+                    this.item.tiempos="";
+                    this.item.segurocarga="";
+                    this.item.costeguia="";
+                    this.item.escala="";
+                    this.item.formula="";
+                    this.item.variable="";
+                    this.item.an="";
+                    this.item.al="";
+                    this.item.la="";
+                    this.item.cantidad="";
+                    this.item.kilosbascula="";
+                    this.item.kilostotal="";
+                    this.item.volumen="";
+                    this.item.kilostotal="";
+                    this.item.tipocarga="";
+                 } else if (
+                   result.dismiss === Swal.DismissReason.cancel
+                 ) {
+                   Swal(
+                     'Cancelado',
+                     'No fue eliminado.',
+                     'success'
+                   )
+                 }
+               })
+             },
+             eliminarItem(index){
+               Swal({
+                 title: '¿Estás seguro?',
+                 type: 'warning',
+                 showCancelButton: true,
+                 confirmButtonText: '¡Si! ¡eliminar!',
+                 cancelButtonText: '¡No! ¡cancelar!',
+                 reverseButtons: true
+               }).then((result) => {
+                 if (result.value) {
+                   this.form.items.splice(index, 1);
+                 } else if (
+                   result.dismiss === Swal.DismissReason.cancel
+                 ) {
+                   Swal(
+                     'Cancelado',
+                     'No fue eliminado.',
+                     'success'
+                   )
+                 }
+               })
+             },
          selector(){
            if (this.item.escala==="Centímetros") {
              this.centimetros();
@@ -460,8 +648,9 @@
           },
           porcientos(){
             this.item.volumen=0;
+            this.item.kilostotal=0;
             console.log("centimetros");
-            this.item.volumen=((parseFloat(this.item.an) * parseFloat(this.item.la) * parseFloat(this.item.al) )/ parseFloat(this.item.variable) )* parseFloat(this.item.cantidad);
+            this.item.kilostotal=parseFloat(this.item.kilosbascula) + (parseFloat(this.item.kilosbascula) * (parseFloat(this.item.variable) )/ 100);
           },
            depp(){
              this.form.departamento=this.colombia[this.form.dep].departamento;

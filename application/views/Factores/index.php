@@ -266,13 +266,19 @@
                  },
                  setear(index){
                    this.form.id=this.factores[index].id,
-                   this.form.nombre_cargo=this.factores[index].nombre_cargo,
+                   this.form.escala=this.factores[index].escala,
+                   this.form.formula=this.factores[index].formula,
+                   this.form.variable=this.factores[index].variable,
+                   this.form.estado=this.factores[index].estado,
                    $('#modal-lg').modal('show');
                    this.editMode=true
                  },
                  ver(index){
                    this.form.id=this.factores[index].id,
-                   this.form.nombre_cargo=this.factores[index].nombre_cargo,
+                   this.form.escala=this.factores[index].escala,
+                   this.form.formula=this.factores[index].formula,
+                   this.form.variable=this.factores[index].variable,
+                   this.form.estado=this.factores[index].estado,
                    $('#myModal').modal('show');
                    this.editMode=false
                  },
