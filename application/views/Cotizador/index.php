@@ -265,7 +265,7 @@
          <div class="col-5">
         <label class="links">KILOS BASC</label>
            <div class="input-group">
-             <input @change="kilos();procientos();" v-model="item.kilosbascula" type="number" class="form-control" placeholder="">
+             <input @change="kilos();porcientos();" v-model="item.kilosbascula" type="number" class="form-control" placeholder="">
            </div>
          </div>
          <div class="col-6">
@@ -281,11 +281,43 @@
        </div>
      </div>
   </div>
+  <div class="row" v-if="item.precioItem>0">
+    <div class="col-3" v-if="item.volumen>item.kilostotal">
+      <div class="form-group">
+       <label for="inputlg">Volumen</label>
+       <input v-model="item.volumen" class="form-control input-lg" id="inputlg" type="text" disabled>
+     </div>
+    </div>
+    <div class="col-3" v-if="item.volumen<item.kilostotal">
+      <div class="form-group">
+       <label for="inputlg">Kilos</label>
+       <input v-model="item.kilostotal" class="form-control input-lg" id="inputlg" type="text" disabled>
+     </div>
+    </div>
+    <div class="col-1" style="padding-top:38px;">
+       <span class="mbri-close" style="font-size:30px;"></span>
+    </div>
+    <div class="col-3">
+      <div class="form-group">
+       <label for="inputlg">VALOR TARIFA</label>
+       <input v-model="item.precio" class="form-control input-lg" id="inputlg" type="text" disabled>
+     </div>
+    </div>
+    <div class="col-1" style="padding-top:38px;">
+      <span class="mbri-arrow-next" style="font-size:30px;"></span>
+    </div>
+    <div class="col-4">
+      <div class="form-group">
+       <label for="inputlg">PRECIO TOTAL</label>
+       <input v-model="item.precioItem" class="form-control input-lg" id="inputlg" type="text" disabled>
+     </div>
+    </div>
+  </div>
   <button
-  v-if="item.id_tarifa && item.escala && item.formula && item.variable && !corregirMode && item.kilostotal && item.volumen"
+  v-if="item.id_tarifa && item.escala && item.formula && item.variable && !corregirMode && item.kilostotal && item.volumen  && item.precioItem || item.id_tarifa && item.escala==='Porcientos' && item.formula && item.variable && !corregirMode && item.kilostotal && item.precioItem"
    type="button" class="btn btn-success btn-lg btn-block my-2" @click="pushearItem()">Agregar <span class="mbri-save"></span></button>
    <button
-   v-if="item.id_tarifa  && item.escala && item.formula && item.variable && corregirMode "
+   v-if="item.id_tarifa  && item.escala && item.formula && item.variable && corregirMode && item.precioItem  || item.id_tarifa && item.escala==='Porcientos' && item.formula && item.variable && !corregirMode && item.kilostotal && item.precioItem && corregirMode"
     type="button" class="btn btn-success btn-lg btn-block my-2" @click="editarItem()">Editar <span class="mbri-save"></span></button>
     <table class="table table-striped table-bordered table condensed table-hover table-responsive  && kilostotal && volumen">
       <thead>
@@ -297,7 +329,8 @@
           <th style="white-space: nowrap;">TIPO DE CARGA</th>
           <th style="white-space: nowrap;">TOTAL VOLUMEN</th>
           <th style="white-space: nowrap;">TOTAL PESO</th>
-          <th style="white-space: nowrap;"></th>
+          <th style="white-space: nowrap;">PRECIO</th>
+          <th style="white-space: nowrap;">ACTION</th>
         </tr>
       </thead>
       <tbody>
@@ -309,6 +342,7 @@
           <td style="white-space: nowrap;">{{elemento.tipocarga}}</td>
           <td style="white-space: nowrap;">{{elemento.volumen}}</td>
           <td style="white-space: nowrap;">{{elemento.kilostotal}}</td>
+          <td style="white-space: nowrap;">{{elemento.precioItem}} $</td>
           <td v-show="!ver">
             <div class="btn-group">
                 <button type="button" class="btn btn-default">Action</button>
@@ -330,19 +364,19 @@
       <div class="col-3">
      <label class="links">SUMATORIA DE VOLUMEN</label>
         <div class="input-group">
-          <input type="number" class="form-control" placeholder="">
+          <input v-model="totalVolumen" type="number" class="form-control" placeholder="" disabled>
         </div>
       </div>
       <div class="col-3">
         <label class="links">SUMATORIA KILOS</label>
         <div class="input-group">
-          <input type="number" class="form-control" placeholder="">
+          <input v-model="totalKilos" type="number" class="form-control" placeholder="" disabled>
         </div>
       </div>
       <div class="col-3">
        <label class="links">VALOR FLETE</label>
         <div class="input-group">
-             <input type="number" class="form-control" placeholder="">
+             <input v-model="totalPrecios" type="number" class="form-control" placeholder="" disabled>
          </div>
       </div>
       <div class="col-1 my-5">
@@ -359,7 +393,6 @@
   </div>
   </div>
 
-      <pre>{{item}}</pre><!-- End -->
     </div>
   </div>
 
@@ -391,6 +424,9 @@
          sedes:[],
          editMode:false,
          id_instancia:'',
+         totalVolumen:'',
+         totalKilos:'',
+         totalPrecios:'',
          item:{
            'departamento_destino':'',
            'ciudad_destino':'',
@@ -416,6 +452,7 @@
            'cantidad':'',
            'kilosbascula':'',
            'kilostotal':'',
+           'precioItem':'',
          },
          form:{
              'items':[],
@@ -424,6 +461,14 @@
 
        },
        methods: {
+         sumar(){
+           this.totalKilos=0;this.totalVolumen=0;this.totalPrecios=0;
+           for (var i = 0; i < this.form.items.length; i++) {
+             this.totalVolumen= parseFloat(this.form.items[i].volumen)+parseFloat(this.totalVolumen);
+             this.totalKilos=parseFloat(this.form.items[i].kilostotal)+parseFloat(this.totalKilos);
+             this.totalPrecios=parseFloat(this.form.items[i].precioItem)+parseFloat(this.totalPrecios);
+           }
+         },
          editarItem(index){
            Swal({
              title: '¿Estás seguro?',
@@ -463,7 +508,9 @@
                   volumen:this.item.volumen,
                   kilostotal:this.item.kilostotal,
                   tipocarga:this.item.tipocarga,
+                  precioItem:this.item.precioItem,
                 });
+                this.sumar();
                 this.item.id_tarifa="";
                 this.item.departamento_destino="";
                 this.item.departamento_origen="";
@@ -491,6 +538,7 @@
                 this.item.volumen="";
                 this.item.kilostotal="";
                 this.item.tipocarga="";
+                this.item.precioItem="";
              } else if (
                result.dismiss === Swal.DismissReason.cancel
              ) {
@@ -524,6 +572,7 @@
            this.item.volumen=this.form.items[index].volumen;
            this.item.kilostotal=this.form.items[index].kilostotal;
            this.item.tipocarga=this.form.items[index].tipocarga;
+           this.item.precioItem=this.form.items[index].precioItem;
            this.selector();
          },
              pushearItem(index){
@@ -564,7 +613,9 @@
                       volumen:this.item.volumen,
                       kilostotal:this.item.kilostotal,
                       tipocarga:this.item.tipocarga,
+                      precioItem:this.item.precioItem,
                     });
+                    this.sumar();
                     this.item.id_tarifa="";
                     this.item.departamento_destino="";
                     this.item.departamento_origen="";
@@ -590,6 +641,7 @@
                     this.item.volumen="";
                     this.item.kilostotal="";
                     this.item.tipocarga="";
+                    this.item.precioItem="";
                  } else if (
                    result.dismiss === Swal.DismissReason.cancel
                  ) {
@@ -612,6 +664,7 @@
                }).then((result) => {
                  if (result.value) {
                    this.form.items.splice(index, 1);
+                   this.sumar();
                  } else if (
                    result.dismiss === Swal.DismissReason.cancel
                  ) {
@@ -638,19 +691,50 @@
          },
           metros(){
             this.item.volumen=0;
-            console.log("metros");
+            this.item.precioItem=0;
             this.item.volumen=parseFloat(this.item.an) * parseFloat(this.item.la) * parseFloat(this.item.al) * parseFloat(this.item.variable) * parseFloat(this.item.cantidad);
+            if (this.item.escala==='Porcientos') {
+                this.item.precioItem=this.item.kilostotal*parseFloat(this.item.precio);
+            }else{
+              if (this.item.volumen>this.item.kilostotal) {
+                this.item.precioItem=this.item.volumen*this.item.precio;
+              }else if(this.item.volumen<this.item.kilostotal){
+                this.item.precioItem=this.item.kilostotal*this.item.precio;
+              }
+            }
+
           },
           centimetros(){
             this.item.volumen=0;
-            console.log("centimetros");
+            this.item.precioItem=0;
             this.item.volumen=((parseFloat(this.item.an) * parseFloat(this.item.la) * parseFloat(this.item.al) )/ parseFloat(this.item.variable) )* parseFloat(this.item.cantidad);
+            if (this.item.escala==='Porcientos') {
+                this.item.precioItem=this.item.kilostotal*parseFloat(this.item.precio);
+            }else{
+              if (this.item.volumen>this.item.kilostotal) {
+                this.item.precioItem=this.item.volumen*this.item.precio;
+              }else if(this.item.volumen<this.item.kilostotal){
+                this.item.precioItem=this.item.kilostotal*this.item.precio;
+              }
+            }
           },
           porcientos(){
             this.item.volumen=0;
+            this.item.precioItem=0;
             this.item.kilostotal=0;
-            console.log("centimetros");
-            this.item.kilostotal=parseFloat(this.item.kilosbascula) + (parseFloat(this.item.kilosbascula) * (parseFloat(this.item.variable) )/ 100);
+            this.item.al="";
+            this.item.la="";
+            this.item.an="";
+            this.item.kilostotal=(parseFloat(this.item.kilosbascula)+(parseFloat(this.item.kilosbascula)*((parseFloat(this.item.variable) )/ 100)))*parseInt(this.item.cantidad);
+            if (this.item.escala==='Porcientos') {
+                this.item.precioItem=this.item.kilostotal*parseFloat(this.item.precio);
+            }else{
+              if (this.item.volumen>this.item.kilostotal) {
+                this.item.precioItem=this.item.volumen*this.item.precio;
+              }else if(this.item.volumen<this.item.kilostotal){
+                this.item.precioItem=this.item.kilostotal*this.item.precio;
+              }
+            }
           },
            depp(){
              this.form.departamento=this.colombia[this.form.dep].departamento;
