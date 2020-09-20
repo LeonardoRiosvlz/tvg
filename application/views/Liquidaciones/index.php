@@ -194,7 +194,7 @@
                      </table>
                    </div>
                  </div>
-                 <pre>{{item}}</pre>
+            
                 <div class="row">
                   <div class="col-sm-3">
                      <div class="form-group links">
@@ -522,14 +522,6 @@
                       <div class="input-group">
                            <input v-model="totalPrecios" type="number" class="form-control" placeholder="" disabled>
                        </div>
-                    </div>
-                    <div class="col-1 my-5">
-                      <span class="mbri-plus" style="font-size:15px;"></span>
-                    </div>
-                    <div class="col-2 ">
-                      <label class="links">Seguro sobre valor declarado.</label>
-                      <label class="links">Coste de guía</label>
-                      <label class="links">Otros Cargos</label>
                     </div>
                   </div>
                 </div>
