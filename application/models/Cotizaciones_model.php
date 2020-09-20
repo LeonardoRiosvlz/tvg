@@ -16,6 +16,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 'notas'      => json_encode($data['notas']),
                 'saludo'     => json_encode($data['saludo']),
                 'contrato'     => json_encode($data['contrato']),
+                'observaciones'     => $data['observaciones'],
             ));
             return $this->db->error();
         }
@@ -28,6 +29,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 'estatus_gestion' => 'Borrador',
                 'cedula'      => $data['cedula'],
                 'tiempo'     => $data['tiempo'],
+                'observaciones'     => $data['observaciones'],
                 'items'      => json_encode($data['items']),
                 'notas'      => json_encode($data['notas']),
                 'saludo'     => json_encode($data['saludo']),
@@ -70,6 +72,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
               'user_id'    => $data['user_id'],
               'vnota'      => $data['vnota'],
               'status'      => 'Borrador',
+              'observaciones'     => $data['observaciones'],
               'estatus_gestion' => $data['estatus_gestion'],
               'items'      => json_encode($data['items']),
               'notas'      => json_encode($data['notas']),

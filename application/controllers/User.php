@@ -62,7 +62,6 @@ class User extends MY_Controller
         echo json_encode(['profiles' => $data['profiles']]);
 
       }
-
            public function editar() {
        			//  if ($this->session->userdata('is_authenticated') == FALSE) {
        			//    echo json_encode(['status' => '403','message' => 'Permission Denied']);

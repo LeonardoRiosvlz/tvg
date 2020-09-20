@@ -218,7 +218,6 @@
                            <option value=""></option>
                             <option v-for="transportes in transportes" :value="transportes.tipo_transporte">{{transportes.tipo_transporte}}</option>
                           </select>
-
                         </div>
                       </div>
                       <div class="col-md-6" >
@@ -232,14 +231,12 @@
                         </div>
                       </div>
                         <div class="col-sm-12">
-
                             <label class="links">Trazabilidad</label>
                             <input list="tarifas" v-model="item.id_tarifa" @change="tari()"  value="" class="form-control form-control-lg" placeholder="Escriba una ruta">
                               <datalist id="tarifas">
                                   <option v-for="tarifas in tarifas" v-if="tarifas.tipo_envio===item.tipo_envio && tarifas.tipo_transporte===item.tipo_transporte"  :value="tarifas.id">De {{tarifas.ciudad_origen}} a {{tarifas.ciudad_destino}} Tiempo:{{tarifas.tiempos}}</option>
                               </datalist>
-
-                        </div>
+                          </div>
                       <div class="col-sm-3">
                          <div class="form-group links">
                            <label>Depto. origen</label>
@@ -719,6 +716,22 @@ v-if="item.id_tarifa && item.segurocarga && item.costeguia && item.escala && ite
       </tbody>
     </table>
   </div>
+  <div class="row">
+      <div class="col-4">
+        <div class="form-group">
+          <label for="exampleFormControlSelect1">Usuario que autoriza</label>
+          <select class="form-control" id="exampleFormControlSelect1" value="<?=$auth_user_id;?>">
+            <option v-for="profiles in profiles" v-if="profiles.user_id==='<?=$auth_user_id;?>'" :value="profiles.user_id">{{profiles.username}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-8">
+        <div class="form-group">
+          <label for="exampleFormControlTextarea1">Observación</label>
+          <textarea v-model="form.observaciones" class="form-control" id="exampleFormControlTextarea1" rows="1"></textarea>
+        </div>
+      </div>
+  </div>
   <label class="switch pull-right col-12">
     <input type="checkbox" v-model="form.vernota" checked @change="verNotas()" :disabled="ver">
     <span class="slider round"></span>
@@ -800,6 +813,7 @@ v-if="item.id_tarifa && item.segurocarga && item.costeguia && item.escala && ite
          departamento:0,
          ver:false,
          cart:[],
+         profiles:[],
          factura:[],
          cargas:[],
          notas:[],
@@ -814,6 +828,7 @@ v-if="item.id_tarifa && item.segurocarga && item.costeguia && item.escala && ite
          clientes:[],
          costeguia:[],
          userFiles:[],
+         transportes:[],
          sedes:[],
          cotizaciones:[],
          editMode:false,
@@ -850,6 +865,7 @@ v-if="item.id_tarifa && item.segurocarga && item.costeguia && item.escala && ite
              'recalculada':'No',
              'renegociar':'No',
              'tiempo':'',
+             'observaciones':'',
              'vernota':true,
              'items':[],
              'notas':[],
@@ -1583,6 +1599,7 @@ v-if="item.id_tarifa && item.segurocarga && item.costeguia && item.escala && ite
                    this.form.estatus=this.cotizaciones[index].estatus,
                    this.form.vnota=this.cotizaciones[index].vnota,
                    this.form.tiempo=this.cotizaciones[index].tiempo,
+                   this.form.observaciones=this.cotizaciones[index].observaciones,
                    this.form.items=JSON.parse(this.cotizaciones[index].items),
                    this.form.notas=JSON.parse(this.cotizaciones[index].notas),
                    this.form.contrato=JSON.parse(this.cotizaciones[index].contrato),
@@ -1603,6 +1620,7 @@ v-if="item.id_tarifa && item.segurocarga && item.costeguia && item.escala && ite
                    this.form.estatus=this.cotizaciones[index].estatus,
                    this.form.vnota=this.cotizaciones[index].vnota,
                    this.form.tiempo=this.cotizaciones[index].tiempo,
+                   this.form.observaciones=this.cotizaciones[index].observaciones,
                    this.form.items=JSON.parse(this.cotizaciones[index].items),
                    this.form.notas=JSON.parse(this.cotizaciones[index].notas),
                    this.form.contrato=JSON.parse(this.cotizaciones[index].contrato),
@@ -1743,6 +1761,12 @@ v-if="item.id_tarifa && item.segurocarga && item.costeguia && item.escala && ite
                                  }
                                }
                              },
+                             async   loadProfiles() {
+                             await     axios.get('index.php/Root_user/get_profile/')
+                                  .then(({data: {profiles}}) => {
+                                    this.profiles = profiles
+                                  });
+                                },
                  loadCart(){
 
                    if(localStorage.getItem('cart')) {
@@ -1756,6 +1780,7 @@ v-if="item.id_tarifa && item.segurocarga && item.costeguia && item.escala && ite
        },
 
        created(){
+           this.loadProfiles();
            this.loadnotas();
            this.loadcosteguia();
            this.loadfactores();
