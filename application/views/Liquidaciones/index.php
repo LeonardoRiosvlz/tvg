@@ -158,9 +158,9 @@
                    <input type="checkbox" v-model="vertable">
                    <span class="slider round"></span>
                  </label>
-                 <div class=" pull-center" v-if="vertable">
+                 <div class="d-flex justify-content-center" v-if="vertable">
                    <div class="table-responsive my-2 ">
-                     <table  class="table table-striped table-bordered table condensed table-hover table-responsive  ">
+                     <table  class="table table-striped table-bordered table condensed table-hover table-responsive"width="100%"  >
                        <thead>
                          <tr>
                            <th>ORIGEN</th>
@@ -194,7 +194,7 @@
                      </table>
                    </div>
                  </div>
-            
+
                 <div class="row">
                   <div class="col-sm-3">
                      <div class="form-group links">
@@ -266,7 +266,7 @@
                  <div class="col-sm-4">
                    <label class="links">Medida</label>
                    <div class="form-group">
-                     <select v-model="item.escala"  name="escala" class="form-control" :disabled="ver" >
+                     <select v-model="item.escala"  name="escala" class="form-control" disabled >
                        <option value=""></option>
                       <option value="Metros">Metros</option>
                       <option value="Centímetros">Centímetros</option>
@@ -278,7 +278,7 @@
                  <div class="col-sm-4">
                     <div class="form-group links">
                       <label>Factor</label>
-                     <select v-model="item.factor" @change="facto()"  name="segurocarga" class="form-control" >
+                     <select v-model="item.factor" @change="facto()"  name="segurocarga" class="form-control"  disabled>
                        <option value=""></option>
                        <option v-for="factores in factores" v-if="factores.escala===item.escala"  :value="factores.id">{{factores.formula}} </option>
                      </select>
@@ -433,7 +433,7 @@
                    <input v-model="item.volumen" class="form-control input-lg" id="inputlg" type="text" disabled>
                  </div>
                 </div>
-                <div class="col-3" v-if="item.volumen<item.kilostotal">
+                <div class="col-3" v-if="item.volumen<item.kilostotal||item.volumen==item.kilostotal">
                   <div class="form-group">
                    <label for="inputlg">Kilos</label>
                    <input v-model="item.kilostotal" class="form-control input-lg" id="inputlg" type="text" disabled>
@@ -894,6 +894,8 @@
                   this.item.precioItem=this.item.volumen*this.item.precio;
                 }else if(this.item.volumen<this.item.kilostotal){
                   this.item.precioItem=this.item.kilostotal*this.item.precio;
+                }else if(this.item.volumen==this.item.kilostotal){
+                  this.item.precioItem=this.item.kilostotal*this.item.precio;
                 }
               }
 
@@ -908,6 +910,8 @@
                 if (this.item.volumen>this.item.kilostotal) {
                   this.item.precioItem=this.item.volumen*this.item.precio;
                 }else if(this.item.volumen<this.item.kilostotal){
+                  this.item.precioItem=this.item.kilostotal*this.item.precio;
+                }else if(this.item.volumen==this.item.kilostotal){
                   this.item.precioItem=this.item.kilostotal*this.item.precio;
                 }
               }
@@ -926,6 +930,8 @@
                 if (this.item.volumen>this.item.kilostotal) {
                   this.item.precioItem=this.item.volumen*this.item.precio;
                 }else if(this.item.volumen<this.item.kilostotal){
+                  this.item.precioItem=this.item.kilostotal*this.item.precio;
+                }else if(this.item.volumen==this.item.kilostotal){
                   this.item.precioItem=this.item.kilostotal*this.item.precio;
                 }
               }

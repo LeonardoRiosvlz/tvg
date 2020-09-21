@@ -288,7 +288,7 @@
        <input v-model="item.volumen" class="form-control input-lg" id="inputlg" type="text" disabled>
      </div>
     </div>
-    <div class="col-3" v-if="item.volumen<item.kilostotal">
+    <div class="col-3" v-if="item.volumen<item.kilostotal||item.volumen==item.kilostotal">
       <div class="form-group">
        <label for="inputlg">Kilos</label>
        <input v-model="item.kilostotal" class="form-control input-lg" id="inputlg" type="text" disabled>
@@ -700,6 +700,8 @@
                 this.item.precioItem=this.item.volumen*this.item.precio;
               }else if(this.item.volumen<this.item.kilostotal){
                 this.item.precioItem=this.item.kilostotal*this.item.precio;
+              }else if(this.item.volumen==this.item.kilostotal){
+                this.item.precioItem=this.item.kilostotal*this.item.precio;
               }
             }
 
@@ -714,6 +716,8 @@
               if (this.item.volumen>this.item.kilostotal) {
                 this.item.precioItem=this.item.volumen*this.item.precio;
               }else if(this.item.volumen<this.item.kilostotal){
+                this.item.precioItem=this.item.kilostotal*this.item.precio;
+              }else if(this.item.volumen==this.item.kilostotal){
                 this.item.precioItem=this.item.kilostotal*this.item.precio;
               }
             }
@@ -732,6 +736,8 @@
               if (this.item.volumen>this.item.kilostotal) {
                 this.item.precioItem=this.item.volumen*this.item.precio;
               }else if(this.item.volumen<this.item.kilostotal){
+                this.item.precioItem=this.item.kilostotal*this.item.precio;
+              }else if(this.item.volumen==this.item.kilostotal){
                 this.item.precioItem=this.item.kilostotal*this.item.precio;
               }
             }
