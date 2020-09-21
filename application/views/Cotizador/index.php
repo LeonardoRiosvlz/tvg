@@ -13,7 +13,7 @@
             <tr>
 
               <th scope="col" colspan="5" class="border-0 bg-white  text-center">
-                <button type="button" @click="resete();ver=false" class="btn btn-block btn-light btn-sm links" >Reiniciar <span class="mbri-update"></span></button>
+                <a href="<?=base_url();?>Cotizador"   class="btn btn-block btn-light btn-sm links" >Reiniciar <span class="mbri-update"></span></a >
               </th>
             </tr>
 
@@ -22,44 +22,41 @@
         </table>
 
       </div>
-        <div class="row" v-show="!ver">
-
+      <div class="row" v-show="!ver">
         <div class="card col-12 p-3 border-0" >
          <h4 class="card-title">Tarifa Acorde</h4>
           <div class="card-body row sp">
             <div class="col-md-6" >
               <label class="links">Tipo de transporte</label>
               <div class="form-group">
-                <select v-model="item.tipo_transporte" @change="item.tipo_envio=''"  name="tipo_transporte" class="form-control" :disabled="ver" >
+                <select v-model="form.tipo_transporte" @change="form.tipo_envio=''"  name="tipo_transporte" class="form-control" :disabled="ver" >
                  <option value=""></option>
                   <option v-for="transportes in transportes" :value="transportes.tipo_transporte">{{transportes.tipo_transporte}}</option>
                 </select>
-
               </div>
             </div>
             <div class="col-md-6" >
               <label class="links">Tipo de envío</label>
               <div class="form-group">
-                <select v-model="item.tipo_envio"  name="tipo_envio" class="form-control" :disabled="ver" >
+                <select v-model="form.tipo_envio"  name="tipo_envio" class="form-control" :disabled="ver" >
                   <option value=""></option>
-                  <option v-for="tiposenvios in tiposenvios" v-show="tiposenvios.tipo_transporte===item.tipo_transporte" :value="tiposenvios.nombre_tiposenvios">{{tiposenvios.nombre_tiposenvios}}</option>
+                  <option v-for="tiposenvios in tiposenvios" v-show="tiposenvios.tipo_transporte===form.tipo_transporte" :value="tiposenvios.nombre_tiposenvios">{{tiposenvios.nombre_tiposenvios}}</option>
                 </select>
-
               </div>
             </div>
               <div class="col-sm-12">
 
                   <label class="links">Trazabilidad</label>
-                  <input list="tarifas" v-model="item.id_tarifa" @change="tari()"  value="" class="form-control form-control-lg" placeholder="Escriba una ruta">
+                  <input list="tarifas" v-model="form.id_tarifa" @change="tari()"  value="" class="form-control form-control-lg" placeholder="Escriba una ruta">
                     <datalist id="tarifas">
-                        <option v-for="tarifas in tarifas" v-if="tarifas.tipo_envio===item.tipo_envio && tarifas.tipo_transporte===item.tipo_transporte"  :value="tarifas.id">De {{tarifas.ciudad_origen}} a {{tarifas.ciudad_destino}} Tiempo:{{tarifas.tiempos}}</option>
+                        <option v-for="tarifas in tarifas" v-if="tarifas.tipo_envio===form.tipo_envio && tarifas.tipo_transporte===form.tipo_transporte"  :value="tarifas.id">De {{tarifas.ciudad_origen}} a {{tarifas.ciudad_destino}} Tiempo:{{tarifas.tiempos}}</option>
                     </datalist>
 
               </div>
             <div class="col-sm-3">
                <div class="form-group links">
                  <label>Depto. origen</label>
-                <select v-model="item.id_tarifa" @change="tari()"  name="ciudad_destino" class="form-control" disabled >
+                <select v-model="form.id_tarifa" @change="tari()"  name="ciudad_destino" class="form-control" disabled >
                   <option v-for="tarifas in tarifas"  :value="tarifas.id">{{tarifas.departamento_origen}}</option>
                 </select>
 
@@ -68,34 +65,31 @@
            <div class="col-sm-3">
               <div class="form-group links">
                 <label>Ciudad origen</label>
-               <select v-model="item.id_tarifa" @change="tari()" name="ciudad_destino" class="form-control" disabled >
+               <select v-model="form.id_tarifa" @change="tari()" name="ciudad_destino" class="form-control" disabled >
                  <option v-for="tarifas in tarifas"  :value="tarifas.id">{{tarifas.ciudad_origen}}</option>
                </select>
-
              </div>
           </div>
           <div class="col-sm-3">
              <div class="form-group links">
                <label>Depto. destino</label>
-              <select v-model="item.id_tarifa" @change="tari()"  name="ciudad_destino" class="form-control" disabled >
+              <select v-model="form.id_tarifa" @change="tari()"  name="ciudad_destino" class="form-control" disabled >
                 <option v-for="tarifas in tarifas"  :value="tarifas.id">{{tarifas.departamento_destino}}</option>
               </select>
-
             </div>
          </div>
          <div class="col-sm-3">
             <div class="form-group links">
               <label>Ciudad destino</label>
-             <select v-model="item.id_tarifa" @change="tari()" name="ciudad_destino" class="form-control" disabled >
+             <select v-model="form.id_tarifa" @change="tari()" name="ciudad_destino" class="form-control" disabled >
                <option v-for="tarifas in tarifas" :value="tarifas.id">{{tarifas.ciudad_destino}}</option>
              </select>
-
            </div>
         </div>
         <div class="col-sm-4">
            <div class="form-group links">
              <label>itinerarios</label>
-            <select v-model="item.id_tarifa" @change="tari()"  name="ciudad_destino" class="form-control" disabled >
+            <select v-model="form.id_tarifa" @change="tari()"  name="ciudad_destino" class="form-control" disabled >
               <option v-for="tarifas in tarifas"  :value="tarifas.id">{{tarifas.itinerarios}}</option>
             </select>
 
@@ -104,7 +98,7 @@
        <div class="col-sm-4">
           <div class="form-group links">
             <label>Tiempos de entrega</label>
-           <select v-model="item.id_tarifa" @change="tari()"  name="ciudad_destino" class="form-control" disabled >
+           <select v-model="form.id_tarifa" @change="tari()"  name="ciudad_destino" class="form-control" disabled >
              <option v-for="tarifas in tarifas"  :value="tarifas.id">{{tarifas.tiempos}}</option>
            </select>
          </div>
@@ -112,10 +106,9 @@
       <div class="col-sm-4">
          <div class="form-group links">
            <label>Tarifa</label>
-          <select v-model="item.id_tarifa" @change="tari()"  name="ciudad_destino" class="form-control" disabled >
+          <select v-model="form.id_tarifa" @change="tari()"  name="ciudad_destino" class="form-control" disabled >
             <option v-for="tarifas in tarifas"  :value="tarifas.id">{{tarifas.precio}}</option>
           </select>
-
         </div>
      </div>
      <div class="col-sm-4">
@@ -127,7 +120,6 @@
           <option value="Centímetros">Centímetros</option>
           <option value="Porcientos">Porcientos</option>
          </select>
-
        </div>
      </div>
      <div class="col-sm-4">
@@ -265,7 +257,7 @@
          <div class="col-5">
         <label class="links">KILOS BASC</label>
            <div class="input-group">
-             <input @change="kilos();porcientos();" v-model="item.kilosbascula" type="number" class="form-control" placeholder="">
+             <input @change="kilos();" v-model="item.kilosbascula" type="number" class="form-control" placeholder="">
            </div>
          </div>
          <div class="col-6">
@@ -300,7 +292,7 @@
     <div class="col-3">
       <div class="form-group">
        <label for="inputlg">VALOR TARIFA</label>
-       <input v-model="item.precio" class="form-control input-lg" id="inputlg" type="text" disabled>
+       <input v-model="form.precio" class="form-control input-lg" id="inputlg" type="text" disabled>
      </div>
     </div>
     <div class="col-1" style="padding-top:38px;">
@@ -314,19 +306,17 @@
     </div>
   </div>
   <button
-  v-if="item.id_tarifa && item.escala && item.formula && item.variable && !corregirMode && item.kilostotal && item.volumen  && item.precioItem || item.id_tarifa && item.escala==='Porcientos' && item.formula && item.variable && !corregirMode && item.kilostotal && item.precioItem"
+  v-if="form.id_tarifa && item.escala && item.formula && item.variable && !corregirMode && item.kilostotal && item.volumen  && item.precioItem || form.id_tarifa && item.escala==='Porcientos' && item.formula && item.variable && !corregirMode && item.kilostotal && item.precioItem"
    type="button" class="btn btn-success btn-lg btn-block my-2" @click="pushearItem()">Agregar <span class="mbri-save"></span></button>
    <button
-   v-if="item.id_tarifa  && item.escala && item.formula && item.variable && corregirMode && item.precioItem  || item.id_tarifa && item.escala==='Porcientos' && item.formula && item.variable && !corregirMode && item.kilostotal && item.precioItem && corregirMode"
+   v-if="form.id_tarifa  && item.escala && item.formula && item.variable && corregirMode && item.precioItem  || form.id_tarifa && item.escala==='Porcientos' && item.formula && item.variable && !corregirMode && item.kilostotal && item.precioItem && corregirMode"
     type="button" class="btn btn-success btn-lg btn-block my-2" @click="editarItem()">Editar <span class="mbri-save"></span></button>
-    <table class="table table-striped table-bordered table condensed table-hover table-responsive  && kilostotal && volumen">
+    <table class="table table-striped table-bordered table condensed table-hover  && kilostotal && volumen" WIDTH="100%">
       <thead>
         <tr>
-          <th>ORIGEN</th>
-          <th>DESTINO</th>
-          <th>TRANSPORTE</th>
-          <th style="white-space: nowrap;">TIPO DE ENVÍO</th>
+
           <th style="white-space: nowrap;">TIPO DE CARGA</th>
+          <th style="white-space: nowrap;">CANTIDAD</th>
           <th style="white-space: nowrap;">TOTAL VOLUMEN</th>
           <th style="white-space: nowrap;">TOTAL PESO</th>
           <th style="white-space: nowrap;">PRECIO</th>
@@ -335,11 +325,8 @@
       </thead>
       <tbody>
         <tr v-for="(elemento ,index) in form.items">
-          <td style="white-space: nowrap;">{{elemento.departamento_origen}}-{{elemento.ciudad_origen}}</td>
-          <td style="white-space: nowrap;">{{elemento.departamento_destino}}-{{elemento.ciudad_destino}}</td>
-          <td style="white-space: nowrap;">{{elemento.tipo_transporte}}</td>
-          <td style="white-space: nowrap;">{{elemento.tipo_envio}}</td>
           <td style="white-space: nowrap;">{{elemento.tipocarga}}</td>
+          <td style="white-space: nowrap;">{{elemento.cantidad}}</td>
           <td style="white-space: nowrap;">{{elemento.volumen}}</td>
           <td style="white-space: nowrap;">{{elemento.kilostotal}}</td>
           <td style="white-space: nowrap;">{{elemento.precioItem}} $</td>
@@ -428,19 +415,6 @@
          totalKilos:'',
          totalPrecios:'',
          item:{
-           'departamento_destino':'',
-           'ciudad_destino':'',
-           'departamento_origen':'',
-           'ciudad_origen':'',
-           'cedula_cliente':'',
-           'tipo_transporte':'',
-           'tipo_envio':'',
-           'precio':'',
-           'tipo_carga':'',
-           'itinerarios':'',
-           'tiempos':'',
-           'segurocarga':'',
-           'costeguia':'',
            'escala':'',
            'formula':'',
            'variable':'',
@@ -456,7 +430,21 @@
          },
          form:{
              'items':[],
-
+             'tipo_transporte':'',
+             'tipo_envio':'',
+             'departamento_origen':'',
+             'departamento_destino':'',
+             'ciudad_origen':'',
+             'ciudad_destino':'',
+             'tipo_carga':'',
+             'itinerarios':'',
+             'tiempos':'',
+             'precio':'',
+             'escala':'',
+             'formula':'',
+             'variable':'',
+             'factor':'',
+             'id_tarifa':''
          },
 
        },
@@ -688,20 +676,21 @@
          kilos(){
            this.item.kilostotal=0;
            this.item.kilostotal=parseFloat(this.item.kilosbascula) * parseFloat(this.item.cantidad) ;
+           this.selector();
          },
           metros(){
             this.item.volumen=0;
             this.item.precioItem=0;
             this.item.volumen=parseFloat(this.item.an) * parseFloat(this.item.la) * parseFloat(this.item.al) * parseFloat(this.item.variable) * parseFloat(this.item.cantidad);
             if (this.item.escala==='Porcientos') {
-                this.item.precioItem=this.item.kilostotal*parseFloat(this.item.precio);
+                this.item.precioItem=this.item.kilostotal*parseFloat(this.form.precio);
             }else{
               if (this.item.volumen>this.item.kilostotal) {
-                this.item.precioItem=this.item.volumen*this.item.precio;
+                this.item.precioItem=this.item.volumen*this.form.precio;
               }else if(this.item.volumen<this.item.kilostotal){
-                this.item.precioItem=this.item.kilostotal*this.item.precio;
+                this.item.precioItem=this.item.kilostotal*this.form.precio;
               }else if(this.item.volumen==this.item.kilostotal){
-                this.item.precioItem=this.item.kilostotal*this.item.precio;
+                this.item.precioItem=this.item.kilostotal*this.form.precio;
               }
             }
 
@@ -711,14 +700,14 @@
             this.item.precioItem=0;
             this.item.volumen=((parseFloat(this.item.an) * parseFloat(this.item.la) * parseFloat(this.item.al) )/ parseFloat(this.item.variable) )* parseFloat(this.item.cantidad);
             if (this.item.escala==='Porcientos') {
-                this.item.precioItem=this.item.kilostotal*parseFloat(this.item.precio);
+                this.item.precioItem=this.item.kilostotal*parseFloat(this.form.precio);
             }else{
               if (this.item.volumen>this.item.kilostotal) {
-                this.item.precioItem=this.item.volumen*this.item.precio;
+                this.item.precioItem=this.item.volumen*this.form.precio;
               }else if(this.item.volumen<this.item.kilostotal){
-                this.item.precioItem=this.item.kilostotal*this.item.precio;
+                this.item.precioItem=this.item.kilostotal*this.form.precio;
               }else if(this.item.volumen==this.item.kilostotal){
-                this.item.precioItem=this.item.kilostotal*this.item.precio;
+                this.item.precioItem=this.item.kilostotal*this.form.precio;
               }
             }
           },
@@ -731,14 +720,14 @@
             this.item.an="";
             this.item.kilostotal=(parseFloat(this.item.kilosbascula)+(parseFloat(this.item.kilosbascula)*((parseFloat(this.item.variable) )/ 100)))*parseInt(this.item.cantidad);
             if (this.item.escala==='Porcientos') {
-                this.item.precioItem=this.item.kilostotal*parseFloat(this.item.precio);
+                this.item.precioItem=this.item.kilostotal*parseFloat(this.form.precio);
             }else{
               if (this.item.volumen>this.item.kilostotal) {
-                this.item.precioItem=this.item.volumen*this.item.precio;
+                this.item.precioItem=this.item.volumen*this.form.precio;
               }else if(this.item.volumen<this.item.kilostotal){
-                this.item.precioItem=this.item.kilostotal*this.item.precio;
+                this.item.precioItem=this.item.kilostotal*this.form.precio;
               }else if(this.item.volumen==this.item.kilostotal){
-                this.item.precioItem=this.item.kilostotal*this.item.precio;
+                this.item.precioItem=this.item.kilostotal*this.form.precio;
               }
             }
           },
@@ -868,15 +857,15 @@
 
                  tari(){
                    for (var i = 0; i < this.tarifas.length; i++) {
-                     if (this.tarifas[i].id===this.item.id_tarifa) {
-                       this.item.departamento_origen=this.tarifas[i].departamento_origen;
-                       this.item.departamento_destino=this.tarifas[i].departamento_destino;
-                       this.item.ciudad_origen=this.tarifas[i].ciudad_origen;
-                        this.item.ciudad_destino=this.tarifas[i].ciudad_destino;
-                        this.item.tipo_carga=this.tarifas[i].tipo_carga;
-                        this.item.itinerarios=this.tarifas[i].itinerarios;
-                        this.item.tiempos=this.tarifas[i].tiempos;
-                        this.item.precio=this.tarifas[i].precio;
+                     if (this.tarifas[i].id===this.form.id_tarifa) {
+                       this.form.departamento_origen=this.tarifas[i].departamento_origen;
+                       this.form.departamento_destino=this.tarifas[i].departamento_destino;
+                       this.form.ciudad_origen=this.tarifas[i].ciudad_origen;
+                        this.form.ciudad_destino=this.tarifas[i].ciudad_destino;
+                        this.form.tipo_carga=this.tarifas[i].tipo_carga;
+                        this.form.itinerarios=this.tarifas[i].itinerarios;
+                        this.form.tiempos=this.tarifas[i].tiempos;
+                        this.form.precio=this.tarifas[i].precio;
                      }
                    }
                  },
