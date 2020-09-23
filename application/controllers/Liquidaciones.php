@@ -23,6 +23,12 @@ class Liquidaciones extends MY_Controller {
 				  echo json_encode(['liquidaciones' => $data['liquidaciones']]);
 
 				}
+				public function getLiquidacion($id=0) {
+						$id = $this->input->post('id');
+						$data['liquidaciones'] = $this->Liquidaciones->getLiquidacion($id);
+						header('Content-Type: application/json');
+						echo json_encode(['liquidaciones' => $data['liquidaciones']]);
+					}
 				public function getCotizaciones($id=0) {
 						$cedula = $this->input->post('cedula');
 					  $data['cotizaciones'] = $this->Liquidaciones->getCotizaciones($cedula);

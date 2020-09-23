@@ -59,6 +59,7 @@
                             <a class="dropdown-item" href="#"@click="setear(index);ver=true">Ver</a>
                             <a class="dropdown-item" href="#"@click="setear(index);editMode=false">Duplicar</a>
                             <a class="dropdown-item" v-if="liquidaciones.estado==='Creado'" href="#" @click="ged(index)">Generar</a>
+                            <a class="dropdown-item" v-if="liquidaciones.estado==='Generado'" href="#" @click="crearGuia(index)">Crear Guía</a>
                             <a class="dropdown-item" v-if="liquidaciones.estado==='Creado'" href="#" @click="setear(index);ver=false">Editar</a>
                             <a class="dropdown-item" v-if="liquidaciones.estado==='Creado'" href="#" @click="eliminar(index)">Eliminar</a>
                           </div>
@@ -85,10 +86,19 @@
                 </button>
               </div>
               <div class="modal-body">
+                <div class="row p-1 ">
+                  <div class="col-md-4">
+                    <label class="links">Clientes</label>
+                    <input list="encodings" v-model="form.cedula" @change="loadLiquidaciones();loadCotizaciones()"  value="" class="form-control form-control-lg" placeholder="Escriba una cedula" :disabled="ver">
+                      <datalist id="encodings">
+                          <option v-for="clientes in clientes"  v-if="clientes.cliente_especial==='No'" :value="clientes.cedula_cliente">{{clientes.nombre_cliente}}</option>
+                      </datalist>
+                  </div>
+                </div>
                 <h2 class="links text-center"> PLANILLA</h2>
                 <button type="button" class="btn btn-block btn-lg btn-success"><span class="mbri-bookmark"></span>PLN-{{id}}</button>
                 <button type="button" class="btn btn-block btn-lg btn-primary" @click="generar()">Generar <span class="mbri-share"></span></button>
-                <button type="button" class="btn btn-block btn-lg btn-secondary">Generar y Crear Guía <span class="mbri-share"></span></button>
+                <button type="button" class="btn btn-block btn-lg btn-secondary" @click="generarandGuia()">Generar y Crear Guía <span class="mbri-share"></span></button>
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
@@ -846,6 +856,32 @@
                  }
                })
              },
+             crearGuia(index){
+               Swal({
+                 title: '¿Estás seguro?',
+                 text: "",
+                 type: 'warning',
+                 showCancelButton: true,
+                 confirmButtonText: '¡Si! ¡generar Guia!',
+                 cancelButtonText: '¡No!',
+                 reverseButtons: true
+               }).then((result) => {
+                 if (result.value) {
+                   localStorage.setItem('planilla', this.liquidaciones[index].id);
+                   window.setTimeout(function () {
+                         location.href = "<?=base_url();?>Guias";
+                     }, 100);
+                 } else if (
+                   result.dismiss === Swal.DismissReason.cancel
+                 ) {
+                   Swal(
+                     'Cancelado',
+                     'No fue enviado.',
+                     'success'
+                   )
+                 }
+               })
+             },
              ged(index){
                   this.archivo.nombre_archivo='PLN-'+this.liquidaciones[index].id;
                   this.archivo.url='Liquidaciones/Liquidaciones_to_pdf/'+this.liquidaciones[index].id;
@@ -982,6 +1018,64 @@
                        ).then(response => {
                              this.loadLiquidaciones();
                                $('#mplanilla').modal('hide');
+                       })
+                     } else {
+                       Swal(
+                         'Error',
+                         'Ha ocurrido un error.',
+                         'warning'
+                       ).then(response => {
+                         this.loadLiquidaciones();
+
+                       })
+                     }
+                   })
+               } else if (
+                 result.dismiss === Swal.DismissReason.cancel
+               ) {
+                 Swal(
+                   'Cancelado',
+                   'No fue enviado.',
+                   'success'
+                 )
+               }
+             })
+           },
+           generarandGuia(){
+             for (var i = 0; i < this.liquidaciones.length; i++) {
+               if (this.liquidaciones[i].id==this.id) {
+                this.archivo.nombre_archivo='PLN-'+this.liquidaciones[i].id;
+                this.archivo.url='Liquidaciones/Liquidaciones_to_pdf/'+this.liquidaciones[i].id;
+                this.archivo.usuario_responsable=this.liquidaciones[i].user_id;
+                this.archivo.numero_doc=this.id;
+               }
+             }
+             Swal({
+               title: '¿Estás seguro?',
+               text: "",
+               type: 'warning',
+               showCancelButton: true,
+               confirmButtonText: '¡Si! ¡generar y crear guía!',
+               cancelButtonText: '¡No!',
+               reverseButtons: true
+             }).then((result) => {
+               if (result.value) {
+                 let data = new FormData();
+                 data.append('service_form',JSON.stringify(this.archivo));
+                   axios.post('index.php/liquidaciones/generar',data)
+                   .then(response => {
+                     if(response) {
+                       Swal(
+                         '¡Enviado !',
+                         'Ha sido generado con exito .',
+                         'success'
+                       ).then(response => {
+                             this.loadLiquidaciones();
+                               $('#mplanilla').modal('hide');
+                               localStorage.setItem('planilla', this.id);
+                               window.setTimeout(function () {
+                                     location.href = "<?=base_url();?>Guias";
+                                 }, 100);
                        })
                      } else {
                        Swal(
@@ -1375,7 +1469,6 @@
                    await  axios.post('index.php/Liquidaciones/getLiquidaciones/',data)
                    .then(({data: {liquidaciones}}) => {
                          this.liquidaciones = liquidaciones;
-
                  });
                   $("#example1").DataTable();
                },

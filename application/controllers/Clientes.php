@@ -32,7 +32,13 @@ class Clientes extends MY_Controller {
 				  echo json_encode(['clientes' => $data['clientes']]);
 
 				}
+				public function getclientesN($id=0) {
 
+					  $data['clientes'] = $this->clientes->getclientesN();
+					  header('Content-Type: application/json');
+					  echo json_encode(['clientes' => $data['clientes']]);
+
+					}
 			public function insertar() {
 				if( ! $this->verify_min_level(9)){
 					redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));

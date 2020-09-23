@@ -87,6 +87,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             ->get()
             ->result();
           }
+          public function getLiquidacion($id) {
+              return $this->db
+              ->select('l.*,f.dias, f.forma, f.descripcion, u.username,u.nombre,u.apellido,u.cargo,cl.correo_cliente, cl.nombre_empresa, cl.telefono_cliente, cl.tipo_cliente, cl.nombre_cliente, cl.telefono_cliente, cl.ciudad')
+              ->from('liquidaciones l')
+              ->join('users u', 'l.user_id = u.user_id')
+              ->join('clientes cl', 'l.cedula = cl.cedula_cliente')
+              ->join('forma_pago f', 'cl.forma_pago = f.id')
+              ->where('l.id', $id)
+              ->get()
+              ->result();
+            }
           public function deleteLiquidaciones($id) {
             $this->db->where('id', $id);
             $this->db->delete('Liquidaciones');

@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-    class Cargos_model extends CI_Model {
+    class Guias_model extends CI_Model {
         public function insertar($data){
             $this->db->insert('cargos', array(
                 'nombre_cargo'     => $data['nombre_cargo'],

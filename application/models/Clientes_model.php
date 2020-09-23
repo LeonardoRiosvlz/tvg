@@ -148,6 +148,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             ->get()
             ->result();
           }
+
+          public function getclientesN() {
+              return $this->db
+              ->select('c.*,u.nombre,u.apellido, s.nombre_sucursal, f.forma')
+              ->from('clientes C')
+              ->where('cliente_especial','No')
+              ->join('users u', 'c.autorizador = u.user_id')
+              ->join('sucursales s', 'c.sucursal = s.id')
+              ->join('forma_pago f', 'c.forma_pago = f.id')
+              ->get()
+              ->result();
+            }
           public function get_clientes() {
               return $this->db
               ->select('*')
