@@ -23,6 +23,7 @@ $config['cotizaciones_table']           = 'cotizaciones';
 $config['cupon_table']                  = 'cupon';
 $config['pedido_table']                 = 'pedido';
 $config['archivos_table']               = 'archivos';
+$config['liquidaciones_table']          = 'liquidaciones';
 // LOGIN ERROR RELATED TABLES
 $config['errors_table']                 = 'login_errors';
 $config['IP_hold_table']                = 'ips_on_hold';

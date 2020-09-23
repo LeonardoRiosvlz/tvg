@@ -1,6 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
- 
+
     class Archivos_model extends My_Model {
         public function insertar_cotizacion($data){
             $this->db->insert('archivos', array(
@@ -11,6 +11,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 'numero_doc'     => $data['id'],
                 'codigo_hex'     => $data['codigo'],
                 'url'     => $data['url_pdf'],
+                'usuario_responsable'     => $data['usuario_responsable'],
+            ));
+            return $this->db->error();
+        }
+        public function insertar_planilla($data){
+            $this->db->insert('archivos', array(
+                'id'     => $data['id'],
+                'nombre_archivo'     => $data['nombre_archivo'],
+                'tipo_archivo'     => $data['tipo_archivo'],
+                'tipo'     => $data['tipo'],
+                'numero_doc'     => $data['numero_doc'],
+                'url'     => $data['url'],
                 'usuario_responsable'     => $data['usuario_responsable'],
             ));
             return $this->db->error();

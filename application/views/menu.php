@@ -87,6 +87,8 @@
                       <a class="dropdown-item links" href="<?=base_url()?>satelites"><i class="fa fa-podcast" aria-hidden="true"></i> Satélites</a>
                       <a class="dropdown-item links" href="<?=base_url()?>Cotizaciones"><i class="fa fa-calculator" aria-hidden="true"></i> Cotizaciones</a>
                       <a class="dropdown-item links" href="<?=base_url()?>Cotizador"><i class="fa fa-calculator" aria-hidden="true"></i> Cotizador</a>
+                      <a class="dropdown-item links" href="<?=base_url()?>Liquidaciones"><i class="fa fa-file-powerpoint-o" aria-hidden="true"></i> Planillas De Liquidación</a>
+                      <a class="dropdown-item links" href="<?=base_url()?>Guias"><i class="fa fa-road" aria-hidden="true"></i> Guías De Carga</a>
                     </div>
                   </div>
                   <div class="dropdown">
