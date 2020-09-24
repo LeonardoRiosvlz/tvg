@@ -306,19 +306,25 @@
                <input v-model="form.precio" type="number"  class="form-control" placeholder="" disabled>
              </div>
            </div>
-           <div class="col-6">
+           <div class="col-4">
              <label class="links">Coste de Guía</label>
              <div class="input-group">
                <input v-model="form.costeguia" type="number"  class="form-control" placeholder="" disabled>
              </div>
            </div>
-           <div class="col-6">
+           <div class="col-4">
              <label class="links">Seguro de Carga</label>
              <div class="input-group">
                <select  name="escala" class="form-control"  disabled>
                  <option value="">{{form.segurocarga}} %</option>
                </select>
              </div>
+           </div>
+           <div class="col-4">
+             <div class="form-group">
+              <label for="inputlg">Identificación de  la carga</label>
+              <input v-model="form.idcarga" class="form-control" id="inputlg" type="text">
+            </div>
            </div>
                  <div class="col-sm-4">
                    <label class="links">Medida</label>
@@ -339,7 +345,6 @@
                        <option value=""></option>
                        <option v-for="factores in factores" v-if="factores.escala===form.escala"  :value="factores.id">{{factores.formula}} </option>
                      </select>
-
                    </div>
                 </div>
                  <div class="col-4 py-2">
@@ -824,13 +829,10 @@
 
                      if(response.data.status == 200){
                        this.id=response.data.id;
-                       window.setTimeout(function () {
-                          $('#mplanilla').modal('show');
-                        }, 50);
                        Swal.fire({
                          type: 'success',
                          title: 'Exito!',
-                         text: 'Agregado con exito'
+                         text: 'Editado con exito'
                        })
                        $('#modal-lg').modal('hide');
                        this.form.items=[];
@@ -1147,6 +1149,7 @@
              this.form.totalSeguro="",
              this.form.costeguia="",
              this.form.segurocarga="",
+             this.form.idcarga="",
                this.$validator.reset();
 
                this.editMode=false;
@@ -1426,6 +1429,7 @@
                    this.form.totalVolumen=this.liquidaciones[index].totalVolumen,
                    this.form.totalSeguro=this.liquidaciones[index].totalSeguro,
                    this.form.costeguia=this.liquidaciones[index].costeguia,
+                   this.form.idcarga=this.liquidaciones[index].idcarga,
                    this.form.segurocarga=this.liquidaciones[index].segurocarga,
                    $('#modal-lg').modal('show');
                    this.editMode=true;

@@ -99,7 +99,6 @@
               <a v-if="exceltres && cargas.length>0 " :href="'<?=base_url();?>ClientesEspeciales/excelexport_cedula_tiempo/'+form.cedula+'/'+desde+'/'+hasta" type="button"  class="btn btn-block btn-primary btn-sm links" >Exportar Excel <span class="mbri-save"></span></a>
               <a v-if="excelcuatro && cargas.length>0 " :href="'<?=base_url();?>ClientesEspeciales/excelexport_cedulant/'+numero+'/'+desde+'/'+hasta" type="button"  class="btn btn-block btn-primary btn-sm links" >Exportar Excel <span class="mbri-save"></span></a>
               <a v-if="excelcinco && cargas.length>0 " :href="'<?=base_url();?>ClientesEspeciales/excelexport_anexo/'+anexo" type="button"  class="btn btn-block btn-primary btn-sm links" >Exportar Excel <span class="mbri-save"></span></a>
-
             </th>
           </div>
         </div>

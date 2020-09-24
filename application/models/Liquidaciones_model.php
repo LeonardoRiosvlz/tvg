@@ -25,6 +25,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 'variable'                 => $data['variable'],
                 'factor'                   => $data['factor'],
                 'id_tarifa'                => $data['id_tarifa'],
+                'idcarga'                => $data['idcarga'],
                 'totalVolumen'             => $data['totalVolumen'],
                 'totalKilos'               => $data['totalKilos'],
                 'totalPrecios'             => $data['totalPrecios'],
@@ -54,6 +55,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
               'precio'                   => $data['precio'],
               'escala'                   => $data['escala'],
               'formula'                  => $data['formula'],
+              'idcarga'                => $data['idcarga'],
               'segurocarga'                  => $data['segurocarga'],
               'variable'                 => $data['variable'],
               'factor'                   => $data['factor'],
@@ -89,7 +91,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
           }
           public function getLiquidacion($id) {
               return $this->db
-              ->select('l.*,f.dias, f.forma, f.descripcion, u.username,u.nombre,u.apellido,u.cargo,cl.correo_cliente, cl.nombre_empresa, cl.telefono_cliente, cl.tipo_cliente, cl.nombre_cliente, cl.telefono_cliente, cl.ciudad')
+              ->select('l.*,f.dias, f.forma, f.descripcion, u.username,u.nombre,u.apellido,u.cargo,cl.forma_pago ,cl.correo_cliente, cl.nombre_empresa, cl.telefono_cliente, cl.tipo_cliente, cl.nombre_cliente, cl.telefono_cliente, cl.ciudad')
               ->from('liquidaciones l')
               ->join('users u', 'l.user_id = u.user_id')
               ->join('clientes cl', 'l.cedula = cl.cedula_cliente')
@@ -318,12 +320,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                         <td colspan=4 style="border-style: none;"></td>
                                                         <td colspan="2" style="white-space: nowrap;">SEGURO SOBRE VALOR DECLARADO</td>
                                                                 <td style="white-space: nowrap;">'.$row->segurocarga.' %</td>
-                                                                <td>$ '.$row->totalSeguro.'</td></tr>';
+                                                                <td></td></tr>';
                                                    $output .= '  <tr border="0">
                                                        <td colspan=4 style=" border-style: none;"></td>
                                                        <td colspan="3" style="white-space: nowrap; background:yellow;">TOTAL</td>
 
-                                                               <td>$ '.floatval($row->totalSeguro + $row->totalPrecios).'</td></tr>';
+                                                               <td>$ '.$row->totalPrecios.'</td></tr>';
                                                  }
                                         $output .= '</table>';
 
