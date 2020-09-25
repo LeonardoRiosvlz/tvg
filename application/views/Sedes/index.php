@@ -17,7 +17,7 @@
           <div class="col-6">
             <input list="encodings" v-model="form.id_cliente" value="" class="form-control form-control-lg" placeholder="Escriba una cedula">
               <datalist id="encodings">
-                  <option v-for="clientes in clientes" v-if="clientes.cliente_especial==='Si'" :value="clientes.cedula_cliente">{{clientes.nombre_cliente}}</option>
+                  <option v-for="clientes in clientes"  :value="clientes.cedula_cliente">{{clientes.nombre_cliente}}</option>
               </datalist>
           </div>
           <div class="col-3">

@@ -28,6 +28,7 @@ class Actas_entrega extends MY_Controller {
 					redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
 				}
 				$data = json_decode($this->input->post('service_form'),true);
+				$data['id']    = $this->actas_entrega->get_unused_id();
 				$result = $this->actas_entrega->insertar($data);
 					if($result['code'] == 0){
 						echo json_encode(['status' => '200', 'message' => 'Agregado exitosamente']);
@@ -68,4 +69,14 @@ class Actas_entrega extends MY_Controller {
 					  header('Content-Type: application/json');
 					  echo json_encode(['actas_entrega' => $data['actas_entrega']]);
 		 }
+		 public function to_pdf($id){
+			 $this->load->library('Pdf');
+				$hoy=date("d/m/y");
+				$html_content = $this->actas_entrega->fetch_details($id);
+				//$this->pdf->set_paper('letter', 'landscape');
+				$this->pdf->loadHtml($html_content);
+				$this->pdf->render();
+				$this->pdf->stream("ADE-".$id.".pdf", array("Attachment"=>0));
+
+		}
 }

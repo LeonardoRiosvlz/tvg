@@ -60,6 +60,7 @@
       <!-- End -->
     </div>
   </div>
+
         <!-- Modal agregar   -->
         <div class="modal fade" id="modal-lg" data-backdrop="static" data-keyboard="false">
          <div class="modal-dialog modal-lg">
@@ -76,9 +77,9 @@
                        <form role="form" id="form" @submit.prevent="validateBeforeSubmit">
                          <div class="row">
                            <div class="col-6">
-                             <input list="encodings" v-model="form.id_cliente" value="" class="form-control form-control-lg" placeholder="Escriba una cedula">
+                             <input list="encodings" v-model="form.id_cliente" v-validate="'required'" value="" class="form-control form-control-lg" placeholder="Escriba una cedula">
                                <datalist id="encodings">
-                                   <option v-for="clientes in clientes" v-if="clientes.cliente_especial==='Si'" :value="clientes.cedula_cliente">{{clientes.nombre_cliente}}</option>
+                                   <option v-for="clientes in clientes" :value="clientes.cedula_cliente">{{clientes.nombre_cliente}}</option>
                                </datalist>
                            </div>
                            <div class="col-3">
@@ -89,6 +90,22 @@
                              No se encontro ninguna coincidencia :(
                            </div>
                          <div class="row">
+                           <div class="col-md-6">
+                             <!-- textarea -->
+                             <div class="form-group">
+                               <label class="links">Código</label>
+                                <input type="text" v-model="form.codigo" v-validate="'required'" name="codigo" class="form-control" id="" :disabled="ver">
+                               <p class="text-danger my-1" v-if="(errors.first('codigo'))" >  Este dato es requerido  </p>
+                             </div>
+                           </div>
+                           <div class="col-md-6">
+                             <!-- textarea -->
+                             <div class="form-group">
+                               <label class="links">Version</label>
+                                <input type="text" v-model="form.version" v-validate="'required'" name="version" class="form-control" id="" :disabled="ver">
+                               <p class="text-danger my-1" v-if="(errors.first('version'))" >  Este dato es requerido  </p>
+                             </div>
+                           </div>
                              <div class="col-md-4">
                                <!-- textarea -->
                                <div class="form-group">
@@ -124,68 +141,134 @@
                              <div class="col-4">
                                <div class="form-group">
                                   <label   class="links">Sedes</label>
-                                  <select v-model="form.id_sede" v-validate="'required'" name="id_sede" class="form-control" id="sel1">
+                                  <select v-model="form.id_sede" v-validate="'required'" @change="sedeset()" name="id_sede" class="form-control" id="sel1">
                                     <option></option>
-                                    <option v-for="sedes in sedes" value="sedes.id">{{sedes.nombre_sede}} </option>
+                                    <option v-for="sedes in sedes" :value="sedes.id">{{sedes.nombre_sede}} </option>
                                   </select>
                                   <p class="text-danger my-1" v-if="(errors.first('id_sede'))" >  Este dato es requerido  </p>
                                 </div>
                              </div>
-                             <div class="col-sm-6">
-                               <label class="links">Departamento destino</label>
+                             <div class="col-4">
+                               <!-- textarea -->
                                <div class="form-group">
-                                 <select v-model="form.dep" @change="depp()" class="form-control" :disabled="ver" >
+                                 <label class="links">Dirección</label>
+                                  <input type="text" v-model="form.direccion_sede" v-validate="'required'" name="direccion_sede" class="form-control" id="" :disabled="ver"></input>
+                                 <p class="text-danger my-1" v-if="(errors.first('direccion_sede'))" >  Este dato es requerido  </p>
+                               </div>
+                             </div>
+                             <div class="col-sm-3">
+                               <label class="links">Departamento origen</label>
+                               <div class="form-group">
+                                 <select v-model="form.dep" @change="dep()" class="form-control" :disabled="ver" >
                                    <option value=""></option>
                                    <option v-for="colombia in colombia" :value="colombia.id">{{colombia.departamento}}</option>
                                  </select>
                                </div>
                              </div>
-                            <div class="col-sm-6">
+                            <div class="col-sm-3">
                                <div class="form-group links">
-                                 <label>Ciudad destino</label>
-                                <select v-model="form.ciudad_sede" v-validate="'required'" name="ciudad" class="form-control" :disabled="ver" >
+                                 <label>Ciudad origen</label>
+                                <select v-model="form.ciudad_origen" v-validate="'required'" name="ciudad_origen" class="form-control" :disabled="ver" >
                                     <option value=""></option>
                                     <option v-for="ciudad in colombia[form.dep].ciudades" :value="ciudad">{{ciudad}}</option>
                                 </select>
-                                <p class="text-danger my-1" v-if="(errors.first('ciudad'))" >  Este dato es requerido  </p>
+                                <p class="text-danger my-1" v-if="(errors.first('ciudad_origen'))" >  Este dato es requerido  </p>
+                              </div>
+                           </div>
+                             <div class="col-sm-3">
+                               <label class="links">Departamento destino</label>
+                               <div class="form-group">
+                                 <select v-model="form.depp" @change="depp()" class="form-control" :disabled="ver" >
+                                   <option value=""></option>
+                                   <option v-for="colombia in colombia" :value="colombia.id">{{colombia.departamento}}</option>
+                                 </select>
+                               </div>
+                             </div>
+                            <div class="col-sm-3">
+                               <div class="form-group links">
+                                 <label>Ciudad destino</label>
+                                <select v-model="form.ciudad_destino" v-validate="'required'" name="ciudad_destino" class="form-control" :disabled="ver" >
+                                    <option value=""></option>
+                                    <option v-for="ciudad in colombia[form.depp].ciudades" :value="ciudad">{{ciudad}}</option>
+                                </select>
+                                <p class="text-danger my-1" v-if="(errors.first('ciudad_destino'))" >  Este dato es requerido  </p>
                               </div>
                            </div>
                            <div class="col-sm-4">
                              <!-- textarea -->
                              <div class="form-group">
-                               <label class="links">Contacto</label>
-                                <input type="text" v-model="form.contacto_sede" v-validate="'required'" name="contacto_sede" class="form-control" id="" :disabled="ver">
-                               <p class="text-danger my-1" v-if="(errors.first('contacto_sede'))" >  Este dato es requerido  </p>
+                               <label class="links">Numero de remision</label>
+                                <input type="text" v-model="form.remision" v-validate="'required'" name="remision" class="form-control" id="" :disabled="ver">
+                               <p class="text-danger my-1" v-if="(errors.first('remision'))" >  Este dato es requerido  </p>
                              </div>
+                           </div>
+                           <div class="col-4">
+                            <label class="links">Tipo de carga</label>
+                             <div class="input-group">
+                                <select v-model="item.tipocarga"   name="tipocarga" class="form-control" >
+                                  <option v-for="tipocarga in tipocarga"  :value="tipocarga.nombre_tipocarga">{{tipocarga.nombre_tipocarga}}</option>
+                                </select>
+                                <div class="input-group-append">
+                                  <input v-model="item.cantidad"  type="number" name="cantidad" class="form-control" placeholder="Cantidad">
+                                </div>
+                              </div>
                            </div>
                            <div class="col-sm-4">
                              <!-- textarea -->
                              <div class="form-group">
-                               <label class="links">Teléfono</label>
-                                <input type="text" v-model="form.telefono_sede" v-validate="'required'" name="telefono_sede" class="form-control" id="" :disabled="ver">
-                               <p class="text-danger my-1" v-if="(errors.first('telefono_sede'))" >  Este dato es requerido  </p>
-                             </div>
-                           </div>
-                           <div class="col-sm-4">
-                             <!-- textarea -->
-                             <div class="form-group">
-                               <label class="links">Correo</label>
-                                <input type="text" v-model="form.correo_sede" v-validate="'required|email'" name="correo_sede" class="form-control" id="" :disabled="ver">
-                               <p class="text-danger my-1" v-if="(errors.first('correo_sede'))" >  Este dato es requerido  </p>
-                             </div>
-                           </div>
-                           <div class="col-sm-8">
-                             <!-- textarea -->
-                             <div class="form-group">
-                               <label class="links">Dirección</label>
-                                <textarea type="text" v-model="form.direccion_sede" v-validate="'required'" name="direccion_sede" class="form-control" id="" :disabled="ver"></textarea>
-                               <p class="text-danger my-1" v-if="(errors.first('direccion_sede'))" >  Este dato es requerido  </p>
-                             </div>
-                           </div>
+                               <label class="links">Descripción</label>
+                                <input type="text" v-model="item.descripcion"  name="descripcion" class="form-control" id="" :disabled="ver">
 
+                             </div>
+                           </div>
+                           <button
+                           v-if="item.descripcion && item.tipocarga && !corregirMode"
+                            type="button" class="btn btn-success btn-lg btn-block my-2" @click="pushearItem()">Agregar <span class="mbri-save"></span></button>
+                            <button
+                            v-if="item.descripcion  && item.tipocarga && corregirMode"
+                             type="button" class="btn btn-success btn-lg btn-block my-2" @click="editarItem()">Editar <span class="mbri-save"></span></button>
+                             <table class="table table-striped table-bordered table condensed table-hover  && kilostotal && volumen" WIDTH="100%">
+                               <thead>
+                                 <tr>
+
+                                   <th style="white-space: nowrap;">TIPO DE CARGA</th>
+                                   <th style="white-space: nowrap;">CANTIDAD</th>
+                                   <th style="white-space: nowrap;">DESCRIPCIÓN</th>
+                                   <th style="white-space: nowrap;">ACTION</th>
+                                 </tr>
+                               </thead>
+                               <tbody>
+                                 <tr v-for="(elemento ,index) in form.items">
+                                   <td style="white-space: nowrap;">{{elemento.tipocarga}}</td>
+                                   <td style="white-space: nowrap;">{{elemento.cantidad}}</td>
+                                   <td style="white-space: nowrap;">{{elemento.descripcion}}</td>
+                                   <td v-show="!ver">
+                                     <div class="btn-group">
+                                         <button type="button" class="btn btn-default">Action</button>
+                                         <button type="button" class="btn btn-default dropdown-toggle dropdown-icon" data-toggle="dropdown">
+                                           <span class="sr-only">Toggle Dropdown</span>
+                                           <div class="dropdown-menu" role="menu">
+                                             <a class="dropdown-item" href="#" @click="eliminarItem(index)">Quitar</a>
+                                             <a class="dropdown-item" href="#" @click="corregir(index);corregirMode=true;">Correguir</a>
+                                           </div>
+                                         </button>
+                                     </div>
+                                   </td>
+                                 </tr>
+                               </tbody>
+                             </table>
+
+                           </div>
+                           <div class="row">
+                             <label style="font-size:30px;">Cantidad</label>
+                             <div class="col-2 justify-content-center">
+                                <input v-model="form.unidades" class="form-control form-control-lg" type="text" >
+                             </div>
+                             <pre>{{form}}</pre>
+                           </div>
                             </div>
-                           <button v-if="editMode===false"  class="button is-primary links btn btn-light float-right my-3" type="submit">Guardar</button>
-                           <button v-if="editMode===true && !ver"  class="button is-primary btn btn-light links float-right my-3" type="submit">Editar</button>
+                           <button v-if="editMode===false" @click="validateBeforeSubmit()"  class="button is-primary links btn btn-light float-right my-3" type="submit">Guardar</button>
+                           <button v-if="editMode===true && !ver"  @click="validateBeforeSubmit()"   class="button is-primary btn btn-light links float-right my-3" type="submit">Editar</button>
                        </form>
                      </div>
          <!-- Fin del formulario -->
@@ -204,10 +287,17 @@
      new Vue({
        el: '#app',
        data: {
+         corregirMode:false,
+         item:{
+           'tipocarga':'',
+           'cantidad':'',
+           'descripcion':'',
+         },
          departamento:0,
          ver:false,
          cart:[],
          sedes:[],
+         tipocarga:[],
          clientes:[],
          marca:0,
          verTabla:false,
@@ -1513,7 +1603,10 @@
            ],
           form:{
               'id':'',
+              'items':[],
               'nombre_empresa':'',
+              'codigo':'FBASC-22',
+              'version':'01',
               'direccion_cliente':'',
               'telefono_cliente':'',
               'id_cliente':'',
@@ -1524,10 +1617,113 @@
               'direccion_sede':'',
               'departamento_sede':'',
               'ciudad_sede':'',
+              'ciudad_origen':'',
+              'departamento_origen':'Amazonas',
+              'ciudad_destino':'',
+              'departamento_destino':'Amazonas',
+              'unidades':'',
               'dep':0,
+              'depp':0,
           }
        },
        methods: {
+         editarItem(index){
+           Swal({
+             title: '¿Estás seguro?',
+             type: 'warning',
+             showCancelButton: true,
+             confirmButtonText: '¡Si!',
+             cancelButtonText: '¡No!',
+             reverseButtons: true
+           }).then((result) => {
+             if (result.value) {
+               this.form.items.splice(this.item.llave, 1);
+               this.form.items.push({
+                  cantidad:this.item.cantidad,
+                  tipocarga:this.item.tipocarga,
+                  descripcion:this.item.descripcion,
+                });
+                this.sumar();
+                this.corregirMode=false;
+                this.item.cantidad="";
+                this.item.tipocarga="";
+                this.item.descripcion="";
+             } else if (
+               result.dismiss === Swal.DismissReason.cancel
+             ) {
+               Swal(
+                 'Cancelado',
+                 'No fue eliminado.',
+                 'success'
+               )
+             }
+           })
+         },
+         pushearItem(index){
+           Swal({
+             title: '¿Estás seguro?',
+             type: 'warning',
+             showCancelButton: true,
+             confirmButtonText: '¡Si!',
+             cancelButtonText: '¡No!',
+             reverseButtons: true
+           }).then((result) => {
+             if (result.value) {
+               this.form.items.push({
+                  cantidad:this.item.cantidad,
+                  tipocarga:this.item.tipocarga,
+                  descripcion:this.item.descripcion,
+                });
+                this.sumar();
+                this.item.cantidad="";
+                this.item.tipocarga="";
+                this.item.descripcion="";
+             } else if (
+               result.dismiss === Swal.DismissReason.cancel
+             ) {
+               Swal(
+                 'Cancelado',
+                 'No fue eliminado.',
+                 'success'
+               )
+             }
+           })
+         },
+         eliminarItem(index){
+           Swal({
+             title: '¿Estás seguro?',
+             type: 'warning',
+             showCancelButton: true,
+             confirmButtonText: '¡Si! ¡eliminar!',
+             cancelButtonText: '¡No! ¡cancelar!',
+             reverseButtons: true
+           }).then((result) => {
+             if (result.value) {
+               this.form.items.splice(index, 1);
+               this.sumar();
+             } else if (
+               result.dismiss === Swal.DismissReason.cancel
+             ) {
+               Swal(
+                 'Cancelado',
+                 'No fue eliminado.',
+                 'success'
+               )
+             }
+           })
+         },
+         corregir(index){
+           this.item.cantidad=this.form.items[index].cantidad;
+           this.item.tipocarga=this.form.items[index].tipocarga;
+           this.item.descripcion=this.form.items[index].descripcion;
+
+         },
+         sumar(){
+           this.form.unidades=0;
+           for (var i = 0; i < this.form.items.length; i++) {
+             this.form.unidades= parseInt(this.form.items[i].cantidad)+parseInt(this.form.unidades);
+           }
+         },
          match(){
             for (var i = 0; i < this.clientes.length; i++) {
               if (this.clientes[i].cedula_cliente===this.form.id_cliente) {
@@ -1553,14 +1749,23 @@
          sedeset(){
            for (var i = 0; i < this.sedes.length; i++) {
              if (this.form.id_sede===this.sedes[i].id) {
-               this.sedes[i].
+               console.log("touh down");
+               this.form.direccion_sede=this.sedes[i].direccion_sede;
+               this.form.nombre_sede=this.sedes[i].nombre_sede;
+               this.form.ciudad_sede=this.sedes[i].ciudad_sede;
+               this.form.departamento_sede=this.sedes[i].departamento_sede;
+               this.form.telefono_sede=this.sedes[i].telefono_sede;
              }
 
            }
-         }
+         },
+         dep(){
+           this.form.departamento_origen=this.colombia[this.form.dep].departamento;
+
+         },
            depp(){
-             this.form.departamento_sede=this.colombia[this.form.dep].departamento;
-             console.log(this.form.dep);
+             this.form.departamento_destino=this.colombia[this.form.depp].departamento;
+
            },
            resete(){
 
@@ -1577,12 +1782,20 @@
                $('#modal-lg').modal('show');
            },
            validateBeforeSubmit() {
+             if (this.form.items.length<1) {
+               Swal.fire({
+                 type: 'error',
+                 title: 'Lo sentimos',
+                 text: 'Debes agregar al menos 1 item'
+               });
+               return;
+             }
                    this.$validator.validateAll().then((result) => {
                      if (result) {
                        let data = new FormData();
                        data.append('service_form',JSON.stringify(this.form));
                      if(!this.editMode){
-                       axios.post('index.php/sedes/insertar',data)
+                       axios.post('index.php/Actas_entrega/insertar',data)
                        .then(response => {
                          if(response.data.status == 200){
                            Swal.fire({
@@ -1591,7 +1804,7 @@
                              text: 'Agregado con exito'
                            })
                            $('#modal-lg').modal('hide');
-                           this.loadsedes(this.form.id_cliente);
+                           this.loadActas(this.form.id_cliente);
                            this.resete();
                          }
                          else{
@@ -1604,7 +1817,7 @@
                        })
                      }
                      else{
-                       axios.post('index.php/sedes/editar',data)
+                       axios.post('index.php/actas_entrega/editar',data)
                        .then(response => {
                          if(response.data.status == 200)
                          {
@@ -1681,6 +1894,12 @@
                      }
                    })
                  },
+                 async loadtipocarga() {
+                     await   axios.get('index.php/tipocarga/gettipocarga/')
+                        .then(({data: {tipocarga}}) => {
+                          this.tipocarga = tipocarga
+                        });
+                      },
                  setear(index){
                    this.form.id=this.sedes[index].id,
                    this.form.id_cliente=this.sedes[index].id_cliente,
@@ -1719,7 +1938,7 @@
                    });
                  },
                  async loadclientes() {
-                      await   axios.get('index.php/clientes/getclientes/')
+                      await   axios.get('index.php/clientes/getclientesN/')
                          .then(({data: {clientes}}) => {
                            this.clientes = clientes
                          });
@@ -1737,6 +1956,7 @@
        },
 
        created(){
+            this.loadtipocarga();
             this.loadclientes();
             this.loadCart();
        },
