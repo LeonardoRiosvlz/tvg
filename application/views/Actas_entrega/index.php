@@ -1,42 +1,44 @@
 <div id="app" class="container">
   <div class="row">
-    <div class="col-lg-12 my-5 ">
+    <div class="col-lg-12 my-2 ">
       <!-- Shopping cart table -->
-      <div class="table-responsive ">
+
+
         <table id="example2" class="table">
           <thead>
             <tr>
               <th scope="col" colspan="5" class="border-0 bg-white  text-center">
-                  <div class="bg-light rounded-pill px-4 py-3 text-uppercase font-weight-bold links">Remitentes <i class="fa fa-terminal" aria-hidden="true"></i></div>
+                  <div class="bg-light rounded-pill px-4 py-3 text-uppercase font-weight-bold links">Sedes <i class="fa fa-paper-plane" aria-hidden="true"></i></div>
               </th>
             </tr>
-            <tr>
+          </thead>
+        </table>
 
+        <table id="example2" class="table " >
+          <thead>
+            <tr>
               <th scope="col" colspan="5" class="border-0 bg-white  text-center">
                 <button type="button" @click="resete();ver=false" class="btn btn-block btn-light btn-sm links" >Agregar <span class="mbri-plus"></span></button>
               </th>
             </tr>
-
           </thead>
-
         </table>
-          <table id="example1" class="table ">
+        <div class="">
+          <table id="example1" class="table my-2" >
             <thead>
-            <tr>
-              <th class="links">Nombre del cargo</th>
-              <th class="links">Empresa</th>
-              <th class="links">Teléfono</th>
-              <th class="links">Correo</th>
-              <th class="links">Ciudad</th>
-                <th class="links">Action</th>
+            <tr >
+              <th class="links">Nombre de la sede</th>
+              <th class="links">Departamento destino</th>
+              <th class="links">Ciudad destino</th>
+              <th class="links">Dirección destino</th>
+              <th class="links">Action</th>
             </tr>
             </thead>
-              <tr v-for="(remitentes,index) in remitentes">
-                <td class="links">{{remitentes.contacto_remitente}}</td>
-                <td class="links">{{remitentes.empresa_remitente}}</td>
-                <td class="links">{{remitentes.telefono_remitente}}</td>
-                <td class="links">{{remitentes.correo_remitente}}</td>
-                <td class="links">{{remitentes.ciudad_remitente}}</td>
+              <tr v-for="(sedes,index) in sedes">
+                <td class="links">{{sedes.nombre_sede}}</td>
+                <td class="links">{{sedes.departamento_sede}}</td>
+                <td class="links">{{sedes.ciudad_sede}}</td>
+                <td class="links">{{sedes.direccion_sede}}</td>
                   <td>
                     <div class="btn-group">
                         <button type="button" class="btn btn-default">Action</button>
@@ -45,133 +47,156 @@
                           <div class="dropdown-menu" role="menu">
                             <a class="dropdown-item" href="#"@click="setear(index);ver=true">Ver</a>
                             <a class="dropdown-item" href="#" @click="setear(index);ver=false">Editar</a>
-                            <a class="dropdown-item" href="#" @click="eliminarremitentes(index)">Eliminar</a>
+                            <a class="dropdown-item" href="#" @click="eliminarsedes(index)">Eliminar</a>
                           </div>
                         </button>
                     </div>
                   </td>
                </tr>
           </table>
+
+
       </div>
       <!-- End -->
     </div>
   </div>
-  <!-- Modal agregar   -->
-  <div class="modal fade" id="modal-lg" data-backdrop="static" data-keyboard="false">
-   <div class="modal-dialog modal-lg">
-     <div class="modal-content">
-       <div class="modal-header">
-         <h4 class="modal-title links"></h4>
-         <button type="button" @click="resete()" class="close" data-dismiss="modal" aria-label="Close">
-           <span class="mbri-close " ></span>
-         </button>
-       </div>
-       <div class="modal-body">
-   <!-- Incio de formulario -->
-         <div class="card-body">
-                 <form role="form" id="form" @submit.prevent="validateBeforeSubmit">
-                   <div class="row">
-                     <table class="table">
-                       <thead>
-                         <tr>
-                           <th scope="col" colspan="5" class="border-0 bg-white  text-center">
-                               <div class="bg-primary text-white rounded-pill px-4 py-1 text-uppercase font-weight-bold links">Datos del remitente</div>
-                           </th>
-                         </tr>
-                       </thead>
-                     </table>
-                       <div class="col-md-6 col-sm-12">
-                         <!-- textarea -->
-                         <div class="form-group">
-                           <label class="links">NIT</label>
-                            <input type="text" v-model="form.nit_remitente" v-validate="'required'" name="nit_remitente" class="form-control" id="" :disabled="ver||form.tipo_cliente==='Persona natural'">
-                           <p class="text-danger small my-1" v-if="(errors.first('nit_remitente'))" >  Este dato es requerido/o es inválido  </p>
+        <!-- Modal agregar   -->
+        <div class="modal fade" id="modal-lg" data-backdrop="static" data-keyboard="false">
+         <div class="modal-dialog modal-lg">
+           <div class="modal-content">
+             <div class="modal-header">
+               <h4 class="modal-title links">Gestión de sedes  <i class="fa fa-paper-plane" aria-hidden="true"></i></h4>
+               <button type="button" @click="resete()" class="close" data-dismiss="modal" aria-label="Close">
+                 <span class="mbri-close " ></span>
+               </button>
+             </div>
+             <div class="modal-body">
+         <!-- Incio de formulario -->
+               <div class="card-body">
+                       <form role="form" id="form" @submit.prevent="validateBeforeSubmit">
+                         <div class="row">
+                           <div class="col-6">
+                             <input list="encodings" v-model="form.id_cliente" value="" class="form-control form-control-lg" placeholder="Escriba una cedula">
+                               <datalist id="encodings">
+                                   <option v-for="clientes in clientes" v-if="clientes.cliente_especial==='Si'" :value="clientes.cedula_cliente">{{clientes.nombre_cliente}}</option>
+                               </datalist>
+                           </div>
+                           <div class="col-3">
+                             <button type="button" class="btn btn-info btn-block btn-lg" @click="match()">Buscar <span class="mbri-search"></span></button>
+                           </div>
                          </div>
-                       </div>
-                       <div class="col-md-6 col-sm-12">
-                         <!-- textarea -->
-                         <div class="form-group">
-                           <label class="links">Nº Cedula</label>
-                            <input type="text" @change="chekear()" v-model="form.cedula_remitente" v-validate="'required'" name="cedula_remitente" class="form-control" id="" :disabled="ver||form.tipo_cliente==='Persona natural'">
-                           <p class="text-danger small my-1" v-if="(errors.first('cedula_remitente'))" >  Este dato es requerido/o es inválido  </p>
-                         </div>
-                       </div>
-                       <div class="col-md-6 col-sm-6">
-                         <!-- textarea -->
-                         <div class="form-group">
-                           <label class="links">Nombre de la empresa</label>
-                            <input type="text" v-model="form.empresa_remitente" v-validate="'required'" name="empresa_remitente" class="form-control" id="" :disabled="ver||form.tipo_cliente==='Persona natural'">
-                           <p class="text-danger small my-1" v-if="(errors.first('empresa_remitente'))" >  Este dato es requerido/o es inválido  </p>
-                         </div>
-                       </div>
+                         <div class="alert alert-danger" role="alert" v-if="alerta">
+                             No se encontro ninguna coincidencia :(
+                           </div>
+                         <div class="row">
+                             <div class="col-md-4">
+                               <!-- textarea -->
+                               <div class="form-group">
+                                 <label class="links">Nombre/Empresa</label>
+                                  <input type="text" v-model="form.nombre_empresa" v-validate="'required'" name="nombre_sede" class="form-control" id="" :disabled="ver">
+                                 <p class="text-danger my-1" v-if="(errors.first('nombre_sede'))" >  Este dato es requerido  </p>
+                               </div>
+                             </div>
+                             <div class="col-md-4">
+                               <!-- textarea -->
+                               <div class="form-group">
+                                 <label class="links">Dirección cliente</label>
+                                  <input type="text" v-model="form.direccion_cliente" v-validate="'required'" name="direccion_cliente" class="form-control" id="" :disabled="ver">
+                                 <p class="text-danger my-1" v-if="(errors.first('direccion_cliente'))" >  Este dato es requerido  </p>
+                               </div>
+                             </div>
+                             <div class="col-sm-4">
+                               <!-- textarea -->
+                               <div class="form-group">
+                                 <label class="links">Teléfono cliente</label>
+                                  <input type="text" v-model="form.telefono_cliente" v-validate="'required'" name="telefono_cliente" class="form-control" id="" :disabled="ver">
+                                 <p class="text-danger my-1" v-if="(errors.first('telefono_cliente'))" >  Este dato es requerido  </p>
+                               </div>
+                             </div>
+                             <div class="col-sm-4">
+                               <!-- textarea -->
+                               <div class="form-group">
+                                 <label class="links">Ciudad</label>
+                                  <input type="text" v-model="form.ciudad_cliente" v-validate="'required'" name="ciudad_cliente" class="form-control" id="" :disabled="ver">
+                                 <p class="text-danger my-1" v-if="(errors.first('ciudad_cliente'))" >  Este dato es requerido  </p>
+                               </div>
+                             </div>
+                             <div class="col-4">
+                               <div class="form-group">
+                                  <label   class="links">Sedes</label>
+                                  <select v-model="form.id_sede" v-validate="'required'" name="id_sede" class="form-control" id="sel1">
+                                    <option></option>
+                                    <option v-for="sedes in sedes" value="sedes.id">{{sedes.nombre_sede}} </option>
+                                  </select>
+                                  <p class="text-danger my-1" v-if="(errors.first('id_sede'))" >  Este dato es requerido  </p>
+                                </div>
+                             </div>
+                             <div class="col-sm-6">
+                               <label class="links">Departamento destino</label>
+                               <div class="form-group">
+                                 <select v-model="form.dep" @change="depp()" class="form-control" :disabled="ver" >
+                                   <option value=""></option>
+                                   <option v-for="colombia in colombia" :value="colombia.id">{{colombia.departamento}}</option>
+                                 </select>
+                               </div>
+                             </div>
+                            <div class="col-sm-6">
+                               <div class="form-group links">
+                                 <label>Ciudad destino</label>
+                                <select v-model="form.ciudad_sede" v-validate="'required'" name="ciudad" class="form-control" :disabled="ver" >
+                                    <option value=""></option>
+                                    <option v-for="ciudad in colombia[form.dep].ciudades" :value="ciudad">{{ciudad}}</option>
+                                </select>
+                                <p class="text-danger my-1" v-if="(errors.first('ciudad'))" >  Este dato es requerido  </p>
+                              </div>
+                           </div>
+                           <div class="col-sm-4">
+                             <!-- textarea -->
+                             <div class="form-group">
+                               <label class="links">Contacto</label>
+                                <input type="text" v-model="form.contacto_sede" v-validate="'required'" name="contacto_sede" class="form-control" id="" :disabled="ver">
+                               <p class="text-danger my-1" v-if="(errors.first('contacto_sede'))" >  Este dato es requerido  </p>
+                             </div>
+                           </div>
+                           <div class="col-sm-4">
+                             <!-- textarea -->
+                             <div class="form-group">
+                               <label class="links">Teléfono</label>
+                                <input type="text" v-model="form.telefono_sede" v-validate="'required'" name="telefono_sede" class="form-control" id="" :disabled="ver">
+                               <p class="text-danger my-1" v-if="(errors.first('telefono_sede'))" >  Este dato es requerido  </p>
+                             </div>
+                           </div>
+                           <div class="col-sm-4">
+                             <!-- textarea -->
+                             <div class="form-group">
+                               <label class="links">Correo</label>
+                                <input type="text" v-model="form.correo_sede" v-validate="'required|email'" name="correo_sede" class="form-control" id="" :disabled="ver">
+                               <p class="text-danger my-1" v-if="(errors.first('correo_sede'))" >  Este dato es requerido  </p>
+                             </div>
+                           </div>
+                           <div class="col-sm-8">
+                             <!-- textarea -->
+                             <div class="form-group">
+                               <label class="links">Dirección</label>
+                                <textarea type="text" v-model="form.direccion_sede" v-validate="'required'" name="direccion_sede" class="form-control" id="" :disabled="ver"></textarea>
+                               <p class="text-danger my-1" v-if="(errors.first('direccion_sede'))" >  Este dato es requerido  </p>
+                             </div>
+                           </div>
 
-                       <div class="col-md-6 col-sm-6">
-                         <!-- textarea -->
-                         <div class="form-group">
-                           <label class="links">Nombre y Apellido</label>
-                            <input type="text" v-model="form.contacto_remitente" v-validate="'required|alpha_spaces'" name="contacto_remitente" class="form-control" id="" :disabled="ver">
-                           <p class="text-danger small my-1" v-if="(errors.first('contacto_remitente'))" >  Este dato es requerido/o es inválido  </p>
-                         </div>
-                       </div>
-                       <div class="col-md-6 col-sm-12">
-                         <!-- textarea -->
-                         <div class="form-group">
-                           <label class="links">Teléfono</label>
-                            <input type="number" v-model="form.telefono_remitente" v-validate="'required'" name="telefono_remitente" class="form-control" id="" :disabled="ver">
-                           <p class="text-danger small my-1" v-if="(errors.first('telefono_remitente'))" >  Este dato es requerido/o es inválido  </p>
-                         </div>
-                       </div>
-                       <div class="col-md-6 col-sm-12">
-                         <!-- textarea -->
-                         <div class="form-group">
-                           <label class="links">Correo</label>
-                            <input type="email" v-model="form.correo_remitente" v-validate="'required'" name="correo_remitente" class="form-control" id="" :disabled="ver">
-                           <p class="text-danger small my-1" v-if="(errors.first('correo_remitente'))" >  Este dato es requerido/o es inválido  </p>
-                         </div>
-                       </div>
-                       <div class="col-md-12 col-sm-12">
-                         <!-- textarea -->
-                         <div class="form-group">
-                           <label class="links">Dirección</label>
-                            <textarea type="email" v-model="form.direccion_remitente" v-validate="'required'" name="direccion_remitente" class="form-control" id="" :disabled="ver"></textarea>
-                           <p class="text-danger small my-1" v-if="(errors.first('direccion_remitente'))" >  Este dato es requerido/o es inválido  </p>
-                         </div>
-                       </div>
-                       <div class="col-sm-6">
-                         <label class="links">Departamento</label>
-                         <div class="form-group">
-                           <select v-model="form.dep" @change="depp()" class="form-control" :disabled="ver" >
-                             <option v-for="colombia in colombia" :value="colombia.id">{{colombia.departamento}}</option>
-                           </select>
-                         </div>
-                       </div>
-
-                      <div class="col-sm-6">
-                         <div class="form-group links">
-                           <label>Ciudad</label>
-                          <select v-model="form.ciudad_remitente" v-validate="'required'" name="ciudad_remitente" class="form-control" :disabled="ver" >
-                              <option v-for="ciudad in colombia[form.dep].ciudades" :value="ciudad">{{ciudad}}</option>
-                          </select>
-                          <p class="text-danger small my-1" v-if="(errors.first('ciudad_remitente'))" >  Este dato es requerido  </p>
-                        </div>
+                            </div>
+                           <button v-if="editMode===false"  class="button is-primary links btn btn-light float-right my-3" type="submit">Guardar</button>
+                           <button v-if="editMode===true && !ver"  class="button is-primary btn btn-light links float-right my-3" type="submit">Editar</button>
+                       </form>
                      </div>
-
-
-                      </div>
-                     <button v-if="editMode===false"  class="button is-primary links btn btn-light float-right my-3" type="submit">Guardar</button>
-                     <button v-if="editMode===true && !ver"  class="button is-primary btn btn-light links float-right my-3" type="submit">Editar</button>
-                 </form>
-               </div>
-   <!-- Fin del formulario -->
-       </div>
-     </div>
-     <!-- /.modal-content -->
-   </div>
-   <!-- /.modal-dialog -->
-  </div>
-<!-- fin del modal -->
-   </div>
-
+         <!-- Fin del formulario -->
+             </div>
+           </div>
+           <!-- /.modal-content -->
+         </div>
+         <!-- /.modal-dialog -->
+        </div>
+   <!-- fin del modal -->
+ </div>
 </div>
 <script>
      axios.defaults.baseURL = '<?PHP echo base_url(); ?>';
@@ -182,21 +207,12 @@
          departamento:0,
          ver:false,
          cart:[],
-         remitentes:[],
+         sedes:[],
+         clientes:[],
+         marca:0,
+         verTabla:false,
+         alerta:false,
          editMode:false,
-         form:{
-             'id':'',
-             'nit_remitente':'',
-             'empresa_remitente':'',
-             'contacto_remitente':'',
-             'ciudad_remitente':'',
-             'cedula_remitente':'',
-             'telefono_remitente':'',
-             'correo_remitente':'',
-             'departamento_remitente':'',
-             'direccion_remitente':'',
-             'dep':0
-         },
          colombia:[
            {
            "id":0,
@@ -1495,39 +1511,69 @@
            ]
            }
            ],
+          form:{
+              'id':'',
+              'nombre_empresa':'',
+              'direccion_cliente':'',
+              'telefono_cliente':'',
+              'id_cliente':'',
+              'ciudad_cliente':'',
+              'contacto_sede':'',
+              'telefono_sede':'',
+              'correo_sede':'',
+              'direccion_sede':'',
+              'departamento_sede':'',
+              'ciudad_sede':'',
+              'dep':0,
+          }
        },
        methods: {
-          chekear(){
-            for (var i = 0; i < this.remitentes.length; i++) {
-              if (this.remitentes[i].cedula_remitente===this.form.cedula_remitente) {
-                Swal.fire({
-                  type: 'error',
-                  title: 'Cédulda registrada!',
-                  text: 'Ya existe un remitente con esta cédula'
-                });
-                this.form.cedula_remitente="";
+         match(){
+            for (var i = 0; i < this.clientes.length; i++) {
+              if (this.clientes[i].cedula_cliente===this.form.id_cliente) {
+                if (this.clientes[i].nombre_empresa==='No aplica') {
+                  this.form.nombre_empresa=this.clientes[i].nombre_cliente;
+                }else{
+                  this.form.nombre_empresa=this.clientes[i].nombre_empresa;
+                }
+                this.form.ciudad_cliente=this.clientes[i].ciudad;
+                this.form.direccion_cliente=this.clientes[i].direccion_cliente;
+                this.form.telefono_cliente=this.clientes[i].telefono_cliente;
+                this.verTabla=true;
+                this.alerta=false;
+                this.marca=this.form.id_cliente;
+                this.loadsedes(this.clientes[i].cedula_cliente);
+                return;
+              }else{
+                this.alerta=true;
+                this.loadsedes(this.clientes[i].cedula_cliente);
               }
             }
-          },
+         },
+         sedeset(){
+           for (var i = 0; i < this.sedes.length; i++) {
+             if (this.form.id_sede===this.sedes[i].id) {
+               this.sedes[i].
+             }
+
+           }
+         }
            depp(){
-             this.form.departamento_remitente=this.colombia[this.form.dep].departamento;
+             this.form.departamento_sede=this.colombia[this.form.dep].departamento;
              console.log(this.form.dep);
            },
            resete(){
-             this.form.id="";
-             this.form.nit_remitente="";
-             this.form.empresa_remitente="";
-             this.form.contacto_remitente="";
-             this.form.ciudad_remitente="";
-             this.form.cedula_remitente="";
-             this.form.telefono_remitente="";
-             this.form.correo_remitente="";
-             this.form.departamento_remitente="";
-             this.form.direccion_remitente="";
+
                this.$validator.reset();
                document.getElementById("form").reset();
                this.editMode=false;
-               this.form.nombre_cargo='';
+               this.form.nombre_sede='';
+               this.form.contacto_sede='';
+               this.form.telefono_sede='';
+               this.form.correo_sede='';
+               this.form.direccion_sede='';
+               this.form.ciudad_sede='';
+               this.form.departamento_sede='';
                $('#modal-lg').modal('show');
            },
            validateBeforeSubmit() {
@@ -1536,7 +1582,7 @@
                        let data = new FormData();
                        data.append('service_form',JSON.stringify(this.form));
                      if(!this.editMode){
-                       axios.post('index.php/remitentes/insertar',data)
+                       axios.post('index.php/sedes/insertar',data)
                        .then(response => {
                          if(response.data.status == 200){
                            Swal.fire({
@@ -1545,7 +1591,7 @@
                              text: 'Agregado con exito'
                            })
                            $('#modal-lg').modal('hide');
-                           this.loadremitentes();
+                           this.loadsedes(this.form.id_cliente);
                            this.resete();
                          }
                          else{
@@ -1558,12 +1604,12 @@
                        })
                      }
                      else{
-                       axios.post('index.php/remitentes/editar',data)
+                       axios.post('index.php/sedes/editar',data)
                        .then(response => {
                          if(response.data.status == 200)
                          {
                            $('#modal-lg').modal('hide');
-                           this.loadremitentes();
+                           this.loadsedes(this.form.id_cliente);
                            Swal.fire({
                              type: 'success',
                              title: 'Exito!',
@@ -1591,7 +1637,7 @@
                      );
                    });
                  },
-                 eliminarremitentes(index){
+                 eliminarsedes(index){
                    Swal({
                      title: '¿Estás seguro?',
                      text: "¡ será eliminado para siempre!",
@@ -1603,8 +1649,8 @@
                    }).then((result) => {
                      if (result.value) {
                        let data = new FormData();
-                       data.append('id',this.remitentes[index].id);
-                         axios.post('index.php/remitentes/eliminar',data)
+                       data.append('id',this.sedes[index].id);
+                         axios.post('index.php/sedes/eliminar',data)
                          .then(response => {
                            if(response) {
                              Swal(
@@ -1612,7 +1658,7 @@
                                'Ha sido eliminado.',
                                'success'
                              ).then(response => {
-                                   this.loadremitentes();
+                                   this.loadsedes();
                              })
                            } else {
                              Swal(
@@ -1620,7 +1666,7 @@
                                'Ha ocurrido un error.',
                                'warning'
                              ).then(response => {
-                               this.loadremitentes();
+                               this.loadsedes();
                              })
                            }
                          })
@@ -1636,33 +1682,48 @@
                    })
                  },
                  setear(index){
-                   this.form.id=this.remitentes[index].id,
-                   this.form.nit_remitente=this.remitentes[index].nit_remitente,
-                   this.form.empresa_remitente=this.remitentes[index].empresa_remitente,
-                   this.form.contacto_remitente=this.remitentes[index].contacto_remitente,
-                   this.form.ciudad_remitente=this.remitentes[index].ciudad_remitente,
-                   this.form.cedula_remitente=this.remitentes[index].cedula_remitente,
-                   this.form.telefono_remitente=this.remitentes[index].telefono_remitente,
-                   this.form.correo_remitente=this.remitentes[index].correo_remitente,
-                   this.form.departamento_remitente=this.remitentes[index].departamento_remitente,
-                   this.form.direccion_remitente=this.remitentes[index].direccion_remitente,
-                   this.form.dep=this.remitentes[index].dep,
+                   this.form.id=this.sedes[index].id,
+                   this.form.id_cliente=this.sedes[index].id_cliente,
+                   this.form.nombre_sede=this.sedes[index].nombre_sede,
+                   this.form.contacto_sede=this.sedes[index].contacto_sede,
+                   this.form.departamento_sede=this.sedes[index].departamento_sede,
+                   this.form.ciudad_sede=this.sedes[index].ciudad_sede,
+                   this.form.contacto_sede=this.sedes[index].contacto_sede,
+                   this.form.telefono_sede=this.sedes[index].telefono_sede,
+                   this.form.correo_sede=this.sedes[index].correo_sede,
+                   this.form.direccion_sede=this.sedes[index].direccion_sede,
                    $('#modal-lg').modal('show');
                    this.editMode=true
                  },
                  ver(index){
-                   this.form.id=this.remitentes[index].id,
-                   this.form.nombre_cargo=this.remitentes[index].nombre_cargo,
+                   this.form.id=this.sedes[index].id,
+                   this.form.id_cliente=this.sedes[index].id_cliente,
+                   this.form.nombre_sede=this.sedes[index].nombre_sede,
+                   this.form.contacto_sede=this.sedes[index].contacto_sede,
+                   this.form.departamento_sede=this.sedes[index].departamento_sede,
+                   this.form.ciudad_sede=this.sedes[index].ciudad_sede,
+                   this.form.contacto_sede=this.sedes[index].contacto_sede,
+                   this.form.telefono_sede=this.sedes[index].telefono_sede,
+                   this.form.correo_sede=this.sedes[index].correo_sede,
+                   this.form.direccion_sede=this.sedes[index].direccion_sede,
                    $('#myModal').modal('show');
                    this.editMode=false
                  },
-                 async loadremitentes() {
-                await   axios.get('index.php/remitentes/getremitentes/')
-                   .then(({data: {remitentes}}) => {
-                     this.remitentes = remitentes
+                 async loadsedes(index) {
+                   console.log(index);
+                   let data = new FormData();
+                    data.append('id_cliente',index);
+                    await axios.post('index.php/Sedes/getsedes/',data)
+                   .then(({data: {sedes}}) => {
+                     this.sedes = sedes
                    });
-                   $("#example1").DataTable();
                  },
+                 async loadclientes() {
+                      await   axios.get('index.php/clientes/getclientes/')
+                         .then(({data: {clientes}}) => {
+                           this.clientes = clientes
+                         });
+                       },
                  loadCart(){
 
                    if(localStorage.getItem('cart')) {
@@ -1676,7 +1737,7 @@
        },
 
        created(){
-            this.loadremitentes();
+            this.loadclientes();
             this.loadCart();
        },
    })

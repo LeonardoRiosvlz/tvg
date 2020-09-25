@@ -89,6 +89,7 @@
                       <a class="dropdown-item links" href="<?=base_url()?>Cotizador"><i class="fa fa-calculator" aria-hidden="true"></i> Cotizador</a>
                       <a class="dropdown-item links" href="<?=base_url()?>Liquidaciones"><i class="fa fa-file-powerpoint-o" aria-hidden="true"></i> Planillas De Liquidación</a>
                       <a class="dropdown-item links" href="<?=base_url()?>Guias"><i class="fa fa-road" aria-hidden="true"></i> Guías De Carga</a>
+                      <a class="dropdown-item links" href="<?=base_url()?>Actas_entrega"><i class="fa fa-cubes" aria-hidden="true"></i> Actas de entrega</a>
                     </div>
                   </div>
                   <div class="dropdown">
@@ -108,9 +109,10 @@
                       <a class="dropdown-item links" href="<?=base_url()?>Sedes"><i class="fa fa-paper-plane" aria-hidden="true"></i> Sedes</a>
                       <a class="dropdown-item links" href="<?=base_url()?>Clientes"><i class="fa fa-user-o" aria-hidden="true"></i> Clientes de la empresa</a>
                       <a class="dropdown-item links" href="<?=base_url()?>ClientesEspeciales"><i class="fa fa-user-o" aria-hidden="true"></i> Clientes especiales</a>
-                      <a class="dropdown-item links" href="<?=base_url()?>Remitentes"><i class="fa fa-paper-plan" aria-hidden="true"></i> Remitentes</a>
+                      <a class="dropdown-item links" href="<?=base_url()?>Remitentes"><i class="fa fa-terminal" aria-hidden="true"></i> Remitentes</a>
                       <a class="dropdown-item links"  href="<?=base_url()?>Proveedores"><i class="fa fa-car" aria-hidden="true"></i> Proveedores de transporte</a>
                       <a class="dropdown-item links"  href="<?=base_url()?>aparatologia"><i class="fa fa-home" aria-hidden="true"></i> Sedes de clientes</a>
+                      <a class="dropdown-item links"  href="<?=base_url()?>Satelites"><i class="fa fa-space-shuttle" aria-hidden="true"></i> Satélites</a>
                     </div>
                   </div>
                 </div>
