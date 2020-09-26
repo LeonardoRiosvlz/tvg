@@ -31,7 +31,7 @@ class Actas_entrega extends MY_Controller {
 				$data['id']    = $this->actas_entrega->get_unused_id();
 				$result = $this->actas_entrega->insertar($data);
 					if($result['code'] == 0){
-						echo json_encode(['status' => '200', 'message' => 'Agregado exitosamente']);
+						echo json_encode(['status' => '200', 'id' => $data['id']]);
 					}
 					else{
 						echo json_encode(['status' => '500', 'message' => 'no creado, ha ocurrido un error']);
@@ -44,7 +44,7 @@ class Actas_entrega extends MY_Controller {
 			    $data = json_decode($this->input->post('service_form'),true);
 				$result = $this->actas_entrega->editar($data);
 					if($result['code'] == 0){
-						echo json_encode(['status' => '200', 'message' => 'editado exitosamente']);
+						echo json_encode(['status' => '200', 'id' => $data['id']]);
 					}
 					else{
 						echo json_encode(['status' => '500', 'message' => 'no creado, ha ocurrido un error']);

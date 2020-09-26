@@ -27,18 +27,24 @@
           <table id="example1" class="table my-2" >
             <thead>
             <tr >
-              <th class="links">Nombre de la sede</th>
-              <th class="links">Departamento destino</th>
-              <th class="links">Ciudad destino</th>
-              <th class="links">Dirección destino</th>
+              <th class="links">SERIAL</th>
+              <th class="links">FECHA</th>
+              <th class="links">CLIENTE</th>
+              <th class="links">CEDULDA</th>
+              <th class="links">CIUDAD ORIGEN</th>
+              <th class="links">CIUDAD DESTINO</th>
+              <th class="links">CANTIDAD</th>
               <th class="links">Action</th>
             </tr>
             </thead>
-              <tr v-for="(sedes,index) in sedes">
-                <td class="links">{{sedes.nombre_sede}}</td>
-                <td class="links">{{sedes.departamento_sede}}</td>
-                <td class="links">{{sedes.ciudad_sede}}</td>
-                <td class="links">{{sedes.direccion_sede}}</td>
+              <tr v-for="(actas_entrega,index) in actas_entrega">
+                <td class="links">{{actas_entrega.id}}</td>
+                <td class="links">{{actas_entrega.creado}}</td>
+                <td class="links">{{actas_entrega.nombre_empresa}}</td>
+                <td class="links">{{actas_entrega.id_cliente}}</td>
+                <td class="links">{{actas_entrega.ciudad_origen}}</td>
+                <td class="links">{{actas_entrega.ciudad_destino}}</td>
+                <td class="links">{{actas_entrega.unidades}}</td>
                   <td>
                     <div class="btn-group">
                         <button type="button" class="btn btn-default">Action</button>
@@ -60,7 +66,26 @@
       <!-- End -->
     </div>
   </div>
-
+      <div class="modal fade" id="mplanilla" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" data-backdrop="static" data-keyboard="false" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel"></h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <h2 class="links text-center"> ACTAS DE ENTREGA</h2>
+              <button type="button" class="btn btn-block btn-lg btn-success"><span class="mbri-bookmark"></span>AEN-{{id}}</button>
+              <a :href="'<?=base_url();?>Actas_entrega/to_pdf/'+id" type="button" download class="btn btn-block btn-lg btn-primary" @click="generar()">Imprimir PDF <span class="mbri-share"></span></a>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            </div>
+          </div>
+        </div>
+      </div>
         <!-- Modal agregar   -->
         <div class="modal fade" id="modal-lg" data-backdrop="static" data-keyboard="false">
          <div class="modal-dialog modal-lg">
@@ -205,11 +230,11 @@
                            <div class="col-4">
                             <label class="links">Tipo de carga</label>
                              <div class="input-group">
-                                <select v-model="item.tipocarga"   name="tipocarga" class="form-control" >
+                                <select v-model="item.tipocarga"   name="tipocarga" class="form-control" :disabled="ver" >
                                   <option v-for="tipocarga in tipocarga"  :value="tipocarga.nombre_tipocarga">{{tipocarga.nombre_tipocarga}}</option>
                                 </select>
                                 <div class="input-group-append">
-                                  <input v-model="item.cantidad"  type="number" name="cantidad" class="form-control" placeholder="Cantidad">
+                                  <input v-model="item.cantidad"  type="number" name="cantidad" class="form-control" placeholder="Cantidad" :disabled="ver">
                                 </div>
                               </div>
                            </div>
@@ -230,11 +255,10 @@
                              <table class="table table-striped table-bordered table condensed table-hover  && kilostotal && volumen" WIDTH="100%">
                                <thead>
                                  <tr>
-
                                    <th style="white-space: nowrap;">TIPO DE CARGA</th>
                                    <th style="white-space: nowrap;">CANTIDAD</th>
                                    <th style="white-space: nowrap;">DESCRIPCIÓN</th>
-                                   <th style="white-space: nowrap;">ACTION</th>
+                                   <th v-show="!ver" style="white-space: nowrap;">ACTION</th>
                                  </tr>
                                </thead>
                                <tbody>
@@ -262,9 +286,9 @@
                            <div class="row">
                              <label style="font-size:30px;">Cantidad</label>
                              <div class="col-2 justify-content-center">
-                                <input v-model="form.unidades" class="form-control form-control-lg" type="text" >
+                                <input v-model="form.unidades" class="form-control form-control-lg" type="text" :disabled="ver">
                              </div>
-                             <pre>{{form}}</pre>
+
                            </div>
                             </div>
                            <button v-if="editMode===false" @click="validateBeforeSubmit()"  class="button is-primary links btn btn-light float-right my-3" type="submit">Guardar</button>
@@ -297,6 +321,7 @@
          ver:false,
          cart:[],
          sedes:[],
+         actas_entrega:[],
          tipocarga:[],
          clientes:[],
          marca:0,
@@ -1772,13 +1797,28 @@
                this.$validator.reset();
                document.getElementById("form").reset();
                this.editMode=false;
-               this.form.nombre_sede='';
-               this.form.contacto_sede='';
-               this.form.telefono_sede='';
-               this.form.correo_sede='';
-               this.form.direccion_sede='';
-               this.form.ciudad_sede='';
-               this.form.departamento_sede='';
+               this.form.id="";
+               this.form.items=[],
+               this.form.nombre_empresa="";
+               this.form.creado="";
+               this.form.direccion_cliente="";
+               this.form.telefono_cliente="";
+               this.form.id_cliente="";
+               this.form.ciudad_cliente="";
+               this.form.telefono_sede="";
+               this.form.direccion_sede="";
+               this.form.departamento_sede="";
+               this.form.ciudad_sede="";
+               this.form.ciudad_origen="";
+               this.form.departamento_origen="Amazonas";
+               this.form.ciudad_destino="";
+               this.form.departamento_destino="Amazonas";
+               this.form.dep=0;
+               this.form.depp=0;
+               this.form.nombre_sede="";
+               this.form.id_sede="";
+               this.form.remision="";
+               this.form.unidades="";
                $('#modal-lg').modal('show');
            },
            validateBeforeSubmit() {
@@ -1797,6 +1837,10 @@
                      if(!this.editMode){
                        axios.post('index.php/Actas_entrega/insertar',data)
                        .then(response => {
+                         this.id=response.data.id;
+                         window.setTimeout(function () {
+                            $('#mplanilla').modal('show');
+                          }, 50);
                          if(response.data.status == 200){
                            Swal.fire({
                              type: 'success',
@@ -1822,7 +1866,11 @@
                          if(response.data.status == 200)
                          {
                            $('#modal-lg').modal('hide');
-                           this.loadsedes(this.form.id_cliente);
+                           this.id=response.data.id;
+                           window.setTimeout(function () {
+                              $('#mplanilla').modal('show');
+                            }, 50);
+                           this.loadActas(this.form.id_cliente);
                            Swal.fire({
                              type: 'success',
                              title: 'Exito!',
@@ -1862,8 +1910,8 @@
                    }).then((result) => {
                      if (result.value) {
                        let data = new FormData();
-                       data.append('id',this.sedes[index].id);
-                         axios.post('index.php/sedes/eliminar',data)
+                       data.append('id',this.actas_entrega[index].id);
+                         axios.post('index.php/actas_entrega/eliminar',data)
                          .then(response => {
                            if(response) {
                              Swal(
@@ -1871,7 +1919,7 @@
                                'Ha sido eliminado.',
                                'success'
                              ).then(response => {
-                                   this.loadsedes();
+                                   this.loadActas();
                              })
                            } else {
                              Swal(
@@ -1879,7 +1927,7 @@
                                'Ha ocurrido un error.',
                                'warning'
                              ).then(response => {
-                               this.loadsedes();
+                               this.loadActas();
                              })
                            }
                          })
@@ -1901,30 +1949,61 @@
                         });
                       },
                  setear(index){
-                   this.form.id=this.sedes[index].id,
-                   this.form.id_cliente=this.sedes[index].id_cliente,
-                   this.form.nombre_sede=this.sedes[index].nombre_sede,
-                   this.form.contacto_sede=this.sedes[index].contacto_sede,
-                   this.form.departamento_sede=this.sedes[index].departamento_sede,
-                   this.form.ciudad_sede=this.sedes[index].ciudad_sede,
-                   this.form.contacto_sede=this.sedes[index].contacto_sede,
-                   this.form.telefono_sede=this.sedes[index].telefono_sede,
-                   this.form.correo_sede=this.sedes[index].correo_sede,
-                   this.form.direccion_sede=this.sedes[index].direccion_sede,
+
+                   this.form.id=this.actas_entrega[index].id,
+                   this.form.items=JSON.parse(this.actas_entrega[index].items),
+                   this.form.nombre_empresa=this.actas_entrega[index].nombre_empresa,
+                   this.form.codigo=this.actas_entrega[index].codigo,
+                   this.form.creado=this.actas_entrega[index].creado,
+                   this.form.version=this.actas_entrega[index].version,
+                   this.form.direccion_cliente=this.actas_entrega[index].direccion_cliente,
+                   this.form.telefono_cliente=this.actas_entrega[index].telefono_cliente,
+                   this.form.id_cliente=this.actas_entrega[index].id_cliente,
+                   this.form.ciudad_cliente=this.actas_entrega[index].ciudad_cliente,
+                   this.form.telefono_sede=this.actas_entrega[index].telefono_sede,
+                   this.form.direccion_sede=this.actas_entrega[index].direccion_sede,
+                   this.form.departamento_sede=this.actas_entrega[index].departamento_sede,
+                   this.form.ciudad_sede=this.actas_entrega[index].ciudad_sede,
+                   this.form.ciudad_origen=this.actas_entrega[index].ciudad_origen,
+                   this.form.departamento_origen=this.actas_entrega[index].departamento_origen,
+                   this.form.ciudad_destino=this.actas_entrega[index].ciudad_destino,
+                   this.form.departamento_destino=this.actas_entrega[index].departamento_destino,
+                   this.form.dep=this.actas_entrega[index].dep,
+                   this.form.depp=this.actas_entrega[index].depp,
+                   this.form.nombre_sede=this.actas_entrega[index].nombre_sede,
+                   this.form.id_sede=this.actas_entrega[index].id_sede,
+                   this.form.remision=this.actas_entrega[index].remision,
+                   this.form.unidades=this.actas_entrega[index].unidades,
+                   this.match();
+                   this.loadsedes(this.actas_entrega[index].id_cliente);
                    $('#modal-lg').modal('show');
                    this.editMode=true
                  },
                  ver(index){
-                   this.form.id=this.sedes[index].id,
-                   this.form.id_cliente=this.sedes[index].id_cliente,
-                   this.form.nombre_sede=this.sedes[index].nombre_sede,
-                   this.form.contacto_sede=this.sedes[index].contacto_sede,
-                   this.form.departamento_sede=this.sedes[index].departamento_sede,
-                   this.form.ciudad_sede=this.sedes[index].ciudad_sede,
-                   this.form.contacto_sede=this.sedes[index].contacto_sede,
-                   this.form.telefono_sede=this.sedes[index].telefono_sede,
-                   this.form.correo_sede=this.sedes[index].correo_sede,
-                   this.form.direccion_sede=this.sedes[index].direccion_sede,
+                   this.form.id=this.actas_entrega[index].id,
+                   this.form.items=JSON.parse(this.actas_entrega[index].items),
+                   this.form.nombre_empresa=this.actas_entrega[index].nombre_empresa,
+                   this.form.codigo=this.actas_entrega[index].codigo,
+                   this.form.creado=this.actas_entrega[index].creado,
+                   this.form.version=this.actas_entrega[index].version,
+                   this.form.direccion_cliente=this.actas_entrega[index].direccion_cliente,
+                   this.form.telefono_cliente=this.actas_entrega[index].telefono_cliente,
+                   this.form.id_cliente=this.actas_entrega[index].id_cliente,
+                   this.form.ciudad_cliente=this.actas_entrega[index].ciudad_cliente,
+                   this.form.telefono_sede=this.actas_entrega[index].telefono_sede,
+                   this.form.direccion_sede=this.actas_entrega[index].direccion_sede,
+                   this.form.departamento_sede=this.actas_entrega[index].departamento_sede,
+                   this.form.ciudad_sede=this.actas_entrega[index].ciudad_sede,
+                   this.form.ciudad_origen=this.actas_entrega[index].ciudad_origen,
+                   this.form.departamento_origen=this.actas_entrega[index].departamento_origen,
+                   this.form.ciudad_destino=this.actas_entrega[index].ciudad_destino,
+                   this.form.departamento_destino=this.actas_entrega[index].departamento_destino,
+                   this.form.dep=this.actas_entrega[index].dep,
+                   this.form.depp=this.actas_entrega[index].depp,
+                   this.form.nombre_sede=this.actas_entrega[index].nombre_sede,
+                   this.form.id_sede=this.actas_entrega[index].id_sede,
+                   this.form.remision=this.actas_entrega[index].remision,
+                   this.form.unidades=this.actas_entrega[index].unidades,
                    $('#myModal').modal('show');
                    this.editMode=false
                  },
@@ -1943,6 +2022,12 @@
                            this.clientes = clientes
                          });
                        },
+                 async loadActas() {
+                      await   axios.get('index.php/Actas_entrega/getactas_entrega/')
+                         .then(({data: {actas_entrega}}) => {
+                           this.actas_entrega = actas_entrega
+                         });
+                       },
                  loadCart(){
 
                    if(localStorage.getItem('cart')) {
@@ -1956,6 +2041,7 @@
        },
 
        created(){
+            this.loadActas();
             this.loadtipocarga();
             this.loadclientes();
             this.loadCart();

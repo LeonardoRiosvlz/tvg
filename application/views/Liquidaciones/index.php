@@ -88,7 +88,7 @@
               <div class="modal-body">
                 <div class="row p-1 ">
                   <div class="col-md-4">
-                    <label class="links">Clientes</label>
+                    <label class="links"></label>
                     <input list="encodings" v-model="form.cedula" @change="loadLiquidaciones();loadCotizaciones()"  value="" class="form-control form-control-lg" placeholder="Escriba una cedula" :disabled="ver">
                       <datalist id="encodings">
                           <option v-for="clientes in clientes"  v-if="clientes.cliente_especial==='No'" :value="clientes.cedula_cliente">{{clientes.nombre_cliente}}</option>

@@ -34,6 +34,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         }
         public function editar($data) {
             $this->db->where('id',$data['id']);
+
             $this->db->update('actas_entrega', array(
               'items'     => json_encode($data['items']),
               'nombre_empresa'     => $data['nombre_empresa'],
@@ -56,7 +57,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
               'nombre_sede'     => $data['nombre_sede'],
               'id_sede'     => $data['id_sede'],
               'remision'     => $data['remision'],
-              'unidadaes'     => $data['unidades'],
+              'unidades'     => $data['unidades'],
             ));
             return $this->db->error();
            }
@@ -173,10 +174,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                      foreach($data->result() as $row){
                                          $output .= '
                                             <p style="text-align: right;color:red;font-size:15px;">SERIAL-'.$row->id.'</p></BR>
+                                            <p style="font-size:15px; "> '.$row->ciudad_destino.'  '.$row->creado.'</p></BR>
                                             <h2 style="font-weight: bold;font-size:25px;text-align: center;" >ACTA DE ENTREGA</h2></BR>
-                                            <p style="font-size:10px; "> '.$row->ciudad_destino.'  '.$row->creado.'</p></BR>
-                                            <p style="font-weight: bold;font-size:17px;padding: 0;margin: 0;">CODIGO:'.$row->codigo.'</p></BR>
-                                            <p style="font-weight: bold;font-size:17px;0;">VERSIÓN:'.$row->version.'</p></BR>
+                                            <p style="text-align: right;font-weight: bold;font-size:17px;padding: 0;margin: 0;">CODIGO:'.$row->codigo.'</p></BR>
+                                            <p style="text-align: right;font-weight: bold;font-size:17px;0;">VERSIÓN:'.$row->version.'</p></BR>
                                             <p style="font-size:17px;padding: 0;margin: 0;">Señores</p></BR>
                                             <p style="font-weight: bold;font-size:17px;padding: 0;margin: 0;">'.$row->nombre_empresa.'</p></BR>
                                             <p style="font-weight: bold;font-size:17px;padding: 0;margin: 0;">Dirección: '.$row->direccion_cliente.'</p></BR>
