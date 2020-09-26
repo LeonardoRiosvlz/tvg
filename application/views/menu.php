@@ -89,7 +89,8 @@
                       <a class="dropdown-item links" href="<?=base_url()?>Cotizador"><i class="fa fa-calculator" aria-hidden="true"></i> Cotizador</a>
                       <a class="dropdown-item links" href="<?=base_url()?>Liquidaciones"><i class="fa fa-file-powerpoint-o" aria-hidden="true"></i> Planillas De Liquidación</a>
                       <a class="dropdown-item links" href="<?=base_url()?>Guias"><i class="fa fa-road" aria-hidden="true"></i> Guías De Carga</a>
-                      <a class="dropdown-item links" href="<?=base_url()?>Actas_entrega"><i class="fa fa-cubes" aria-hidden="true"></i> Actas de entrega</a>
+                      <a class="dropdown-item links" href="<?=base_url()?>Actas_entrega"><i class="fa fa-handshake-o" aria-hidden="true"></i> Actas de entrega</a>
+                      <a class="dropdown-item links" href="<?=base_url()?>Actas_recogida"><i class="fa fa-cubes" aria-hidden="true"></i> Actas de recogida</a>
                     </div>
                   </div>
                   <div class="dropdown">

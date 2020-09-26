@@ -8,7 +8,7 @@
           <thead>
             <tr>
               <th scope="col" colspan="5" class="border-0 bg-white  text-center">
-                  <div class="bg-light rounded-pill px-4 py-3 text-uppercase font-weight-bold links">Actas de entrega <i class="fa fa-handshake-o" aria-hidden="true"></i></div>
+                  <div class="bg-light rounded-pill px-4 py-3 text-uppercase font-weight-bold links">Actas de Recogida <i class="fa fa-cubes" aria-hidden="true"></i></div>
               </th>
             </tr>
           </thead>
@@ -37,14 +37,14 @@
               <th class="links">Action</th>
             </tr>
             </thead>
-              <tr v-for="(actas_entrega,index) in actas_entrega">
-                <td class="links">{{actas_entrega.id}}</td>
-                <td class="links">{{actas_entrega.creado}}</td>
-                <td class="links">{{actas_entrega.nombre_empresa}}</td>
-                <td class="links">{{actas_entrega.id_cliente}}</td>
-                <td class="links">{{actas_entrega.ciudad_origen}}</td>
-                <td class="links">{{actas_entrega.ciudad_destino}}</td>
-                <td class="links">{{actas_entrega.unidades}}</td>
+              <tr v-for="(actas_recogida,index) in actas_recogida">
+                <td class="links">{{actas_recogida.id}}</td>
+                <td class="links">{{actas_recogida.creado}}</td>
+                <td class="links">{{actas_recogida.nombre_empresa}}</td>
+                <td class="links">{{actas_recogida.id_cliente}}</td>
+                <td class="links">{{actas_recogida.ciudad_origen}}</td>
+                <td class="links">{{actas_recogida.ciudad_destino}}</td>
+                <td class="links">{{actas_recogida.unidades}}</td>
                   <td>
                     <div class="btn-group">
                         <button type="button" class="btn btn-default">Action</button>
@@ -78,7 +78,7 @@
             <div class="modal-body">
               <h2 class="links text-center"> ACTAS DE ENTREGA</h2>
               <button type="button" class="btn btn-block btn-lg btn-success"><span class="mbri-bookmark"></span>AEN-{{id}}</button>
-              <a :href="'<?=base_url();?>Actas_entrega/to_pdf/'+id" type="button" download class="btn btn-block btn-lg btn-primary" @click="generar()">Imprimir PDF <span class="mbri-share"></span></a>
+              <a :href="'<?=base_url();?>actas_recogida/to_pdf/'+id" type="button" download class="btn btn-block btn-lg btn-primary" @click="generar()">Imprimir PDF <span class="mbri-share"></span></a>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
@@ -91,7 +91,7 @@
          <div class="modal-dialog modal-lg">
            <div class="modal-content">
              <div class="modal-header">
-               <h4 class="modal-title links">Actas de entrega  <i class="fa fa-handshake-o" aria-hidden="true"></i></h4>
+               <h4 class="modal-title links">Actas de Recogida <i class="fa fa-cubes" aria-hidden="true"></i></h4>
                <button type="button" @click="resete()" class="close" data-dismiss="modal" aria-label="Close">
                  <span class="mbri-close " ></span>
                </button>
@@ -163,23 +163,27 @@
                                  <p class="text-danger my-1" v-if="(errors.first('ciudad_cliente'))" >  Este dato es requerido  </p>
                                </div>
                              </div>
-                             <div class="col-4">
-                               <div class="form-group">
-                                  <label   class="links">Sedes</label>
-                                  <select v-model="form.id_sede" v-validate="'required'" @change="sedeset()" name="id_sede" class="form-control" id="sel1">
-                                    <option></option>
-                                    <option v-for="sedes in sedes" :value="sedes.id">{{sedes.nombre_sede}} </option>
-                                  </select>
-                                  <p class="text-danger my-1" v-if="(errors.first('id_sede'))" >  Este dato es requerido  </p>
-                                </div>
-                             </div>
-                             <div class="col-4">
+                             <div class="col-sm-4">
                                <!-- textarea -->
                                <div class="form-group">
-                                 <label class="links">Dirección</label>
-                                  <input type="text" v-model="form.direccion_sede" v-validate="'required'" name="direccion_sede" class="form-control" id="" :disabled="ver"></input>
-                                 <p class="text-danger my-1" v-if="(errors.first('direccion_sede'))" >  Este dato es requerido  </p>
+                                 <label class="links">Barrio</label>
+                                  <input type="text" v-model="form.barrio" v-validate="'required'" name="barrio" class="form-control" id="" :disabled="ver">
+                                 <p class="text-danger my-1" v-if="(errors.first('barrio'))" >  Este dato es requerido  </p>
                                </div>
+                             </div>
+                             <div class=" col-md-4 col-sm-12">
+                               <div class="form-group">
+                                  <label class="links">Fecha Recogida</label>
+                                    <flat-pickr
+                                        v-validate="'required'"
+                                        v-model="form.fecha_recogida"
+                                        :config="config"
+                                        class="form-control"
+                                        placeholder="Selecciona fecha"
+                                        name="fecha_recogida">
+                                  </flat-pickr>
+                                  <p class="text-danger my-1" v-if="(errors.first('fecha_recogida'))" >  Este dato es requerido  </p>
+                                </div>
                              </div>
                              <div class="col-sm-3">
                                <label class="links">Departamento origen</label>
@@ -222,77 +226,30 @@
                            <div class="col-sm-4">
                              <!-- textarea -->
                              <div class="form-group">
-                               <label class="links">Numero de remision</label>
-                                <input type="text" v-model="form.remision" v-validate="'required'" name="remision" class="form-control" id="" :disabled="ver">
-                               <p class="text-danger my-1" v-if="(errors.first('remision'))" >  Este dato es requerido  </p>
+                               <label class="links">Nombre conductor</label>
+                                <input type="text" v-model="form.conductor" v-validate="'required'" name="conductor" class="form-control" id="" :disabled="ver">
+                               <p class="text-danger my-1" v-if="(errors.first('conductor'))" >  Este dato es requerido  </p>
                              </div>
-                           </div>
-                           <div class="col-4">
-                            <label class="links">Tipo de carga</label>
-                             <div class="input-group">
-                                <select v-model="item.tipocarga"   name="tipocarga" class="form-control" :disabled="ver" >
-                                  <option v-for="tipocarga in tipocarga"  :value="tipocarga.nombre_tipocarga">{{tipocarga.nombre_tipocarga}}</option>
-                                </select>
-                                <div class="input-group-append">
-                                  <input v-model="item.cantidad"  type="number" name="cantidad" class="form-control" placeholder="Cantidad" :disabled="ver">
-                                </div>
-                              </div>
                            </div>
                            <div class="col-sm-4">
                              <!-- textarea -->
                              <div class="form-group">
-                               <label class="links">Descripción</label>
-                                <input type="text" v-model="item.descripcion"  name="descripcion" class="form-control" id="" :disabled="ver">
-
+                               <label class="links">Cedula</label>
+                                <input type="text" v-model="form.cedula_c" v-validate="'required'" name="cedula_c" class="form-control" id="" :disabled="ver">
+                               <p class="text-danger my-1" v-if="(errors.first('cedula_c'))" >  Este dato es requerido  </p>
                              </div>
                            </div>
-                           <button
-                           v-if="item.descripcion && item.tipocarga && !corregirMode"
-                            type="button" class="btn btn-success btn-lg btn-block my-2" @click="pushearItem()">Agregar <span class="mbri-save"></span></button>
-                            <button
-                            v-if="item.descripcion  && item.tipocarga && corregirMode"
-                             type="button" class="btn btn-success btn-lg btn-block my-2" @click="editarItem()">Editar <span class="mbri-save"></span></button>
-                             <table class="table table-striped table-bordered table condensed table-hover  && kilostotal && volumen" WIDTH="100%">
-                               <thead>
-                                 <tr>
-                                   <th style="white-space: nowrap;">TIPO DE CARGA</th>
-                                   <th style="white-space: nowrap;">CANTIDAD</th>
-                                   <th style="white-space: nowrap;">DESCRIPCIÓN</th>
-                                   <th v-show="!ver" style="white-space: nowrap;">ACTION</th>
-                                 </tr>
-                               </thead>
-                               <tbody>
-                                 <tr v-for="(elemento ,index) in form.items">
-                                   <td style="white-space: nowrap;">{{elemento.tipocarga}}</td>
-                                   <td style="white-space: nowrap;">{{elemento.cantidad}}</td>
-                                   <td style="white-space: nowrap;">{{elemento.descripcion}}</td>
-                                   <td v-show="!ver">
-                                     <div class="btn-group">
-                                         <button type="button" class="btn btn-default">Action</button>
-                                         <button type="button" class="btn btn-default dropdown-toggle dropdown-icon" data-toggle="dropdown">
-                                           <span class="sr-only">Toggle Dropdown</span>
-                                           <div class="dropdown-menu" role="menu">
-                                             <a class="dropdown-item" href="#" @click="eliminarItem(index)">Quitar</a>
-                                             <a class="dropdown-item" href="#" @click="corregir(index);corregirMode=true;">Correguir</a>
-                                           </div>
-                                         </button>
-                                     </div>
-                                   </td>
-                                 </tr>
-                               </tbody>
-                             </table>
-
-                           </div>
-                           <div class="row">
-                             <label style="font-size:30px;">Cantidad</label>
-                             <div class="col-2 justify-content-center">
-                                <input v-model="form.unidades" class="form-control form-control-lg" type="text" :disabled="ver">
+                           <div class="col-sm-4">
+                             <!-- textarea -->
+                             <div class="form-group">
+                               <label class="links">Placa</label>
+                                <input type="text" v-model="form.placa" v-validate="'required'" name="placa" class="form-control" id="" :disabled="ver">
+                               <p class="text-danger my-1" v-if="(errors.first('placa'))" >  Este dato es requerido  </p>
                              </div>
-
                            </div>
                             </div>
-                           <button v-if="editMode===false" @click="validateBeforeSubmit()"  class="button is-primary links btn btn-light float-right my-3" type="submit">Guardar</button>
-                           <button v-if="editMode===true && !ver"  @click="validateBeforeSubmit()"   class="button is-primary btn btn-light links float-right my-3" type="submit">Editar</button>
+                           <button v-if="editMode===false"  class="button is-primary links btn btn-light float-right my-3" type="submit">Guardar</button>
+                           <button v-if="editMode===true && !ver"    class="button is-primary btn btn-light links float-right my-3" type="submit">Editar</button>
                        </form>
                      </div>
          <!-- Fin del formulario -->
@@ -306,11 +263,19 @@
  </div>
 </div>
 <script>
+      Vue.component('flat-pickr', VueFlatpickr);
      axios.defaults.baseURL = '<?PHP echo base_url(); ?>';
      Vue.use(VeeValidate ,{locale: 'vi'});
      new Vue({
        el: '#app',
        data: {
+         id:0,
+         config: {
+            wrap: true,
+            enableTime: false,
+            dateFormat: 'yy-m-d',
+            locale: flatpickr.l10ns.es
+          },
          corregirMode:false,
          item:{
            'tipocarga':'',
@@ -321,7 +286,7 @@
          ver:false,
          cart:[],
          sedes:[],
-         actas_entrega:[],
+         actas_recogida:[],
          tipocarga:[],
          clientes:[],
          marca:0,
@@ -1638,12 +1603,13 @@
               'id_cliente':'',
               'ciudad_cliente':'',
               'contacto_sede':'',
+              'correo_cliente':'',
               'telefono_sede':'',
-              'correo_sede':'',
-              'direccion_sede':'',
-              'departamento_sede':'',
-              'ciudad_sede':'',
-              'ciudad_origen':'',
+              'fecha_recogida':'',
+              'cedula_c':'',
+              'Placa':'',
+              'barrio':'',
+              'conductor':'',
               'departamento_origen':'Amazonas',
               'ciudad_destino':'',
               'departamento_destino':'Amazonas',
@@ -1761,6 +1727,7 @@
                 this.form.ciudad_cliente=this.clientes[i].ciudad;
                 this.form.direccion_cliente=this.clientes[i].direccion_cliente;
                 this.form.telefono_cliente=this.clientes[i].telefono_cliente;
+                this.form.correo_cliente=this.clientes[i].correo_cliente;
                 this.verTabla=true;
                 this.alerta=false;
                 this.marca=this.form.id_cliente;
@@ -1823,20 +1790,12 @@
                $('#modal-lg').modal('show');
            },
            validateBeforeSubmit() {
-             if (this.form.items.length<1) {
-               Swal.fire({
-                 type: 'error',
-                 title: 'Lo sentimos',
-                 text: 'Debes agregar al menos 1 item'
-               });
-               return;
-             }
                    this.$validator.validateAll().then((result) => {
                      if (result) {
                        let data = new FormData();
                        data.append('service_form',JSON.stringify(this.form));
                      if(!this.editMode){
-                       axios.post('index.php/Actas_entrega/insertar',data)
+                       axios.post('index.php/actas_recogida/insertar',data)
                        .then(response => {
                          this.id=response.data.id;
                          window.setTimeout(function () {
@@ -1862,7 +1821,7 @@
                        })
                      }
                      else{
-                       axios.post('index.php/actas_entrega/editar',data)
+                       axios.post('index.php/actas_recogida/editar',data)
                        .then(response => {
                          if(response.data.status == 200)
                          {
@@ -1911,8 +1870,8 @@
                    }).then((result) => {
                      if (result.value) {
                        let data = new FormData();
-                       data.append('id',this.actas_entrega[index].id);
-                         axios.post('index.php/actas_entrega/eliminar',data)
+                       data.append('id',this.actas_recogida[index].id);
+                         axios.post('index.php/actas_recogida/eliminar',data)
                          .then(response => {
                            if(response) {
                              Swal(
@@ -1951,62 +1910,58 @@
                       },
                  setear(index){
 
-                   this.form.id=this.actas_entrega[index].id,
-                   this.form.user_id=this.actas_entrega[index].user_id,
-                   this.form.items=JSON.parse(this.actas_entrega[index].items),
-                   this.form.nombre_empresa=this.actas_entrega[index].nombre_empresa,
-                   this.form.codigo=this.actas_entrega[index].codigo,
-                   this.form.creado=this.actas_entrega[index].creado,
-                   this.form.version=this.actas_entrega[index].version,
-                   this.form.direccion_cliente=this.actas_entrega[index].direccion_cliente,
-                   this.form.telefono_cliente=this.actas_entrega[index].telefono_cliente,
-                   this.form.id_cliente=this.actas_entrega[index].id_cliente,
-                   this.form.ciudad_cliente=this.actas_entrega[index].ciudad_cliente,
-                   this.form.telefono_sede=this.actas_entrega[index].telefono_sede,
-                   this.form.direccion_sede=this.actas_entrega[index].direccion_sede,
-                   this.form.departamento_sede=this.actas_entrega[index].departamento_sede,
-                   this.form.ciudad_sede=this.actas_entrega[index].ciudad_sede,
-                   this.form.ciudad_origen=this.actas_entrega[index].ciudad_origen,
-                   this.form.departamento_origen=this.actas_entrega[index].departamento_origen,
-                   this.form.ciudad_destino=this.actas_entrega[index].ciudad_destino,
-                   this.form.departamento_destino=this.actas_entrega[index].departamento_destino,
-                   this.form.dep=this.actas_entrega[index].dep,
-                   this.form.depp=this.actas_entrega[index].depp,
-                   this.form.nombre_sede=this.actas_entrega[index].nombre_sede,
-                   this.form.id_sede=this.actas_entrega[index].id_sede,
-                   this.form.remision=this.actas_entrega[index].remision,
-                   this.form.unidades=this.actas_entrega[index].unidades,
+                   this.form.id=this.actas_recogida[index].id,
+                   this.form.nombre_empresa=this.actas_recogida[index].nombre_empresa,
+                   this.form.codigo=this.actas_recogida[index].codigo,
+                   this.form.creado=this.actas_recogida[index].creado,
+                   this.form.version=this.actas_recogida[index].version,
+                   this.form.direccion_cliente=this.actas_recogida[index].direccion_cliente,
+                   this.form.telefono_cliente=this.actas_recogida[index].telefono_cliente,
+                   this.form.id_cliente=this.actas_recogida[index].id_cliente,
+                   this.form.ciudad_cliente=this.actas_recogida[index].ciudad_cliente,
+                   this.form.ciudad_origen=this.actas_recogida[index].ciudad_origen,
+                   this.form.departamento_origen=this.actas_recogida[index].departamento_origen,
+                   this.form.ciudad_destino=this.actas_recogida[index].ciudad_destino,
+                   this.form.departamento_destino=this.actas_recogida[index].departamento_destino,
+                   this.form.dep=this.actas_recogida[index].dep,
+                   this.form.depp=this.actas_recogida[index].depp,
+                   this.form.nombre_sede=this.actas_recogida[index].nombre_sede,
+                   this.form.id_sede=this.actas_recogida[index].id_sede,
+                   this.form.placa=this.actas_recogida[index].placa,
+                   this.form.conductor=this.actas_recogida[index].conductor,
+                   this.form.fecha_recogida=this.actas_recogida[index].fecha_recogida,
+                   this.form.barrio=this.actas_recogida[index].barrio,
+                   this.form.cedula_c=this.actas_recogida[index].cedula_c,
                    this.match();
-                   this.loadsedes(this.actas_entrega[index].id_cliente);
+                   this.loadsedes(this.actas_recogida[index].id_cliente);
                    $('#modal-lg').modal('show');
                    this.editMode=true
                  },
                  ver(index){
-                   this.form.id=this.actas_entrega[index].id,
-                   this.form.user_id=this.actas_entrega[index].user_id,
-                   this.form.items=JSON.parse(this.actas_entrega[index].items),
-                   this.form.nombre_empresa=this.actas_entrega[index].nombre_empresa,
-                   this.form.codigo=this.actas_entrega[index].codigo,
-                   this.form.creado=this.actas_entrega[index].creado,
-                   this.form.version=this.actas_entrega[index].version,
-                   this.form.direccion_cliente=this.actas_entrega[index].direccion_cliente,
-                   this.form.telefono_cliente=this.actas_entrega[index].telefono_cliente,
-                   this.form.id_cliente=this.actas_entrega[index].id_cliente,
-                   this.form.ciudad_cliente=this.actas_entrega[index].ciudad_cliente,
-                   this.form.telefono_sede=this.actas_entrega[index].telefono_sede,
-                   this.form.direccion_sede=this.actas_entrega[index].direccion_sede,
-                   this.form.departamento_sede=this.actas_entrega[index].departamento_sede,
-                   this.form.ciudad_sede=this.actas_entrega[index].ciudad_sede,
-                   this.form.ciudad_origen=this.actas_entrega[index].ciudad_origen,
-                   this.form.departamento_origen=this.actas_entrega[index].departamento_origen,
-                   this.form.ciudad_destino=this.actas_entrega[index].ciudad_destino,
-                   this.form.departamento_destino=this.actas_entrega[index].departamento_destino,
-                   this.form.dep=this.actas_entrega[index].dep,
-                   this.form.depp=this.actas_entrega[index].depp,
-                   this.form.nombre_sede=this.actas_entrega[index].nombre_sede,
-                   this.form.id_sede=this.actas_entrega[index].id_sede,
-                   this.form.remision=this.actas_entrega[index].remision,
-                   this.form.unidades=this.actas_entrega[index].unidades,
+                   this.form.id=this.actas_recogida[index].id,
+                   this.form.items=JSON.parse(this.actas_recogida[index].items),
+                   this.form.nombre_empresa=this.actas_recogida[index].nombre_empresa,
+                   this.form.codigo=this.actas_recogida[index].codigo,
+                   this.form.creado=this.actas_recogida[index].creado,
+                   this.form.version=this.actas_recogida[index].version,
+                   this.form.direccion_cliente=this.actas_recogida[index].direccion_cliente,
+                   this.form.telefono_cliente=this.actas_recogida[index].telefono_cliente,
+                   this.form.id_cliente=this.actas_recogida[index].id_cliente,
+                   this.form.ciudad_cliente=this.actas_recogida[index].ciudad_cliente,
+                   this.form.telefono_sede=this.actas_recogida[index].telefono_sede,
+                   this.form.direccion_sede=this.actas_recogida[index].direccion_sede,
+                   this.form.departamento_sede=this.actas_recogida[index].departamento_sede,
+                   this.form.ciudad_sede=this.actas_recogida[index].ciudad_sede,
+                   this.form.ciudad_origen=this.actas_recogida[index].ciudad_origen,
+                   this.form.departamento_origen=this.actas_recogida[index].departamento_origen,
+                   this.form.ciudad_destino=this.actas_recogida[index].ciudad_destino,
+                   this.form.departamento_destino=this.actas_recogida[index].departamento_destino,
+                   this.form.dep=this.actas_recogida[index].dep,
+                   this.form.depp=this.actas_recogida[index].depp,
+                   this.form.nombre_sede=this.actas_recogida[index].nombre_sede,
+                   this.form.id_sede=this.actas_recogida[index].id_sede,
+                   this.form.remision=this.actas_recogida[index].remision,
+                   this.form.unidades=this.actas_recogida[index].unidades,
                    $('#myModal').modal('show');
                    this.editMode=false
                  },
@@ -2026,9 +1981,9 @@
                          });
                        },
                  async loadActas() {
-                      await   axios.get('index.php/Actas_entrega/getactas_entrega/')
-                         .then(({data: {actas_entrega}}) => {
-                           this.actas_entrega = actas_entrega
+                      await   axios.get('index.php/actas_recogida/getactas_recogida/')
+                         .then(({data: {actas_recogida}}) => {
+                           this.actas_recogida = actas_recogida
                          });
                        },
                  loadCart(){

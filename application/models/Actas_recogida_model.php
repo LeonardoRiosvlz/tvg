@@ -1,78 +1,71 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-    class Actas_entrega_model extends MY_Model {
+    class Actas_recogida_model extends MY_Model {
         public function insertar($data){
             $fecha=date("Y-m-d");
-            $this->db->insert('actas_entrega', array(
+            $this->db->insert('actas_recogida', array(
                 'id'     => $data['id'],
-                'user_id'     => $data['user_id'],
-                'items'     => json_encode($data['items']),
                 'nombre_empresa'     => $data['nombre_empresa'],
                 'codigo'     => $data['codigo'],
                 'creado'     => $fecha,
                 'version'     => $data['version'],
                 'direccion_cliente'     => $data['direccion_cliente'],
                 'telefono_cliente'     => $data['telefono_cliente'],
+                'correo_cliente'     => $data['correo_cliente'],
                 'id_cliente'     => $data['id_cliente'],
                 'ciudad_cliente'     => $data['ciudad_cliente'],
-                'telefono_sede'     => $data['telefono_sede'],
-                'direccion_sede'     => $data['direccion_sede'],
-                'departamento_sede'     => $data['departamento_sede'],
-                'ciudad_sede'     => $data['ciudad_sede'],
                 'ciudad_origen'     => $data['ciudad_origen'],
                 'departamento_origen'     => $data['departamento_origen'],
                 'ciudad_destino'     => $data['ciudad_destino'],
                 'departamento_destino'     => $data['departamento_destino'],
                 'dep'     => $data['dep'],
                 'depp'     => $data['depp'],
-                'nombre_sede'     => $data['nombre_sede'],
-                'id_sede'     => $data['id_sede'],
-                'remision'     => $data['remision'],
-                'unidades'     => $data['unidades'],
+                'barrio'     => $data['barrio'],
+                'cedula_c'     => $data['cedula_c'],
+                'placa'     => $data['placa'],
+                'conductor'     => $data['conductor'],
+                'fecha_recogida'     => $data['fecha_recogida'],
             ));
             return $this->db->error();
         }
         public function editar($data) {
+            $fecha=date("Y-m-d");
             $this->db->where('id',$data['id']);
-
-            $this->db->update('actas_entrega', array(
-              'items'     => json_encode($data['items']),
-              'user_id'     => $data['user_id'],
+            $this->db->update('actas_recogida', array(
               'nombre_empresa'     => $data['nombre_empresa'],
               'codigo'     => $data['codigo'],
+              'creado'     => $fecha,
               'version'     => $data['version'],
               'direccion_cliente'     => $data['direccion_cliente'],
               'telefono_cliente'     => $data['telefono_cliente'],
+              'correo_cliente'     => $data['correo_cliente'],
               'id_cliente'     => $data['id_cliente'],
               'ciudad_cliente'     => $data['ciudad_cliente'],
-              'telefono_sede'     => $data['telefono_sede'],
-              'direccion_sede'     => $data['direccion_sede'],
-              'departamento_sede'     => $data['departamento_sede'],
-              'ciudad_sede'     => $data['ciudad_sede'],
               'ciudad_origen'     => $data['ciudad_origen'],
               'departamento_origen'     => $data['departamento_origen'],
               'ciudad_destino'     => $data['ciudad_destino'],
               'departamento_destino'     => $data['departamento_destino'],
               'dep'     => $data['dep'],
               'depp'     => $data['depp'],
-              'nombre_sede'     => $data['nombre_sede'],
-              'id_sede'     => $data['id_sede'],
-              'remision'     => $data['remision'],
-              'unidades'     => $data['unidades'],
+              'barrio'     => $data['barrio'],
+              'cedula_c'     => $data['cedula_c'],
+              'placa'     => $data['placa'],
+              'conductor'     => $data['conductor'],
+              'fecha_recogida'     => $data['fecha_recogida'],
             ));
             return $this->db->error();
            }
-        public function getactas_entrega() {
+        public function getactas_recogida() {
             return $this->db
             ->select('*')
-            ->from('actas_entrega')
+            ->from('actas_recogida')
             ->get()
             ->result();
           }
-          public function deleteactas_entrega($id) {
+          public function deleteactas_recogida($id) {
             $this->db->where('id', $id);
-            $this->db->delete('actas_entrega');
+            $this->db->delete('actas_recogida');
             return $this->db->error();
           }
           public function get_unused_id(){
@@ -103,7 +96,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 
                                 $this->db->select('*')
-                                            ->from('actas_entrega')
+                                            ->from('actas_recogida')
                                             ->where('id',$id);
                                 $data = $this->db->get();
 
