@@ -20,6 +20,9 @@
           </thead>
 
         </table>
+        <th scope="col" colspan="2" class="border-0 bg-white  text-center">
+          <a href="<?=base_url();?>/Tarifas/excelexport" type="button"  class="btn btn-block btn-primary btn-sm links" >Exportar Excel <span class="mbri-save"></span></a>
+        </th>
         <table id="example1" class="table ">
           <thead>
           <tr>
