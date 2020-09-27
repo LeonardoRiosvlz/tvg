@@ -1538,7 +1538,7 @@
                        let data = new FormData();
                        data.append('service_form',JSON.stringify(this.form));
                      if(!this.editMode){
-                       axios.post('index.php/sedes/insertar',data)
+                       axios.post('index.php/Sedes/insertar',data)
                        .then(response => {
                          if(response.data.status == 200){
                            Swal.fire({
@@ -1560,7 +1560,7 @@
                        })
                      }
                      else{
-                       axios.post('index.php/sedes/editar',data)
+                       axios.post('index.php/Sedes/editar',data)
                        .then(response => {
                          if(response.data.status == 200)
                          {
@@ -1606,7 +1606,7 @@
                      if (result.value) {
                        let data = new FormData();
                        data.append('id',this.sedes[index].id);
-                         axios.post('index.php/sedes/eliminar',data)
+                         axios.post('index.php/Sedes/eliminar',data)
                          .then(response => {
                            if(response) {
                              Swal(
@@ -1676,7 +1676,7 @@
                    $("#example1").DataTable();
                  },
                  async loadclientes() {
-                      await   axios.get('index.php/clientes/getclientes/')
+                      await   axios.get('index.php/Clientes/getclientes/')
                          .then(({data: {clientes}}) => {
                            this.clientes = clientes
                          });

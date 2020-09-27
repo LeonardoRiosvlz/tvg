@@ -118,7 +118,7 @@
                        let data = new FormData();
                        data.append('service_form',JSON.stringify(this.form));
                      if(!this.editMode){
-                       axios.post('index.php/tiempo/insertar',data)
+                       axios.post('index.php/Tiempo/insertar',data)
                        .then(response => {
                          if(response.data.status == 200){
                            Swal.fire({
@@ -140,7 +140,7 @@
                        })
                      }
                      else{
-                       axios.post('index.php/tiempo/editar',data)
+                       axios.post('index.php/Tiempo/editar',data)
                        .then(response => {
                          if(response.data.status == 200)
                          {
@@ -186,7 +186,7 @@
                      if (result.value) {
                        let data = new FormData();
                        data.append('id',this.tiempos[index].id);
-                         axios.post('index.php/tiempo/eliminar',data)
+                         axios.post('index.php/Tiempo/eliminar',data)
                          .then(response => {
                            if(response) {
                              Swal(
@@ -230,7 +230,7 @@
                    this.editMode=false
                  },
                  async loadtiempos() {
-                await   axios.get('index.php/tiempo/gettiempos/')
+                await   axios.get('index.php/Tiempo/gettiempos/')
                    .then(({data: {tiempos}}) => {
                      this.tiempos = tiempos
                    });

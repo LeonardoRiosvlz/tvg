@@ -1683,7 +1683,7 @@
                        let data = new FormData();
                        data.append('service_form',JSON.stringify(this.form));
                      if(!this.editMode){
-                       axios.post('index.php/clientes/insertar',data)
+                       axios.post('index.php/Clientes/insertar',data)
                        .then(response => {
                          if(response.data.status == 200){
                            Swal.fire({
@@ -1705,7 +1705,7 @@
                        })
                      }
                      else{
-                       axios.post('index.php/clientes/editar',data)
+                       axios.post('index.php/Clientes/editar',data)
                        .then(response => {
                          if(response.data.status == 200)
                          {
@@ -1751,7 +1751,7 @@
                      if (result.value) {
                        let data = new FormData();
                        data.append('id',this.clientes[index].id);
-                         axios.post('index.php/clientes/eliminar',data)
+                         axios.post('index.php/Clientes/eliminar',data)
                          .then(response => {
                            if(response) {
                              Swal(
@@ -1833,7 +1833,7 @@
                    this.editMode=false
                  },
                  async loadclientes() {
-                await   axios.get('index.php/clientes/getclientes/')
+                await   axios.get('index.php/Clientes/getclientes/')
                    .then(({data: {clientes}}) => {
                      this.clientes = clientes
                    });
@@ -1855,7 +1855,7 @@
                    });
                  },
                 async loadformaspago() {
-                    await   axios.get('index.php/formaspago/getformaspago/')
+                    await   axios.get('index.php/FormasPago/getformaspago/')
                        .then(({data: {formaspago}}) => {
                          this.formaspago = formaspago
                        });

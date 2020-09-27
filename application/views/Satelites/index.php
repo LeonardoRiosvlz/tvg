@@ -1480,7 +1480,7 @@
                        let data = new FormData();
                        data.append('service_form',JSON.stringify(this.form));
                      if(!this.editMode){
-                       axios.post('index.php/satelites/insertar',data)
+                       axios.post('index.php/Satelites/insertar',data)
                        .then(response => {
                          if(response.data.status == 200){
                            Swal.fire({
@@ -1502,7 +1502,7 @@
                        })
                      }
                      else{
-                       axios.post('index.php/satelites/editar',data)
+                       axios.post('index.php/Satelites/editar',data)
                        .then(response => {
                          if(response.data.status == 200)
                          {
@@ -1548,7 +1548,7 @@
                      if (result.value) {
                        let data = new FormData();
                        data.append('id',this.satelites[index].id);
-                         axios.post('index.php/satelites/eliminar',data)
+                         axios.post('index.php/Satelites/eliminar',data)
                          .then(response => {
                            if(response) {
                              Swal(
@@ -1604,7 +1604,7 @@
                    this.editMode=false
                  },
                  async loadsatelites() {
-                await   axios.get('index.php/satelites/getsatelites/')
+                await   axios.get('index.php/Satelites/getsatelites/')
                    .then(({data: {satelites}}) => {
                      this.satelites = satelites
                    });

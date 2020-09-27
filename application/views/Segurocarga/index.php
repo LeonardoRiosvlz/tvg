@@ -133,7 +133,7 @@
                        let data = new FormData();
                        data.append('service_form',JSON.stringify(this.form));
                      if(!this.editMode){
-                       axios.post('index.php/Segurocarga/insertar',data)
+                       axios.post('index.php/SeguroCarga/insertar',data)
                        .then(response => {
                          if(response.data.status == 200){
                            Swal.fire({
@@ -155,7 +155,7 @@
                        })
                      }
                      else{
-                       axios.post('index.php/Segurocarga/editar',data)
+                       axios.post('index.php/SeguroCarga/editar',data)
                        .then(response => {
                          if(response.data.status == 200)
                          {
@@ -201,7 +201,7 @@
                      if (result.value) {
                        let data = new FormData();
                        data.append('id',this.segurocarga[index].id);
-                         axios.post('index.php/Segurocarga/eliminar',data)
+                         axios.post('index.php/SeguroCarga/eliminar',data)
                          .then(response => {
                            if(response) {
                              Swal(
@@ -247,7 +247,7 @@
                    this.editMode=false
                  },
               async loadsegurocarga() {
-                await   axios.get('index.php/Segurocarga/getsegurocarga/')
+                await   axios.get('index.php/SeguroCarga/getsegurocarga/')
                    .then(({data: {segurocarga}}) => {
                      this.segurocarga = segurocarga
                    });

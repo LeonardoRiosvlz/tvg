@@ -142,7 +142,7 @@
                        let data = new FormData();
                        data.append('service_form',JSON.stringify(this.form));
                      if(!this.editMode){
-                       axios.post('index.php/tipocarga/insertar',data)
+                       axios.post('index.php/TipoCarga/insertar',data)
                        .then(response => {
                          if(response.data.status == 200){
                            Swal.fire({
@@ -164,7 +164,7 @@
                        })
                      }
                      else{
-                       axios.post('index.php/tipocarga/editar',data)
+                       axios.post('index.php/TipoCarga/editar',data)
                        .then(response => {
                          if(response.data.status == 200)
                          {
@@ -210,7 +210,7 @@
                      if (result.value) {
                        let data = new FormData();
                        data.append('id',this.tipocarga[index].id);
-                         axios.post('index.php/tipocarga/eliminar',data)
+                         axios.post('index.php/TipoCarga/eliminar',data)
                          .then(response => {
                            if(response) {
                              Swal(
@@ -258,7 +258,7 @@
                    this.editMode=false
                  },
                  async loadtipocarga() {
-                await   axios.get('index.php/tipocarga/gettipocarga/')
+                await   axios.get('index.php/TipoCarga/gettipocarga/')
                    .then(({data: {tipocarga}}) => {
                      this.tipocarga = tipocarga
                    });

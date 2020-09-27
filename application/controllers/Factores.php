@@ -12,7 +12,7 @@ class factores extends MY_Controller {
      		$this->is_logged_in();
         $this->load->view('header',["css"=>[""]]);
         $this->load->view('menu');
-        $this->load->view('factores/index');
+        $this->load->view('Factores/index');
         $this->load->view('footer',["js"=>[""]]);
       }
 			public function getfactores($id=0) {

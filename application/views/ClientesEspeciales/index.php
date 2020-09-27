@@ -2444,7 +2444,7 @@
                              this.alerta();
                          },
            async loadclientes() {
-                await   axios.get('index.php/clientes/getclientes/')
+                await   axios.get('index.php/Clientes/getclientes/')
                    .then(({data: {clientes}}) => {
                      this.clientes = clientes
                    });
@@ -2456,19 +2456,19 @@
                    });
                  },
               async loadtiposenvios() {
-                await   axios.get('index.php/tiposenvios/gettiposenvios/')
+                await   axios.get('index.php/TiposEnvios/gettiposenvios/')
                    .then(({data: {tiposenvios}}) => {
                      this.tiposenvios = tiposenvios
                    });
                  },
             async loadtipocarga() {
-                await   axios.get('index.php/tipocarga/gettipocarga/')
+                await   axios.get('index.php/TipoCarga/gettipocarga/')
                    .then(({data: {tipocarga}}) => {
                      this.tipocarga = tipocarga
                    });
                  },
            async loadtarifas() {
-               await   axios.get('index.php/tarifas/gettarifas/')
+               await   axios.get('index.php/Tarifas/gettarifas/')
                   .then(({data: {tarifas}}) => {
                     this.tarifas = tarifas
                   });
@@ -2482,7 +2482,7 @@
                   });
                 },
             async loadproveedores() {
-               await   axios.get('index.php/proveedores/getproveedores/')
+               await   axios.get('index.php/Proveedores/getproveedores/')
                   .then(({data: {proveedores}}) => {
                     this.proveedores = proveedores
                   });

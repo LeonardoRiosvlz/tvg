@@ -14,7 +14,7 @@ class Cotizaciones extends MY_Controller {
      		$this->is_logged_in();
         $this->load->view('header',["css"=>[""]]);
         $this->load->view('menu');
-        $this->load->view('cotizaciones/index');
+        $this->load->view('Cotizaciones/index');
         $this->load->view('footer',["js"=>[""]]);
       }
 			public function getcotizaciones($id=0) {

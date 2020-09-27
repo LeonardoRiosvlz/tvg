@@ -12,7 +12,7 @@ class Proveedores extends MY_Controller {
      		$this->is_logged_in();
         $this->load->view('header',["css"=>[""]]);
         $this->load->view('menu');
-        $this->load->view('proveedores/index');
+        $this->load->view('Proveedores/index');
         $this->load->view('footer',["js"=>[""]]);
       }
 			public function getproveedores($id=0) {

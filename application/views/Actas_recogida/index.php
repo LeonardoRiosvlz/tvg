@@ -30,21 +30,23 @@
               <th class="links">SERIAL</th>
               <th class="links">FECHA</th>
               <th class="links">CLIENTE</th>
-              <th class="links">CEDULDA</th>
-              <th class="links">CIUDAD ORIGEN</th>
-              <th class="links">CIUDAD DESTINO</th>
-              <th class="links">CANTIDAD</th>
+              <th class="links">CONDUCTOR</th>
+              <th class="links">PLACA</th>
+              <th class="links"style="white-space: nowrap;">FECHA RECOGIDA</th>
+              <th class="links"style="white-space: nowrap;">CIUDAD ORIGEN</th>
+              <th class="links"style="white-space: nowrap;">CIUDAD DESTINO</th>
               <th class="links">Action</th>
             </tr>
             </thead>
               <tr v-for="(actas_recogida,index) in actas_recogida">
-                <td class="links">{{actas_recogida.id}}</td>
-                <td class="links">{{actas_recogida.creado}}</td>
-                <td class="links">{{actas_recogida.nombre_empresa}}</td>
-                <td class="links">{{actas_recogida.id_cliente}}</td>
-                <td class="links">{{actas_recogida.ciudad_origen}}</td>
-                <td class="links">{{actas_recogida.ciudad_destino}}</td>
-                <td class="links">{{actas_recogida.unidades}}</td>
+                <td class="links"style="white-space: nowrap;">{{actas_recogida.id}}</td>
+                <td class="links"style="white-space: nowrap;">{{actas_recogida.creado}}</td>
+                <td class="links"style="white-space: nowrap;">{{actas_recogida.nombre_empresa}}</td>
+                <td class="links"style="white-space: nowrap;">{{actas_recogida.conductor}}</td>
+                <td class="links"style="white-space: nowrap;">{{actas_recogida.placa}}</td>
+                <td class="links"style="white-space: nowrap;">{{actas_recogida.fecha_recogida}}</td>
+                <td class="links"style="white-space: nowrap;">{{actas_recogida.ciudad_origen}}</td>
+                <td class="links"style="white-space: nowrap;">{{actas_recogida.ciudad_destino}}</td>
                   <td>
                     <div class="btn-group">
                         <button type="button" class="btn btn-default">Action</button>
@@ -79,6 +81,7 @@
               <h2 class="links text-center"> ACTAS DE ENTREGA</h2>
               <button type="button" class="btn btn-block btn-lg btn-success"><span class="mbri-bookmark"></span>AEN-{{id}}</button>
               <a :href="'<?=base_url();?>actas_recogida/to_pdf/'+id" type="button" download class="btn btn-block btn-lg btn-primary" @click="generar()">Imprimir PDF <span class="mbri-share"></span></a>
+              <a href="#" type="button"  class="btn btn-block btn-lg btn-primary" @click="setear_to_email();enviarEmail();">Enviar Email <span class="mbri-letter"></span></a>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
@@ -1798,17 +1801,18 @@
                        axios.post('index.php/actas_recogida/insertar',data)
                        .then(response => {
                          this.id=response.data.id;
-                         window.setTimeout(function () {
-                            $('#mplanilla').modal('show');
-                          }, 50);
                          if(response.data.status == 200){
                            Swal.fire({
                              type: 'success',
                              title: 'Exito!',
                              text: 'Agregado con exito'
-                           })
+                           });
+                           window.setTimeout(function () {
+                              $('#mplanilla').modal('show');
+                            }, 50);
+                           this.setear_to_email();
                            $('#modal-lg').modal('hide');
-                           this.loadActas(this.form.id_cliente);
+                           this.loadActas();
                            this.resete();
                          }
                          else{
@@ -1936,6 +1940,82 @@
                    this.loadsedes(this.actas_recogida[index].id_cliente);
                    $('#modal-lg').modal('show');
                    this.editMode=true
+                 },
+                 enviarEmail(){
+                   Swal({
+                     title: '¿Desear enviar el email?',
+                     text: "",
+                     type: 'warning',
+                     showCancelButton: true,
+                     confirmButtonText: '¡Si! ¡enviar!',
+                     cancelButtonText: '¡No! ',
+                     reverseButtons: true
+                   }).then((result) => {
+                     if (result.value) {
+                       let data = new FormData();
+                       data.append('service_form',JSON.stringify(this.form));
+                         axios.post('index.php/actas_recogida/enviar_acta',data)
+                         .then(response => {
+                           if(response) {
+                             Swal(
+                               '¡Eliminado!',
+                               'Ha sido enviado.',
+                               'success'
+                             ).then(response => {
+
+                             })
+                           } else {
+                             Swal(
+                               'Error',
+                               'Ha ocurrido un error.',
+                               'warning'
+                             ).then(response => {
+
+                             })
+                           }
+                         })
+                     } else if (
+                       result.dismiss === Swal.DismissReason.cancel
+                     ) {
+                       Swal(
+                         'Cancelado',
+                         'No fue eliminado.',
+                         'success'
+                       )
+                     }
+                   })
+                 },
+                 setear_to_email(){
+                     console.log("hola");
+                    for (var i = 0; i < this.actas_recogida.length; i++) {
+                      if (this.id===this.actas_recogida[i].id) {
+
+                        this.form.id=this.id;
+                        this.form.codigo=this.actas_recogida[i].codigo;
+                        this.form.creado=this.actas_recogida[i].creado;
+                        this.form.version=this.actas_recogida[i].version;
+                        this.form.direccion_cliente=this.actas_recogida[i].direccion_cliente;
+                        this.form.telefono_cliente=this.actas_recogida[i].telefono_cliente;
+                        this.form.id_cliente=this.actas_recogida[i].id_cliente;
+                        this.form.ciudad_cliente=this.actas_recogida[i].ciudad_cliente;
+                        this.form.correo_cliente=this.actas_recogida[i].correo_cliente;
+                        this.form.nombre_empresa=this.actas_recogida[i].nombre_empresa;
+                        this.form.ciudad_origen=this.actas_recogida[i].ciudad_origen;
+                        this.form.departamento_origen=this.actas_recogida[i].departamento_origen;
+                        this.form.ciudad_destino=this.actas_recogida[i].ciudad_destino;
+                        this.form.departamento_destino=this.actas_recogida[i].departamento_destino;
+                        this.form.dep=this.actas_recogida[i].dep;
+                        this.form.depp=this.actas_recogida[i].depp;
+                        this.form.nombre_sede=this.actas_recogida[i].nombre_sede;
+                        this.form.id_sede=this.actas_recogida[i].id_sede;
+                        this.form.placa=this.actas_recogida[i].placa;
+                        this.form.conductor=this.actas_recogida[i].conductor;
+                        this.form.fecha_recogida=this.actas_recogida[i].fecha_recogida;
+                        this.form.barrio=this.actas_recogida[i].barrio;
+                        this.form.cedula_c=this.actas_recogida[i].cedula_c;
+                      }
+
+                    }
                  },
                  ver(index){
                    this.form.id=this.actas_recogida[index].id,

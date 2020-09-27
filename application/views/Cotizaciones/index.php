@@ -1428,7 +1428,7 @@ v-if="item.id_tarifa && item.segurocarga && item.costeguia && item.escala && ite
                      if (result.value) {
                        let data = new FormData();
                        data.append('id',this.cotizaciones[index].id);
-                         axios.post('index.php/cotizaciones/eliminar',data)
+                         axios.post('index.php/Cotizaciones/eliminar',data)
                          .then(response => {
                            if(response) {
                              Swal(
@@ -1472,7 +1472,7 @@ v-if="item.id_tarifa && item.segurocarga && item.costeguia && item.escala && ite
                      if (result.value) {
                        let data = new FormData();
                        data.append('service_form',JSON.stringify(this.email));
-                         axios.post('index.php/cotizaciones/enviar_cotizacion',data)
+                         axios.post('index.php/Cotizaciones/enviar_cotizacion',data)
                          .then(response => {
                            if(response) {
                              Swal(
@@ -1516,7 +1516,7 @@ v-if="item.id_tarifa && item.segurocarga && item.costeguia && item.escala && ite
                      if (result.value) {
                        let data = new FormData();
                        data.append('service_form',JSON.stringify(this.email));
-                         axios.post('index.php/cotizaciones/soloenviar',data)
+                         axios.post('index.php/Cotizaciones/soloenviar',data)
                          .then(response => {
                            if(response) {
                              Swal(
@@ -1560,7 +1560,7 @@ v-if="item.id_tarifa && item.segurocarga && item.costeguia && item.escala && ite
                      if (result.value) {
                        let data = new FormData();
                        data.append('service_form',JSON.stringify(this.email));
-                         axios.post('index.php/cotizaciones/generar',data)
+                         axios.post('index.php/Cotizaciones/generar',data)
                          .then(response => {
                            if(response) {
                              Swal(
@@ -1652,7 +1652,7 @@ v-if="item.id_tarifa && item.segurocarga && item.costeguia && item.escala && ite
                    this.editMode=false
                  },
                  async loadcotizaciones(){
-                   await   axios.get('index.php/cotizaciones/getcotizaciones/')
+                   await   axios.get('index.php/Cotizaciones/getcotizaciones/')
                     .then(({data: {cotizaciones}}) => {
                       this.cotizaciones = cotizaciones
                     });
@@ -1681,7 +1681,7 @@ v-if="item.id_tarifa && item.segurocarga && item.costeguia && item.escala && ite
                     }
                   },
                  async loadclientes() {
-                      await   axios.get('index.php/clientes/getclientes/')
+                      await   axios.get('index.php/Clientes/getclientes/')
                          .then(({data: {clientes}}) => {
                            this.clientes = clientes
                          });
@@ -1693,19 +1693,19 @@ v-if="item.id_tarifa && item.segurocarga && item.costeguia && item.escala && ite
                          });
                        },
                     async loadtiposenvios() {
-                      await   axios.get('index.php/tiposenvios/gettiposenvios/')
+                      await   axios.get('index.php/TiposEnvios/gettiposenvios/')
                          .then(({data: {tiposenvios}}) => {
                            this.tiposenvios = tiposenvios
                          });
                        },
                   async loadtipocarga() {
-                      await   axios.get('index.php/tipocarga/gettipocarga/')
+                      await   axios.get('index.php/TipoCarga/gettipocarga/')
                          .then(({data: {tipocarga}}) => {
                            this.tipocarga = tipocarga
                          });
                        },
                  async loadtarifas() {
-                     await   axios.get('index.php/tarifas/gettarifas/')
+                     await   axios.get('index.php/Tarifas/gettarifas/')
                         .then(({data: {tarifas}}) => {
                           this.tarifas = tarifas
                         });
@@ -1719,34 +1719,34 @@ v-if="item.id_tarifa && item.segurocarga && item.costeguia && item.escala && ite
                         });
                       },
                   async loadproveedores() {
-                     await   axios.get('index.php/proveedores/getproveedores/')
+                     await   axios.get('index.php/Proveedores/getproveedores/')
                         .then(({data: {proveedores}}) => {
                           this.proveedores = proveedores
                         });
                       },
                       async loadsegurocarga() {
-                        await   axios.get('index.php/Segurocarga/getsegurocarga/')
+                        await   axios.get('index.php/SeguroCarga/getsegurocarga/')
                            .then(({data: {segurocarga}}) => {
                              this.segurocarga = segurocarga
                            });
 
                          },
                       async loadfactores() {
-                        await   axios.get('index.php/factores/getfactores/')
+                        await   axios.get('index.php/Factores/getfactores/')
                            .then(({data: {factores}}) => {
                              this.factores = factores
                            });
 
                          },
                          async loadcosteguia() {
-                        await   axios.get('index.php/costeguia/getcosteguia/')
+                        await   axios.get('index.php/CosteGuia/getcosteguia/')
                            .then(({data: {costeguia}}) => {
                              this.costeguia = costeguia
                            });
 
                          },
                       async loadnotas() {
-                            await   axios.get('index.php/notas/getnotass/')
+                            await   axios.get('index.php/Notas/getnotass/')
                                .then(({data: {notas}}) => {
                                  this.notas = notas
                                });

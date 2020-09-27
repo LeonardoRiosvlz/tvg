@@ -186,7 +186,7 @@
                        let data = new FormData();
                        data.append('service_form',JSON.stringify(this.form));
                      if(!this.editMode){
-                       axios.post('index.php/proveedores/insertar',data)
+                       axios.post('index.php/Proveedores/insertar',data)
                        .then(response => {
                          if(response.data.status == 200){
                            Swal.fire({
@@ -208,7 +208,7 @@
                        })
                      }
                      else{
-                       axios.post('index.php/proveedores/editar',data)
+                       axios.post('index.php/Proveedores/editar',data)
                        .then(response => {
                          if(response.data.status == 200)
                          {
@@ -254,7 +254,7 @@
                      if (result.value) {
                        let data = new FormData();
                        data.append('id',this.proveedores[index].id);
-                         axios.post('index.php/proveedores/eliminar',data)
+                         axios.post('index.php/Proveedores/eliminar',data)
                          .then(response => {
                            if(response) {
                              Swal(
@@ -308,7 +308,7 @@
                    this.editMode=false
                  },
                  async loadproveedores() {
-                await   axios.get('index.php/proveedores/getproveedores/')
+                await   axios.get('index.php/Proveedores/getproveedores/')
                    .then(({data: {proveedores}}) => {
                      this.proveedores = proveedores
                    });

@@ -902,7 +902,7 @@
                  if (result.value) {
                    let data = new FormData();
                    data.append('service_form',JSON.stringify(this.archivo));
-                     axios.post('index.php/liquidaciones/generar',data)
+                     axios.post('index.php/Liquidaciones/generar',data)
                      .then(response => {
                        if(response) {
                          Swal(
@@ -956,7 +956,7 @@
                if (result.value) {
                  let data = new FormData();
                  data.append('service_form',JSON.stringify(this.archivo));
-                   axios.post('index.php/liquidaciones/generar',data)
+                   axios.post('index.php/Liquidaciones/generar',data)
                    .then(response => {
                      if(response) {
                        Swal(
@@ -1010,7 +1010,7 @@
                if (result.value) {
                  let data = new FormData();
                  data.append('service_form',JSON.stringify(this.archivo));
-                   axios.post('index.php/liquidaciones/generar',data)
+                   axios.post('index.php/Liquidaciones/generar',data)
                    .then(response => {
                      if(response) {
                        Swal(
@@ -1064,7 +1064,7 @@
                if (result.value) {
                  let data = new FormData();
                  data.append('service_form',JSON.stringify(this.archivo));
-                   axios.post('index.php/liquidaciones/generar',data)
+                   axios.post('index.php/Liquidaciones/generar',data)
                    .then(response => {
                      if(response) {
                        Swal(
@@ -1441,20 +1441,20 @@
                    this.editMode=false
                  },
                  async loadcargos() {
-                await   axios.get('index.php/cargos/getcargos/')
+                await   axios.get('index.php/Cargos/getcargos/')
                    .then(({data: {cargos}}) => {
                      this.cargos = cargos
                    });
 
                  },
              async loadclientes() {
-                  await   axios.get('index.php/clientes/getclientes/')
+                  await   axios.get('index.php/Clientes/getclientes/')
                      .then(({data: {clientes}}) => {
                        this.clientes = clientes
                      });
                    },
                    async loadtarifas() {
-                       await   axios.get('index.php/tarifas/gettarifas/')
+                       await   axios.get('index.php/Tarifas/gettarifas/')
                           .then(({data: {tarifas}}) => {
                             this.tarifas = tarifas
                           });
@@ -1477,14 +1477,14 @@
                   $("#example1").DataTable();
                },
              async loadfactores() {
-               await   axios.get('index.php/factores/getfactores/')
+               await   axios.get('index.php/Factores/getfactores/')
                   .then(({data: {factores}}) => {
                     this.factores = factores
                   });
 
                 },
                async loadtipocarga() {
-                   await   axios.get('index.php/tipocarga/gettipocarga/')
+                   await   axios.get('index.php/TipoCarga/gettipocarga/')
                       .then(({data: {tipocarga}}) => {
                         this.tipocarga = tipocarga
                       });

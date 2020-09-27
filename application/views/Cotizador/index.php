@@ -749,7 +749,7 @@
                        let data = new FormData();
                        data.append('service_form',JSON.stringify(this.form));
                      if(!this.editMode){
-                       axios.post('index.php/cargos/insertar',data)
+                       axios.post('index.php/Cargos/insertar',data)
                        .then(response => {
                          if(response.data.status == 200){
                            Swal.fire({
@@ -771,7 +771,7 @@
                        })
                      }
                      else{
-                       axios.post('index.php/cargos/editar',data)
+                       axios.post('index.php/Cargos/editar',data)
                        .then(response => {
                          if(response.data.status == 200)
                          {
@@ -817,7 +817,7 @@
                      if (result.value) {
                        let data = new FormData();
                        data.append('id',this.cargos[index].id);
-                         axios.post('index.php/cargos/eliminar',data)
+                         axios.post('index.php/Cargos/eliminar',data)
                          .then(response => {
                            if(response) {
                              Swal(
@@ -881,26 +881,26 @@
                    }
                  },
                  async loadfactores() {
-                   await   axios.get('index.php/factores/getfactores/')
+                   await   axios.get('index.php/Factores/getfactores/')
                       .then(({data: {factores}}) => {
                         this.factores = factores
                       });
 
                     },
                     async loadtarifas() {
-                        await   axios.get('index.php/tarifas/gettarifas/')
+                        await   axios.get('index.php/Tarifas/gettarifas/')
                            .then(({data: {tarifas}}) => {
                              this.tarifas = tarifas
                            });
                          },
                    async loadtipocarga() {
-                       await   axios.get('index.php/tipocarga/gettipocarga/')
+                       await   axios.get('index.php/TipoCarga/gettipocarga/')
                           .then(({data: {tipocarga}}) => {
                             this.tipocarga = tipocarga
                           });
                         },
                         async loadtiposenvios() {
-                          await   axios.get('index.php/tiposenvios/gettiposenvios/')
+                          await   axios.get('index.php/TiposEnvios/gettiposenvios/')
                              .then(({data: {tiposenvios}}) => {
                                this.tiposenvios = tiposenvios
                              });

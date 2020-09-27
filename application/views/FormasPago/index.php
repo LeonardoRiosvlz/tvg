@@ -213,7 +213,7 @@
                      if (result.value) {
                        let data = new FormData();
                        data.append('id',this.formaspago[index].id);
-                         axios.post('index.php/formaspago/eliminar',data)
+                         axios.post('index.php/FormasPago/eliminar',data)
                          .then(response => {
                            if(response) {
                              Swal(
@@ -261,7 +261,7 @@
                    this.editMode=false
                  },
                  async loadformaspago() {
-                await   axios.get('index.php/formaspago/getformaspago/')
+                await   axios.get('index.php/FormasPago/getformaspago/')
                    .then(({data: {formaspago}}) => {
                      this.formaspago = formaspago
                    });

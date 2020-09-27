@@ -1536,7 +1536,7 @@
                        let data = new FormData();
                        data.append('service_form',JSON.stringify(this.form));
                      if(!this.editMode){
-                       axios.post('index.php/remitentes/insertar',data)
+                       axios.post('index.php/Remitentes/insertar',data)
                        .then(response => {
                          if(response.data.status == 200){
                            Swal.fire({
@@ -1558,7 +1558,7 @@
                        })
                      }
                      else{
-                       axios.post('index.php/remitentes/editar',data)
+                       axios.post('index.php/Remitentes/editar',data)
                        .then(response => {
                          if(response.data.status == 200)
                          {
@@ -1604,7 +1604,7 @@
                      if (result.value) {
                        let data = new FormData();
                        data.append('id',this.remitentes[index].id);
-                         axios.post('index.php/remitentes/eliminar',data)
+                         axios.post('index.php/Remitentes/eliminar',data)
                          .then(response => {
                            if(response) {
                              Swal(
@@ -1657,7 +1657,7 @@
                    this.editMode=false
                  },
                  async loadremitentes() {
-                await   axios.get('index.php/remitentes/getremitentes/')
+                await   axios.get('index.php/Remitentes/getremitentes/')
                    .then(({data: {remitentes}}) => {
                      this.remitentes = remitentes
                    });

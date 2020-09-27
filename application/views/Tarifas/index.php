@@ -1551,7 +1551,7 @@
                        let data = new FormData();
                        data.append('service_form',JSON.stringify(this.form));
                      if(!this.editMode){
-                       axios.post('index.php/tarifas/insertar',data)
+                       axios.post('index.php/Tarifas/insertar',data)
                        .then(response => {
                          if(response.data.status == 200){
                            Swal.fire({
@@ -1573,7 +1573,7 @@
                        })
                      }
                      else{
-                       axios.post('index.php/tarifas/editar',data)
+                       axios.post('index.php/Tarifas/editar',data)
                        .then(response => {
                          if(response.data.status == 200)
                          {
@@ -1619,7 +1619,7 @@
                      if (result.value) {
                        let data = new FormData();
                        data.append('id',this.tarifas[index].id);
-                         axios.post('index.php/tarifas/eliminar',data)
+                         axios.post('index.php/Tarifas/eliminar',data)
                          .then(response => {
                            if(response) {
                              Swal(
@@ -1685,7 +1685,7 @@
                    this.editMode=false
                  },
             async loadtarifas() {
-                await   axios.get('index.php/tarifas/gettarifas/')
+                await   axios.get('index.php/Tarifas/gettarifas/')
                    .then(({data: {tarifas}}) => {
                      this.tarifas = tarifas
                    });
@@ -1698,19 +1698,19 @@
                     });
                   },
               async loadtiposenvios() {
-                 await   axios.get('index.php/tiposenvios/gettiposenvios/')
+                 await   axios.get('index.php/Tiposenvios/gettiposenvios/')
                     .then(({data: {tiposenvios}}) => {
                       this.tiposenvios = tiposenvios
                     });
                   },
             async loaditinerarios() {
-                 await   axios.get('index.php/itinerarios/getitinerarios/')
+                 await   axios.get('index.php/Itinerarios/getitinerarios/')
                     .then(({data: {itinerarios}}) => {
                       this.itinerarios = itinerarios
                     });
                   },
                   async loadtiempos() {
-                 await   axios.get('index.php/tiempo/gettiempos/')
+                 await   axios.get('index.php/Tiempo/gettiempos/')
                     .then(({data: {tiempos}}) => {
                       this.tiempos = tiempos
                     });

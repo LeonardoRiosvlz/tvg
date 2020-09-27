@@ -24,6 +24,7 @@
             <thead>
             <tr>
               <th class="links">Nombre Elemento o Condición</th>
+              <th class="links">Tipo de transporte</th>
               <th class="links">Action</th>
             </tr>
             </thead>
@@ -129,7 +130,7 @@
                        let data = new FormData();
                        data.append('service_form',JSON.stringify(this.form));
                      if(!this.editMode){
-                       axios.post('index.php/tiposenvios/insertar',data)
+                       axios.post('index.php/TiposEnvios/insertar',data)
                        .then(response => {
                          if(response.data.status == 200){
                            Swal.fire({
@@ -151,7 +152,7 @@
                        })
                      }
                      else{
-                       axios.post('index.php/tiposenvios/editar',data)
+                       axios.post('index.php/TiposEnvios/editar',data)
                        .then(response => {
                          if(response.data.status == 200)
                          {
@@ -197,7 +198,7 @@
                      if (result.value) {
                        let data = new FormData();
                        data.append('id',this.tiposenvios[index].id);
-                         axios.post('index.php/tiposenvios/eliminar',data)
+                         axios.post('index.php/TiposEnvios/eliminar',data)
                          .then(response => {
                            if(response) {
                              Swal(
@@ -243,7 +244,7 @@
                    this.editMode=false
                  },
                  async loadtiposenvios() {
-                await   axios.get('index.php/tiposenvios/gettiposenvios/')
+                await   axios.get('index.php/TiposEnvios/gettiposenvios/')
                    .then(({data: {tiposenvios}}) => {
                      this.tiposenvios = tiposenvios
                    });

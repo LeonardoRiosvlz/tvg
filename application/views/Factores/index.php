@@ -165,7 +165,7 @@
                        let data = new FormData();
                        data.append('service_form',JSON.stringify(this.form));
                      if(!this.editMode){
-                       axios.post('index.php/factores/insertar',data)
+                       axios.post('index.php/Factores/insertar',data)
                        .then(response => {
                          if(response.data.status == 200){
                            Swal.fire({
@@ -187,7 +187,7 @@
                        })
                      }
                      else{
-                       axios.post('index.php/factores/editar',data)
+                       axios.post('index.php/Factores/editar',data)
                        .then(response => {
                          if(response.data.status == 200)
                          {
@@ -233,7 +233,7 @@
                      if (result.value) {
                        let data = new FormData();
                        data.append('id',this.factores[index].id);
-                         axios.post('index.php/factores/eliminar',data)
+                         axios.post('index.php/Factores/eliminar',data)
                          .then(response => {
                            if(response) {
                              Swal(
@@ -283,7 +283,7 @@
                    this.editMode=false
                  },
                  async loadfactores() {
-                await   axios.get('index.php/factores/getfactores/')
+                await   axios.get('index.php/Factores/getfactores/')
                    .then(({data: {factores}}) => {
                      this.factores = factores
                    });

@@ -3,7 +3,7 @@ class TipoCarga extends MY_Controller {
 	private $request;
 	public function __construct(){
 		parent::__construct();
-		$this->load->model('tipocarga_model', 'tipocarga');
+		$this->load->model('TipoCarga_model', 'tipocarga');
 	  }
     public function index() {
 			if( ! $this->verify_min_level(9)){

@@ -1504,7 +1504,7 @@
                        let data = new FormData();
                        data.append('service_form',JSON.stringify(this.form));
                      if(!this.editMode){
-                       axios.post('index.php/sucursales/insertar',data)
+                       axios.post('index.php/Sucursales/insertar',data)
                        .then(response => {
                          if(response.data.status == 200){
                            Swal.fire({
@@ -1526,7 +1526,7 @@
                        })
                      }
                      else{
-                       axios.post('index.php/sucursales/editar',data)
+                       axios.post('index.php/Sucursales/editar',data)
                        .then(response => {
                          if(response.data.status == 200)
                          {
@@ -1572,7 +1572,7 @@
                      if (result.value) {
                        let data = new FormData();
                        data.append('id',this.sucursales[index].id);
-                         axios.post('index.php/sucursales/eliminar',data)
+                         axios.post('index.php/Sucursales/eliminar',data)
                          .then(response => {
                            if(response) {
                              Swal(

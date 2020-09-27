@@ -122,7 +122,7 @@
                        let data = new FormData();
                        data.append('service_form',JSON.stringify(this.form));
                      if(!this.editMode){
-                       axios.post('index.php/cargos/insertar',data)
+                       axios.post('index.php/Cargos/insertar',data)
                        .then(response => {
                          if(response.data.status == 200){
                            Swal.fire({
@@ -144,7 +144,7 @@
                        })
                      }
                      else{
-                       axios.post('index.php/cargos/editar',data)
+                       axios.post('index.php/Cargos/editar',data)
                        .then(response => {
                          if(response.data.status == 200)
                          {
@@ -190,7 +190,7 @@
                      if (result.value) {
                        let data = new FormData();
                        data.append('id',this.cargos[index].id);
-                         axios.post('index.php/cargos/eliminar',data)
+                         axios.post('index.php/Cargos/eliminar',data)
                          .then(response => {
                            if(response) {
                              Swal(
@@ -234,7 +234,7 @@
                    this.editMode=false
                  },
                  async loadcargos() {
-                await   axios.get('index.php/cargos/getcargos/')
+                await   axios.get('index.php/Cargos/getcargos/')
                    .then(({data: {cargos}}) => {
                      this.cargos = cargos
                    });

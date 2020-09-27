@@ -122,7 +122,7 @@
                        let data = new FormData();
                        data.append('service_form',JSON.stringify(this.form));
                      if(!this.editMode){
-                       axios.post('index.php/itinerarios/insertar',data)
+                       axios.post('index.php/Itinerarios/insertar',data)
                        .then(response => {
                          if(response.data.status == 200){
                            Swal.fire({
@@ -144,7 +144,7 @@
                        })
                      }
                      else{
-                       axios.post('index.php/itinerarios/editar',data)
+                       axios.post('index.php/Itinerarios/editar',data)
                        .then(response => {
                          if(response.data.status == 200)
                          {
@@ -190,7 +190,7 @@
                      if (result.value) {
                        let data = new FormData();
                        data.append('id',this.itinerarios[index].id);
-                         axios.post('index.php/itinerarios/eliminar',data)
+                         axios.post('index.php/Itinerarios/eliminar',data)
                          .then(response => {
                            if(response) {
                              Swal(
@@ -234,7 +234,7 @@
                    this.editMode=false
                  },
                  async loaditinerarios() {
-                await   axios.get('index.php/itinerarios/getitinerarios/')
+                await   axios.get('index.php/Itinerarios/getitinerarios/')
                    .then(({data: {itinerarios}}) => {
                      this.itinerarios = itinerarios
                    });

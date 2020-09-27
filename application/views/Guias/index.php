@@ -506,111 +506,111 @@
                 let data = new FormData();
                  data.append('desde',this.desde);
                  data.append('hasta',this.hasta);
-                 await axios.post('index.php/guias/get_tiempo/',data)
+                 await axios.post('index.php/Guias/get_tiempo/',data)
                  .then(({data: {guias}}) => {
                    this.guias = guias
                  });
                   $("#example1").DataTable();
-                  this.url='guias/excelexport_tiempo/'+this.desde+'/'+this.hasta;
+                  this.url='Guias/excelexport_tiempo/'+this.desde+'/'+this.hasta;
               }else if(!this.desde && !this.hasta && this.cedula && !this.estado && !this.ciudad) {
                 console.log("solo cedula");
                 let data = new FormData();
                  data.append('cedula',this.cedula);
-                 await axios.post('index.php/guias/get_cedula/',data)
+                 await axios.post('index.php/Guias/get_cedula/',data)
                  .then(({data: {guias}}) => {
                    this.guias = guias
                  });
                   $("#example1").DataTable();
-                  this.url='guias/excelexport_cedula/'+this.cedula;
+                  this.url='Guias/excelexport_cedula/'+this.cedula;
               }else if(!this.desde && !this.hasta && !this.cedula && this.estado && !this.ciudad) {
                   console.log("solo estado");
                   let data = new FormData();
                    data.append('estado',this.estado);
-                   await axios.post('index.php/guias/get_estado/',data)
+                   await axios.post('index.php/Guias/get_estado/',data)
                    .then(({data: {guias}}) => {
                      this.guias = guias
                    });
                     $("#example1").DataTable();
-                    this.url='guias/excelexport_estado/'+this.estado;
+                    this.url='Guias/excelexport_estado/'+this.estado;
               }else if(!this.desde && !this.hasta && !this.cedula && !this.estado && this.ciudad) {
                   console.log("solo ciudad");
                   let data = new FormData();
                    data.append('ciudad',this.ciudad);
-                   await axios.post('index.php/guias/get_ciudad/',data)
+                   await axios.post('index.php/Guias/get_ciudad/',data)
                    .then(({data: {guias}}) => {
                      this.guias = guias
                    });
                     $("#example1").DataTable();
-                    this.url='guias/excelexport_ciudad/'+this.ciudad;
+                    this.url='Guias/excelexport_ciudad/'+this.ciudad;
               }else if(this.desde && this.hasta && this.cedula && !this.estado && !this.ciudad) {
                   console.log("Fecha y cedula");
                   let data = new FormData();
                   data.append('desde',this.desde);
                   data.append('hasta',this.hasta);
                    data.append('cedula',this.cedula);
-                   await axios.post('index.php/guias/get_fecha_cedula/',data)
+                   await axios.post('index.php/Guias/get_fecha_cedula/',data)
                    .then(({data: {guias}}) => {
                      this.guias = guias
                    });
                     $("#example1").DataTable();
-                this.url='guias/excelexport_fecha_cedula/'+this.desde+'/'+this.hasta+'/'+this.cedula;
+                this.url='Guias/excelexport_fecha_cedula/'+this.desde+'/'+this.hasta+'/'+this.cedula;
               }else if(this.desde && this.hasta && !this.cedula && this.estado && !this.ciudad) {
                   console.log("Fecha y estado")
                   let data = new FormData();
                   data.append('desde',this.desde);
                   data.append('hasta',this.hasta);
                    data.append('estado',this.estado);
-                   await axios.post('index.php/guias/get_fecha_estado/',data)
+                   await axios.post('index.php/Guias/get_fecha_estado/',data)
                    .then(({data: {guias}}) => {
                      this.guias = guias
                    });
                     $("#example1").DataTable();
-                    this.url='guias/excelexport_fecha_estado/'+this.desde+'/'+this.hasta+'/'+this.estado;
+                    this.url='Guias/excelexport_fecha_estado/'+this.desde+'/'+this.hasta+'/'+this.estado;
               }else if(this.desde && this.hasta && !this.cedula && !this.estado && this.ciudad) {
                   console.log("Fecha y ciudad");
                   let data = new FormData();
                   data.append('desde',this.desde);
                   data.append('hasta',this.hasta);
                    data.append('ciudad',this.ciudad);
-                   await axios.post('index.php/guias/get_fecha_ciudad/',data)
+                   await axios.post('index.php/Guias/get_fecha_ciudad/',data)
                    .then(({data: {guias}}) => {
                      this.guias = guias
                    });
                     $("#example1").DataTable();
-                    this.url='guias/excelexport_fecha_ciudad/'+this.desde+'/'+this.hasta+'/'+this.ciudad;
+                    this.url='Guias/excelexport_fecha_ciudad/'+this.desde+'/'+this.hasta+'/'+this.ciudad;
               }else if(!this.desde && !this.hasta && this.cedula && this.estado && !this.ciudad) {
                   console.log("cedula y estado");
                   let data = new FormData();
                   data.append('cedula',this.cedula);
                   data.append('estado',this.estado);
-                   await axios.post('index.php/guias/get_cedula_estado/',data)
+                   await axios.post('index.php/Guias/get_cedula_estado/',data)
                    .then(({data: {guias}}) => {
                      this.guias = guias
                    });
                     $("#example1").DataTable();
-                    this.url='guias/excelexport_cedula_estado/'+this.cedula+'/'+this.estado;
+                    this.url='Guias/excelexport_cedula_estado/'+this.cedula+'/'+this.estado;
               }else if(!this.desde && !this.hasta && this.cedula && !this.estado && this.ciudad) {
                   console.log("cedula y ciudad");
                   let data = new FormData();
                   data.append('cedula',this.cedula);
                   data.append('ciudad',this.ciudad);
-                   await axios.post('index.php/guias/get_cedula_ciudad/',data)
+                   await axios.post('index.php/Guias/get_cedula_ciudad/',data)
                    .then(({data: {guias}}) => {
                      this.guias = guias
                    });
                     $("#example1").DataTable();
-                  this.url='guias/excelexport_cedula_ciudad/'+this.cedula+'/'+this.ciudad;
+                  this.url='Guias/excelexport_cedula_ciudad/'+this.cedula+'/'+this.ciudad;
               }else if(!this.desde && !this.hasta && !this.cedula && this.estado && this.ciudad) {
                   console.log("estado y ciudad")
                   let data = new FormData();
                   data.append('estado',this.estado);
                   data.append('ciudad',this.ciudad);
-                   await axios.post('index.php/guias/get_estado_ciudad/',data)
+                   await axios.post('index.php/Guias/get_estado_ciudad/',data)
                    .then(({data: {guias}}) => {
                      this.guias = guias
                    });
                     $("#example1").DataTable();
-                    this.url='guias/excelexport_estado_ciudad/'+this.estado+'/'+this.ciudad;
+                    this.url='Guias/excelexport_estado_ciudad/'+this.estado+'/'+this.ciudad;
               }else if(this.desde && this.hasta && this.cedula && !this.estado && this.ciudad) {
                   console.log("fecha y cedula y ciudad");
                   let data = new FormData();
@@ -618,12 +618,12 @@
                   data.append('hasta',this.hasta);
                   data.append('cedula',this.cedula);
                   data.append('ciudad',this.ciudad);
-                   await axios.post('index.php/guias/get_fecha_cedula_ciudad/',data)
+                   await axios.post('index.php/Guias/get_fecha_cedula_ciudad/',data)
                    .then(({data: {guias}}) => {
                      this.guias = guias
                    });
                     $("#example1").DataTable();
-                this.url='guias/excelexport_fecha_ciudad_cedula/'+this.desde+'/'+this.hasta+'/'+this.cedula+'/'+this.ciudad;
+                this.url='Guias/excelexport_fecha_ciudad_cedula/'+this.desde+'/'+this.hasta+'/'+this.cedula+'/'+this.ciudad;
               }else if(this.desde && this.hasta && !this.cedula && this.estado && this.ciudad) {
                   console.log("fecha y estado y ciudad");
                   let data = new FormData();
@@ -631,12 +631,12 @@
                   data.append('hasta',this.hasta);
                   data.append('estado',this.estado);
                   data.append('ciudad',this.ciudad);
-                   await axios.post('index.php/guias/get_fecha_estado_ciudad/',data)
+                   await axios.post('index.php/Guias/get_fecha_estado_ciudad/',data)
                    .then(({data: {guias}}) => {
                      this.guias = guias
                    });
                     $("#example1").DataTable();
-                this.url='guias/excelexport_fecha_estado_ciudad/'+this.desde+'/'+this.hasta+'/'+this.estado+'/'+this.ciudad;
+                this.url='Guias/excelexport_fecha_estado_ciudad/'+this.desde+'/'+this.hasta+'/'+this.estado+'/'+this.ciudad;
               }else if(this.desde && this.hasta && this.cedula && this.estado && this.ciudad) {
                   console.log("fecha y estado y cedula y ciudad")
                   let data = new FormData();
@@ -645,12 +645,12 @@
                   data.append('estado',this.estado);
                   data.append('ciudad',this.ciudad);
                   data.append('cedula',this.cedula);
-                   await axios.post('index.php/guias/get_fecha_estado_ciudad_cedula/',data)
+                   await axios.post('index.php/Guias/get_fecha_estado_ciudad_cedula/',data)
                    .then(({data: {guias}}) => {
                      this.guias = guias
                    });
                     $("#example1").DataTable();
-                    this.url='guias/excelexport_fecha_estado_ciudad_cedula/'+this.desde+'/'+this.hasta+'/'+this.estado+'/'+this.ciudad+'/'+this.cedula;
+                    this.url='Guias/excelexport_fecha_estado_ciudad_cedula/'+this.desde+'/'+this.hasta+'/'+this.estado+'/'+this.ciudad+'/'+this.cedula;
               }else if(this.desde && this.hasta && this.cedula && this.estado && !this.ciudad) {
                   console.log("fecha y estado y cedula");
                   let data = new FormData();
@@ -658,12 +658,12 @@
                   data.append('hasta',this.hasta);
                   data.append('estado',this.estado);
                   data.append('cedula',this.cedula);
-                   await axios.post('index.php/guias/get_fecha_estado_cedula/',data)
+                   await axios.post('index.php/Guias/get_fecha_estado_cedula/',data)
                    .then(({data: {guias}}) => {
                      this.guias = guias
                    });
                     $("#example1").DataTable();
-                    this.url='guias/excelexport_fecha_estado_cedula/'+this.desde+'/'+this.hasta+'/'+this.estado+'/'+this.cedula;
+                    this.url='Guias/excelexport_fecha_estado_cedula/'+this.desde+'/'+this.hasta+'/'+this.estado+'/'+this.cedula;
               }
             },
             sumar(){
@@ -691,7 +691,7 @@
                        let data = new FormData();
                        data.append('service_form',JSON.stringify(this.form));
                      if(!this.editMode){
-                       axios.post('index.php/guias/insertar',data)
+                       axios.post('index.php/Guias/insertar',data)
                        .then(response => {
                          if(response.data.status == 200){
                            Swal.fire({
@@ -713,7 +713,7 @@
                        })
                      }
                      else{
-                       axios.post('index.php/guias/editar',data)
+                       axios.post('index.php/Guias/editar',data)
                        .then(response => {
                          if(response.data.status == 200)
                          {
@@ -759,7 +759,7 @@
                      if (result.value) {
                        let data = new FormData();
                        data.append('id',this.guias[index].id);
-                         axios.post('index.php/guias/anular',data)
+                         axios.post('index.php/Guias/anular',data)
                          .then(response => {
                            if(response) {
                              Swal(
@@ -840,13 +840,13 @@
                    }
                  },
                  async loadtiposenvios() {
-                   await   axios.get('index.php/tiposenvios/gettiposenvios/')
+                   await   axios.get('index.php/TiposEnvios/gettiposenvios/')
                       .then(({data: {tiposenvios}}) => {
                         this.tiposenvios = tiposenvios
                       });
                     },
                     async loadtarifas() {
-                        await   axios.get('index.php/tarifas/gettarifas/')
+                        await   axios.get('index.php/Tarifas/gettarifas/')
                            .then(({data: {tarifas}}) => {
                              this.tarifas = tarifas
                            });
@@ -952,7 +952,7 @@
                      }
                    },
                  async loadclientes() {
-                      await   axios.get('index.php/clientes/getclientesN/')
+                      await   axios.get('index.php/Clientes/getclientesN/')
                          .then(({data: {clientes}}) => {
                            this.clientes = clientes
                          });
@@ -966,27 +966,27 @@
                      });
                    },
                    async loadtarifas() {
-                       await   axios.get('index.php/tarifas/gettarifas/')
+                       await   axios.get('index.php/Tarifas/gettarifas/')
                           .then(({data: {tarifas}}) => {
                             this.tarifas = tarifas
                           });
                         },
                   async loadremitentes() {
-                       await   axios.get('index.php/remitentes/getremitentes/')
+                       await   axios.get('index.php/Remitentes/getremitentes/')
                           .then(({data: {remitentes}}) => {
                             this.remitentes = remitentes
                           });
 
                         },
                   async loadsegurocarga() {
-                    await   axios.get('index.php/Segurocarga/getsegurocarga/')
+                    await   axios.get('index.php/SeguroCarga/getsegurocarga/')
                        .then(({data: {segurocarga}}) => {
                          this.segurocarga = segurocarga
                        });
 
                      },
                      async loadformaspago() {
-                    await   axios.get('index.php/formaspago/getformaspago/')
+                    await   axios.get('index.php/FormasPago/getformaspago/')
                        .then(({data: {formaspago}}) => {
                          this.formaspago = formaspago
                        });

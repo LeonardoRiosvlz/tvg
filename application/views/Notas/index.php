@@ -175,7 +175,7 @@
                        let data = new FormData();
                        data.append('service_form',JSON.stringify(this.form));
                      if(!this.editMode){
-                       axios.post('index.php/notas/insertar',data)
+                       axios.post('index.php/Notas/insertar',data)
                        .then(response => {
                          if(response.data.status == 200){
                            Swal.fire({
@@ -197,7 +197,7 @@
                        })
                      }
                      else{
-                       axios.post('index.php/notas/editar',data)
+                       axios.post('index.php/Notas/editar',data)
                        .then(response => {
                          if(response.data.status == 200)
                          {
@@ -243,7 +243,7 @@
                      if (result.value) {
                        let data = new FormData();
                        data.append('id',this.notas[index].id);
-                         axios.post('index.php/notas/eliminar',data)
+                         axios.post('index.php/Notas/eliminar',data)
                          .then(response => {
                            if(response) {
                              Swal(
@@ -295,7 +295,7 @@
                    this.editMode=false
                  },
                  async loadnotas() {
-                await   axios.get('index.php/notas/getnotas/')
+                await   axios.get('index.php/Notas/getnotas/')
                    .then(({data: {notas}}) => {
                      this.notas = notas
                    });

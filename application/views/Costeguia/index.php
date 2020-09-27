@@ -23,7 +23,7 @@
           <table id="example1" class="table ">
             <thead>
             <tr>
-              <th class="links">Nombre del cargo</th>
+              <th class="links">VALOR</th>
                 <th class="links">Action</th>
             </tr>
             </thead>
@@ -66,7 +66,7 @@
                              <div class="col-sm-12">
                                <!-- textarea -->
                                <div class="form-group">
-                                 <label class="links">Nombre costeguia</label>
+                                 <label class="links">Valor</label>
                                   <input type="number" v-model="form.valor" v-validate="'required'" name="valor" class="form-control" id="" :disabled="ver">
                                  <p class="text-danger my-1" v-if="(errors.first('valor'))" >  Este dato es requerido  </p>
                                </div>
@@ -118,7 +118,7 @@
                        let data = new FormData();
                        data.append('service_form',JSON.stringify(this.form));
                      if(!this.editMode){
-                       axios.post('index.php/costeguia/insertar',data)
+                       axios.post('index.php/CosteGuia/insertar',data)
                        .then(response => {
                          if(response.data.status == 200){
                            Swal.fire({
@@ -140,7 +140,7 @@
                        })
                      }
                      else{
-                       axios.post('index.php/costeguia/editar',data)
+                       axios.post('index.php/CosteGuia/editar',data)
                        .then(response => {
                          if(response.data.status == 200)
                          {
@@ -186,7 +186,7 @@
                      if (result.value) {
                        let data = new FormData();
                        data.append('id',this.costeguia[index].id);
-                         axios.post('index.php/costeguia/eliminar',data)
+                         axios.post('index.php/CosteGuia/eliminar',data)
                          .then(response => {
                            if(response) {
                              Swal(
@@ -230,7 +230,7 @@
                    this.editMode=false
                  },
                  async loadcosteguia() {
-                await   axios.get('index.php/costeguia/getcosteguia/')
+                await   axios.get('index.php/CosteGuia/getcosteguia/')
                    .then(({data: {costeguia}}) => {
                      this.costeguia = costeguia
                    });

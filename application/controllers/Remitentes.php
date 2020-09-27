@@ -12,7 +12,7 @@ class Remitentes extends MY_Controller {
      		$this->is_logged_in();
         $this->load->view('header',["css"=>[""]]);
         $this->load->view('menu');
-        $this->load->view('remitentes/index');
+        $this->load->view('Remitentes/index');
         $this->load->view('footer',["js"=>[""]]);
       }
 			public function getremitentes($id=0) {

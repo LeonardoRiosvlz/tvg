@@ -63,6 +63,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             ->get()
             ->result();
           }
+          public function getacta_recogida($id) {
+              return $this->db
+              ->select('*')
+              ->from('actas_recogida')
+              ->where('id', $id)
+              ->get()
+              ->result();
+            }
           public function deleteactas_recogida($id) {
             $this->db->where('id', $id);
             $this->db->delete('actas_recogida');
@@ -170,60 +178,39 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                          $output .= '
                                             <p style="text-align: right;color:red;font-size:15px;">SERIAL-'.$row->id.'</p></BR>
                                             <p style="font-size:15px; "> '.$row->ciudad_destino.'  '.$row->creado.'</p></BR>
-                                            <h2 style="font-weight: bold;font-size:25px;text-align: center;" >ACTA DE ENTREGA</h2></BR>
+                                            <h2 style="font-weight: bold;font-size:25px;text-align: center;" >ACTA DE RECOGIDA</h2></BR>
                                             <p style="text-align: right;font-weight: bold;font-size:17px;padding: 0;margin: 0;">CODIGO:'.$row->codigo.'</p></BR>
                                             <p style="text-align: right;font-weight: bold;font-size:17px;0;">VERSIÓN:'.$row->version.'</p></BR>
                                             <p style="font-size:17px;padding: 0;margin: 0;">Señores</p></BR>
                                             <p style="font-weight: bold;font-size:17px;padding: 0;margin: 0;">'.$row->nombre_empresa.'</p></BR>
                                             <p style="font-weight: bold;font-size:17px;padding: 0;margin: 0;">Dirección: '.$row->direccion_cliente.'</p></BR>
-                                            <h3 style="font-weight: bold;font-size:17px;text-align: center;" >Ref.: ACTA DE ENTREGA TVG CARGO Y D&L DISTRIBUCIONES</h3></BR>
-                                            <h6 style="font-weight: bold;font-size:15px; text-align: center; padding: 0;margin: 0;text-align: center;" >ACTA DE ENTREGA DE CARGA A CONFORMIDAD</h6></BR>
+                                            <p style="font-weight: bold;font-size:17px;padding: 0;margin: 0;">Cel: '.$row->telefono_cliente.'</p></BR>
+                                            <h3 style="font-weight: bold;font-size:17px;text-align: center;" >ACTA DE ENTREGA DE CARGA</h3></BR>
                                             <p style="font-size:16px; padding: 0;margin: 0;text-align: center;" >Carga Transportada desde ('.$row->ciudad_origen.') hasta ('.$row->ciudad_destino.')</p></BR>
-                                            <p style="font-size:14px; text-indent: 40px;text-justify: inter-word;text-align: justify; padding: 0;margin: 0;">Por medio de la presente me permito informar y certificar que recibí de TVG CARGO S.A.S Nit. 900.767.756-6 a conformidad la carga que
-a continuación se relaciona para ser transportada en la ruta '.$row->ciudad_origen.' hasta '.$row->ciudad_destino.'.</p></BR>';
+                                            <p style="font-size:14px; text-indent: 40px;text-justify: inter-word;text-align: justify; padding: 0;margin: 0;">Por medio de la presente nos permitimos informar los datos de nuestro conductor, quien será responsable de recoger la
+mercancía en sus instalaciones, el día '.$row->fecha_recogida.'.</p></BR>
+                                            <p style="font-weight: bold;font-size:17px;padding: 0;margin: 0;">Nombre:'.$row->conductor.'</p></BR>
+                                            <p style="font-weight: bold;font-size:17px;padding: 0;margin: 0;">C.C.'.$row->cedula_c.'</p></BR>
+                                            <p style="font-weight: bold;font-size:17px;padding: 0;margin: 0;">Datos del Vehículo: '.$row->placa.'</p></BR>';
 
                                               }
-                                      $output .= '
-                                      <div id="content">
-                                        <table class="tftable" border="1" cellspacing="0">
-                                          <tr>
-                                            <th>TIPO DE CARGA</th>
-                                            <th>CANTIDAD</th>
-                                            <th>DESCRIPCIÓN</th>
-                                          </tr>';
-                                      foreach($data->result() as $row){
-                                          $items=$row->items;
-                                            foreach(json_decode($items) as $row){
-                                              $output .= '
-                                                  <tr>
-                                                    <td>'.$row->tipocarga.'</td>
-                                                    <td>'.$row->cantidad.'</td>
-                                                    <td>'.$row->descripcion.'</td>
-                                                  </tr>
-                                              ';}
-                                        }
-                                        foreach($data->result() as $row){
-                                            $output .= '
-                                                    <tr>
-                                                      <td style="white-space: nowrap;" colspan="2">TOTAL UNIDADES </td>
-                                                      <td>'.$row->unidades.'</td>
-                                                    </tr>';
-                                                 }
-                                        $output .='</table>';
                                         foreach($data->result() as $row){
                                             $output .= '
                                                 <p style="font-weight: bold;font-size:17px;0;">NOTA.</p></BR>
-                                                <p style="font-size:14px; text-indent: 40px;text-justify: inter-word;text-align: justify; padding: 0;margin: 0;">La firma del destinatario en este documento, equivale a la aceptación a conformidad del recibido de la mercancía; TVG CARGO S.A.S No
-aceptara reclamos una vez sea firmado este documento.</p></BR>
-                                                <p style="font-size:14px; text-indent: 40px;text-justify: inter-word;text-align: justify; padding: 0;margin: 0;">TVG CARGO S.A.S y la póliza, No cubre daños en Tanques de almacenamiento de Agua, vidrios, mármol, porcelanas, baldosas,
-cielorrasos, vasos de vidrio, cuadros, lámparas, bombillos, arcilla, artesanías en barro y demás derivados a los anteriores elementos
-mencionados anteriormente, estos elementos viajan bajo responsabilidad del remitente y/o cliente.
+                                                <p style="font-size:14px; text-indent: 40px;text-justify: inter-word;text-align: justify; "> TVG CARGO S.A.S y la póliza, No cubre daños en Tanques de almacenamiento de Agua, vidrios, mármol, porcelanas,
+baldosas, cielorrasos, vasos de vidrio, cuadros, lámparas, bombillos, arcilla, artesanías en barro y demás derivados a los
+anteriores elementos mencionados anteriormente, estos elementos viajan bajo responsabilidad del remitente y/o cliente y
+se reciben cajas sellas sin verificar contenido ni cantidades internas.
 </p></BR>
-                                                <p style="font-size:14px; text-indent: 40px;text-justify: inter-word;text-align: justify; padding: 0;margin-button: 40px;">Lo anterior se recibe a satisfacción y sin novedad, se firma bajo la gravedad de juramento en '.$row->ciudad_destino.', quedando a PAZ y SALVO
-en todo sentido la Empresa Transportadora y su Representante Legal.</p></BR></BR></BR></BR>
-<p style="font-size:14px; text-indent: 60px;text-justify: inter-word;text-align: justify; padding: 0;margin: 0;">FIRMA: ___________________________________    FECHA:___________________________________ </p></BR>
-<p style="font-size:14px; text-indent: 60px;text-justify: inter-word;text-align: justify; padding: 0;margin: 0;">NOMBRE:___________________________________    CC:   ___________________________________ </p></BR>
-<p style="font-size:14px; text-indent: 60px;text-justify: inter-word;text-align: justify; padding: 0;margin: 0;">CARGO: ___________________________________    CEL.#:___________________________________ </p></BR>';
+                                                <p style="font-size:14px; text-indent: 40px;text-justify: inter-word;text-align: justify; ">Número de cajas entregada:_____________________________</p></BR>
+                                                <p style="font-size:14px; text-indent: 40px;text-justify: inter-word;text-align: justify;margin-button: 40px;">DESCRIPCIÓN:_____________________________________________________________________________</p></BR>
+                                                <p style="font-size:14px; text-indent: 40px;text-justify: inter-word;text-align: justify; padding: 0;margin-button: 40px;">__________________________________________________________________________________________</p></BR>
+                                                <p style="font-size:14px; text-indent: 40px;text-justify: inter-word;text-align: justify; padding: 0;margin-button: 40px;">__________________________________________________________________________________________</p></BR>
+
+                                                <p style="font-size:14px; text-indent: 40px;text-justify: inter-word;text-align: justify; ">Datos de quien entrega la carga por parte de '.$row->nombre_empresa.', son:</p></BR>
+<p style="font-size:14px; text-indent: 60px;text-justify: inter-word;text-align: justify; ">FIRMA: ___________________________________    FECHA:___________________________________ </p></BR>
+<p style="font-size:14px; text-indent: 60px;text-justify: inter-word;text-align: justify; ">NOMBRE:___________________________________    CC:   ___________________________________ </p></BR>
+<p style="font-size:14px; text-indent: 60px;text-justify: inter-word;text-align: justify; ">Tel de contacto: ___________________________________ </p></BR>';
                                               }
                                     $output .= '
                                        </body>

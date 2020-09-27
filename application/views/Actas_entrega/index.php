@@ -1862,7 +1862,7 @@
                        })
                      }
                      else{
-                       axios.post('index.php/actas_entrega/editar',data)
+                       axios.post('index.php/Actas_entrega/editar',data)
                        .then(response => {
                          if(response.data.status == 200)
                          {
@@ -1912,7 +1912,7 @@
                      if (result.value) {
                        let data = new FormData();
                        data.append('id',this.actas_entrega[index].id);
-                         axios.post('index.php/actas_entrega/eliminar',data)
+                         axios.post('index.php/Actas_entrega/eliminar',data)
                          .then(response => {
                            if(response) {
                              Swal(
@@ -1944,7 +1944,7 @@
                    })
                  },
                  async loadtipocarga() {
-                     await   axios.get('index.php/tipocarga/gettipocarga/')
+                     await   axios.get('index.php/TipoCarga/gettipocarga/')
                         .then(({data: {tipocarga}}) => {
                           this.tipocarga = tipocarga
                         });
@@ -2020,7 +2020,7 @@
                    });
                  },
                  async loadclientes() {
-                      await   axios.get('index.php/clientes/getclientesN/')
+                      await   axios.get('index.php/Clientes/getclientesN/')
                          .then(({data: {clientes}}) => {
                            this.clientes = clientes
                          });

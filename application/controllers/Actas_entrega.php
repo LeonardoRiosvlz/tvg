@@ -12,7 +12,7 @@ class Actas_entrega extends MY_Controller {
      		$this->is_logged_in();
         $this->load->view('header',["css"=>[""]]);
         $this->load->view('menu');
-        $this->load->view('actas_entrega/index');
+        $this->load->view('Actas_entrega/index');
         $this->load->view('footer',["js"=>[""]]);
       }
 			public function getactas_entrega($id=0) {

@@ -12,7 +12,7 @@ class Satelites extends MY_Controller {
      		$this->is_logged_in();
         $this->load->view('header',["css"=>[""]]);
         $this->load->view('menu');
-        $this->load->view('satelites/index');
+        $this->load->view('Satelites/index');
         $this->load->view('footer',["js"=>[""]]);
       }
 			public function getsatelites($id=0) {
