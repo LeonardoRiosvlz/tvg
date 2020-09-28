@@ -44,173 +44,202 @@ defined('BASEPATH') OR exit('No direct script access allowed');
            }
         public function getguias() {
             return $this->db
-            ->select('c.*,f.dias, f.forma, f.descripcion, u.username,u.nombre,u.apellido,u.cargo')
+            ->select('c.*,cl.cedula_cliente,f.dias, f.forma, f.descripcion, u.username,u.nombre,u.apellido,u.cargo')
             ->from('carga c')
-            ->join('users u', 'c.user_id = u.user_id')
-            ->join('forma_pago f', 'c.forma_pago = f.id')
+            ->join('users u', 'c.user_id = u.user_id', 'left outer')
+            ->join('clientes cl', 'c.cedula = cl.cedula_cliente', 'left outer')
+            ->join('forma_pago f', 'c.forma_pago = f.id', 'left outer')
             ->get()
             ->result();
           }
           public function get_tiempo($datas) {
               return $this->db
-              ->select('c.*,f.dias, f.forma, f.descripcion, u.username,u.nombre,u.apellido,u.cargo')
+              ->select('c.*,cl.ciudad,t.tipo_transporte,f.dias, f.forma, f.descripcion, u.username,u.nombre,u.apellido,u.cargo')
               ->from('carga c')
               ->where('fecha >=', $datas['desde'])
               ->where('fecha <=', $datas['hasta'])
-              ->join('users u', 'c.user_id = u.user_id')
-              ->join('forma_pago f', 'c.forma_pago = f.id')
+              ->join('users u', 'c.user_id = u.user_id', 'left outer')
+              ->join('tarifas t', 'c.id_tarifa = t.id', 'left outer')
+              ->join('clientes cl', 'c.cedula = cl.cedula_cliente', 'left outer')
+              ->join('forma_pago f', 'c.forma_pago = f.id', 'left outer')
               ->get()
               ->result();
             }
             public function get_cedula($datas) {
                 return $this->db
-                ->select('c.*,f.dias, f.forma, f.descripcion, u.username,u.nombre,u.apellido,u.cargo')
+                ->select('c.*,cl.ciudad,t.tipo_transporte,f.dias, f.forma, f.descripcion, u.username,u.nombre,u.apellido,u.cargo')
                 ->from('carga c')
                 ->where('c.cedula', $datas['cedula'])
-                ->join('users u', 'c.user_id = u.user_id')
-                ->join('forma_pago f', 'c.forma_pago = f.id')
+                ->join('users u', 'c.user_id = u.user_id', 'left outer')
+                ->join('tarifas t', 'c.id_tarifa = t.id', 'left outer')
+                ->join('clientes cl', 'c.cedula = cl.cedula_cliente', 'left outer')
+                ->join('forma_pago f', 'c.forma_pago = f.id', 'left outer')
                 ->get()
                 ->result();
               }
               public function get_estado($datas) {
                   return $this->db
-                  ->select('c.*,f.dias, f.forma, f.descripcion, u.username,u.nombre,u.apellido,u.cargo')
+                  ->select('c.*,cl.ciudad,t.tipo_transporte,f.dias, f.forma, f.descripcion, u.username,u.nombre,u.apellido,u.cargo')
                   ->from('carga c')
                   ->where('c.estado', $datas['estado'])
-                  ->join('users u', 'c.user_id = u.user_id')
-                  ->join('forma_pago f', 'c.forma_pago = f.id')
+                  ->join('users u', 'c.user_id = u.user_id', 'left outer')
+                  ->join('tarifas t', 'c.id_tarifa = t.id', 'left outer')
+                  ->join('clientes cl', 'c.cedula = cl.cedula_cliente', 'left outer')
+                  ->join('forma_pago f', 'c.forma_pago = f.id', 'left outer')
                   ->get()
                   ->result();
                 }
                 public function get_ciudad($datas) {
                     return $this->db
-                    ->select('c.*,f.dias, f.forma, f.descripcion, u.username,u.nombre,u.apellido,u.cargo')
+                    ->select('c.*,cl.ciudad,t.tipo_transporte,f.dias, f.forma, f.descripcion, u.username,u.nombre,u.apellido,u.cargo')
                     ->from('carga c')
                     ->where('c.ciudad_destino', $datas['ciudad'])
-                    ->join('users u', 'c.user_id = u.user_id')
-                    ->join('forma_pago f', 'c.forma_pago = f.id')
+                    ->join('users u', 'c.user_id = u.user_id', 'left outer')
+                    ->join('tarifas t', 'c.id_tarifa = t.id', 'left outer')
+                    ->join('clientes cl', 'c.cedula = cl.cedula_cliente', 'left outer')
+                    ->join('forma_pago f', 'c.forma_pago = f.id', 'left outer')
                     ->get()
                     ->result();
                   }
                   public function get_fecha_cedula($datas) {
                       return $this->db
-                      ->select('c.*,f.dias, f.forma, f.descripcion, u.username,u.nombre,u.apellido,u.cargo')
+                      ->select('c.*,cl.ciudad,t.tipo_transporte,f.dias, f.forma, f.descripcion, u.username,u.nombre,u.apellido,u.cargo')
                       ->from('carga c')
                       ->where('fecha >=', $datas['desde'])
                       ->where('fecha <=', $datas['hasta'])
                       ->where('c.cedula', $datas['cedula'])
-                      ->join('users u', 'c.user_id = u.user_id')
-                      ->join('forma_pago f', 'c.forma_pago = f.id')
+                      ->join('users u', 'c.user_id = u.user_id', 'left outer')
+                      ->join('tarifas t', 'c.id_tarifa = t.id', 'left outer')
+                      ->join('clientes cl', 'c.cedula = cl.cedula_cliente', 'left outer')
+                      ->join('forma_pago f', 'c.forma_pago = f.id', 'left outer')
                       ->get()
                       ->result();
                     }
               public function get_fecha_estado($datas) {
                   return $this->db
-                  ->select('c.*,f.dias, f.forma, f.descripcion, u.username,u.nombre,u.apellido,u.cargo')
+                  ->select('c.*,cl.ciudad,t.tipo_transporte,f.dias, f.forma, f.descripcion, u.username,u.nombre,u.apellido,u.cargo')
                   ->from('carga c')
                   ->where('fecha >=', $datas['desde'])
                   ->where('fecha <=', $datas['hasta'])
                   ->where('c.estado', $datas['estado'])
-                  ->join('users u', 'c.user_id = u.user_id')
-                  ->join('forma_pago f', 'c.forma_pago = f.id')
+                  ->join('users u', 'c.user_id = u.user_id', 'left outer')
+                  ->join('tarifas t', 'c.id_tarifa = t.id', 'left outer')
+                  ->join('clientes cl', 'c.cedula = cl.cedula_cliente', 'left outer')
+                  ->join('forma_pago f', 'c.forma_pago = f.id', 'left outer')
                   ->get()
                   ->result();
                 }
                 public function get_fecha_ciudad($datas) {
                     return $this->db
-                    ->select('c.*,f.dias, f.forma, f.descripcion, u.username,u.nombre,u.apellido,u.cargo')
+                    ->select('c.*,cl.ciudad,t.tipo_transporte,f.dias, f.forma, f.descripcion, u.username,u.nombre,u.apellido,u.cargo')
                     ->from('carga c')
                     ->where('fecha >=', $datas['desde'])
                     ->where('fecha <=', $datas['hasta'])
                     ->where('c.ciudad_destino', $datas['ciudad'])
-                    ->join('users u', 'c.user_id = u.user_id')
-                    ->join('forma_pago f', 'c.forma_pago = f.id')
+                    ->join('users u', 'c.user_id = u.user_id', 'left outer')
+                    ->join('tarifas t', 'c.id_tarifa = t.id', 'left outer')
+                    ->join('clientes cl', 'c.cedula = cl.cedula_cliente', 'left outer')
+                    ->join('forma_pago f', 'c.forma_pago = f.id', 'left outer')
                     ->get()
                     ->result();
                   }
                   public function get_cedula_estado($datas) {
                       return $this->db
-                      ->select('c.*,f.dias, f.forma, f.descripcion, u.username,u.nombre,u.apellido,u.cargo')
+                      ->select('c.*,cl.ciudad,t.tipo_transporte,f.dias, f.forma, f.descripcion, u.username,u.nombre,u.apellido,u.cargo')
                       ->from('carga c')
                       ->where('c.cedula', $datas['cedula'])
                       ->where('c.estado', $datas['estado'])
-                      ->join('users u', 'c.user_id = u.user_id')
-                      ->join('forma_pago f', 'c.forma_pago = f.id')
+                      ->join('users u', 'c.user_id = u.user_id', 'left outer')
+                      ->join('tarifas t', 'c.id_tarifa = t.id', 'left outer')
+                      ->join('clientes cl', 'c.cedula = cl.cedula_cliente', 'left outer')
+                      ->join('forma_pago f', 'c.forma_pago = f.id', 'left outer')
                       ->get()
                       ->result();
                     }
                 public function get_cedula_ciudad($datas) {
                     return $this->db
-                    ->select('c.*,f.dias, f.forma, f.descripcion, u.username,u.nombre,u.apellido,u.cargo')
+                    ->select('c.*,cl.ciudad,t.tipo_transporte,f.dias, f.forma, f.descripcion, u.username,u.nombre,u.apellido,u.cargo')
                     ->from('carga c')
                     ->where('c.cedula', $datas['cedula'])
                     ->where('c.ciudad_destino', $datas['ciudad'])
-                    ->join('users u', 'c.user_id = u.user_id')
-                    ->join('forma_pago f', 'c.forma_pago = f.id')
+                    ->join('users u', 'c.user_id = u.user_id', 'left outer')
+                    ->join('tarifas t', 'c.id_tarifa = t.id', 'left outer')
+                    ->join('clientes cl', 'c.cedula = cl.cedula_cliente', 'left outer')
+                    ->join('forma_pago f', 'c.forma_pago = f.id', 'left outer')
                     ->get()
                     ->result();
                   }
                   public function get_estado_ciudad($datas) {
                       return $this->db
-                      ->select('c.*,f.dias, f.forma, f.descripcion, u.username,u.nombre,u.apellido,u.cargo')
+                      ->select('c.*,cl.ciudad,t.tipo_transporte,f.dias, f.forma, f.descripcion, u.username,u.nombre,u.apellido,u.cargo')
                       ->from('carga c')
                       ->where('c.estado', $datas['estado'])
                       ->where('c.ciudad_destino', $datas['ciudad'])
-                      ->join('users u', 'c.user_id = u.user_id')
-                      ->join('forma_pago f', 'c.forma_pago = f.id')
+                      ->join('users u', 'c.user_id = u.user_id', 'left outer')
+                      ->join('tarifas t', 'c.id_tarifa = t.id', 'left outer')
+                      ->join('clientes cl', 'c.cedula = cl.cedula_cliente', 'left outer')
+                      ->join('forma_pago f', 'c.forma_pago = f.id', 'left outer')
                       ->get()
                       ->result();
                     }
                 public function get_fecha_cedula_ciudad($datas) {
                     return $this->db
-                    ->select('c.*,f.dias, f.forma, f.descripcion, u.username,u.nombre,u.apellido,u.cargo')
+                    ->select('c.*,cl.ciudad,t.tipo_transporte,f.dias, f.forma, f.descripcion, u.username,u.nombre,u.apellido,u.cargo')
                     ->from('carga c')
                     ->where('fecha >=', $datas['desde'])
                     ->where('fecha <=', $datas['hasta'])
                     ->where('c.cedula', $datas['cedula'])
                     ->where('c.ciudad_destino', $datas['ciudad'])
-                    ->join('users u', 'c.user_id = u.user_id')
-                    ->join('forma_pago f', 'c.forma_pago = f.id')
+                    ->join('users u', 'c.user_id = u.user_id', 'left outer')
+                    ->join('tarifas t', 'c.id_tarifa = t.id', 'left outer')
+                    ->join('clientes cl', 'c.cedula = cl.cedula_cliente', 'left outer')
+                    ->join('forma_pago f', 'c.forma_pago = f.id', 'left outer')
                     ->get()
                     ->result();
                   }
               public function get_fecha_estado_ciudad($datas) {
                   return $this->db
-                  ->select('c.*,f.dias, f.forma, f.descripcion, u.username,u.nombre,u.apellido,u.cargo')
+                  ->select('c.*,cl.ciudad,t.tipo_transporte,f.dias, f.forma, f.descripcion, u.username,u.nombre,u.apellido,u.cargo')
                   ->from('carga c')
                   ->where('fecha >=', $datas['desde'])
                   ->where('fecha <=', $datas['hasta'])
                   ->where('c.estado', $datas['estado'])
                   ->where('c.ciudad_destino', $datas['ciudad'])
-                  ->join('users u', 'c.user_id = u.user_id')
-                  ->join('forma_pago f', 'c.forma_pago = f.id')
+                  ->join('users u', 'c.user_id = u.user_id', 'left outer')
+                  ->join('tarifas t', 'c.id_tarifa = t.id', 'left outer')
+                  ->join('clientes cl', 'c.cedula = cl.cedula_cliente', 'left outer')
+                  ->join('forma_pago f', 'c.forma_pago = f.id', 'left outer')
                   ->get()
                   ->result();
                 }
                 public function get_fecha_estado_cedula($datas) {
                     return $this->db
-                    ->select('c.*,f.dias, f.forma, f.descripcion, u.username,u.nombre,u.apellido,u.cargo')
+                    ->select('c.*,cl.ciudad,t.tipo_transporte,f.dias, f.forma, f.descripcion, u.username,u.nombre,u.apellido,u.cargo')
                     ->from('carga c')
                     ->where('fecha >=', $datas['desde'])
                     ->where('fecha <=', $datas['hasta'])
                     ->where('c.estado', $datas['estado'])
                     ->where('c.cedula', $datas['cedula'])
-                    ->join('users u', 'c.user_id = u.user_id')
-                    ->join('forma_pago f', 'c.forma_pago = f.id')
+                    ->join('users u', 'c.user_id = u.user_id', 'left outer')
+                    ->join('tarifas t', 'c.id_tarifa = t.id', 'left outer')
+                    ->join('clientes cl', 'c.cedula = cl.cedula_cliente', 'left outer')
+                    ->join('forma_pago f', 'c.forma_pago = f.id', 'left outer')
                     ->get()
                     ->result();
                   }
                 public function get_fecha_estado_ciudad_cedula($datas) {
                     return $this->db
-                    ->select('c.*,f.dias, f.forma, f.descripcion, u.username,u.nombre,u.apellido,u.cargo')
+                    ->select('c.*,cl.ciudad,t.tipo_transporte,f.dias, f.forma, f.descripcion, u.username,u.nombre,u.apellido,u.cargo')
                     ->from('carga c')
                     ->where('fecha >=', $datas['desde'])
                     ->where('fecha <=', $datas['hasta'])
                     ->where('c.estado', $datas['estado'])
                     ->where('c.cedula', $datas['cedula'])
                     ->where('c.ciudad_destino', $datas['ciudad'])
-                    ->join('users u', 'c.user_id = u.user_id')
-                    ->join('forma_pago f', 'c.forma_pago = f.id')
+                    ->join('clientes cl', 'c.cedula = cl.cedula_cliente', 'left outer')
+                    ->join('users u', 'c.user_id = u.user_id', 'left outer')
+                    ->join('tarifas t', 'c.id_tarifa = t.id', 'left outer')
+                    ->join('forma_pago f', 'c.forma_pago = f.id', 'left outer')
                     ->get()
                     ->result();
                   }
@@ -244,7 +273,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
                 $this->db->select('c.*,f.dias, f.forma, f.descripcion, u.username,u.nombre,u.apellido,u.cargo')
                 ->from('carga c')
-                ->where('c.id', 2397551311)
+                ->where('c.id', $id)
                 ->join('users u', 'c.user_id = u.user_id')
                 ->join('forma_pago f', 'c.forma_pago = f.id');
                 $data = $this->db->get();

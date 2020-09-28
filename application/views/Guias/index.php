@@ -1,4 +1,22 @@
 <div id="app" class="container">
+  <div id="mydiv" v-show="factura.length>0">
+    <div id="mydivheader">ANEXOS PARA FACTURAR</div>
+    <table  class="table ">
+      <thead>
+      <tr>
+        <th class="links"> Guia de carga</th>
+        <th class="links">Valor</th>
+        <th class="links">Action</th>
+      </tr>
+      <tr v-for="(factura,index) in factura">
+        <td>N-{{factura.id}}</td>
+        <td>$ {{factura.total}}</td>
+        <td><button class="btn btn-danger" @click="eliminarItem(index)"><span class="mbri-trash"></span></button></td>
+      </tr>
+    </table>
+    <button v-if="factura.length>0"  @click="crearFactura()" type="button" class="btn-primary btn-block" name="button">Generar Factura</button>
+  </div>
+
   <div class="row">
     <div class="col-lg-12 my-3 ">
       <!-- Shopping cart table -->
@@ -147,7 +165,7 @@
             </tr>
             </thead>
               <tr v-for="(guias,index) in guias">
-                <td class="links">{{guias.id}}</td>
+                <td class="links">N-{{guias.id}}</td>
                 <td class="links">{{guias.nombre_empresa}}</td>
                 <td class="links">{{guias.ciudad_origen}}</td>
                 <td class="links">{{guias.ciudad_destino}}</td>
@@ -161,6 +179,7 @@
                           <div class="dropdown-menu" role="menu">
                             <a class="dropdown-item" href="#"@click="setear(index);ver=true">Ver</a>
                             <a class="dropdown-item" href="#" @click="setear(index)">Duplicar</a>
+                            <a class="dropdown-item" href="#" @click="addFactura(index)">Agregar a factura</a>
                             <a class="dropdown-item" href="#" @click="anularguias(index)">Anular</a>
                           </div>
                         </button>
@@ -470,6 +489,7 @@
          liquidacion:[],
          remitentes:[],
          clientes:[],
+         factura:[],
          guias:[],
          tarifas:[],
          formaspago:[],
@@ -500,6 +520,101 @@
          }
        },
        methods: {
+         crearFactura(){
+           Swal({
+             title: '¿Estás seguro?',
+             text: "",
+             type: 'warning',
+             showCancelButton: true,
+             confirmButtonText: '¡Si! ¡crear!',
+             cancelButtonText: '¡No! ¡cancelar!',
+             reverseButtons: true
+           }).then((result) => {
+             if (result.value) {
+              localStorage.setItem("factura", JSON.stringify(this.factura));
+              window.setTimeout(function () {
+                   location.href = "http://tvgcargo.co/Facturas";
+               }, 500);
+             } else if (
+               result.dismiss === Swal.DismissReason.cancel
+             ) {
+               Swal(
+                 'Cancelado',
+                 'No fue eliminado.',
+                 'success'
+               )
+             }
+           })
+         },
+         eliminarItem(index){
+           Swal({
+             title: '¿Estás seguro?',
+             type: 'warning',
+             showCancelButton: true,
+             confirmButtonText: '¡Si! ¡eliminar!',
+             cancelButtonText: '¡No! ¡cancelar!',
+             reverseButtons: true
+           }).then((result) => {
+             if (result.value) {
+               this.factura.splice(index, 1);
+             } else if (
+               result.dismiss === Swal.DismissReason.cancel
+             ) {
+               Swal(
+                 'Cancelado',
+                 'No fue eliminado.',
+                 'success'
+               )
+             }
+           })
+         },
+         addFactura(index){
+
+           Swal({
+             title: '¿Estás seguro?',
+             type: 'warning',
+             showCancelButton: true,
+             confirmButtonText: '¡Si! ¡agregar!',
+             cancelButtonText: '¡No! ¡cancelar!',
+             reverseButtons: true
+           }).then((result) => {
+             for (var i = 0; i < this.factura.length; i++) {
+               if (this.factura[i].id===this.guias[index].id) {
+                 Swal(
+                   'Esta guía ya esta anexada',
+                   '',
+                   'warning'
+                 );
+                 return;
+               }
+             }
+             if (result.value) {
+               this.factura.push({
+                  origen:this.guias[index].ciudad_origen,
+                  destino:this.guias[index].ciudad_destino,
+                  tipo_transporte:this.guias[index].tipo_transporte,
+                  tipo_transporte:this.guias[index].tipo_transporte,
+                  total:this.guias[index].total,
+                  n_guia:'N-'+this.guias[index].id,
+                  id:this.guias[index].id,
+                  nombre_cliente:this.guias[index].nombre_empresa,
+                  direccion_cliente:this.guias[index].direccion_cliente,
+                  telefono_cliente:this.guias[index].telefono_cliente,
+                  cedula_cliente:this.guias[index].cedula,
+                  ciudad_cliente:this.guias[index].ciudad,
+
+                });
+             } else if (
+               result.dismiss === Swal.DismissReason.cancel
+             ) {
+               Swal(
+                 'Cancelado',
+                 'No fue eliminado.',
+                 'success'
+               )
+             }
+           })
+         },
           async  mathc(){
               if (this.desde && this.hasta && !this.cedula && !this.estado && !this.ciudad) {
                 console.log("solo fecha");
@@ -1031,4 +1146,49 @@
             this.loadCart();
        },
    })
+ </script>
+ <script>
+ //Make the DIV element draggagle:
+ dragElement(document.getElementById("mydiv"));
+
+ function dragElement(elmnt) {
+   var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+   if (document.getElementById(elmnt.id + "header")) {
+     /* if present, the header is where you move the DIV from:*/
+     document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
+   } else {
+     /* otherwise, move the DIV from anywhere inside the DIV:*/
+     elmnt.onmousedown = dragMouseDown;
+   }
+
+   function dragMouseDown(e) {
+     e = e || window.event;
+     e.preventDefault();
+     // get the mouse cursor position at startup:
+     pos3 = e.clientX;
+     pos4 = e.clientY;
+     document.onmouseup = closeDragElement;
+     // call a function whenever the cursor moves:
+     document.onmousemove = elementDrag;
+   }
+
+   function elementDrag(e) {
+     e = e || window.event;
+     e.preventDefault();
+     // calculate the new cursor position:
+     pos1 = pos3 - e.clientX;
+     pos2 = pos4 - e.clientY;
+     pos3 = e.clientX;
+     pos4 = e.clientY;
+     // set the element's new position:
+     elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+     elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+   }
+
+   function closeDragElement() {
+     /* stop moving when mouse button is released:*/
+     document.onmouseup = null;
+     document.onmousemove = null;
+   }
+ }
  </script>

@@ -2057,6 +2057,7 @@
                   }
                 })
             },
+
             eliminarImagen(index){
               Swal({
                 title: '¿Estás seguro?',

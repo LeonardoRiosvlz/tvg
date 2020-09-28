@@ -5,7 +5,7 @@
     <div class="container-fluid">
       <div class="row head-s">
         <div class="col-3  imagisotipo d-none d-sm-none d-md-none d-xl-block py-4 ">
-           <a href="<?=base_url();?>"><img src="<?php echo base_url('include/img/logo.png');?>" alt="logo" style="width:90%;"></a>
+           <a href="<?=base_url("User");?>"><img src="<?php echo base_url('include/img/logo.png');?>" alt="logo" style="width:90%;"></a>
         </div>
         <div class="menu col-xl-9 col-md-12  col-sm-12 d-sm-block">
         <div class="d-none d-sm-none d-md-block d-xl-block">
@@ -43,18 +43,26 @@
               <!-- Links -->
               <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ml-auto sp d-sm-block d-md-none d-xl-none">
-                  <li class="nav-item sp">
-                    <a class="nav-link btn-icono sp" href="#"><img src="include/img/Logotipo.jpg" alt="logo" style="width:100%;"></a>
-                  </li>
-                  <li class="nav-item ">
-                    <a class="nav-link btn-icono links sp" onclick="openNav()" ><span class="mbri-user"></span> PERFÍL</a>
-                  </li>
+                  <?php if(  empty( $this->auth_role ) ): ?>
+                    <li class="nav-item">
+                      <a class="nav-link btn-icono sp" href="login" ><span class="mbri-login"></span></a>
+                    </li>
+
+                  <?php else: ?>
+
+                    <li class="nav-item">
+                      <a class="nav-link btn-icono sp links" href="../logout" ><span class="mbri-logout"></span>Salir</a>
+                    </li>
+
+                  <?php endif; ?>
+                  <?php if ($this->auth_role == 'customer' ||   $this->auth_role == 'manager' || $this->auth_role == 'admin'): ?>
+
+                  <?php endif; ?>
+                <?php if ($this->auth_role == 'admin'): ?>
                   <li class="nav-item">
-                    <a class="nav-link btn-icono links sp" href="#"><span class="mbri-shopping-bag"></span> CARRITO </span><span class="badge-pill badge-danger text-small" style="font-size:0.5em!important">{{cart.length}}</span></a>
+                    <a class="nav-link btn-icono sp" onclick="openNav2()" ><span class="mbri-setting"></span></a>
                   </li>
-                  <li class="nav-item">
-                    <a class="nav-link btn-icono links sp" href="/store"><span class="mbri-sale"></span> TIENDA</a>
-                  </li>
+                <?php endif; ?>
                 </ul>
                 <ul class="navbar-nav sp">
                   <div class="dropdown sp">
@@ -121,29 +129,6 @@
                 </ul>
             </nav>
 
-
-
-            <nav class="navbar navbar-expand-lg navbar-light sp hidden-md">
-              <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="mbri-menu"></span><a class="nav-link btn-icono sp" href="#"></a>
-              </button>
-                <!-- Links -->
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                  <ul class="navbar-nav ml-auto sp d-sm-block d-md-none d-xl-none">
-                    <li class="nav-item sp">
-                      <a class="nav-link btn-icono sp" href="#"><img src="<?php echo base_url('include/img/logo.png');?>" alt="logo" style="width:100%;"></a>
-                    </li>
-                    <li class="nav-item ">
-                      <a class="nav-link btn-icono links sp" onclick="openNav()" ><span class="mbri-user"></span> PERFÍL</a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link btn-icono links sp" href="#"><span class="mbri-shopping-bag"></span> CARRITO </span><span class="badge-pill badge-danger text-small" style="font-size:0.5em!important">{{cart.length}}</span></a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link btn-icono links sp" href="/store"><span class="mbri-sale"></span> TIENDA</a>
-                    </li>
-                  </ul>
-              </nav>
         </div>
       </div>
     </div>

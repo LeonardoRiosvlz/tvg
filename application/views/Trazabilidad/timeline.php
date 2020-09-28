@@ -1,10 +1,32 @@
-
+<style media="screen">
+.padre {
+height: 150px;
+/*IMPORTANTE*/
+display: flex;
+justify-content: center;
+align-items: center;
+}
+.slide-fade-enter-active {
+  transition: all .3s ease;
+}
+.slide-fade-leave-active {
+  transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+}
+.slide-fade-enter, .slide-fade-leave-to
+/* .slide-fade-leave-active below version 2.1.8 */ {
+  transform: translateX(10px);
+  opacity: 0;
+}
+.hijo {
+width: 120px;
+}
+</style>
 
 <div id="app" class="container">
   <div class="row">
     <div class="col-lg-12 my-5 ">
       <!-- Shopping cart table -->
-      <div class="table-responsive ">
+      <div class=" ">
         <table id="example2" class="table">
           <thead>
             <tr>
@@ -12,19 +34,12 @@
                   <div class="bg-light rounded-pill px-4 py-3 text-uppercase font-weight-bold links">Trazabilidad de la carga <i class="fa fa-location-arrow" aria-hidden="true"></i></div>
               </th>
             </tr>
-            <tr>
-
-              <th scope="col" colspan="5" class="border-0 bg-white  text-center" v-if="guias.length>0">
-                <button type="button" @click="resete();ver=false" class="btn btn-block btn-light btn-sm links" >Agregar <span class="mbri-plus"></span></button>
-              </th>
-            </tr>
-
           </thead>
 
         </table>
-
-        <div class="row p-1 ">
-          <div class="col-md-4">
+        <transition name="slide-fade">
+        <div class="row p-1 padre" v-if="trazabilidad.length<1" style="min-height:600px;">
+          <div class="col-md-4 hijo">
           <div class="input-group">
               <select v-model="form.prefijo" class="custom-select form-control-lg" id="inputGroupSelect04">
                 <option ></option>
@@ -41,51 +56,57 @@
                 <button class="btn btn-success btn-lg" @click="loadguiasN()" type="button">Buscar <i class="fa fa-search" aria-hidden="true"></i></button>
               </div>
               <div class="col-3" v-if="form.prefijo==='E' && form.id_guia">
-                <button class="btn btn-outline-success btn-lg" @click="loadguiasE()" type="button">Buscar <i class="fa fa-search" aria-hidden="true"></i></button>
+                <button class="btn btn-success btn-lg" @click="loadguiasE()" type="button">Buscar <i class="fa fa-search" aria-hidden="true"></i></button>
               </div>
         </div>
+        </transition>
 
-
-          <table  class="table ">
-            <thead>
-            <tr>
-              <th class="links">Tipo de reporte</th>
-              <th class="links">Hora</th>
-              <th class="links">Ciudad</th>
-              <th class="links">Fecha despacho</th>
-              <th class="links">Fecha de llegada</th>
-              <th class="links">Observaciones</th>
-                <th class="links">Action</th>
-            </tr>
-            </thead>
-              <tr v-for="(trazabilidad,index) in trazabilidad">
-                <td class="links">{{trazabilidad.tipo_reporte}}</td>
-                <td class="links">{{trazabilidad.hora}}</td>
-                <td class="links">{{trazabilidad.ciudad_sat}}</td>
-                <td class="links">{{trazabilidad.fecha_despacho}}</td>
-                <td class="links">{{trazabilidad.llegada_destino}}</td>
-                <td class="links">{{trazabilidad.observaciones}}</td>
-                  <td>
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-default">Action</button>
-                        <button type="button" class="btn btn-default dropdown-toggle dropdown-icon" data-toggle="dropdown">
-                          <span class="sr-only">Toggle Dropdown</span>
-                          <div class="dropdown-menu" role="menu">
-                            <a class="dropdown-item" href="#"@click="setear(index);ver=true">Ver</a>
-                            <a class="dropdown-item" href="#" @click="setear(index);ver=false">Editar</a>
-                            <a class="dropdown-item" href="#" @click="eliminarcargos(index)">Eliminar</a>
-                          </div>
-                        </button>
-                    </div>
-                  </td>
-               </tr>
-          </table>
       </div>
       <!-- End -->
     </div>
   </div>
+<transition name="slide-fade">
+  <div class="container"  v-if="trazabilidad.length>0">
+      <h4> Carga {{form.prefijo}}-{{form.id_guia}}</h4>
+      <div class="row">
+        <div class="col-3" v-if="form.prefijo==='E' && form.id_guia">
+          <button class="btn btn-success btn-lg" @click="trazabilidad=[]" type="button">Volver</button>
+        </div>
+      </div>
+      <div class="row">
+          <div class="col-md-12">
+              <div class="main-timeline2">
+                  <a href="#" v-for="trazabilidad in trazabilidad" class="timeline">
 
-
+                        <div class="timeline-icon">
+                                  <i v-if="trazabilidad.tipo_reporte==='Alistamiento'" class=" icon fa fa-hourglass-start"></i>
+                                  <i v-if="trazabilidad.tipo_reporte==='Salida'"  class=" icon fa fa-paper-plane-o"></i>
+                                  <i v-if="trazabilidad.tipo_reporte==='Redireccionamiento'" class=" icon fa fa-road"></i>
+                                  <i v-if="trazabilidad.tipo_reporte==='Llegada'" class=" icon fa fa-cubes"></i>
+                        </div>
+                        <div class="timeline-content">
+                            <h3 class="title">{{trazabilidad.tipo_reporte}}</h3>
+                            <p v-if="trazabilidad.tipo_reporte==='Alistamiento'"  class="description">
+                                Su envío esta en {{trazabilidad.ciudad_sat}} siendo alistado a las {{trazabilidad.hora}} horas, fecha estimada para su próximo destino {{trazabilidad.llegada_destino}}.
+                            </p>
+                            <p v-if="trazabilidad.tipo_reporte==='Salida'"  class="description">
+                                Su carga fue enviado a las {{trazabilidad.hora}} horas, desde {{trazabilidad.ciudad_sat}} para llegar a su próximo destino el día {{trazabilidad.llegada_destino}}.
+                            </p>
+                            <p v-if="trazabilidad.tipo_reporte==='Redireccionamiento'"  class="description">
+                               Su envío ha sido reenviado desde {{trazabilidad.ciudad_sat}} a las {{trazabilidad.hora}} horas, para llegar a su próximo destino el día {{trazabilidad.llegada_destino}}.
+                            </p>
+                            <p v-if="trazabilidad.tipo_reporte==='Llegada'"  class="description">
+                                Su envío esta en {{trazabilidad.ciudad_sat}} a las {{trazabilidad.hora}} horas y sera enviado el dia: {{trazabilidad.fecha_despacho}} fecha estimado de llegada a su  proximo destino {{trazabilidad.llegada_destino}}.
+                            </p>
+                            <img :src="'<?=base_url()?>'+trazabilidad.url_foto" alt="..." class="img-thumbnail">
+                        </div>
+                  </a>
+              </div>
+          </div>
+      </div>
+  </div>
+  </transition>
+  <hr>
         <!-- Modal agregar   -->
         <div class="modal fade" id="modal-lg" data-backdrop="static" data-keyboard="false">
          <div class="modal-dialog modal-lg">
@@ -499,7 +520,7 @@
                     if (this.guias.length>0) {
                       this.loadsedes(this.guias[0].cedula);
                       this.loadTrazabilidad();
-                      this.resete();
+
                     }else {
                       this.trazabilidad=[];
                       Swal.fire({
@@ -519,7 +540,6 @@
                     if (this.guias.length>0) {
                       this.loadsedes(this.guias[0].cedula_cliente);
                       this.loadTrazabilidad();
-                      this.resete();
                     }else {
                       this.trazabilidad=[];
                       Swal.fire({
@@ -537,6 +557,13 @@
                     .then(({data: {trazabilidad}}) => {
                       this.trazabilidad = trazabilidad
                     });
+                    if (this.trazabilidad.length<1) {
+                      Swal.fire({
+                        type: 'error',
+                        title: 'Esta carga aun no tiene registros de trazabilidad ',
+                        text: ''
+                      });
+                    }
                  },
                  async loadsedes(index) {
                    console.log(index);

@@ -77,7 +77,7 @@
                                <!-- textarea -->
                                <div class="row">
                                  <div class="col-sm-6">
-                                   <label class="links">Departamento origen</label>
+                                   <label class="links">Departamento</label>
                                    <div class="form-group">
                                      <select v-model="form.dep" @change="depp()" class="form-control" :disabled="ver" >
                                        <option value=""></option>
@@ -88,7 +88,7 @@
 
                                 <div class="col-sm-6">
                                    <div class="form-group links">
-                                     <label>Ciudad origen</label>
+                                     <label>Ciudad</label>
                                     <select v-model="form.ciudad_sat" v-validate="'required'" name="ciudad_sat" class="form-control" :disabled="ver" >
                                         <option v-for="ciudad in colombia[form.dep].ciudades" :value="ciudad">{{ciudad}}</option>
                                     </select>

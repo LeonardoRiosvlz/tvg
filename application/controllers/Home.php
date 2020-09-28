@@ -60,7 +60,7 @@ class Home extends MY_Controller
 
 
         echo $html;}else{
-                redirect( site_url( user. '', $redirect_protocol ) );
+                redirect(base_url().'User/');
         }
 
     }
