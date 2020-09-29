@@ -99,19 +99,28 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             return $this->db
             ->select('c.*, u.username,cl.correo_cliente, cl.nombre_empresa, cl.telefono_cliente')
             ->from('cotizaciones c')
-            ->join('users u', 'c.user_id = u.user_id')
-            ->join('clientes cl', 'c.cedula = cl.cedula_cliente')
+            ->join('users u', 'c.user_id = u.user_id', 'left outer')
+            ->join('clientes cl', 'c.cedula = cl.cedula_cliente', 'left outer')
             ->get()
             ->result();
           }
+          public function getcotizacionesr() {
+              return $this->db
+              ->select('c.*, u.username,cl.correo_cliente, cl.nombre_empresa, cl.telefono_cliente')
+              ->from('historialcotizaciones c')
+              ->join('users u', 'c.user_id = u.user_id', 'left outer')
+              ->join('clientes cl', 'c.cedula = cl.cedula_cliente', 'left outer')
+              ->get()
+              ->result();
+            }
           public function getcotizacion($data) {
               return $this->db
               ->select('c.*,u.nombre,u.apellido,u.cargo, u.username,cl.*')
               ->from('cotizaciones c')
               ->where('c.id',$data['id'])
               ->where('codigo',$data['codigo'])
-              ->join('users u', 'c.user_id = u.user_id')
-              ->join('clientes cl', 'c.cedula = cl.cedula_cliente')
+              ->join('users u', 'c.user_id = u.user_id', 'left outer')
+              ->join('clientes cl', 'c.cedula = cl.cedula_cliente', 'left outer')
               ->get()
               ->result();
             }
@@ -178,8 +187,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     ->from('cotizaciones c')
                     ->where('c.id', $id)
                     ->where('c.codigo',$codigo)
-                    ->join('users u', 'c.user_id = u.user_id')
-                    ->join('clientes cl', 'c.cedula = cl.cedula_cliente');
+                    ->join('users u', 'c.user_id = u.user_id', 'left outer')
+                    ->join('clientes cl', 'c.cedula = cl.cedula_cliente', 'left outer');
                     $data = $this->db->get();
 
                     $output = '<html lang="en">

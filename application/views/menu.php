@@ -91,10 +91,6 @@
                       Catálogo
                     </button>
                     <div class="dropdown-menu">
-                      <a class="dropdown-item links" href="<?=base_url()?>Cotizaciones"><i class="fa fa-calculator" aria-hidden="true"></i> Cotizaciones</a>
-                      <a class="dropdown-item links" href="<?=base_url()?>Cotizador"><i class="fa fa-calculator" aria-hidden="true"></i> Cotizador</a>
-                      <a class="dropdown-item links" href="<?=base_url()?>Liquidaciones"><i class="fa fa-file-powerpoint-o" aria-hidden="true"></i> Planillas De Liquidación</a>
-                      <a class="dropdown-item links" href="<?=base_url()?>Guias"><i class="fa fa-road" aria-hidden="true"></i> Guías De Carga</a>
                       <a class="dropdown-item links" href="<?=base_url()?>Actas_entrega"><i class="fa fa-handshake-o" aria-hidden="true"></i> Actas de entrega</a>
                       <a class="dropdown-item links" href="<?=base_url()?>Actas_recogida"><i class="fa fa-cubes" aria-hidden="true"></i> Actas de recogida</a>
                       <a class="dropdown-item links" href="<?=base_url()?>Trazabilidad"><i class="fa fa-location-arrow" aria-hidden="true"></i> Trazabilidad de la carga</a>
@@ -116,7 +112,6 @@
                     <div class="dropdown-menu">
                       <a class="dropdown-item links" href="<?=base_url()?>Sedes"><i class="fa fa-paper-plane" aria-hidden="true"></i> Sedes</a>
                       <a class="dropdown-item links" href="<?=base_url()?>Clientes"><i class="fa fa-user-o" aria-hidden="true"></i> Clientes de la empresa</a>
-                      <a class="dropdown-item links" href="<?=base_url()?>ClientesEspeciales"><i class="fa fa-user-o" aria-hidden="true"></i> Clientes especiales</a>
                       <a class="dropdown-item links" href="<?=base_url()?>Remitentes"><i class="fa fa-terminal" aria-hidden="true"></i> Remitentes</a>
                       <a class="dropdown-item links"  href="<?=base_url()?>Proveedores"><i class="fa fa-car" aria-hidden="true"></i> Proveedores de transporte</a>
                       <a class="dropdown-item links"  href="<?=base_url()?>aparatologia"><i class="fa fa-home" aria-hidden="true"></i> Sedes de clientes</a>
@@ -146,25 +141,22 @@
         <div class="panel panel-default">
           <div id="collapse1" class="panel-collapse collapse">
             <ul class="list-group sp">
-              <li class="list-group-item"><a class=" links" href="<?=base_url()?>remitentes"><i class="fa fa-user" aria-hidden="true"></i> Cotizador</a></li>
-              <li class="list-group-item"><a class=" links" href="<?=base_url()?>belleza-higiene"><i class="fa fa-usd" aria-hidden="true"></i> Cotizaciones</a></li>
-              <li class="list-group-item"><a class=" links"  href="<?=base_url()?>dermatologia"><i class="fa fa-plus" aria-hidden="true"></i> Cotizaciones recalculadas</a></li>
-              <li class="list-group-item"><a class=" links"  href="<?=base_url()?>aparatologia"><i class="fa fa-file-pdf-o" aria-hidden="true"></i> Documentos especiales</a></li>
-              <li class="list-group-item"><a class=" links"  href="<?=base_url()?>aparatologia"><i class="fa fa-street-view" aria-hidden="true"></i> Planilla de liquidación</a></li>
+              <li class="list-group-item"><a class="dropdown-item links" href="<?=base_url()?>Cotizador"><i class="fa fa-calculator" aria-hidden="true"></i> Cotizador</a></li>
+              <li class="list-group-item"><a class="dropdown-item links" href="<?=base_url()?>Cotizaciones"><i class="fa fa-calculator" aria-hidden="true"></i> Cotizaciones</a></li>
+              <li class="list-group-item"><a class="dropdown-item links" href="<?=base_url()?>Recalculadas"><i class="fa fa-calculator" aria-hidden="true"></i> Cotizaciones Recalculadas</a></li>
+              <li class="list-group-item"><a class="dropdown-item links" href="<?=base_url()?>Liquidaciones"><i class="fa fa-file-powerpoint-o" aria-hidden="true"></i> Planillas De Liquidación</a></li>
             </ul>
           </div>
         </div>
         <li style="background:#293072!important;" class="border-bottom  text-warning  links list-group-item list-group-item-dark list-group-item d-flex justify-content-between align-items-center"   data-toggle="collapse" href="#collapse2">
-          Guías Cargar-Factura   <i class="fa fa-bars" aria-hidden="true"></i>
+          Guías De Cargas y Facturas   <i class="fa fa-bars" aria-hidden="true"></i>
         </li>
         <div class="panel panel-default">
           <div id="collapse2" class="panel-collapse collapse">
             <ul class="list-group sp">
-              <li class="list-group-item"><a class=" links" href="<?=base_url()?>remitentes"><i class="fa fa-user" aria-hidden="true"></i> Cotizador</a></li>
-              <li class="list-group-item"><a class=" links" href="<?=base_url()?>belleza-higiene"><i class="fa fa-usd" aria-hidden="true"></i> Cotizaciones</a></li>
-              <li class="list-group-item"><a class=" links"  href="<?=base_url()?>dermatologia"><i class="fa fa-plus" aria-hidden="true"></i> Cotizaciones recalculadas</a></li>
-              <li class="list-group-item"><a class=" links"  href="<?=base_url()?>aparatologia"><i class="fa fa-file-pdf-o" aria-hidden="true"></i> Documentos especiales</a></li>
-              <li class="list-group-item"><a class=" links"  href="<?=base_url()?>aparatologia"><i class="fa fa-street-view" aria-hidden="true"></i> Planilla de liquidación</a></li>
+              <li class="list-group-item"><a class="dropdown-item links" href="<?=base_url()?>Guias"><i class="fa fa-road" aria-hidden="true"></i> Guías De Carga Clientes Normales</a></li>
+              <li class="list-group-item"><a class="dropdown-item links" href="<?=base_url()?>ClientesEspeciales"><i class="fa fa-road" aria-hidden="true"></i> Guías De Carga Clientes Especiales</a></li>
+              <li class="list-group-item"><a class="dropdown-item links" href="<?=base_url()?>Facturas"><i class="fa fa-file-text" aria-hidden="true"></i> Facturas</a></li>
             </ul>
           </div>
         </div>
@@ -216,7 +208,7 @@
           </div>
           <div class="dropdown">
             <button type="button" class="btn  nav-link links dropdown-toggle sp" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-hover="dropdown">
-              Guías Cargar-Factura
+              Guías Cargas Factura
             </button>
             <div class="dropdown-menu">
               <a class="dropdown-item links" href="<?=base_url()?>remitentes"><i class="fa fa-file" aria-hidden="true"></i> Actas de entrega</a>

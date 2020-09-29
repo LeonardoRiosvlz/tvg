@@ -1,19 +1,13 @@
 <div id="app" class="container">
   <div class="row">
-    <div class="col-lg-12 my-5 ">
+    <div class="col-lg-12 my-1 ">
       <!-- Shopping cart table -->
       <div class="table-responsive ">
         <table id="example2" class="table">
           <thead>
             <tr>
               <th scope="col" colspan="5" class="border-0 bg-white  text-center">
-                  <div class="bg-light rounded-pill px-4 py-3 text-uppercase font-weight-bold links">facturas <i class="fa fa-street-view" aria-hidden="true"></i></div>
-              </th>
-            </tr>
-            <tr>
-
-              <th scope="col" colspan="5" class="border-0 bg-white  text-center">
-                <button type="button" @click="resete();ver=false" class="btn btn-block btn-light btn-sm links" >Agregar <span class="mbri-plus"></span></button>
+                  <div class="bg-light rounded-pill px-4  text-uppercase font-weight-bold links">facturas <i class="fa fa-file-text" aria-hidden="true"></i></div>
               </th>
             </tr>
 
@@ -78,7 +72,7 @@
          <div class="modal-dialog modal-lg">
            <div class="modal-content">
              <div class="modal-header">
-               <h4 class="modal-title links">Gestión de facturas  <i class="fa fa-file-text-o" aria-hidden="true"></i></h4>
+               <h4 class="modal-title links">Gestión de facturas  <i class="fa fa-file-text" aria-hidden="true"></i></h4>
                <button type="button" @click="resete()" class="close" data-dismiss="modal" aria-label="Close">
                  <span class="mbri-close " ></span>
                </button>

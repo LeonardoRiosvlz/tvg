@@ -37,6 +37,7 @@
               <th class="links">Destino</th>
               <th class="links">Total Volumen</th>
               <th class="links">Total peso</th>
+              <th class="links">Descargar</th>
               <th class="links">Estado</th>
               <th class="links">Action</th>
             </tr>
@@ -48,6 +49,7 @@
                 <td class="links">{{liquidaciones.ciudad_destino}}</td>
                 <td class="links">{{liquidaciones.totalVolumen}}</td>
                 <td class="links">{{liquidaciones.totalKilos}}</td>
+                <td class="links"><a :href="'<?=base_url()?>Liquidaciones/Liquidaciones_to_pdf/'+liquidaciones.id"  download>Descargar PDF</a></td>
                 <td class="links" v-if="liquidaciones.estado==='Creado'">Archivado</td>
                 <td class="links" v-else>{{liquidaciones.estado}}</td>
                 <td>
