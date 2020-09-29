@@ -1,12 +1,11 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
-class tarifas extends MY_Controller {
+class Tarifas extends MY_Controller {
 	private $request;
-	public function __construct() {
+	public function __construct(){
 		parent::__construct();
-		$this->load->model('Tarifas_model', 'tarifas');
 		$this->load->library('Excel');
 		// EXCEL
-		$this->load->model('Clientes_model', 'clientes');
+		$this->load->model('Tarifas_model', 'tarifas');
 		// Load form validation library
 		$this->load->library('form_validation');
 		// load CSV library
@@ -14,7 +13,7 @@ class tarifas extends MY_Controller {
 		// Load file helper
 		$this->load->helper('file');
 
-		$this->load->library('Pdf');
+	  $this->load->library('Pdf');
 	  }
     public function index() {
 			if( ! $this->verify_min_level(9)){
@@ -155,7 +154,8 @@ class tarifas extends MY_Controller {
 							 // export Data
 					     public function exportData() {
 								 $storData = array();
-					        $metaData[] = array('departamento_origen' => 'departamento_origen',
+					        $metaData[] = array(	'id' => 'id',
+																				'departamento_origen' => 'departamento_origen',
 																				'ciudad_origen' => 'ciudad_origen',
 																				'departamento_destino' => 'departamento_destino',
 																				'ciudad_destino' => 'ciudad_destino',
@@ -172,6 +172,7 @@ class tarifas extends MY_Controller {
 					        $customerInfo = $this->tarifas->getcustomerList();
 					        foreach($customerInfo as $key=>$element) {
 					            $storData[] = array(
+												'id'     => $element['id'],
 												'departamento_origen'     => $element['departamento_origen'],
 												'ciudad_origen'     => $element['ciudad_origen'],
 												'departamento_destino'     => $element['departamento_destino'],
@@ -188,7 +189,7 @@ class tarifas extends MY_Controller {
 					        }
 					        $data = array_merge($metaData,$storData);
 					        header("Content-type: application/csv");
-					        header("Content-Disposition: attachment; filename=\"csv-sample-customer".".csv\"");
+					        header("Content-Disposition: attachment; filename=\"Tarifas".".csv\"");
 					        header("Pragma: no-cache");
 					        header("Expires: 0");
 					        $handle = fopen('php://output', 'w');
@@ -214,12 +215,13 @@ class tarifas extends MY_Controller {
 											// Parse data from CSV file
 											$csvData = $this->csvreader->parse_csv($_FILES['fileURL']['tmp_name']);
 
-											var_dump($csvData);
+								
 											// create array from CSV file
 											if(!empty($csvData)){
 													foreach($csvData as $element){
 															// Prepare data for Database insertion
 															$data[] = array(
+																'id'     => $element['id'],
 																'departamento_origen'     => $element['departamento_origen'],
 									              'ciudad_origen'     => $element['ciudad_origen'],
 									              'departamento_destino'     => $element['departamento_destino'],
@@ -229,7 +231,7 @@ class tarifas extends MY_Controller {
 									              'tipo_transporte'     => $element['tipo_transporte'],
 									              'tipo_envio'     => $element['tipo_envio'],
 									              'precio'     => $element['precio'],
-									              'itienerarios'     => $element['itienerarios'],
+									              'itinerarios'     => $element['itinerarios'],
 									              'tiempos'     => $element['tiempos'],
 									              'status'     => $element['status'],
 															);
@@ -238,21 +240,53 @@ class tarifas extends MY_Controller {
 									}
 									// insert/update data into database
 									foreach($data as $element) {
-											$this->trarifas->setDepartamento_origen($element['departamento_origen']);
-											$this->trarifas->setCiudad_origen($element['ciudad_origen']);
-											$this->trarifas->setDepartamento_destino($element['departamento_destino']);
-											$this->trarifas->setCiudad_destino($element['ciudad_destino']);
-											$this->trarifas->setDep($element['dep']);
-											$this->trarifas->setDep_dos($element['dep_dos']);
-											$this->trarifas->setTipo_transporte($element['tipo_transporte']);
-											$this->trarifas->setTipo_envio($element['tipo_envio']);
-											$this->trarifas->setPrecio($element['precio']);
-											$this->trarifas->setItienerarios($element['itienerarios']);
-											$this->trarifas->setTiempos($element['tiempos']);
-											$this->trarifas->setStatus($element['status']);
-											$this->trarifas->createCustomer();
+											$this->tarifas->setId($element['id']);
+											$this->tarifas->setDepartamento_origen($element['departamento_origen']);
+											$this->tarifas->setCiudad_origen($element['ciudad_origen']);
+											$this->tarifas->setDepartamento_destino($element['departamento_destino']);
+											$this->tarifas->setCiudad_destino($element['ciudad_destino']);
+											$this->tarifas->setDep($element['dep']);
+											$this->tarifas->setDep_dos($element['dep_dos']);
+											$this->tarifas->setTipo_transporte($element['tipo_transporte']);
+											$this->tarifas->setTipo_envio($element['tipo_envio']);
+											$this->tarifas->setPrecio($element['precio']);
+											$this->tarifas->setItinerarios($element['itinerarios']);
+											$this->tarifas->setTiempos($element['tiempos']);
+											$this->tarifas->setStatus($element['status']);
+											$this->tarifas->createCustomer();
 									}
 									redirect('Tarifas');
+							}
+					}
+					// checkFileValidation
+					public function checkFileValidation($string) {
+							$mime_types = array(
+									'text/csv',
+									'text/x-csv',
+									'application/csv',
+									'application/x-csv',
+									'application/excel',
+									'text/x-comma-separated-values',
+									'text/comma-separated-values',
+									'application/octet-stream',
+									'application/vnd.ms-excel',
+									'application/vnd.msexcel',
+									'text/plain',
+							);
+							if(isset($_FILES['fileURL']['name']) && $_FILES['fileURL']['name'] != ""){
+									// get mime by extension
+									$mime = get_mime_by_extension($_FILES['fileURL']['name']);
+									$fileExt = explode('.', $_FILES['fileURL']['name']);
+									$ext = end($fileExt);
+									if(($ext == 'csv') && in_array($mime, $mime_types)){
+											return true;
+									}else{
+											$this->form_validation->set_message('checkFileValidation', 'Please choose correct file.');
+											return false;
+									}
+							}else{
+									$this->form_validation->set_message('checkFileValidation', 'Please choose a file.');
+									return false;
 							}
 					}
 

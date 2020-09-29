@@ -17,8 +17,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
       private $_tiempos;
       private $_status;
 
-          public function setID($id) {
-              $this->_customerID = $customerID;
+          public function setId($id) {
+              $this->_id = $id;
           }
           public function setDepartamento_origen($departamento_origen) {
               $this->_departamento_origen = $departamento_origen;
@@ -38,8 +38,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
           public function setDep_dos($dep_dos) {
               $this->_dep_dos = $dep_dos;
           }
-          public function setTipo_trasporte($tipo_trasporte) {
-              $this->_tipo_trasporte = $tipo_trasporte;
+          public function setTipo_transporte($tipo_transporte) {
+              $this->_tipo_transporte = $tipo_transporte;
           }
           public function setTipo_envio($tipo_envio) {
               $this->_tipo_envio = $tipo_envio;
@@ -124,13 +124,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     }
                     // create Customer
                   public function createCustomer() {
-                      $tableName = 'tarifas t';
+                      $tableName = 'tarifas';
                       $this->db->select(array('t.id'));
-                      $this->db->from($tableName . ' as c');
-                      $this->db->where('c.id', $this->_id);
+                      $this->db->from($tableName . ' as t');
+                      $this->db->where('t.id', $this->_id);
                       $query = $this->db->get();
                       if ($query->num_rows() > 0) {
                           $data = array(
+                            'id'     => $this->_id,
                             'departamento_origen'     => $this->_departamento_origen,
                             'ciudad_origen'     => $this->_ciudad_origen,
                             'departamento_destino'     => $this->_departamento_destino,
@@ -140,7 +141,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             'tipo_transporte'     => $this->_tipo_transporte,
                             'tipo_envio'     => $this->_tipo_envio,
                             'precio'     => $this->_precio,
-                            'itinerarios'     => $this->_itinerarios,
+                            'itinerarios'   => $this->_itinerarios,
                             'tiempos'     => $this->_tiempos,
                             'status'     => $this->_status,
                           );
@@ -148,6 +149,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                           $this->db->update($tableName, $data);
                       } else {
                           $data = array(
+                            'id'     => $this->_id,
                             'departamento_origen'     => $this->_departamento_origen,
                             'ciudad_origen'     => $this->_ciudad_origen,
                             'departamento_destino'     => $this->_departamento_destino,

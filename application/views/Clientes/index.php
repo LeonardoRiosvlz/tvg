@@ -170,7 +170,7 @@
                                <!-- textarea -->
                                <div class="form-group">
                                  <label class="links">NIT</label>
-                                  <input type="text" v-model="form.nit_cliente" v-validate="'required'" name="nit_cliente" class="form-control" id="" :disabled="ver||form.tipo_cliente==='Persona natural'">
+                                  <input type="text" v-model="form.nit_cliente"  @change="validarNit()" v-validate="'required'" name="nit_cliente" class="form-control" id="" :disabled="ver||form.tipo_cliente==='Persona natural'">
                                  <p class="text-danger small my-1" v-if="(errors.first('nit_cliente'))" >  Este dato es requerido/o es inválido  </p>
                                </div>
                              </div>
@@ -211,7 +211,7 @@
                                <!-- textarea -->
                                <div class="form-group">
                                  <label class="links">Número de cédula</label>
-                                  <input type="number" v-model="form.cedula_cliente" v-validate="'required'" name="cedula_cliente" class="form-control" id="" :disabled="ver">
+                                  <input type="number" v-model="form.cedula_cliente" @change="validarCedula()" v-validate="'required'" name="cedula_cliente" class="form-control" id="" :disabled="ver">
                                  <p class="text-danger small my-1" v-if="(errors.first('cedula_cliente'))" >  Este dato es requerido/o es inválido  </p>
                                </div>
                              </div>
@@ -1653,6 +1653,30 @@
 
        },
        methods: {
+         validarNit(){
+           for (var i = 0; i < this.clientes.length; i++) {
+             if (this.form.nit_cliente=== this.clientes[i].nit_cliente) {
+               Swal.fire({
+                 type: 'error',
+                 title: 'Lo sentimos',
+                 text: 'Este Nit ya fue registrado'
+               });
+               this.form.nit_cliente="";
+             }
+           }
+         },
+         validarCedula(){
+           for (var i = 0; i < this.clientes.length; i++) {
+             if (this.form.cedula_cliente=== this.clientes[i].cedula_cliente) {
+               Swal.fire({
+                 type: 'error',
+                 title: 'Lo sentimos',
+                 text: 'Esta cedula ya fue registrado'
+               });
+               this.form.cedula_cliente="";
+             }
+           }
+         },
            depp(){
              this.form.departamento=this.colombia[this.form.dep].departamento;
              console.log(this.form.dep);

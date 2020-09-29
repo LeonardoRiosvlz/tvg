@@ -12,7 +12,7 @@ class Clientes extends MY_Controller {
 		$this->load->library('CSVReader');
 		// Load file helper
 		$this->load->helper('file');
-
+		  $this->load->helper('url');
 	  $this->load->library('Pdf');
 	  }
     public function index() {
