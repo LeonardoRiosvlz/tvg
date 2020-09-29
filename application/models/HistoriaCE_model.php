@@ -71,12 +71,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
           }
           public function get_anexo($id) {
               return $this->db
-              ->select('c.*,s.nombre_sede,t.*,k.nombre_cliente,p.nombre_proveedor')
+              ->select('c.*,f.forma,f.dias,s.nombre_sede,t.*,k.nombre_empresa,k.nit_cliente,k.nombre_cliente,k.telefono_cliente,k.direccion_cliente,k.ciudad,p.nombre_proveedor')
               ->from('historial_Ce c')
               ->where('numero_anexo_l', $id)
               ->join('sedes s', 'c.sede_cliente = s.id', 'left outer')
               ->join('tarifas t', 'c.id_tarifa = t.id', 'left outer')
               ->join('clientes k', 'c.cedula_cliente = k.cedula_cliente', 'left outer')
+              ->join('forma_pago f', 'k.forma_pago = f.id', 'left outer')
               ->join('proveedores p', 'c.proveedor = p.id', 'left outer')
               ->get()
               ->result();
@@ -109,7 +110,65 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 ->get()
                 ->result();
               }
-
+              public function getcarga_fecha_numero($datas) {
+                  return $this->db
+                  ->select('c.*,s.nombre_sede,t.*,k.nombre_cliente,p.nombre_proveedor')
+                  ->from('historial_Ce c')
+                  ->where('n_referencia_c', $datas['numero'])
+    //              ->where('fecha_despacho <=',$datas['desde'])
+    //              ->where('fecha_despacho >=',$datas['hasta'])
+                  ->where('fecha_despacho >=', $datas['desde'])
+                  ->where('fecha_despacho <=', $datas['hasta'])
+                  ->join('sedes s', 'c.sede_cliente = s.id', 'left outer')
+                  ->join('tarifas t', 'c.id_tarifa = t.id', 'left outer')
+                  ->join('clientes k', 'c.cedula_cliente = k.cedula_cliente', 'left outer')
+                  ->join('proveedores p', 'c.proveedor = p.id', 'left outer')
+                  ->get()
+                  ->result();
+                }
+                public function getcarga_fecha_cedula_numero($datas) {
+                    return $this->db
+                    ->select('c.*,s.nombre_sede,t.*,k.nombre_cliente,p.nombre_proveedor')
+                    ->from('historial_Ce c')
+                    ->where('n_referencia_c', $datas['numero'])
+      //              ->where('fecha_despacho <=',$datas['desde'])
+      //              ->where('fecha_despacho >=',$datas['hasta'])
+                    ->where('fecha_despacho >=', $datas['desde'])
+                    ->where('fecha_despacho <=', $datas['hasta'])
+                    ->join('sedes s', 'c.sede_cliente = s.id', 'left outer')
+                    ->join('tarifas t', 'c.id_tarifa = t.id', 'left outer')
+                    ->join('clientes k', 'c.cedula_cliente = k.cedula_cliente', 'left outer')
+                    ->join('proveedores p', 'c.proveedor = p.id', 'left outer')
+                    ->get()
+                    ->result();
+                  }
+              public function getcarga_tiempo($datas) {
+                  return $this->db
+                  ->select('c.*,s.nombre_sede,t.*,k.nombre_cliente,p.nombre_proveedor')
+                  ->from('historial_Ce c')
+    //              ->where('fecha_despacho <=',$datas['desde'])
+    //              ->where('fecha_despacho >=',$datas['hasta'])
+                  ->where('fecha_despacho >=', $datas['desde'])
+                  ->where('fecha_despacho <=', $datas['hasta'])
+                  ->join('sedes s', 'c.sede_cliente = s.id', 'left outer')
+                  ->join('tarifas t', 'c.id_tarifa = t.id', 'left outer')
+                  ->join('clientes k', 'c.cedula_cliente = k.cedula_cliente', 'left outer')
+                  ->join('proveedores p', 'c.proveedor = p.id', 'left outer')
+                  ->get()
+                  ->result();
+                }
+                public function getcarga_numero($datas) {
+                    return $this->db
+                    ->select('c.*,s.nombre_sede,t.*,k.nombre_cliente,p.nombre_proveedor')
+                    ->from('historial_Ce c')
+                    ->where('n_referencia_c', $datas['numero'])
+                    ->join('sedes s', 'c.sede_cliente = s.id', 'left outer')
+                    ->join('tarifas t', 'c.id_tarifa = t.id', 'left outer')
+                    ->join('clientes k', 'c.cedula_cliente = k.cedula_cliente', 'left outer')
+                    ->join('proveedores p', 'c.proveedor = p.id', 'left outer')
+                    ->get()
+                    ->result();
+                  }
             public function getcarga_cedula_numero($id,$numero) {
                 return $this->db
                 ->select('c.*,s.nombre_sede,t.*,k.nombre_cliente,p.nombre_proveedor')

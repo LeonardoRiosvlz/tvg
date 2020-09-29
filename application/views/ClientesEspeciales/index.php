@@ -9,12 +9,12 @@
         <th class="links">Action</th>
       </tr>
       <tr v-for="(factura,index) in factura">
-        <td>{{factura.numero_anexo_l}}</td>
+        <td>{{factura.codigo}}</td>
         <td>{{factura.flete_total}}$</td>
         <td><button class="btn btn-danger" @click="eliminarItem(index)"><span class="mbri-trash"></span></button></td>
       </tr>
     </table>
-    <button v-if="factura.length>0" type="button" class="btn-primary btn-block" name="button">Generar Factura</button>
+    <button v-if="factura.length>0"  @click="crearFactura()" type="button" class="btn-primary btn-block" name="button">Generar Factura</button>
   </div>
   <div class="row">
     <div class="col-lg-12 my-1 ">
@@ -91,15 +91,9 @@
              <label class="labels" for="check17"></label>
           </div>
         </div>
-        <div class="row p-1">
-          <div class="col-2">
-            <th scope="col" colspan="2" class="border-0 bg-white  text-center">
-              <a v-if="exceluno && cargas.length>0 " :href="'<?=base_url();?>ClientesEspeciales/excelexport_cedula/'+form.cedula" type="button"  class="btn btn-block btn-primary btn-sm links" >Exportar Excel <span class="mbri-save"></span></a>
-              <a v-if="exceldos && cargas.length>0 " :href="'<?=base_url();?>ClientesEspeciales/excelexport_cedula_numero/'+form.cedula+'/'+numero" type="button"  class="btn btn-block btn-primary btn-sm links" >Exportar Excel <span class="mbri-save"></span></a>
-              <a v-if="exceltres && cargas.length>0 " :href="'<?=base_url();?>ClientesEspeciales/excelexport_cedula_tiempo/'+form.cedula+'/'+desde+'/'+hasta" type="button"  class="btn btn-block btn-primary btn-sm links" >Exportar Excel <span class="mbri-save"></span></a>
-              <a v-if="excelcuatro && cargas.length>0 " :href="'<?=base_url();?>ClientesEspeciales/excelexport_cedulant/'+numero+'/'+desde+'/'+hasta" type="button"  class="btn btn-block btn-primary btn-sm links" >Exportar Excel <span class="mbri-save"></span></a>
-              <a v-if="excelcinco && cargas.length>0 " :href="'<?=base_url();?>ClientesEspeciales/excelexport_anexo/'+anexo" type="button"  class="btn btn-block btn-primary btn-sm links" >Exportar Excel <span class="mbri-save"></span></a>
-            </th>
+        <div class="row">
+          <div class="col-2 p-2 ml-auto">
+              <a v-if="cargas.length>0" :href="'<?=base_url();?>'+url" type="button"  class="btn btn-block btn-primary btn-sm links" >Exportar Excel <span class="mbri-save"></span></a>
           </div>
         </div>
           <table id="example1" class="table ">
@@ -142,7 +136,6 @@
       <!-- End -->
     </div>
   </div>
-  <pre>{{legalizaciones}}</pre>
         <!-- Modal agregar   -->
         <div class="modal fade" id="modal-lg" data-backdrop="static" data-keyboard="false">
          <div class="modal-dialog modal-lg">
@@ -590,6 +583,7 @@
      new Vue({
        el: '#app',
        data: {
+         url:"",
          config: {
             wrap: true,
             enableTime: false,
@@ -1955,6 +1949,32 @@
           facturar:false,
        },
        methods: {
+           crearFactura(){
+             Swal({
+               title: '¿Estás seguro?',
+               text: "",
+               type: 'warning',
+               showCancelButton: true,
+               confirmButtonText: '¡Si! ¡Generar!',
+               cancelButtonText: '¡No! ¡cancelar!',
+               reverseButtons: true
+             }).then((result) => {
+               if (result.value) {
+                localStorage.setItem("factura", JSON.stringify(this.factura));
+                window.setTimeout(function () {
+                     location.href = "http://tvgcargo.co/Facturas";
+                 }, 500);
+               } else if (
+                 result.dismiss === Swal.DismissReason.cancel
+               ) {
+                 Swal(
+                   'Cancelado',
+                   'No fue eliminado.',
+                   'success'
+                 )
+               }
+             })
+           },
                 alerta(){
                   if (this.cargas.length<1) {
                     Swal.fire({
@@ -1964,62 +1984,129 @@
                     });
                   }
                 },
-                mathc(){
-                  if (!this.desde||!this.hasta) {
-                    if (this.anexo) {
-                      if (this.facturar==true) {
-                        this.loadAnexos();
-                      }
-                      this.loadcargas_anexos();
-                      this.exceluno=false;
-                      this.exceldos=false;
-                      this.exceltres=false;
-                      this.excelcuatro=false;
-                      this.excelcinco=true;
-                      this.numero="";
-                      this.form.cedula="";
-                      this.desde="";
-                      this.hasta="";
-                    }else{
-                      if (!this.numero) {
-                        this.loadcargas_cedulas();
-                        this.exceluno=true;
-                        this.exceldos=false;
-                        this.exceltres=false;
-                        this.excelcuatro=false;
-                        this.excelcinco=false;
-                        this.anexo="";
-                      }else{
-                        this.loadcargas_cedulas_nc();
-                        this.exceluno=false;
-                        this.exceldos=true;
-                        this.exceltres=false;
-                        this.excelcuatro=false;
-                        this.excelcinco=false;
-                        this.anexo="";
-                      }
-                    }
-                  }else if (this.desde && this.hasta && this.form.cedula || this.numero) {
+                async  mathc(){
+                    if (this.desde && this.hasta && !this.form.cedula && !this.numero) {
+                      console.log("solo fecha");
+                      let data = new FormData();
+                       data.append('desde',this.desde);
+                       data.append('hasta',this.hasta);
+                       await axios.post('index.php/ClientesEspeciales/getcarga_tiempo/',data)
+                       .then(({data: {cargas}}) => {
+                         this.cargas = cargas
+                       });
+                        $("#example1").DataTable();
+                        this.url='ClientesEspeciales/excelexport_tiempo/'+this.desde+'/'+this.hasta;
+                    }else if(!this.desde && !this.hasta && this.form.cedula && !this.numero && !this.ciudad) {
+                      console.log("solo cedula");
+                      let data = new FormData();
+                       data.append('cedula',this.form.cedula);
+                       await axios.post('index.php/ClientesEspeciales/getcarga_cedula/',data)
+                       .then(({data: {cargas}}) => {
+                         this.cargas = cargas
+                       });
+                        $("#example1").DataTable();
+                        this.url='ClientesEspeciales/excelexport_cedula/'+this.form.cedula;
+                    }else if(!this.desde && !this.hasta && !this.form.cedula && this.numero ) {
+                        console.log("solo estado");
+                        let data = new FormData();
+                         data.append('numero',this.numero);
+                         await axios.post('index.php/ClientesEspeciales/getcarga_numero/',data)
+                         .then(({data: {cargas}}) => {
+                           this.cargas = cargas
+                         });
+                          $("#example1").DataTable();
+                          this.url='ClientesEspeciales/excelexport_numero/'+this.numero;
+                    }else if(this.desde && this.hasta && this.form.cedula && !this.numero) {
+                        console.log("Fecha y cedula");
+                        let data = new FormData();
+                        data.append('desde',this.desde);
+                        data.append('hasta',this.hasta);
+                         data.append('cedula',this.form.cedula);
+                         await axios.post('index.php/ClientesEspeciales/getcarga_cedula_tiempo/',data)
+                         .then(({data: {cargas}}) => {
+                           this.cargas = cargas
+                         });
+                          $("#example1").DataTable();
+                      this.url='ClientesEspeciales/excelexport_cedula_tiempo/'+this.desde+'/'+this.hasta+'/'+this.form.cedula;
+                    }else if(this.desde && this.hasta && !this.form.cedula && this.numero) {
+                        console.log("Fecha y numero")
+                        let data = new FormData();
+                        data.append('desde',this.desde);
+                        data.append('hasta',this.hasta);
+                         data.append('numero',this.numero);
+                         await axios.post('index.php/ClientesEspeciales/getcarga_fecha_numero/',data)
+                         .then(({data: {cargas}}) => {
+                           this.cargas = cargas
+                         });
+                          $("#example1").DataTable();
+                          this.url='ClientesEspeciales/excelexport_fecha_numero/'+this.desde+'/'+this.hasta+'/'+this.numero;
+                    }else if(!this.desde && !this.hasta && this.form.cedula && this.numero ) {
+                        console.log("cedula y numero");
+                        let data = new FormData();
+                        data.append('cedula',this.form.cedula);
+                        data.append('numero',this.numero);
+                         await axios.post('index.php/ClientesEspeciales/getcarga_cedula_numero/',data)
+                         .then(({data: {cargas}}) => {
+                           this.cargas = cargas
+                         });
+                          $("#example1").DataTable();
+                          this.url='ClientesEspeciales/excelexport_cedula_numero/'+this.form.cedula+'/'+this.numero;
 
-                    if (!this.numero) {
-                      this.loadcargas_cedulas_tiempo();
-                      this.exceluno=false;
-                      this.exceldos=false;
-                      this.exceltres=true;
-                      this.excelcuatro=false;
-                      this.excelcinco=false;
-                      this.anexo="";
-                    }else{
-                      this.loadcargas_cedulas_nc_tiempo();
-                      this.exceluno=false;
-                      this.exceldos=false;
-                      this.exceltres=false;
-                      this.excelcuatro=true;
-                      this.excelcinco=false;
-                      this.anexo="";
+                    }else if(this.desde && this.hasta && this.form.cedula && this.numero) {
+                        console.log("fecha y cedula y numero");
+                        let data = new FormData();
+                        data.append('desde',this.desde);
+                        data.append('hasta',this.hasta);
+                        data.append('cedula',this.form.cedula);
+                        data.append('numero',this.numero);
+                         await axios.post('index.php/ClientesEspeciales/getcarga_fecha_cedula_numero/',data)
+                         .then(({data: {cargas}}) => {
+                           this.cargas = cargas
+                         });
+                          $("#example1").DataTable();
+                      this.url='ClientesEspeciales/excelexport_fecha_cedula_numero/'+this.desde+'/'+this.hasta+'/'+this.form.cedula+'/'+this.numero;
+                    }else if(this.desde && this.hasta && !this.cedula && this.estado && this.ciudad) {
+                        console.log("fecha y estado y ciudad");
+                        let data = new FormData();
+                        data.append('desde',this.desde);
+                        data.append('hasta',this.hasta);
+                        data.append('estado',this.estado);
+                        data.append('ciudad',this.ciudad);
+                         await axios.post('index.php/Guias/get_fecha_estado_ciudad/',data)
+                         .then(({data: {guias}}) => {
+                           this.guias = guias
+                         });
+                          $("#example1").DataTable();
+                      this.url='Guias/excelexport_fecha_estado_ciudad/'+this.desde+'/'+this.hasta+'/'+this.estado+'/'+this.ciudad;
+                    }else if(this.desde && this.hasta && this.cedula && this.estado && this.ciudad) {
+                        console.log("fecha y estado y cedula y ciudad")
+                        let data = new FormData();
+                        data.append('desde',this.desde);
+                        data.append('hasta',this.hasta);
+                        data.append('estado',this.estado);
+                        data.append('ciudad',this.ciudad);
+                        data.append('cedula',this.cedula);
+                         await axios.post('index.php/Guias/get_fecha_estado_ciudad_cedula/',data)
+                         .then(({data: {guias}}) => {
+                           this.guias = guias
+                         });
+                          $("#example1").DataTable();
+                          this.url='Guias/excelexport_fecha_estado_ciudad_cedula/'+this.desde+'/'+this.hasta+'/'+this.estado+'/'+this.ciudad+'/'+this.cedula;
+                    }else if(this.desde && this.hasta && this.cedula && this.estado && !this.ciudad) {
+                        console.log("fecha y estado y cedula");
+                        let data = new FormData();
+                        data.append('desde',this.desde);
+                        data.append('hasta',this.hasta);
+                        data.append('estado',this.estado);
+                        data.append('cedula',this.cedula);
+                         await axios.post('index.php/Guias/get_fecha_estado_cedula/',data)
+                         .then(({data: {guias}}) => {
+                           this.guias = guias
+                         });
+                          $("#example1").DataTable();
+                          this.url='Guias/excelexport_fecha_estado_cedula/'+this.desde+'/'+this.hasta+'/'+this.estado+'/'+this.cedula;
                     }
-                  }
-                },
+                  },
                  fletetotal(){
                   this.form.flete_total=parseInt(this.form.cantidad)*parseInt(this.form.flete_fijo)*parseInt(this.form.kilos_cliente);
                  },
@@ -2381,21 +2468,21 @@
                     if (this.factura.length<1) {
                       for (var i = 0; i < this.legalizaciones.length; i++) {
                         this.factura.push({
-                           origen:this.legalizaciones[index].ciudad_origen,
-                           destino:this.legalizaciones[index].ciudad_destino,
-                           tipo_transporte:this.legalizaciones[index].tipo_transporte,
-                           tipo_transporte:this.legalizaciones[index].tipo_transporte,
-                           total:this.legalizaciones[index].total,
-                           n_guia:'N-'+this.legalizaciones[index].id,
-                           id:this.legalizaciones[index].id,
-                           nombre_cliente:this.legalizaciones[index].nombre_empresa,
-                           direccion_cliente:this.legalizaciones[index].direccion_cliente,
-                           telefono_cliente:this.legalizaciones[index].telefono_cliente,
-                           cedula_cliente:this.legalizaciones[index].cedula,
-                           ciudad_cliente:this.legalizaciones[index].ciudad,
-                           forma:this.legalizaciones[index].forma,
-                           dias:this.legalizaciones[index].dias,
-
+                           origen:this.legalizaciones[i].ciudad_origen,
+                           destino:this.legalizaciones[i].ciudad_destino,
+                           tipo_transporte:this.legalizaciones[i].tipo_transporte,
+                           total:this.legalizaciones[i].flete_total,
+                           n_guia:'E-'+this.legalizaciones[i].codigo,
+                           codigo:this.legalizaciones[i].codigo,
+                           nombre_cliente:this.legalizaciones[i].nombre_cliente,
+                           nombre_empresa:this.legalizaciones[i].nombre_empresa,
+                           nit_cliente:this.legalizaciones[i].nit_cliente,
+                           direccion_cliente:this.legalizaciones[i].direccion_cliente,
+                           telefono_cliente:this.legalizaciones[i].telefono_cliente,
+                           cedula_cliente:this.legalizaciones[i].cedula_cliente,
+                           ciudad_cliente:this.legalizaciones[i].ciudad,
+                           forma:this.legalizaciones[i].forma,
+                           dias:this.legalizaciones[i].dias,
                          });
                      }
                    }else{
@@ -2407,7 +2494,24 @@
                          }
                        }
                        if (this.legalizaciones.length>0) {
-                         this.factura.push(this.legalizaciones[i])
+                         this.factura.push({
+                           origen:this.legalizaciones[i].ciudad_origen,
+                           destino:this.legalizaciones[i].ciudad_destino,
+                           tipo_transporte:this.legalizaciones[i].tipo_transporte,
+                           total:this.legalizaciones[i].flete_total,
+                           n_guia:'E-'+this.legalizaciones[i].codigo,
+                           codigo:this.legalizaciones[i].codigo,
+                           nombre_cliente:this.legalizaciones[i].nombre_cliente,
+                           nombre_empresa:this.legalizaciones[i].nombre_empresa,
+                           nit_cliente:this.legalizaciones[i].nit_cliente,
+                           direccion_cliente:this.legalizaciones[i].direccion_cliente,
+                           telefono_cliente:this.legalizaciones[i].telefono_cliente,
+                           cedula_cliente:this.legalizaciones[i].cedula_cliente,
+                           ciudad_cliente:this.legalizaciones[i].ciudad,
+                           forma:this.legalizaciones[i].forma,
+                           dias:this.legalizaciones[i].dias,
+
+                          });
                        }
                    }
 

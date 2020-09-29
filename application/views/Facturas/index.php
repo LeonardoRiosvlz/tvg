@@ -61,7 +61,7 @@
         </div>
         <div class="modal-body">
           <h2 class="links text-center">Factura</h2>
-          <button type="button" class="btn btn-block btn-lg btn-success"><span class="mbri-bookmark"></span>FV-{{id}}</button>
+          <button type="button" class="btn btn-block btn-lg btn-success"><span class="mbri-bookmark"></span>{{archivo.nombre_archivo}}</button>
           <button type="button" class="btn btn-block btn-lg btn-primary" @click="generar();">Generar <span class="mbri-share"></span></button>
           <button type="button" class="btn btn-block btn-lg btn-secondary" @click="generarandGuia()">Generar y Crear Guía <span class="mbri-share"></span></button>
             <pre>{{archivo}}</pre>
@@ -119,7 +119,7 @@
                              <div class="col-md-3">
                                <!-- textarea -->
                                <div class="form-group">
-                                 <label class="links">Cedula</label>
+                                 <label class="links">Cedula/NIT</label>
                                   <input type="text" v-model="form.cedula" v-validate="'required'" name="cedula" class="form-control" id="" :disabled="ver">
                                  <p class="text-danger my-1" v-if="(errors.first('cedula'))" >  Este dato es requerido  </p>
                                </div>
@@ -451,8 +451,13 @@
                  loadPln(){
                    this.form.items=JSON.parse(localStorage.factura);
                    if(this.form.items.length>0){
-                     this.form.cedula=this.form.items[0].cedula_cliente;
-                     this.form.nombre_cliente=this.form.items[0].nombre_cliente;
+                     if(this.form.items[0].nombre_empresa==='No aplica'){
+                       this.form.cedula=this.form.items[0].cedula_cliente;
+                       this.form.nombre_cliente=this.form.items[0].nombre_cliente;
+                     }else{
+                       this.form.cedula=this.form.items[0].nit_cliente;
+                       this.form.nombre_cliente=this.form.items[0].nombre_empresa;
+                     }
                      this.form.direccion_cliente=this.form.items[0].direccion_cliente;
                      this.form.telefono_cliente=this.form.items[0].telefono_cliente;
                      this.form.ciudad_cliente=this.form.items[0].ciudad_cliente;

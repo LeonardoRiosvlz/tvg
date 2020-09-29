@@ -16,7 +16,7 @@
     </table>
     <button v-if="factura.length>0"  @click="crearFactura()" type="button" class="btn-primary btn-block" name="button">Generar Factura</button>
   </div>
-
+<pre>{{guias}}</pre>
   <div class="row">
     <div class="col-lg-12 my-3 ">
       <!-- Shopping cart table -->
@@ -526,7 +526,7 @@
              text: "",
              type: 'warning',
              showCancelButton: true,
-             confirmButtonText: '¡Si! ¡crear!',
+             confirmButtonText: '¡Si! ¡Generar!',
              cancelButtonText: '¡No! ¡cancelar!',
              reverseButtons: true
            }).then((result) => {
@@ -597,7 +597,9 @@
                   total:this.guias[index].total,
                   n_guia:'N-'+this.guias[index].id,
                   id:this.guias[index].id,
-                  nombre_cliente:this.guias[index].nombre_empresa,
+                  nombre_cliente:this.guias[index].nombre_cliente,
+                  nombre_empresa:this.guias[index].nombre_empresa,
+                  nit_cliente:this.guias[index].nit_cliente,
                   direccion_cliente:this.guias[index].direccion_cliente,
                   telefono_cliente:this.guias[index].telefono_cliente,
                   cedula_cliente:this.guias[index].cedula,
