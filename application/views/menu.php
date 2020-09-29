@@ -132,6 +132,13 @@
     </div>
     <div id="mySidenav2" class="sidenav">
       <a class="links" href="javascript:void(0)" class="closebtn" onclick="closeNav2()">&times;</a>
+      <div v-for="profiles in cart" class="card border-0" style="width: 100%;background:#293072!important;" style="background:#293072!important;">
+        <img style="background:#293072!important;width:40%; float:center; margin-left: auto;margin-right: auto;"  class="card-img-top rounded-circle" :src="'<?=base_url();?>'+profiles.url_foto" alt="Card image cap">
+        <div  class="card-body">
+          <h5 class="card-title text-center text-white ">{{profiles.nombre}} {{profiles.apellido}}</h5>
+          <h5 class="card-title text-white text-center lead">{{profiles.cargo}}</h5>
+        </div>
+      </div>
       <ul class="list-group">
         <li style="background:#293072!important;" class="border-bottom  text-warning  links list-group-item list-group-item-dark list-group-item d-flex justify-content-between align-items-center"   data-toggle="collapse" href="#collapse1">
           Cotizaciones y Planillas <i class="fa fa-bars" aria-hidden="true"></i>

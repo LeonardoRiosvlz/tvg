@@ -1124,16 +1124,13 @@
                             this.profiles = profiles
                           });
                         },
-                 loadCart(){
+                        async loadCart() {
 
-                   if(localStorage.getItem('cart')) {
-                     this.cart=JSON.parse(localStorage.cart);
-
-                   }else {
-                     localStorage.setItem("cart", JSON.stringify(this.cart));
-
-                   }
-                 },
+                            await  axios.get('index.php/User/get_profile/')
+                             .then(({data: {profiles}}) => {
+                                this.cart = profiles;
+                             });
+                           },
        },
 
        created(){

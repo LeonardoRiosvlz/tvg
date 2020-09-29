@@ -1,8 +1,5 @@
-<?php
-defined('BASEPATH') or exit('No direct script access allowed');
-
-class User extends MY_Controller
-{
+<?php defined('BASEPATH') or exit('No direct script access allowed');
+class User extends MY_Controller{
   public function __construct()
   {
       parent::__construct();
@@ -38,9 +35,9 @@ class User extends MY_Controller
       public function foto() {
         $config['upload_path']          = './include/img/user';
         $config['allowed_types']        = 'jpg|png|jpeg';
-        $config['max_size']             = 7500;
-        $config['max_width']            = 2500;
-        $config['max_height']           = 1400;
+        $config['max_size']             = 750000;
+        $config['max_width']            = 250000;
+        $config['max_height']           = 140000;
         $this->load->library('upload', $config);
         if ( ! $this->upload->do_upload('file')) {
           $error = array('error' => $this->upload->display_errors());
@@ -48,8 +45,8 @@ class User extends MY_Controller
         } else {
             $upload_data = $this->upload->data();
           $file_name = $upload_data['file_name'];
-          $data['foto'] ="include/img/user/".$file_name;
-          $data['id_usuario'] = $this->auth_user_id;;
+          $data['url_foto'] ="include/img/user/".$file_name;
+          $data['user_id'] = $this->auth_user_id;;
           $rut=$this->user->foto($data);
           echo json_encode(['status' => '201', 'message' => 'Imagen creada exitosamente']);
         }
@@ -62,13 +59,9 @@ class User extends MY_Controller
         echo json_encode(['profiles' => $data['profiles']]);
 
       }
-           public function editar() {
-       			//  if ($this->session->userdata('is_authenticated') == FALSE) {
-       			//    echo json_encode(['status' => '403','message' => 'Permission Denied']);
-       			///    return null;
-       			//  }
+           public function editarp() {
        		    $data = json_decode($this->input->post('service_form'),true);
-       			$result = $this->user->editar($data);
+       			$result = $this->user->editarp($data);
        				if($result['code'] == 0){
        					echo json_encode(['status' => '200', 'message' => 'editado exitosamente']);
        				}

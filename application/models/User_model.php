@@ -54,9 +54,9 @@ class User_model extends MY_Model {
    }
 
    public function foto($data) {
-       $this->db->where('id_usuario',$data['id_usuario']);
-       $this->db->update('datos', array(
-           'foto'     => $data['foto'],
+       $this->db->where('user_id',$data['user_id']);
+       $this->db->update('users', array(
+           'url_foto'     => $data['url_foto'],
        ));
        return $this->db->error();
       }
@@ -175,7 +175,17 @@ public function editar($data) {
     ));
     return $this->db->error();
    }
+   public function editarp($data) {
 
+       $this->db->where('user_id',$data['user_id']);
+       $this->db->update('users', array(
+         'apellido'       => $data['apellido'],
+         'cedula'       => $data['cedula'],
+         'telefono_personal'         => $data['telefono_personal'],
+         'telefono_corporativo'         => $data['telefono_corporativo'],
+       ));
+       return $this->db->error();
+      }
 public function editar_img($data) {
 
   $this->db->where('user_id',$data['user_id']);
