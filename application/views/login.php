@@ -115,9 +115,6 @@ if( ! isset( $on_hold_message ) )
             ¿Olvidaste tu contraseña?
          </a>
       </p>
-          ¿No tienes una cuenta? <a class="btn" href="<?php echo site_url('/home/registe', $link_protocol); ?>">
-            Regístrate
-         </a>
    </div>
 </form>
 

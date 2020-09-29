@@ -20,7 +20,7 @@
                                                       <img :src="'<?=base_url();?>'+profile.url_foto" alt="" class="mx-auto  img-fluid">
                                                       <br>
                                                   </div>
-                                                 <!--/coldiv class="col-12 " >
+                                                 <div class="col-12 " >
                                                     <a class="btn btn-block links" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample"><span class="mbri-camera"></span>Editar foto</a>
                                                     <a class="btn btn-block links" role="button" href="#" @click="resete()" aria-expanded="false" aria-controls="collapseExample"><span class="mbri-edit"></span> Editar datos</a>
 
@@ -35,7 +35,7 @@
                                                     </div>
 
                                                   </div>
-                                              -->
+                                            
                                               </div>
                                               <!--/row-->
                                           </div>

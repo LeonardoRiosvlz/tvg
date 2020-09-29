@@ -16,7 +16,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <!DOCTYPE html>
 <html>
   <head>
-    <title>TECNOVITAL</title>
+    <title>TVGCARGOS S.A.S</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="https://fonts.googleapis.com/css?family=Bitter" rel="stylesheet">
@@ -57,8 +57,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
           <div class="container p-5 ">
               <div class="rows sp">
                   <div class="col-md-12 sp">
-                    <a href="<?=base_url()?>"> <img src="<?=base_url();?>include/img/Itipo.jpg" class="d-none d-sm-none d-md-none d-lg-block mx-auto"  alt="logo" style="width:60%;"></a>
-                    <a href="<?=base_url()?>">  <img src="<?=base_url();?>include/img/Imagotipo.jpg" class="d-block d-xs-block  d-sm-block d-md-block d-lg-none mx-auto" alt="logo" style="width:60%;"></a>
+                    <a href="<?=base_url()?>"> <img src="<?=base_url();?>include/img/tvg-cargo-logo.png" class="d-none d-sm-none d-md-none d-lg-block mx-auto"  alt="logo" style="width:60%;"></a>
+                    <a href="<?=base_url()?>">  <img src="<?=base_url();?>include/img/tvg-cargo-logo.png" class="d-block d-xs-block  d-sm-block d-md-block d-lg-none mx-auto" alt="logo" style="width:60%;"></a>
 
 <?php
 if( isset( $disabled ) )

@@ -1,6 +1,4 @@
-
-
-    <div id="app">
+<div id="app">
     <div class="container-fluid text-center text-warning" style="background-color:#293072;">SVG CARGO S.A.S.</div>
     <div class="container-fluid">
       <div class="row head-s">
@@ -71,17 +69,10 @@
                     </button>
                     <div class="dropdown-menu">
                       <a class="dropdown-item links" href="<?=base_url()?>DatosEmpresa"><i class="fa fa-sitemap" aria-hidden="true"></i> Datos de la epresa</a>
+                      <a class="dropdown-item links" href="<?=base_url()?>sucursales"><i class="fa fa-bank" aria-hidden="true"></i> Sucursales</a>
                       <a class="dropdown-item links" href="<?=base_url()?>Root_user"><i class="fa fa-users" aria-hidden="true"></i> Usuarios del sistema</a>
                       <a class="dropdown-item links" href="<?=base_url()?>cambios_estado"><i class="fa fa-recycle" aria-hidden="true"></i> Cambio de estado</a>
                       <a class="dropdown-item links" href="<?=base_url()?>FormasPago"><i class="fa fa-money" aria-hidden="true"></i> Formas de pago </a>
-                    </div>
-                  </div>
-                  <div class="dropdown">
-                    <button type="button" class="btn nav-link links dropdown-toggle sp" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-hover="dropdown">
-                      Catálogo
-                    </button>
-                    <div class="dropdown-menu">
-                      <a class="dropdown-item links" href="<?=base_url()?>sucursales"><i class="fa fa-bank" aria-hidden="true"></i> Sucursales</a>
                       <a class="dropdown-item links" href="<?=base_url()?>cargos"><i class="fa fa-street-view" aria-hidden="true"></i> Cargos</a>
                       <a class="dropdown-item links" href="<?=base_url()?>Tiempo"><i class="fa fa-clock-o" aria-hidden="true"></i> Tiempos de entrega</a>
                       <a class="dropdown-item links" href="<?=base_url()?>transporte"><i class="fa fa-truck" aria-hidden="true"></i> Tipos de trasnporte</a>
@@ -93,6 +84,13 @@
                       <a class="dropdown-item links" href="<?=base_url()?>SeguroCarga"><i class="fa fa-shield" aria-hidden="true"></i> Seguros de carga</a>
                       <a class="dropdown-item links" href="<?=base_url()?>CosteGuia"><i class="fa fa-credit-card-alt" aria-hidden="true"></i> Coste de guía</a>
                       <a class="dropdown-item links" href="<?=base_url()?>satelites"><i class="fa fa-podcast" aria-hidden="true"></i> Satélites</a>
+                    </div>
+                  </div>
+                  <div class="dropdown">
+                    <button type="button" class="btn nav-link links dropdown-toggle sp" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-hover="dropdown">
+                      Catálogo
+                    </button>
+                    <div class="dropdown-menu">
                       <a class="dropdown-item links" href="<?=base_url()?>Cotizaciones"><i class="fa fa-calculator" aria-hidden="true"></i> Cotizaciones</a>
                       <a class="dropdown-item links" href="<?=base_url()?>Cotizador"><i class="fa fa-calculator" aria-hidden="true"></i> Cotizador</a>
                       <a class="dropdown-item links" href="<?=base_url()?>Liquidaciones"><i class="fa fa-file-powerpoint-o" aria-hidden="true"></i> Planillas De Liquidación</a>
