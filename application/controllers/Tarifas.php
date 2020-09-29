@@ -4,6 +4,17 @@ class tarifas extends MY_Controller {
 	public function __construct() {
 		parent::__construct();
 		$this->load->model('Tarifas_model', 'tarifas');
+		$this->load->library('Excel');
+		// EXCEL
+		$this->load->model('Clientes_model', 'clientes');
+		// Load form validation library
+		$this->load->library('form_validation');
+		// load CSV library
+		$this->load->library('CSVReader');
+		// Load file helper
+		$this->load->helper('file');
+
+		$this->load->library('Pdf');
 	  }
     public function index() {
 			if( ! $this->verify_min_level(9)){
@@ -141,4 +152,108 @@ class tarifas extends MY_Controller {
 					 					 exit;
 					 				}
 					 		 }
+							 // export Data
+					     public function exportData() {
+								 $storData = array();
+					        $metaData[] = array('departamento_origen' => 'departamento_origen',
+																				'ciudad_origen' => 'ciudad_origen',
+																				'departamento_destino' => 'departamento_destino',
+																				'ciudad_destino' => 'ciudad_destino',
+																				'dep' => 'dep',
+																				'dep_dos' => 'dep_dos',
+																				'tipo_transporte' => 'tipo_transporte',
+																				'tipo_envio' => 'tipo_envio',
+																				'precio' => 'precio',
+																				'itinerarios' => 'itinerarios',
+																				'tiempos' => 'tiempos',
+																				'status' => 'status',
+																			 );
+
+					        $customerInfo = $this->tarifas->getcustomerList();
+					        foreach($customerInfo as $key=>$element) {
+					            $storData[] = array(
+												'departamento_origen'     => $element['departamento_origen'],
+												'ciudad_origen'     => $element['ciudad_origen'],
+												'departamento_destino'     => $element['departamento_destino'],
+												'ciudad_destino'     => $element['ciudad_destino'],
+												'dep'     => $element['dep'],
+												'dep_dos'     => $element['dep_dos'],
+												'tipo_transporte'     => $element['tipo_transporte'],
+												'tipo_envio'     => $element['tipo_envio'],
+												'precio'     => $element['precio'],
+												'itinerarios'     => $element['itinerarios'],
+												'tiempos'     => $element['tiempos'],
+												'status'     => $element['status'],
+					            );
+					        }
+					        $data = array_merge($metaData,$storData);
+					        header("Content-type: application/csv");
+					        header("Content-Disposition: attachment; filename=\"csv-sample-customer".".csv\"");
+					        header("Pragma: no-cache");
+					        header("Expires: 0");
+					        $handle = fopen('php://output', 'w');
+					        foreach ($data as $data) {
+					            fputcsv($handle, $data);
+					        }
+					            fclose($handle);
+					        exit;
+					     }
+
+
+					public function save() {
+							 $this->form_validation->set_rules('fileURL', 'Upload File', 'callback_checkFileValidation');
+							 if($this->form_validation->run() == false) {
+									$data = array();
+									$data['page'] = 'customer-add';
+									$data['title'] = 'Customer Add | TechArise';
+									$data['breadcrumbs'] = array('Home' => '#');
+									$this->load->view('customer/add', $data);
+							 } else {
+									// If file uploaded
+									if(is_uploaded_file($_FILES['fileURL']['tmp_name'])) {
+											// Parse data from CSV file
+											$csvData = $this->csvreader->parse_csv($_FILES['fileURL']['tmp_name']);
+
+											var_dump($csvData);
+											// create array from CSV file
+											if(!empty($csvData)){
+													foreach($csvData as $element){
+															// Prepare data for Database insertion
+															$data[] = array(
+																'departamento_origen'     => $element['departamento_origen'],
+									              'ciudad_origen'     => $element['ciudad_origen'],
+									              'departamento_destino'     => $element['departamento_destino'],
+									              'ciudad_destino'     => $element['ciudad_destino'],
+									              'dep'     => $element['dep'],
+									              'dep_dos'     => $element['dep_dos'],
+									              'tipo_transporte'     => $element['tipo_transporte'],
+									              'tipo_envio'     => $element['tipo_envio'],
+									              'precio'     => $element['precio'],
+									              'itienerarios'     => $element['itienerarios'],
+									              'tiempos'     => $element['tiempos'],
+									              'status'     => $element['status'],
+															);
+													}
+											}
+									}
+									// insert/update data into database
+									foreach($data as $element) {
+											$this->trarifas->setDepartamento_origen($element['departamento_origen']);
+											$this->trarifas->setCiudad_origen($element['ciudad_origen']);
+											$this->trarifas->setDepartamento_destino($element['departamento_destino']);
+											$this->trarifas->setCiudad_destino($element['ciudad_destino']);
+											$this->trarifas->setDep($element['dep']);
+											$this->trarifas->setDep_dos($element['dep_dos']);
+											$this->trarifas->setTipo_transporte($element['tipo_transporte']);
+											$this->trarifas->setTipo_envio($element['tipo_envio']);
+											$this->trarifas->setPrecio($element['precio']);
+											$this->trarifas->setItienerarios($element['itienerarios']);
+											$this->trarifas->setTiempos($element['tiempos']);
+											$this->trarifas->setStatus($element['status']);
+											$this->trarifas->createCustomer();
+									}
+									redirect('Tarifas');
+							}
+					}
+
 }

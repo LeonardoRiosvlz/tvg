@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 25-09-2020 a las 10:46:08
+-- Tiempo de generación: 29-09-2020 a las 17:06:37
 -- Versión del servidor: 10.4.11-MariaDB
 -- Versión de PHP: 7.2.31
 
@@ -61,19 +61,102 @@ CREATE TABLE `acl_categories` (
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `actas_entrega`
+--
+
+CREATE TABLE `actas_entrega` (
+  `id` int(15) UNSIGNED NOT NULL,
+  `creado` date NOT NULL,
+  `user_id` varchar(15) NOT NULL,
+  `items` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL CHECK (json_valid(`items`)),
+  `nombre_empresa` varchar(60) NOT NULL,
+  `codigo` varchar(15) NOT NULL,
+  `version` varchar(15) NOT NULL,
+  `direccion_cliente` varchar(255) NOT NULL,
+  `telefono_cliente` varchar(15) NOT NULL,
+  `id_cliente` varchar(15) NOT NULL,
+  `ciudad_cliente` varchar(60) NOT NULL,
+  `telefono_sede` varchar(15) NOT NULL,
+  `direccion_sede` varchar(200) NOT NULL,
+  `departamento_sede` varchar(25) NOT NULL,
+  `ciudad_sede` varchar(25) NOT NULL,
+  `ciudad_origen` varchar(25) NOT NULL,
+  `departamento_origen` varchar(25) NOT NULL,
+  `ciudad_destino` varchar(25) NOT NULL,
+  `departamento_destino` varchar(25) NOT NULL,
+  `dep` int(5) NOT NULL,
+  `depp` int(5) NOT NULL,
+  `nombre_sede` varchar(50) NOT NULL,
+  `id_sede` varchar(15) NOT NULL,
+  `remision` varchar(25) NOT NULL,
+  `unidades` varchar(15) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `actas_entrega`
+--
+
+INSERT INTO `actas_entrega` (`id`, `creado`, `user_id`, `items`, `nombre_empresa`, `codigo`, `version`, `direccion_cliente`, `telefono_cliente`, `id_cliente`, `ciudad_cliente`, `telefono_sede`, `direccion_sede`, `departamento_sede`, `ciudad_sede`, `ciudad_origen`, `departamento_origen`, `ciudad_destino`, `departamento_destino`, `dep`, `depp`, `nombre_sede`, `id_sede`, `remision`, `unidades`) VALUES
+(2117504275, '2020-09-26', '3581919691', '[{\"cantidad\":\"3\",\"tipocarga\":\"Caja\",\"descripcion\":\"empresa destinada al uso de sofware\"},{\"cantidad\":\"4\",\"tipocarga\":\"Caja\",\"descripcion\":\"empresa destinada al uso de sofware\"},{\"cantidad\":\"5\",\"tipocarga\":\"Saco\",\"descripcion\":\"productos de aluminio\"}]', 'SEAPEX C.A.', 'FBASC-22', '01', 'minas de arena #17', '04264472911', '2147483647', 'Plato', '3004124787', 'calle real tronca 99', '', 'Bogotá', 'Arauquita', 'Arauca', 'Leticia', '', 2, 0, 'Sede Seapex Bogotá', '7', 'YVKE', '12'),
+(1429886557, '2020-09-26', '3581919691', '[{\"cantidad\":\"15\",\"tipocarga\":\"Caja\",\"descripcion\":\"Caja con ropa.\"}]', 'SEAPEX C.A.', 'FBASC-22', '01', 'minas de arena #17', '04264472911', '2147483647', 'Plato', '3004124787', 'calle real tronca 99', 'Cundinamarca', 'Bogotá', 'Tauramena', 'Casanare', 'Santa Marta', 'Magdalena', 8, 18, 'Sede Seapex Bogotá', '7', 'YJAKDS-232123', '15'),
+(3022238384, '2020-09-25', '3581919691', '[{\"cantidad\":\"15\",\"tipocarga\":\"Caja\",\"descripcion\":\"Contenido  calisficado.\"}]', 'SEAPEX C.A.', 'FBASC-22', '01', 'minas de arena #17', '04264472911', '2147483647', 'Plato', '3004124787', 'calle real tronca 99', 'Cundinamarca', 'Bogotá', 'Urumita', 'La Guajira', 'Neiva', 'Huila', 17, 16, 'Sede Seapex Bogotá', '7', 'YKAJSA-1231231', '15'),
+(1934714702, '2020-09-26', '3581919691', '[{\"cantidad\":\"15\",\"tipocarga\":\"Caja\",\"descripcion\":\"Productos de limpieza\"}]', 'SEAPEX C.A.', 'FBASC-22', '01', 'minas de arena #17', '04264472911', '2147483647', 'Plato', '3004124787', 'calle real tronca 99', 'Cundinamarca', 'Bogotá', 'Inírida', 'Guainía', 'El Retorno', 'Guaviare', 14, 15, 'Sede Seapex Bogotá', '7', 'KASDA39422', '15');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `actas_recogida`
+--
+
+CREATE TABLE `actas_recogida` (
+  `id` int(15) UNSIGNED NOT NULL,
+  `creado` date NOT NULL,
+  `user_id` varchar(15) NOT NULL,
+  `nombre_empresa` varchar(60) NOT NULL,
+  `codigo` varchar(15) NOT NULL,
+  `correo_cliente` varchar(60) NOT NULL,
+  `version` varchar(15) NOT NULL,
+  `direccion_cliente` varchar(255) NOT NULL,
+  `telefono_cliente` varchar(15) NOT NULL,
+  `id_cliente` varchar(15) NOT NULL,
+  `ciudad_cliente` varchar(60) NOT NULL,
+  `placa` varchar(15) NOT NULL,
+  `ciudad_origen` varchar(25) NOT NULL,
+  `departamento_origen` varchar(25) NOT NULL,
+  `ciudad_destino` varchar(25) NOT NULL,
+  `departamento_destino` varchar(25) NOT NULL,
+  `dep` int(5) NOT NULL,
+  `depp` int(5) NOT NULL,
+  `conductor` varchar(50) NOT NULL,
+  `cedula_c` varchar(15) NOT NULL,
+  `fecha_recogida` date NOT NULL,
+  `barrio` varchar(150) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `actas_recogida`
+--
+
+INSERT INTO `actas_recogida` (`id`, `creado`, `user_id`, `nombre_empresa`, `codigo`, `correo_cliente`, `version`, `direccion_cliente`, `telefono_cliente`, `id_cliente`, `ciudad_cliente`, `placa`, `ciudad_origen`, `departamento_origen`, `ciudad_destino`, `departamento_destino`, `dep`, `depp`, `conductor`, `cedula_c`, `fecha_recogida`, `barrio`) VALUES
+(3276179636, '2020-09-27', '', 'SEAPEX C.A.', 'FBASC-22', 'leonardo27188@gmail.com', '01', 'minas de arena #17', '04264472911', '2147483647', 'Plato', 'YVAKS-2312', 'Leticia', 'Amazonas', 'Urumita', 'La Guajira', 0, 17, 'Abiu Brizuela', '2455745456', '2020-09-17', 'Mina de arena'),
+(4222791371, '2020-09-27', '', 'SEAPEX C.A.', 'FBASC-22', 'leonardo27188@gmail.com', '01', 'minas de arena #17', '04264472911', '2147483647', 'Plato', 'YVAKS-2312', 'Leticia', 'Amazonas', 'Villanueva', 'La Guajira', 0, 17, 'Abiu Brizuela', '2455745456', '2020-09-08', ' a juro');
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `archivos`
 --
 
 CREATE TABLE `archivos` (
   `id` int(15) UNSIGNED NOT NULL,
-  `nombre_archivo` varchar(100) NOT NULL,
-  `tipo_archivo` varchar(11) NOT NULL,
-  `tipo` enum('Cotizacion','Planilla de liquidación','Factura','Guía') NOT NULL,
-  `numero_doc` varchar(15) NOT NULL,
-  `codigo_hex` varchar(15) NOT NULL,
-  `usuario_responsable` varchar(15) NOT NULL,
-  `url` varchar(255) NOT NULL,
-  `creado` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+  `nombre_archivo` varchar(100) DEFAULT NULL,
+  `tipo_archivo` varchar(11) DEFAULT NULL,
+  `tipo` enum('Cotizacion','Planilla de liquidación','Factura','Guía') DEFAULT NULL,
+  `numero_doc` varchar(15) DEFAULT NULL,
+  `codigo_hex` varchar(15) DEFAULT NULL,
+  `usuario_responsable` varchar(15) DEFAULT NULL,
+  `url` varchar(255) DEFAULT NULL,
+  `creado` timestamp NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -82,10 +165,14 @@ CREATE TABLE `archivos` (
 
 INSERT INTO `archivos` (`id`, `nombre_archivo`, `tipo_archivo`, `tipo`, `numero_doc`, `codigo_hex`, `usuario_responsable`, `url`, `creado`) VALUES
 (1110842952, 'PLN-1651292733', 'PDF', 'Planilla de liquidación', '1651292733', '', '3581919691', 'Liquidaciones/Liquidaciones_to_pdf/1651292733', '2020-09-23 07:56:40'),
+(1226971885, 'FV-2363902457', 'PDF', 'Factura', '2363902457', NULL, '3581919691', 'Facturas/to_pdf/2363902457', '2020-09-29 12:07:16'),
+(1419954328, 'FV-3213091751', 'PDF', 'Factura', '3213091751', NULL, '3581919691', 'Facturas/to_pdf/3213091751', '2020-09-29 09:34:41'),
 (1560743900, 'COT-4256459329', 'PDF', 'Cotizacion', '4256459329', 'fdb46a41', '3581919691', 'Cotizaciones/Cotizaciones_to_pdf/fdb46a41/4256459329', '2020-09-15 03:19:47'),
 (2155671561, 'COT-2977005845', 'PDF', 'Cotizacion', '2977005845', 'b1718115', '3581919691', 'Cotizaciones/Cotizaciones_to_pdf/b1718115/2977005845', '2020-09-15 04:53:47'),
 (2756972031, 'PLN-1792513559', 'PDF', 'Planilla de liquidación', '1792513559', '', '3581919691', 'Liquidaciones/Liquidaciones_to_pdf/1792513559', '2020-09-23 07:49:49'),
 (3084185921, 'COT-1161266891', 'PDF', 'Cotizacion', '1161266891', '453786cb', '3581919691', 'Cotizaciones/Cotizaciones_to_pdf/453786cb/1161266891', '2020-09-15 05:31:14'),
+(3108593236, 'FV-9462812', 'PDF', 'Factura', '9462812', NULL, '3581919691', 'Facturas/to_pdf/9462812', '2020-09-28 23:27:29'),
+(3399344558, 'FV-3099903993', 'PDF', 'Factura', '3099903993', NULL, '3581919691', 'Facturas/to_pdf/3099903993', '2020-09-29 12:15:16'),
 (3420490963, 'PLN-239726373', 'PDF', 'Planilla de liquidación', '239726373', '', '3581919691', 'Liquidaciones/Liquidaciones_to_pdf/239726373', '2020-09-23 06:23:27'),
 (3519413287, 'COT-2979338657', 'PDF', 'Cotizacion', '2979338657', 'b19519a1', '3581919691', 'Cotizaciones/Cotizaciones_to_pdf/b19519a1/2979338657', '2020-09-15 15:13:35'),
 (4254854241, 'PLN-545130989', 'PDF', 'Planilla de liquidación', '545130989', '', '3581919691', 'Liquidaciones/Liquidaciones_to_pdf/545130989', '2020-09-23 05:28:39');
@@ -131,7 +218,20 @@ INSERT INTO `auth_sessions` (`id`, `user_id`, `login_time`, `modified_at`, `ip_a
 ('np9mj0q710c6rpbtkr0pjnalocr8m85u', 3581919691, '2020-09-24 08:09:33', '2020-09-24 11:15:21', '127.0.0.1', 'Chrome 85.0.4183.121 on Windows 8'),
 ('ng1g1cvkajtoudnbb0qp7216vcmtlmnr', 3581919691, '2020-09-24 14:34:57', '2020-09-24 19:17:07', '127.0.0.1', 'Chrome 85.0.4183.121 on Windows 8'),
 ('9ael22tui08poq6urousbib93pob5apa', 3581919691, '2020-09-24 21:32:41', '2020-09-24 22:06:10', '127.0.0.1', 'Chrome 85.0.4183.121 on Windows 8'),
-('3s1uvlrhch92dbgns23el5ct3um1tm51', 3581919691, '2020-09-25 06:56:21', '2020-09-25 08:04:37', '127.0.0.1', 'Chrome 85.0.4183.121 on Windows 8');
+('7e1dgd3dm0nls3f8iau9rab32c8lb4uo', 3581919691, '2020-09-25 06:56:21', '2020-09-25 13:43:49', '127.0.0.1', 'Chrome 85.0.4183.121 on Windows 8'),
+('u0p180cnv3h38fof284vrkbq83ippfri', 3581919691, '2020-09-26 08:01:54', '2020-09-26 07:14:15', '127.0.0.1', 'Chrome 85.0.4183.121 on Windows 8'),
+('pdp0h09kb6drtlc6j6mf2kqrb4gj4nt4', 3581919691, '2020-09-26 13:35:15', '2020-09-26 13:10:20', '127.0.0.1', 'Chrome 85.0.4183.121 on Windows 8'),
+('u5au6b8kdd1ani2luj7mmn7uio7a59vj', 3581919691, '2020-09-26 19:10:40', '2020-09-26 17:34:44', '127.0.0.1', 'Chrome 85.0.4183.121 on Windows 8'),
+('fctuk816a0sbk7vbuek9gpej74l9d0el', 3581919691, '2020-09-27 06:38:25', '2020-09-27 08:39:24', '127.0.0.1', 'Chrome 85.0.4183.121 on Windows 8'),
+('iv44lfcdrnbbmt6n0seg6sgus59sf8s9', 3581919691, '2020-09-27 18:36:03', '2020-09-27 23:31:25', '127.0.0.1', 'Chrome 85.0.4183.121 on Windows 8'),
+('1knsa0si4qqerk31p7lei1shhk05cmmm', 3581919691, '2020-09-28 07:32:44', '2020-09-28 05:40:24', '127.0.0.1', 'Chrome 85.0.4183.121 on Windows 8'),
+('2l5msru7ongp21ketmnv2l18a3ecgcdb', 3581919691, '2020-09-28 13:59:16', '2020-09-28 13:22:06', '127.0.0.1', 'Chrome 85.0.4183.121 on Windows 8'),
+('cv7dhqacpjm4e3orfdfkm57fm0asv81g', 3581919691, '2020-09-28 15:44:26', '2020-09-28 14:29:21', '127.0.0.1', 'Chrome 85.0.4183.121 on Windows 8'),
+('dqdd80q1m8j8ag3j6bjsb0ott7qt6ads', 3581919691, '2020-09-28 18:48:36', '2020-09-28 17:27:51', '127.0.0.1', 'Chrome 85.0.4183.121 on Windows 8'),
+('66rcsg82nh9nadgkeqs1ubdinef0ot06', 3581919691, '2020-09-28 22:20:14', '2020-09-28 21:55:52', '127.0.0.1', 'Chrome 85.0.4183.121 on Windows 8'),
+('3cvohfh7q3onbeuosngt0v1mulsg4eqh', 3581919691, '2020-09-29 00:12:30', '2020-09-28 23:24:56', '127.0.0.1', 'Chrome 85.0.4183.121 on Windows 8'),
+('587d7quvotu7bl8icghhaqqr1tueqf6k', 3581919691, '2020-09-29 01:50:07', '2020-09-29 00:25:15', '127.0.0.1', 'Chrome 85.0.4183.121 on Windows 8'),
+('ni3ttcuh3gdbb07lc02a3ana57rnkhdk', 3581919691, '2020-09-29 10:39:55', '2020-09-29 14:59:05', '127.0.0.1', 'Chrome 85.0.4183.121 on Windows 8');
 
 -- --------------------------------------------------------
 
@@ -274,7 +374,7 @@ CREATE TABLE `clientes` (
 --
 
 INSERT INTO `clientes` (`id`, `nit_cliente`, `nombre_empresa`, `r_legal`, `nombre_cliente`, `cedula_cliente`, `telefono_cliente`, `correo_cliente`, `departamento`, `ciudad`, `dep`, `direccion_cliente`, `estado`, `fecha_registro`, `fecha_inactivo`, `tipo_cliente`, `sucursal`, `forma_pago`, `autorizador`, `cliente_especial`, `observacion`) VALUES
-(30, 'No aplica', 'No aplica', 'No aplica', 'Luis Rios', 456456464, '456467984', 'leoanrdo2718@hotmail.es', 'Huila', 'La Argentina', 16, 'asdaweqdqweqw', 'Activo', '2020-08-29 02:52:50', '0000-00-00', 'Persona natural', 2, 2, 3581919691, 'Si', ''),
+(30, 'No aplica', 'No aplica', 'No aplica', 'Luis Rios', 456456464, '456467984', 'leoanrdo2718@hotmail.es', 'Huila', 'La Argentina', 16, 'calle real troncal 99', 'Activo', '2020-08-29 02:52:50', '0000-00-00', 'Persona natural', 2, 2, 3581919691, 'Si', ''),
 (31, '31231231', 'Tequeños vlz', 'Lenin Granado', 'Lelianis Granado', 789456145, '04127982255', 'granadolela@gmail.com', 'Córdoba', 'Planeta Rica', 13, 'lelianis', 'Activo', '2020-08-29 05:39:13', '0000-00-00', 'Persona jurídica', 3, 2, 3581919691, 'Si', ''),
 (36, '258147369', 'SEAPEX C.A.', 'Leonardo Rios', 'Jose Rios', 2147483647, '04264472911', 'leonardo27188@gmail.com', 'Magdalena', 'Plato', 18, 'minas de arena #17', 'Activo', '2020-09-08 09:36:54', '0000-00-00', 'Persona jurídica', 4, 2, 3581919691, 'No', '');
 
@@ -517,6 +617,43 @@ INSERT INTO `factores` (`id`, `escala`, `formula`, `variable`, `estado`) VALUES
 (1, 'Centímetros', 'VOLUMEN=(AN * AL* LA) /5000', '5000', 'Activo'),
 (3, 'Metros', 'VOLUMEN=(AN * AL* LA) *300', '300', 'Activo'),
 (4, 'Porcientos', 'TOTAL KILOS + (TOTAL KILOS *60%)', '60', 'Activo');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `facturas`
+--
+
+CREATE TABLE `facturas` (
+  `id` int(15) UNSIGNED NOT NULL,
+  `user_id` varchar(15) NOT NULL,
+  `fecha` date NOT NULL,
+  `f_vencimiento` date NOT NULL,
+  `cedula` varchar(15) NOT NULL,
+  `nombre_cliente` varchar(30) NOT NULL,
+  `direccion_cliente` varchar(150) NOT NULL,
+  `telefono_cliente` varchar(15) NOT NULL,
+  `ciudad_cliente` varchar(30) NOT NULL,
+  `items` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `forma_pago` varchar(50) NOT NULL,
+  `precio_letras` varchar(150) NOT NULL,
+  `subtotal` varchar(20) NOT NULL,
+  `total` varchar(20) NOT NULL,
+  `dias_demora` varchar(15) NOT NULL,
+  `estado` enum('Generado','Enviado','Cancelado','Vencido','Anulado') NOT NULL,
+  `notas` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL CHECK (json_valid(`notas`))
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `facturas`
+--
+
+INSERT INTO `facturas` (`id`, `user_id`, `fecha`, `f_vencimiento`, `cedula`, `nombre_cliente`, `direccion_cliente`, `telefono_cliente`, `ciudad_cliente`, `items`, `forma_pago`, `precio_letras`, `subtotal`, `total`, `dias_demora`, `estado`, `notas`) VALUES
+(9462812, '3581919691', '2020-09-29', '2020-10-14', '2147483647', 'SEAPEX C.A.', 'minas de arena #17', '04264472911', 'Plato', '[{\"origen\":\"Leticia\",\"destino\":\"Leticia\",\"tipo_transporte\":null,\"total\":\"884900\",\"n_guia\":\"N-2397551311\",\"id\":\"2397551311\",\"nombre_cliente\":\"SEAPEX C.A.\",\"direccion_cliente\":\"minas de arena #17\",\"telefono_cliente\":\"04264472911\",\"cedula_cliente\":\"2147483647\",\"ciudad_cliente\":\"Plato\",\"forma\":\"Cr\\u00e9dito\",\"dias\":\"15\"}]', 'Crédito', 'doscientos cuarenta y dos mil cuatrocientos.', '884900', '884900', '15', 'Generado', '[{\"id\":\"28\",\"numero\":\"Nota de factura\",\"resumen\":\"Nota de factura\",\"descripcion\":\"Por favor realizar  consignaci\\u00f3n a la cuente Banco de Bogot\\u00e1 N\\u00ba 1655508839 a nombre de TVG CARGO S.A.S. con NIT N\\u00ba 900.767.756-6.Favor realizar consignaci\\u00f3n y enviar soporte al correo electr\\u00f3nico TRANS_VG@YAHOO.COM    \",\"tipo_transporte\":\"Factura\",\"estado\":\"Activo\"}]'),
+(2363902457, '3581919691', '2020-09-29', '2020-10-14', '456456464', 'Luis Rios', 'calle real troncal 99', '456467984', 'La Argentina', '[{\"origen\":\"Leticia\",\"destino\":\"Puerto Nari\\u00f1o\",\"tipo_transporte\":\" A\\u00e9reo comercial\",\"total\":\"10000000\",\"n_guia\":\"E-2105523902\",\"codigo\":\"2105523902\",\"nombre_cliente\":\"Luis Rios\",\"nombre_empresa\":\"No aplica\",\"nit_cliente\":\"No aplica\",\"direccion_cliente\":\"calle real troncal 99\",\"telefono_cliente\":\"456467984\",\"cedula_cliente\":\"456456464\",\"ciudad_cliente\":\"La Argentina\",\"forma\":\"Cr\\u00e9dito\",\"dias\":\"15\"},{\"origen\":\"Leticia\",\"destino\":\"Puerto Nari\\u00f1o\",\"tipo_transporte\":\" A\\u00e9reo comercial\",\"total\":\"3150000000\",\"n_guia\":\"E-1332210380\",\"codigo\":\"1332210380\",\"nombre_cliente\":\"Luis Rios\",\"nombre_empresa\":\"No aplica\",\"nit_cliente\":\"No aplica\",\"direccion_cliente\":\"calle real troncal 99\",\"telefono_cliente\":\"456467984\",\"cedula_cliente\":\"456456464\",\"ciudad_cliente\":\"La Argentina\",\"forma\":\"Cr\\u00e9dito\",\"dias\":\"15\"}]', 'Crédito', 'cuatrocientos ochenta y cuatro mil ochocientos diez.', '3160000000', '3160000000', '15', 'Generado', '[{\"id\":\"28\",\"numero\":\"Nota de factura\",\"resumen\":\"Nota de factura\",\"descripcion\":\"Por favor realizar  consignaci\\u00f3n a la cuente Banco de Bogot\\u00e1 N\\u00ba 1655508839 a nombre de TVG CARGO S.A.S. con NIT N\\u00ba 900.767.756-6.Favor realizar consignaci\\u00f3n y enviar soporte al correo electr\\u00f3nico TRANS_VG@YAHOO.COM    \",\"tipo_transporte\":\"Factura\",\"estado\":\"Activo\"}]'),
+(3099903993, '3581919691', '2020-09-29', '2020-10-14', '456456464', 'Luis Rios', 'calle real troncal 99', '456467984', 'La Argentina', '[{\"origen\":\"Leticia\",\"destino\":\"Puerto Nari\\u00f1o\",\"tipo_transporte\":\" A\\u00e9reo comercial\",\"total\":\"3150000000\",\"n_guia\":\"E-2286577589\",\"codigo\":\"2286577589\",\"nombre_cliente\":\"Luis Rios\",\"nombre_empresa\":\"No aplica\",\"nit_cliente\":\"No aplica\",\"direccion_cliente\":\"calle real troncal 99\",\"telefono_cliente\":\"456467984\",\"cedula_cliente\":\"456456464\",\"ciudad_cliente\":\"La Argentina\",\"forma\":\"Cr\\u00e9dito\",\"dias\":\"15\"}]', 'Crédito', 'doscientos cuarenta y dos mil cuatrocientos.', '3150000000', '3150000000', '15', 'Generado', '[{\"id\":\"28\",\"numero\":\"Nota de factura\",\"resumen\":\"Nota de factura\",\"descripcion\":\"Por favor realizar  consignaci\\u00f3n a la cuente Banco de Bogot\\u00e1 N\\u00ba 1655508839 a nombre de TVG CARGO S.A.S. con NIT N\\u00ba 900.767.756-6.Favor realizar consignaci\\u00f3n y enviar soporte al correo electr\\u00f3nico TRANS_VG@YAHOO.COM    \",\"tipo_transporte\":\"Factura\",\"estado\":\"Activo\"}]'),
+(3213091751, '3581919691', '2020-09-29', '2020-10-07', '2147483647', 'SEAPEX C.A.', 'minas de arena #17', '04264472911', 'Plato', '[{\"origen\":\"Leticia\",\"destino\":\"Leticia\",\"tipo_transporte\":\"Terrestre\",\"total\":\"242400\",\"n_guia\":\"N-2824655278\",\"id\":\"2824655278\",\"nombre_cliente\":\"SEAPEX C.A.\",\"direccion_cliente\":\"minas de arena #17\",\"telefono_cliente\":\"04264472911\",\"cedula_cliente\":\"2147483647\",\"ciudad_cliente\":\"Plato\",\"forma\":\"Cr\\u00e9dito\",\"dias\":\"8\"},{\"origen\":\"Leticia\",\"destino\":\"Leticia\",\"tipo_transporte\":\"Terrestre\",\"total\":\"242410\",\"n_guia\":\"N-165382146\",\"id\":\"165382146\",\"nombre_cliente\":\"SEAPEX C.A.\",\"direccion_cliente\":\"minas de arena #17\",\"telefono_cliente\":\"04264472911\",\"cedula_cliente\":\"2147483647\",\"ciudad_cliente\":\"Plato\",\"forma\":\"Cr\\u00e9dito\",\"dias\":\"8\"},{\"origen\":\"Leticia\",\"destino\":\"Leticia\",\"tipo_transporte\":\"Terrestre\",\"total\":\"642400\",\"n_guia\":\"N-346592779\",\"id\":\"346592779\",\"nombre_cliente\":\"SEAPEX C.A.\",\"direccion_cliente\":\"minas de arena #17\",\"telefono_cliente\":\"04264472911\",\"cedula_cliente\":\"2147483647\",\"ciudad_cliente\":\"Plato\",\"forma\":\"Cr\\u00e9dito\",\"dias\":\"8\"}]', 'Crédito', 'un millón ciento veintisiete mil doscientos diez. ', '1127210', '1127210', '8', 'Generado', '[{\"id\":\"28\",\"numero\":\"Nota de factura\",\"resumen\":\"Nota de factura\",\"descripcion\":\"Por favor realizar  consignaci\\u00f3n a la cuente Banco de Bogot\\u00e1 N\\u00ba 1655508839 a nombre de TVG CARGO S.A.S. con NIT N\\u00ba 900.767.756-6.Favor realizar consignaci\\u00f3n y enviar soporte al correo electr\\u00f3nico TRANS_VG@YAHOO.COM    \",\"tipo_transporte\":\"Factura\",\"estado\":\"Activo\"}]'),
+(3581149395, '3581919691', '2020-09-29', '2020-10-14', '456456464', 'Luis Rios', 'calle real troncal 99', '456467984', 'La Argentina', '[{\"origen\":\"Leticia\",\"destino\":\"Puerto Nari\\u00f1o\",\"tipo_transporte\":\" A\\u00e9reo comercial\",\"total\":\"3150000000\",\"n_guia\":\"E-2286577589\",\"codigo\":\"2286577589\",\"nombre_cliente\":\"Luis Rios\",\"nombre_empresa\":\"No aplica\",\"nit_cliente\":\"No aplica\",\"direccion_cliente\":\"calle real troncal 99\",\"telefono_cliente\":\"456467984\",\"cedula_cliente\":\"456456464\",\"ciudad_cliente\":\"La Argentina\",\"forma\":\"Cr\\u00e9dito\",\"dias\":\"15\"}]', 'Crédito', 'ochocientos ochenta y cuatro mil novecientos. ', '3150000000', '3150000000', '15', '', '[{\"id\":\"28\",\"numero\":\"Nota de factura\",\"resumen\":\"Nota de factura\",\"descripcion\":\"Por favor realizar  consignaci\\u00f3n a la cuente Banco de Bogot\\u00e1 N\\u00ba 1655508839 a nombre de TVG CARGO S.A.S. con NIT N\\u00ba 900.767.756-6.Favor realizar consignaci\\u00f3n y enviar soporte al correo electr\\u00f3nico TRANS_VG@YAHOO.COM    \",\"tipo_transporte\":\"Factura\",\"estado\":\"Activo\"}]');
 
 -- --------------------------------------------------------
 
@@ -770,8 +907,7 @@ CREATE TABLE `login_errors` (
 --
 
 INSERT INTO `login_errors` (`ai`, `username_or_email`, `ip_address`, `time`) VALUES
-(210, 'leonardo2718', '127.0.0.1', '2020-09-23 18:18:16'),
-(211, 'leonardo2718', '127.0.0.1', '2020-09-23 18:18:26');
+(212, 'leonardo2718', '127.0.0.1', '2020-09-28 07:32:38');
 
 -- --------------------------------------------------------
 
@@ -794,7 +930,6 @@ CREATE TABLE `notas` (
 
 INSERT INTO `notas` (`id`, `numero`, `resumen`, `descripcion`, `tipo_transporte`, `estado`) VALUES
 (6, 'uno', 'Nota para transporte aéreo comercial', 'Descripción larga de nota para transporte aéreo..', ' Aéreo comercial', 'Activo'),
-(7, 'tres', 'el que te conte', 'asdasd', 'Terrestre', 'Activo'),
 (8, 'cuatro', 'Nota de respaldo para terrestre', 'nota para transporte terrestre', 'Terrestre', 'Activo'),
 (9, 'cinco', 'Nota de respaldo para terrestre otra', 'nota inactiva', 'Terrestre', 'Inactivo'),
 (10, 'Saludo', 'Saludo Teniendo en cuenta las necesidades de su Prestigiosa Empresa, de manera comedida y respetuosa nos permitimos presentar a ustedes la propuesta referente al servicio de transporte aéreo de QUIMICOS a diferentes destinos nacionales. ', 'Contamos con 20 años de experiencia  en las modalidades de Transporte Aéreo, Transporte Terrestre, Transporte Marítimo y Transporte Fluvial, Internacional y a nivel Nacional siendo especialistas en los departamentos de Guaviare, Putumayo, Arauca, Guainía, Vichada, Vaupés, Amazonas y San Andrés (Entregas en las capitales y sitios rurales en cada departamento), ya que en estos territorios realizamos las entregas de víveres de entidades como Las Fuerzas Militares, Computadores para Educar,  Desayunos y Bienestarina del  ICBF entre otros,  en todas las modalidades garantizamos a nuestros clientes seguridad y cumplimiento en sus envíos, cualquier inquietud con gusto será atendida y resuelta.   \nAgradecemos la confianza que han depositado en Nuestra Compañía. Basados en su solicitud dejamos en consideración la siguiente propuesta: ', 'Saludo', 'Activo'),
@@ -814,7 +949,8 @@ INSERT INTO `notas` (`id`, `numero`, `resumen`, `descripcion`, `tipo_transporte`
 (24, 'nota', 'Nota para transporte fluvial', 'Descripción larga de nota para transporte fluvial.', 'Fluvial', 'Activo'),
 (25, 'Saludo', 'Nota para transporte cosolidados.', 'Descripción larga de nota para transporte consolidados.', 'Consolidados', 'Activo'),
 (26, 'Intermodal', 'Nota para transporte intermodal.', 'Descripción larga de nota para transporte intermodal.', 'Intermodal', 'Activo'),
-(27, 'Aereo carga', 'Nota para transporte aéreo carga.', 'Descripción larga de nota para transporte aéreo carga.', ' Aéreo carga', 'Activo');
+(27, 'Aereo carga', 'Nota para transporte aéreo carga.', 'Descripción larga de nota para transporte aéreo carga.', ' Aéreo carga', 'Activo'),
+(28, 'Nota de factura', 'Nota de factura', 'Por favor realizar  consignación a la cuente Banco de Bogotá Nº 1655508839 a nombre de TVG CARGO S.A.S. con NIT Nº 900.767.756-6.Favor realizar consignación y enviar soporte al correo electrónico TRANS_VG@YAHOO.COM    ', 'Factura', 'Activo');
 
 -- --------------------------------------------------------
 
@@ -890,7 +1026,10 @@ CREATE TABLE `satelites` (
 --
 
 INSERT INTO `satelites` (`id`, `dep`, `departamento_sat`, `ciudad_sat`, `nombre_sat`, `direccion_sat`, `telefono_sat`, `correo_sat`) VALUES
-(884242514, '5', 'Boyacá', 'Belén', 'Belen-Boyaca', 'calle la flores carrera #5', '04125484725', 'Belenboyaca@gmal.com');
+(884242514, '5', 'Boyacá', 'Belén', 'Belen-Boyaca', 'calle la flores carrera #5', '04125484725', 'Belenboyaca@gmal.com'),
+(1728375427, '3', 'Atlántico', 'Barranquilla', 'Barranquilla TVG', 'minas de arena #17', '04264472911', 'tvgBarranquilla@gmail.com'),
+(2409538544, '4', 'Bolívar', 'Cartagena de Indias', 'Cartagena TVG', 'minas de arena #17', '04264472911', 'tvgCartagena@gmail.com'),
+(4033716475, '18', 'Magdalena', 'Santa Marta', 'Santa Marta TVG', 'minas de arena #17', '04264472911', 'tvgsantamarta@gmail.com');
 
 -- --------------------------------------------------------
 
@@ -921,7 +1060,8 @@ INSERT INTO `sedes` (`id`, `id_cliente`, `departamento_sede`, `ciudad_sede`, `de
 (3, 456456464, 'Bolívar', 'Leticia', 0, 'Sede dos', 'leli', 'minas de arena #17', '04264472911', 'leonardo2718@hotmail.es'),
 (4, 789456145, 'Atlántico', 'Barranquilla', 3, 'Sede dos', 'leli', 'minas de arena #17', '04264472911', 'lelianisgranao@gmai.com'),
 (5, 789456145, 'Bolívar', 'Altos del Rosario', 4, 'Sede tres', 'leli', 'minas de arena #17', '04264472911', 'leonardo2718@hotmail.es'),
-(6, 789456145, 'Bolívar', 'Arenal', 4, 'Sede cuatro', 'leli', 'minas de arena #17', '04264472911', 'leonardo2718@hotmail.es');
+(6, 789456145, 'Bolívar', 'Arenal', 4, 'Sede cuatro', 'leli', 'minas de arena #17', '04264472911', 'leonardo2718@hotmail.es'),
+(7, 2147483647, 'Cundinamarca', 'Bogotá', 12, 'Sede Seapex Bogotá', 'Sepex', 'calle real tronca 99', '3004124787', 'bogota@seapex.com');
 
 -- --------------------------------------------------------
 
@@ -1101,6 +1241,42 @@ INSERT INTO `transportes` (`id`, `tipo_transporte`, `descripcion_transporte`) VA
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `trazabilidad`
+--
+
+CREATE TABLE `trazabilidad` (
+  `id` int(15) NOT NULL,
+  `fecha_despacho` date DEFAULT NULL,
+  `id_proveedor` varchar(15) DEFAULT NULL,
+  `guia_proveedor` varchar(25) DEFAULT NULL,
+  `detalles_carga` longtext DEFAULT NULL,
+  `observaciones` longtext DEFAULT NULL,
+  `llegada_destino` date DEFAULT NULL,
+  `id_satelite` varchar(15) DEFAULT NULL,
+  `tipo_reporte` enum('Alistamiento','Salida','Redireccionamiento','Llegada','Entrega') DEFAULT NULL,
+  `id_guia` varchar(15) DEFAULT NULL,
+  `prefijo` varchar(5) DEFAULT NULL,
+  `id_sede` varchar(15) NOT NULL,
+  `url_foto` varchar(150) NOT NULL,
+  `hora` varchar(15) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `trazabilidad`
+--
+
+INSERT INTO `trazabilidad` (`id`, `fecha_despacho`, `id_proveedor`, `guia_proveedor`, `detalles_carga`, `observaciones`, `llegada_destino`, `id_satelite`, `tipo_reporte`, `id_guia`, `prefijo`, `id_sede`, `url_foto`, `hora`) VALUES
+(17, '2020-09-28', '1', '346592779-34Sf', 'Detalles.', 'Observaciones.', '2020-09-29', '4033716475', 'Alistamiento', '165382146', 'N', '7', '/include/img/trazabilidad/59227169-logística-almacenamiento-transporte-la-industria-y-el-concepto-de-fabricación-cajas-de-carga-que-almacena16.jpg', '09:00'),
+(18, '2020-09-29', '2', '346592779-34Sf', 'Detalles.', 'Observaciones.', '2020-09-30', '4033716475', 'Salida', '165382146', 'N', '7', '/include/img/trazabilidad/59227169-logística-almacenamiento-transporte-la-industria-y-el-concepto-de-fabricación-cajas-de-carga-que-almacena9.jpg', '11:00'),
+(19, '2020-09-30', '2', '346592779-34Sf', 'Detalles.', 'Observaciones.', '2020-10-01', '1728375427', 'Llegada', '165382146', 'N', '7', '/include/img/trazabilidad/59227169-logística-almacenamiento-transporte-la-industria-y-el-concepto-de-fabricación-cajas-de-carga-que-almacena11.jpg', '23:00'),
+(20, '2020-10-01', '2', '346592779-34Sf', 'Detalles.', 'Observaciones.', '2020-10-02', '1728375427', 'Salida', '165382146', 'N', '7', '/include/img/trazabilidad/59227169-logística-almacenamiento-transporte-la-industria-y-el-concepto-de-fabricación-cajas-de-carga-que-almacena12.jpg', '23:00'),
+(21, '2020-10-03', '2', '346592779-34Sf', 'Detalles.', 'Observaciones.', '2020-10-04', '2409538544', 'Llegada', '165382146', 'N', '7', '/include/img/trazabilidad/59227169-logística-almacenamiento-transporte-la-industria-y-el-concepto-de-fabricación-cajas-de-carga-que-almacena15.jpg', '23:00'),
+(22, '2020-09-29', '1', '346592779-34Sf', 'Detalles.', 'Observaciones.', '2020-09-30', '4033716475', 'Alistamiento', '4118347882', 'E', '1', '/include/img/trazabilidad/59227169-logística-almacenamiento-transporte-la-industria-y-el-concepto-de-fabricación-cajas-de-carga-que-almacena17.jpg', '12:25'),
+(23, '2020-09-29', '1', '346592779-34Sf', 'Detalles de salida', 'observaciones', '2020-10-01', '4033716475', 'Salida', '4118347882', 'E', '1', '/include/img/trazabilidad/59227169-logística-almacenamiento-transporte-la-industria-y-el-concepto-de-fabricación-cajas-de-carga-que-almacena18.jpg', '12:25');
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `username_or_email_on_hold`
 --
 
@@ -1152,7 +1328,7 @@ INSERT INTO `users` (`user_id`, `username`, `email`, `auth_level`, `banned`, `ve
 (2192184043, 'LuzRios2718', 'Luz@gmail.com', 9, '0', 0, '$2y$11$zO3zdIrbm9YOSTEJgkBw6uLTrNCY.iPahnsUBxl.VNDy94pzeleUS', NULL, NULL, NULL, '2020-08-26 16:47:31', '$2y$11$Aehw7FozAqIaA1EfMViN0Oz/Jm.5BtN8OcFK83s/WElLvuOQD7wf2', '/include/img/user/72429-hospital-ghost-748x417.jpg', 'Luz', 'Rios', '25272381', 'Supervisor', '', '', '', '2020-08-26 16:47:08', '2020-08-26 14:47:31'),
 (2520322231, 'Diego', 'diego@gmail.com', 9, '0', 0, '$2y$11$YyIF9OW8OVOMVgGGTgeRYOSgW.ykjjKGMSPoezNlWWKqgFcY3StUK', NULL, NULL, NULL, '2020-08-28 22:18:40', '$2y$11$n2NBHXo0wwsBNj2Cdbugr.9hAGqd2antLVh5h/k5DbUvjcul1uH/6', '/include/img/user/IMG_20191225_184425.jpg', 'Diego', 'Morejon', '123', 'Supervisor', '7456156', '7456134', 'TVG Santa Marta', '2020-08-26 18:44:54', '2020-08-28 20:18:40'),
 (2822719046, 'Marina', 'marina@gmail.com', 9, '0', 0, '$2y$11$EVbi/7xHKdNVT8QMTq0GS.QOArGbi1T9G3sN559qbE1kkSkS.4tjK', NULL, NULL, NULL, NULL, '$2y$11$J3bxlg..o9pohVCgiwslXuYiYmS6zZY0Dvr6WcSYIRqDpDz0dlhpG', '/include/img/user/873ae59c6165e09fc14291628ba6082f3.png', 'Luz ', 'Marina', '258369147', 'Supervisor', '04264472911', '04264472911', 'TVG Barranquilla', '2020-08-26 17:10:34', '2020-08-26 15:10:34'),
-(3581919691, 'leonardo2718', 'leonardo2718@hotmail.es', 9, '0', 0, '$2y$11$jBiNpGCqGOoPRCBws90Ih.ApWPKQeN1S/rk12.R7baSpE4jqdsS7u', NULL, NULL, NULL, '2020-09-25 06:56:21', '$2y$11$LUi1aLY/hjkFUbWQ3Q2VKOXBoz5iqPmk5XxM8JxWb26t6nG7jg.xK', '', 'Tvg', 'Cargo', '203288614', 'Jefe Administrativa y Logística', '', '', '', '2020-08-16 01:06:25', '2020-09-25 04:56:21');
+(3581919691, 'leonardo2718', 'leonardo2718@hotmail.es', 9, '0', 0, '$2y$11$jBiNpGCqGOoPRCBws90Ih.ApWPKQeN1S/rk12.R7baSpE4jqdsS7u', NULL, NULL, NULL, '2020-09-29 10:39:55', '$2y$11$LUi1aLY/hjkFUbWQ3Q2VKOXBoz5iqPmk5XxM8JxWb26t6nG7jg.xK', '', 'Tvg', 'Cargo', '203288614', 'Jefe Administrativa y Logística', '', '', '', '2020-08-16 01:06:25', '2020-09-29 08:39:55');
 
 --
 -- Disparadores `users`
@@ -1192,6 +1368,12 @@ ALTER TABLE `acl_categories`
   ADD PRIMARY KEY (`category_id`),
   ADD UNIQUE KEY `category_code` (`category_code`),
   ADD UNIQUE KEY `category_desc` (`category_desc`);
+
+--
+-- Indices de la tabla `actas_recogida`
+--
+ALTER TABLE `actas_recogida`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indices de la tabla `archivos`
@@ -1293,6 +1475,12 @@ ALTER TABLE `empresa`
 -- Indices de la tabla `factores`
 --
 ALTER TABLE `factores`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `facturas`
+--
+ALTER TABLE `facturas`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -1416,6 +1604,12 @@ ALTER TABLE `tiposenvios`
 -- Indices de la tabla `transportes`
 --
 ALTER TABLE `transportes`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `trazabilidad`
+--
+ALTER TABLE `trazabilidad`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -1554,13 +1748,13 @@ ALTER TABLE `itinerarios`
 -- AUTO_INCREMENT de la tabla `login_errors`
 --
 ALTER TABLE `login_errors`
-  MODIFY `ai` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=212;
+  MODIFY `ai` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=213;
 
 --
 -- AUTO_INCREMENT de la tabla `notas`
 --
 ALTER TABLE `notas`
-  MODIFY `id` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `id` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- AUTO_INCREMENT de la tabla `proveedores`
@@ -1578,7 +1772,7 @@ ALTER TABLE `remitentes`
 -- AUTO_INCREMENT de la tabla `sedes`
 --
 ALTER TABLE `sedes`
-  MODIFY `id` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de la tabla `segurocarga`
@@ -1621,6 +1815,12 @@ ALTER TABLE `tiposenvios`
 --
 ALTER TABLE `transportes`
   MODIFY `id` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT de la tabla `trazabilidad`
+--
+ALTER TABLE `trazabilidad`
+  MODIFY `id` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT de la tabla `username_or_email_on_hold`

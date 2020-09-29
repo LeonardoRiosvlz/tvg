@@ -16,13 +16,52 @@
                 <button type="button" @click="resete();ver=false" class="btn btn-block btn-light btn-sm links" >Agregar <span class="mbri-plus"></span></button>
               </th>
             </tr>
+            <th scope="col" colspan="2" class="border-0 bg-white  text-center">
+              <a href="<?=base_url();?>/Tarifas/exportData"  class="btn btn-block btn-info btn-sm links" >Exportar CSV <span class="mbri-download"></span></a>
+            </th>
+            <tr>
 
+              <th scope="col" colspan="3" class="border-0 bg-white  text-center">
+                <button type="button" data-toggle="collapse" href="#collapseExample" class="btn btn-block btn-success btn-sm links" >Importar Tarifas <span class="mbri-plus"></span></button>
+              </th>
+            </tr>
           </thead>
 
         </table>
-        <th scope="col" colspan="2" class="border-0 bg-white  text-center">
-          <a href="<?=base_url();?>/Tarifas/excelexport" type="button"  class="btn btn-block btn-primary btn-sm links" >Exportar Excel <span class="mbri-save"></span></a>
-        </th>
+        <div class="collapse" id="collapseExample">
+          <div class="card card-body">
+            <form action="<?php print site_url();?>Tarifas/save" class="spsec-validation" id="spsec-validation" enctype="multipart/form-data" method="post" accept-charset="utf-8">
+            <div class="row">
+               <div class="col-sm-6 col-md-6">
+                          <input type="file" name="fileURL" id="file-url" class="filestyle" data-allowed-file-extensions="[CSV, csv]" accept=".CSV, .csv" data-buttontext="Choose File">
+               </div>
+
+               <div class="col-sm-6 col-md-6">
+                   <div class="form-group text-right">
+                       <button type="submit" name="import_csv" id="import_csv" class="btn btn-block btn-lg btn-primary mrgT">Import</button>
+                   </div>
+               </div>
+            </div>
+            </form>
+          </div>
+        </div>
+        <div class="collapse" id="collapseExample">
+          <div class="card card-body">
+            <form action="<?php print site_url();?>Clientes/save" class="spsec-validation" id="spsec-validation" enctype="multipart/form-data" method="post" accept-charset="utf-8">
+            <div class="row">
+               <div class="col-sm-6 col-md-6">
+                          <input type="file" name="fileURL" id="file-url" class="filestyle" data-allowed-file-extensions="[CSV, csv]" accept=".CSV, .csv" data-buttontext="Choose File">
+               </div>
+
+               <div class="col-sm-6 col-md-6">
+                   <div class="form-group text-right">
+                       <button type="submit" name="import_csv" id="import_csv" class="btn btn-block btn-lg btn-primary mrgT">Import</button>
+                   </div>
+               </div>
+            </div>
+            </form>
+          </div>
+        </div>
         <table id="example1" class="table ">
           <thead>
           <tr>

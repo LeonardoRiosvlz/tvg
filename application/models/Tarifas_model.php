@@ -2,6 +2,62 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
     class Tarifas_model extends CI_Model {
+
+      private $_id;
+      private $_departamento_origen;
+      private $_ciudad_origen;
+      private $_departamento_destino;
+      private $_ciudad_destino;
+      private $_dep;
+      private $_dep_dos;
+      private $_tipo_transporte;
+      private $_tipo_envio;
+      private $_precio;
+      private $_itinerarios;
+      private $_tiempos;
+      private $_status;
+
+          public function setID($id) {
+              $this->_customerID = $customerID;
+          }
+          public function setDepartamento_origen($departamento_origen) {
+              $this->_departamento_origen = $departamento_origen;
+          }
+          public function setCiudad_origen($ciudad_origen) {
+              $this->_ciudad_origen = $ciudad_origen;
+          }
+          public function setDepartamento_destino($departamento_destino) {
+              $this->_departamento_destino = $departamento_destino;
+          }
+          public function setCiudad_destino($ciudad_destino) {
+              $this->_ciudad_destino = $ciudad_destino;
+          }
+          public function setDep($dep) {
+              $this->_dep= $dep;
+          }
+          public function setDep_dos($dep_dos) {
+              $this->_dep_dos = $dep_dos;
+          }
+          public function setTipo_trasporte($tipo_trasporte) {
+              $this->_tipo_trasporte = $tipo_trasporte;
+          }
+          public function setTipo_envio($tipo_envio) {
+              $this->_tipo_envio = $tipo_envio;
+          }
+
+          public function setPrecio($precio) {
+              $this->_precio = $precio;
+          }
+          public function setItinerarios($itinerarios) {
+              $this->_itinerarios = $itinerarios;
+          }
+          public function setTiempos($tiempos) {
+              $this->_tiempos = $tiempos;
+          }
+          public function setStatus($status) {
+              $this->_status = $status;
+          }
+
         public function insertar($data){
             $this->db->insert('tarifas', array(
                 'ciudad_origen'     => $data['ciudad_origen'],
@@ -55,4 +111,59 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             $this->db->delete('tarifas');
             return $this->db->error();
           }
+
+
+
+
+                    // get customer List
+                    public function getcustomerList() {
+                        $this->db->select(array('*'));
+                        $this->db->from('tarifas as t');
+                        $query = $this->db->get();
+                        return $query->result_array();
+                    }
+                    // create Customer
+                  public function createCustomer() {
+                      $tableName = 'tarifas t';
+                      $this->db->select(array('t.id'));
+                      $this->db->from($tableName . ' as c');
+                      $this->db->where('c.id', $this->_id);
+                      $query = $this->db->get();
+                      if ($query->num_rows() > 0) {
+                          $data = array(
+                            'departamento_origen'     => $this->_departamento_origen,
+                            'ciudad_origen'     => $this->_ciudad_origen,
+                            'departamento_destino'     => $this->_departamento_destino,
+                            'ciudad_destino'     => $this->_ciudad_destino,
+                            'dep'     => $this->_dep,
+                            'dep_dos'     => $this->_dep_dos,
+                            'tipo_transporte'     => $this->_tipo_transporte,
+                            'tipo_envio'     => $this->_tipo_envio,
+                            'precio'     => $this->_precio,
+                            'itinerarios'     => $this->_itinerarios,
+                            'tiempos'     => $this->_tiempos,
+                            'status'     => $this->_status,
+                          );
+                          $this->db->where('id', $this->_id);
+                          $this->db->update($tableName, $data);
+                      } else {
+                          $data = array(
+                            'departamento_origen'     => $this->_departamento_origen,
+                            'ciudad_origen'     => $this->_ciudad_origen,
+                            'departamento_destino'     => $this->_departamento_destino,
+                            'ciudad_destino'     => $this->_ciudad_destino,
+                            'dep'     => $this->_dep,
+                            'dep_dos'     => $this->_dep_dos,
+                            'tipo_transporte'     => $this->_tipo_transporte,
+                            'tipo_envio'     => $this->_tipo_envio,
+                            'precio'     => $this->_precio,
+                            'itinerarios'     => $this->_itinerarios,
+                            'tiempos'     => $this->_tiempos,
+                            'status'     => $this->_status,
+                          );
+                          $this->db->insert($tableName, $data);
+                          return $this->db->insert_id();
+                      }
+
+                  }
     }

@@ -16,7 +16,7 @@
     </table>
     <button v-if="factura.length>0"  @click="crearFactura()" type="button" class="btn-primary btn-block" name="button">Generar Factura</button>
   </div>
-<pre>{{guias}}</pre>
+
   <div class="row">
     <div class="col-lg-12 my-3 ">
       <!-- Shopping cart table -->
