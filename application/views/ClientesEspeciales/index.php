@@ -142,6 +142,7 @@
       <!-- End -->
     </div>
   </div>
+  <pre>{{legalizaciones}}</pre>
         <!-- Modal agregar   -->
         <div class="modal fade" id="modal-lg" data-backdrop="static" data-keyboard="false">
          <div class="modal-dialog modal-lg">
@@ -2379,7 +2380,23 @@
                   if (this.legalizaciones.length>0) {
                     if (this.factura.length<1) {
                       for (var i = 0; i < this.legalizaciones.length; i++) {
-                      this.factura.push(this.legalizaciones[i])
+                        this.factura.push({
+                           origen:this.legalizaciones[index].ciudad_origen,
+                           destino:this.legalizaciones[index].ciudad_destino,
+                           tipo_transporte:this.legalizaciones[index].tipo_transporte,
+                           tipo_transporte:this.legalizaciones[index].tipo_transporte,
+                           total:this.legalizaciones[index].total,
+                           n_guia:'N-'+this.legalizaciones[index].id,
+                           id:this.legalizaciones[index].id,
+                           nombre_cliente:this.legalizaciones[index].nombre_empresa,
+                           direccion_cliente:this.legalizaciones[index].direccion_cliente,
+                           telefono_cliente:this.legalizaciones[index].telefono_cliente,
+                           cedula_cliente:this.legalizaciones[index].cedula,
+                           ciudad_cliente:this.legalizaciones[index].ciudad,
+                           forma:this.legalizaciones[index].forma,
+                           dias:this.legalizaciones[index].dias,
+
+                         });
                      }
                    }else{
                      for (var i = 0; i < this.legalizaciones.length; i++) {

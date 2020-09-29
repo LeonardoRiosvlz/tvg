@@ -26,7 +26,8 @@ $config['archivos_table']               = 'archivos';
 $config['liquidaciones_table']          = 'liquidaciones';
 $config['carga_table']                  = 'carga';
 $config['satelites_table']              = 'satelites';
-$config['actas_entrega_table']              = 'actas_entrega';
+$config['actas_entrega_table']          = 'actas_entrega';
+$config['facturas_table']              = 'facturas';
 // LOGIN ERROR RELATED TABLES
 $config['errors_table']                 = 'login_errors';
 $config['IP_hold_table']                = 'ips_on_hold';

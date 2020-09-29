@@ -28,7 +28,7 @@
             </tr>
             </thead>
               <tr v-for="(facturas,index) in facturas">
-                <td class="links">{{facturas.nombre_cargo}}</td>
+                <td class="links">FV-{{facturas.id}}</td>
                   <td>
                     <div class="btn-group">
                         <button type="button" class="btn btn-default">Action</button>
@@ -48,12 +48,37 @@
       <!-- End -->
     </div>
   </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="mplanilla" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" data-backdrop="static" data-keyboard="false" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel"></h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <h2 class="links text-center">Factura</h2>
+          <button type="button" class="btn btn-block btn-lg btn-success"><span class="mbri-bookmark"></span>FV-{{id}}</button>
+          <button type="button" class="btn btn-block btn-lg btn-primary" @click="generar();">Generar <span class="mbri-share"></span></button>
+          <button type="button" class="btn btn-block btn-lg btn-secondary" @click="generarandGuia()">Generar y Crear Guía <span class="mbri-share"></span></button>
+            <pre>{{archivo}}</pre>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
         <!-- Modal agregar   -->
         <div class="modal fade" id="modal-lg" data-backdrop="static" data-keyboard="false">
          <div class="modal-dialog modal-lg">
            <div class="modal-content">
              <div class="modal-header">
-               <h4 class="modal-title links">Gestión de facturas  <i class="fa fa-street-view" aria-hidden="true"></i></h4>
+               <h4 class="modal-title links">Gestión de facturas  <i class="fa fa-file-text-o" aria-hidden="true"></i></h4>
                <button type="button" @click="resete()" class="close" data-dismiss="modal" aria-label="Close">
                  <span class="mbri-close " ></span>
                </button>
@@ -91,8 +116,7 @@
                                 <p class="text-danger my-1" v-if="(errors.first('hora'))" >  Este dato es requerido  </p>
                               </div>
                            </div>
-
-                             <div class="col-md-4">
+                             <div class="col-md-3">
                                <!-- textarea -->
                                <div class="form-group">
                                  <label class="links">Cedula</label>
@@ -100,7 +124,7 @@
                                  <p class="text-danger my-1" v-if="(errors.first('cedula'))" >  Este dato es requerido  </p>
                                </div>
                              </div>
-                             <div class="col-md-4">
+                             <div class="col-md-3">
                                <!-- textarea -->
                                <div class="form-group">
                                  <label class="links">Cliente</label>
@@ -108,7 +132,7 @@
                                  <p class="text-danger my-1" v-if="(errors.first('nombre_cliente'))" >  Este dato es requerido  </p>
                                </div>
                              </div>
-                             <div class="col-md-4">
+                             <div class="col-md-3">
                                <!-- textarea -->
                                <div class="form-group">
                                  <label class="links">Teléfono Cliente</label>
@@ -116,7 +140,7 @@
                                  <p class="text-danger my-1" v-if="(errors.first('telefono_cliente'))" >  Este dato es requerido  </p>
                                </div>
                              </div>
-                             <div class="col-md-4">
+                             <div class="col-md-3">
                                <!-- textarea -->
                                <div class="form-group">
                                  <label class="links">Ciudad</label>
@@ -124,6 +148,45 @@
                                  <p class="text-danger my-1" v-if="(errors.first('ciudad_cliente'))" >  Este dato es requerido  </p>
                                </div>
                              </div>
+                             <table class="table">
+                              <thead>
+                                <tr>
+                                  <th scope="col" colspan="3">DESCRIPCIÓN</th>
+                                  <th scope="col">VALOR TOTAL</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr v-for="items in form.items">
+                                  <td scope="row" colspan="3">Valor correspondiente al transporte {{items.tipo_transporte}}, Nº guía {{items.n_guia}} {{items.origen}}-{{items.destino}}.</td>
+                                  <th>{{items.total}} $</th>
+                                </tr>
+                              </tbody>
+                            </table>
+
+                            <div class="col-md-6">
+                              <!-- textarea -->
+                              <div class="form-group">
+                                <label class="links">Precio en letras</label>
+                                 <input type="text" v-model="form.precio_letras" v-validate="'required'" name="precio_letras" class="form-control" id="" :disabled="ver">
+                                <p class="text-danger my-1" v-if="(errors.first('precio_letras'))" >  Este dato es requerido  </p>
+                              </div>
+                            </div>
+                            <div class="col-md-3">
+                              <!-- textarea -->
+                              <div class="form-group">
+                                <label class="links">Subtotal</label>
+                                 <input type="text" v-model="form.subtotal" v-validate="'required'" name="subtotal" class="form-control" id="" :disabled="ver">
+                                <p class="text-danger my-1" v-if="(errors.first('subtotal'))" >  Este dato es requerido  </p>
+                              </div>
+                            </div>
+                            <div class="col-md-3">
+                              <!-- textarea -->
+                              <div class="form-group">
+                                <label class="links">Total</label>
+                                 <input type="text" v-model="form.total" v-validate="'required'" name="total" class="form-control" id="" :disabled="ver">
+                                <p class="text-danger my-1" v-if="(errors.first('total'))" >  Este dato es requerido  </p>
+                              </div>
+                            </div>
                             <pre>{{form}}</pre>
                             </div>
                            <button v-if="editMode===false"  class="button is-primary links btn btn-light float-right my-3" type="submit">Guardar</button>
@@ -148,6 +211,7 @@
      new Vue({
        el: '#app',
        data: {
+          id:0,
          config: {
             wrap: true,
             enableTime: false,
@@ -159,9 +223,17 @@
          cart:[],
          facturas:[],
          editMode:false,
+         archivo:{
+           'nombre_archivo':'',
+           'usuario_responsable':'',
+           'url':'',
+           'id':'',
+         },
          form:{
               'id':'',
+              'user_id':'<?=$auth_user_id;?>',
               'items':[],
+              'notas':[],
               'fecha':'',
               'f_vencimiento':'',
               'cedula':'',
@@ -179,6 +251,52 @@
          }
        },
        methods: {
+        generar(){
+             Swal({
+               title: '¿Estás seguro?',
+               text: "",
+               type: 'warning',
+               showCancelButton: true,
+               confirmButtonText: '¡Si! ¡generar!',
+               cancelButtonText: '¡No!',
+               reverseButtons: true
+             }).then((result) => {
+               if (result.value) {
+                 let data = new FormData();
+                 data.append('service_form',JSON.stringify(this.archivo));
+                   axios.post('index.php/Facturas/generar',data)
+                   .then(response => {
+                     if(response) {
+                       Swal(
+                         '¡Enviado !',
+                         'Ha sido enviado con exito .',
+                         'success'
+                       ).then(response => {
+                             this.loadfacturas();
+                               $('#mplanilla').modal('hide');
+                       })
+                     } else {
+                       Swal(
+                         'Error',
+                         'Ha ocurrido un error.',
+                         'warning'
+                       ).then(response => {
+                         this.loadfacturas();
+
+                       })
+                     }
+                   })
+               } else if (
+                 result.dismiss === Swal.DismissReason.cancel
+               ) {
+                 Swal(
+                   'Cancelado',
+                   'No fue enviado.',
+                   'success'
+                 )
+               }
+             })
+           },
            depp(){
              this.form.departamento=this.colombia[this.form.dep].departamento;
              console.log(this.form.dep);
@@ -191,15 +309,19 @@
                this.form.nombre_cargo='';
                $('#modal-lg').modal('show');
            },
-           validateBeforeSubmit() {
+      validateBeforeSubmit() {
                    this.$validator.validateAll().then((result) => {
                      if (result) {
                        let data = new FormData();
                        data.append('service_form',JSON.stringify(this.form));
                      if(!this.editMode){
-                       axios.post('index.php/facturas/insertar',data)
+                  axios.post('index.php/Facturas/insertar',data)
                        .then(response => {
                          if(response.data.status == 200){
+                           this.id=response.data.id;
+                           window.setTimeout(function () {
+                              $('#mplanilla').modal('show');
+                            }, 50);
                            Swal.fire({
                              type: 'success',
                              title: 'Exito!',
@@ -219,7 +341,7 @@
                        })
                      }
                      else{
-                       axios.post('index.php/facturas/editar',data)
+                       axios.post('index.php/Facturas/editar',data)
                        .then(response => {
                          if(response.data.status == 200)
                          {
@@ -265,7 +387,7 @@
                      if (result.value) {
                        let data = new FormData();
                        data.append('id',this.facturas[index].id);
-                         axios.post('index.php/facturas/eliminar',data)
+                         axios.post('index.php/Facturas/eliminar',data)
                          .then(response => {
                            if(response) {
                              Swal(
@@ -309,10 +431,21 @@
                    this.editMode=false
                  },
             async loadfacturas() {
-                await   axios.get('index.php/facturas/getfacturas/')
+                await   axios.get('index.php/Facturas/getfacturas/')
                    .then(({data: {facturas}}) => {
                      this.facturas = facturas
                    });
+                   if (!this.id==0) {
+                     for (var i = 0; i < this.facturas.length; i++) {
+                       if (this.facturas[i].id==this.id) {
+                        this.archivo.nombre_archivo='FV-'+this.id;
+                        this.archivo.url='Facturas/to_pdf/'+this.id;
+                        this.archivo.usuario_responsable=this.facturas[i].user_id;
+                        this.archivo.numero_doc=this.id;
+                       }
+                     }
+                     this.id=0;
+                   }
                    $("#example1").DataTable();
                  },
                  loadPln(){
@@ -323,13 +456,34 @@
                      this.form.direccion_cliente=this.form.items[0].direccion_cliente;
                      this.form.telefono_cliente=this.form.items[0].telefono_cliente;
                      this.form.ciudad_cliente=this.form.items[0].ciudad_cliente;
+                     this.form.forma_pago=this.form.items[0].forma;
+                     this.form.dias_demora=this.form.items[0].dias;
+                     this.form.fecha = moment().format('YYYY-MM-DD');
+                     this.form.f_vencimiento = moment().add(parseInt(this.form.dias_demora),'d').format('YYYY-MM-DD');
+                     this.form.total=0;this.form.subtotal=0;
+                     for (var i = 0; i < this.form.items.length; i++) {
+                       this.form.total=parseFloat(this.form.total)+parseFloat(this.form.items[i].total);
+                       this.form.subtotal=parseFloat(this.form.subtotal)+parseFloat(this.form.items[i].total);
+                     }
                      window.setTimeout(function () {
                            $('#modal-lg').modal('show');
                            localStorage.removeItem('factura');
                           }, 300);
 
+
                    }
                  },
+                 async loadnotas() {
+                       await   axios.get('index.php/Notas/getnotass/')
+                          .then(({data: {notas}}) => {
+                            this.notas = notas
+                          });
+                          for (var i = 0; i < this.notas.length; i++) {
+                            if (this.notas[i].tipo_transporte==='Factura' && this.notas[i].estado==='Activo') {
+                             this.form.notas.push(this.notas[i]);
+                            }
+                          }
+                        },
                  loadCart(){
 
                    if(localStorage.getItem('cart')) {
@@ -343,6 +497,7 @@
        },
 
        created(){
+            this.loadnotas();
             this.loadfacturas();
             this.loadCart();
             this.loadPln();

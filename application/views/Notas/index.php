@@ -103,6 +103,7 @@
                                   <option value=""></option>
                                   <option value="Saludo">Saludo</option>
                                   <option value="Contrato">Contrato</option>
+                                  <option value="Factura">Factura</option>
                                    <option v-for="transportes in transportes" :value="transportes.tipo_transporte">{{transportes.tipo_transporte}}</option>
                                  </select>
                                  <p class="text-danger my-1 small" v-if="(errors.first('tipo_transporte'))" >  Este dato es requerido  </p>
@@ -166,7 +167,12 @@
                this.$validator.reset();
                document.getElementById("form").reset();
                this.editMode=false;
-               this.form.nombre_cargo='';
+               this.form.id="";
+               this.form.numero="";
+               this.form.resumen="";
+               this.form.descripcion="";
+               this.form.tipo_transporte="";
+               this.form.estado="";
                $('#modal-lg').modal('show');
            },
            validateBeforeSubmit() {
@@ -320,6 +326,7 @@
        },
 
        created(){
+            
             this.loadtransportes();
             this.loadnotas();
             this.loadCart();

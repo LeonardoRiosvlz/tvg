@@ -86,15 +86,7 @@
                 </button>
               </div>
               <div class="modal-body">
-                <div class="row p-1 ">
-                  <div class="col-md-4">
-                    <label class="links"></label>
-                    <input list="encodings" v-model="form.cedula" @change="loadLiquidaciones();loadCotizaciones()"  value="" class="form-control form-control-lg" placeholder="Escriba una cedula" :disabled="ver">
-                      <datalist id="encodings">
-                          <option v-for="clientes in clientes"  v-if="clientes.cliente_especial==='No'" :value="clientes.cedula_cliente">{{clientes.nombre_cliente}}</option>
-                      </datalist>
-                  </div>
-                </div>
+
                 <h2 class="links text-center"> PLANILLA</h2>
                 <button type="button" class="btn btn-block btn-lg btn-success"><span class="mbri-bookmark"></span>PLN-{{id}}</button>
                 <button type="button" class="btn btn-block btn-lg btn-primary" @click="generar()">Generar <span class="mbri-share"></span></button>

@@ -602,6 +602,8 @@
                   telefono_cliente:this.guias[index].telefono_cliente,
                   cedula_cliente:this.guias[index].cedula,
                   ciudad_cliente:this.guias[index].ciudad,
+                  forma:this.guias[index].forma,
+                  dias:this.guias[index].dias,
 
                 });
              } else if (

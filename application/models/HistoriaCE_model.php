@@ -62,10 +62,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             return $this->db
             ->select('c.*,s.nombre_sede,t.*,k.nombre_cliente,p.nombre_proveedor')
             ->from('historial_Ce c')
-            ->join('sedes s', 'c.sede_cliente = s.id')
-            ->join('tarifas t', 'c.id_tarifa = t.id')
-            ->join('clientes k', 'c.cedula_cliente = k.cedula_cliente')
-            ->join('proveedores p', 'c.proveedor = p.id')
+            ->join('sedes s', 'c.sede_cliente = s.id', 'left outer')
+            ->join('tarifas t', 'c.id_tarifa = t.id', 'left outer')
+            ->join('clientes k', 'c.cedula_cliente = k.cedula_cliente', 'left outer')
+            ->join('proveedores p', 'c.proveedor = p.id', 'left outer')
             ->get()
             ->result();
           }
@@ -74,10 +74,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
               ->select('c.*,s.nombre_sede,t.*,k.nombre_cliente,p.nombre_proveedor')
               ->from('historial_Ce c')
               ->where('numero_anexo_l', $id)
-              ->join('sedes s', 'c.sede_cliente = s.id')
-              ->join('tarifas t', 'c.id_tarifa = t.id')
-              ->join('clientes k', 'c.cedula_cliente = k.cedula_cliente')
-              ->join('proveedores p', 'c.proveedor = p.id')
+              ->join('sedes s', 'c.sede_cliente = s.id', 'left outer')
+              ->join('tarifas t', 'c.id_tarifa = t.id', 'left outer')
+              ->join('clientes k', 'c.cedula_cliente = k.cedula_cliente', 'left outer')
+              ->join('proveedores p', 'c.proveedor = p.id', 'left outer')
               ->get()
               ->result();
             }
@@ -86,10 +86,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
               ->select('c.*,s.nombre_sede,t.*,k.nombre_cliente,p.nombre_proveedor')
               ->from('historial_Ce c')
               ->where('c.cedula_cliente', $id)
-              ->join('sedes s', 'c.sede_cliente = s.id')
-              ->join('tarifas t', 'c.id_tarifa = t.id')
-              ->join('clientes k', 'c.cedula_cliente = k.cedula_cliente')
-              ->join('proveedores p', 'c.proveedor = p.id')
+              ->join('sedes s', 'c.sede_cliente = s.id', 'left outer')
+              ->join('tarifas t', 'c.id_tarifa = t.id', 'left outer')
+              ->join('clientes k', 'c.cedula_cliente = k.cedula_cliente', 'left outer')
+              ->join('proveedores p', 'c.proveedor = p.id', 'left outer')
               ->get()
               ->result();
             }
@@ -102,10 +102,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
   //              ->where('fecha_despacho >=',$datas['hasta'])
                 ->where('fecha_despacho >=', $datas['desde'])
                 ->where('fecha_despacho <=', $datas['hasta'])
-                ->join('sedes s', 'c.sede_cliente = s.id')
-                ->join('tarifas t', 'c.id_tarifa = t.id')
-                ->join('clientes k', 'c.cedula_cliente = k.cedula_cliente')
-                ->join('proveedores p', 'c.proveedor = p.id')
+                ->join('sedes s', 'c.sede_cliente = s.id', 'left outer')
+                ->join('tarifas t', 'c.id_tarifa = t.id', 'left outer')
+                ->join('clientes k', 'c.cedula_cliente = k.cedula_cliente', 'left outer')
+                ->join('proveedores p', 'c.proveedor = p.id', 'left outer')
                 ->get()
                 ->result();
               }
@@ -116,10 +116,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 ->from('historial_Ce c')
                 ->where('c.cedula_cliente', $id)
                 ->where('n_referencia_c', $numero)
-                ->join('sedes s', 'c.sede_cliente = s.id')
-                ->join('tarifas t', 'c.id_tarifa = t.id')
-                ->join('clientes k', 'c.cedula_cliente = k.cedula_cliente')
-                ->join('proveedores p', 'c.proveedor = p.id')
+                ->join('sedes s', 'c.sede_cliente = s.id', 'left outer')
+                ->join('tarifas t', 'c.id_tarifa = t.id', 'left outer')
+                ->join('clientes k', 'c.cedula_cliente = k.cedula_cliente', 'left outer')
+                ->join('proveedores p', 'c.proveedor = p.id', 'left outer')
                 ->get()
                 ->result();
               }
@@ -132,10 +132,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
   //              ->where('fecha_despacho >=',$datas['hasta'])
                 ->where('fecha_despacho >=', $datas['desde'])
                 ->where('fecha_despacho <=', $datas['hasta'])
-                ->join('sedes s', 'c.sede_cliente = s.id')
-                ->join('tarifas t', 'c.id_tarifa = t.id')
-                ->join('clientes k', 'c.cedula_cliente = k.cedula_cliente')
-                ->join('proveedores p', 'c.proveedor = p.id')
+                ->join('sedes s', 'c.sede_cliente = s.id', 'left outer')
+                ->join('tarifas t', 'c.id_tarifa = t.id', 'left outer')
+                ->join('clientes k', 'c.cedula_cliente = k.cedula_cliente', 'left outer')
+                ->join('proveedores p', 'c.proveedor = p.id', 'left outer')
                 ->get()
                 ->result();
                 }

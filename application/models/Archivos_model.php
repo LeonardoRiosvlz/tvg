@@ -15,6 +15,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             ));
             return $this->db->error();
         }
+        public function insertar_factura($data){
+            $this->db->insert('archivos', array(
+                'id'     => $data['id_archivo'],
+                'nombre_archivo'     => $data['nombre_archivo'],
+                'tipo_archivo'     => $data['tipo_archivo'],
+                'tipo'     => $data['tipo'],
+                'numero_doc'     => $data['numero_doc'],
+                'codigo_hex'     => $data['codigo'],
+                'url'     => $data['url'],
+                'usuario_responsable'     => $data['usuario_responsable'],
+            ));
+            return $this->db->error();
+        }
         public function insertar_planilla($data){
             $this->db->insert('archivos', array(
                 'id'     => $data['id'],
