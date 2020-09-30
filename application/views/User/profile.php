@@ -14,7 +14,7 @@
                                                   <div class="col-12 ">
                                                       <h3 class="mb-0 text-truncated links">{{profile.nombre}} {{profile.apellido}}</h3>
                                                       <hr>
-                                                      <pre>{{cart}}</pre>
+                                                    
                                                   </div>
                                                   <div class="col-12  text-center">
                                                       <img :src="'<?=base_url();?>'+profile.url_foto" alt="" class="mx-auto  img-fluid">

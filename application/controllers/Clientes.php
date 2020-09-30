@@ -32,6 +32,13 @@ class Clientes extends MY_Controller {
 				  echo json_encode(['clientes' => $data['clientes']]);
 
 				}
+				public function getclientesa($id=0) {
+
+						$data['clientes'] = $this->clientes->getclientesa();
+						header('Content-Type: application/json');
+						echo json_encode(['clientes' => $data['clientes']]);
+
+					}
 				public function getclientesN($id=0) {
 
 					  $data['clientes'] = $this->clientes->getclientesN();

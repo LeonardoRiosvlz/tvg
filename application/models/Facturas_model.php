@@ -17,7 +17,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 'notas'     => json_encode($data['notas']),
                 'forma_pago'     => $data['forma_pago'],
                 'precio_letras'     => $data['precio_letras'],
-                'subtotal'     => $data['subtotal'],
                 'total'     => $data['total'],
                 'dias_demora'     => $data['dias_demora'],
                 'estado'     => $data['estado'],
@@ -31,6 +30,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             ));
             return $this->db->error();
            }
+           public function generar_enviar($data) {
+               $this->db->where('id',$data['id']);
+               $this->db->update('facturas', array(
+                 'estado'     => 'Enviado',
+               ));
+               return $this->db->error();
+              }
         public function editar($data) {
             $this->db->where('id',$data['id']);
             $this->db->update('facturas', array(
@@ -46,7 +52,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
               'notas'     => json_encode($data['notas']),
               'forma_pago'     => $data['forma_pago'],
               'precio_letras'     => $data['precio_letras'],
-              'subtotal'     => $data['subtotal'],
               'total'     => $data['total'],
               'dias_demora'     => $data['dias_demora'],
               'estado'     => $data['estado'],
@@ -60,6 +65,79 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             ->get()
             ->result();
           }
+          public function get_factura($id) {
+              return $this->db
+              ->select('*')
+              ->from('facturas')
+              ->where('id', $id)
+              ->get()
+              ->result();
+            }
+          public function get_tiempo($datas) {
+              return $this->db
+              ->select('*')
+              ->from('facturas')
+              ->where('fecha >=', $datas['desde'])
+              ->where('fecha <=', $datas['hasta'])
+              ->get()
+              ->result();
+            }
+            public function get_cedula($datas) {
+                return $this->db
+                ->select('*')
+                ->from('facturas')
+                ->where('cedula', $datas['cedula'])
+                ->get()
+                ->result();
+              }
+              public function get_estado($datas) {
+                  return $this->db
+                  ->select('*')
+                  ->from('facturas')
+                  ->where('estado', $datas['estado'])
+                  ->get()
+                  ->result();
+                }
+                public function get_fecha_cedula($datas) {
+                    return $this->db
+                    ->select('*')
+                    ->from('facturas')
+                    ->where('fecha >=', $datas['desde'])
+                    ->where('fecha <=', $datas['hasta'])
+                    ->where('cedula', $datas['cedula'])
+                    ->get()
+                    ->result();
+                  }
+                  public function get_fecha_estado_cedula($datas) {
+                      return $this->db
+                      ->select('*')
+                      ->from('facturas')
+                      ->where('fecha >=', $datas['desde'])
+                      ->where('fecha <=', $datas['hasta'])
+                      ->where('cedula', $datas['cedula'])
+                      ->where('estado', $datas['estado'])
+                      ->get()
+                      ->result();
+                    }
+                  public function get_fecha_estado($datas) {
+                      return $this->db
+                      ->select('*')
+                      ->from('facturas')
+                      ->where('fecha >=', $datas['desde'])
+                      ->where('fecha <=', $datas['hasta'])
+                      ->where('estado', $datas['estado'])
+                      ->get()
+                      ->result();
+                    }
+                    public function get_cedula_estado($datas) {
+                        return $this->db
+                        ->select('*')
+                        ->from('facturas')
+                        ->where('estado', $datas['estado'])
+                        ->where('cedula', $datas['cedula'])
+                        ->get()
+                        ->result();
+                      }
           public function deletefacturas($id) {
             $this->db->where('id', $id);
             $this->db->delete('facturas');
@@ -259,7 +337,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                         </div>';
                                         foreach($data->result() as $row){
                                         $output .= '<ul class="list-group" style="width:35%; float:right">
-                                            <li class="list-group-item " style=" height:20px!important;">SUBTOTAL :$ '.$row->total.' </li>
+
                                             <li class="list-group-item " style=" height:30px!important;">TOTAL: '.$row->total.'</li>
                                           </ul>
                                   </div>';}

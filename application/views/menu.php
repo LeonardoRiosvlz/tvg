@@ -1,5 +1,8 @@
+
 <div id="app">
+
     <div class="container-fluid text-center text-warning" style="background-color:#293072;">SVG CARGO S.A.S.</div>
+
     <div class="container-fluid">
       <div class="row head-s">
         <div class="col-3  imagisotipo d-none d-sm-none d-md-none d-xl-block py-4 ">
@@ -73,6 +76,13 @@
                       <a class="dropdown-item links" href="<?=base_url()?>Root_user"><i class="fa fa-users" aria-hidden="true"></i> Usuarios del sistema</a>
                       <a class="dropdown-item links" href="<?=base_url()?>cambios_estado"><i class="fa fa-recycle" aria-hidden="true"></i> Cambio de estado</a>
                       <a class="dropdown-item links" href="<?=base_url()?>FormasPago"><i class="fa fa-money" aria-hidden="true"></i> Formas de pago </a>
+                    </div>
+                  </div>
+                  <div class="dropdown">
+                    <button type="button" class="btn nav-link links dropdown-toggle sp" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-hover="dropdown">
+                      Catálogo
+                    </button>
+                    <div class="dropdown-menu">
                       <a class="dropdown-item links" href="<?=base_url()?>cargos"><i class="fa fa-street-view" aria-hidden="true"></i> Cargos</a>
                       <a class="dropdown-item links" href="<?=base_url()?>Tiempo"><i class="fa fa-clock-o" aria-hidden="true"></i> Tiempos de entrega</a>
                       <a class="dropdown-item links" href="<?=base_url()?>transporte"><i class="fa fa-truck" aria-hidden="true"></i> Tipos de trasnporte</a>
@@ -83,16 +93,6 @@
                       <a class="dropdown-item links" href="<?=base_url()?>Tarifas"><i class="fa fa-usd" aria-hidden="true"></i> Tabla de tarifas</a>
                       <a class="dropdown-item links" href="<?=base_url()?>SeguroCarga"><i class="fa fa-shield" aria-hidden="true"></i> Seguros de carga</a>
                       <a class="dropdown-item links" href="<?=base_url()?>CosteGuia"><i class="fa fa-credit-card-alt" aria-hidden="true"></i> Coste de guía</a>
-                      <a class="dropdown-item links" href="<?=base_url()?>satelites"><i class="fa fa-podcast" aria-hidden="true"></i> Satélites</a>
-                    </div>
-                  </div>
-                  <div class="dropdown">
-                    <button type="button" class="btn nav-link links dropdown-toggle sp" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-hover="dropdown">
-                      Catálogo
-                    </button>
-                    <div class="dropdown-menu">
-                      <a class="dropdown-item links" href="<?=base_url()?>Actas_entrega"><i class="fa fa-handshake-o" aria-hidden="true"></i> Actas de entrega</a>
-                      <a class="dropdown-item links" href="<?=base_url()?>Actas_recogida"><i class="fa fa-cubes" aria-hidden="true"></i> Actas de recogida</a>
                       <a class="dropdown-item links" href="<?=base_url()?>Trazabilidad"><i class="fa fa-location-arrow" aria-hidden="true"></i> Trazabilidad de la carga</a>
                     </div>
                   </div>
@@ -166,25 +166,9 @@
         <div class="panel panel-default">
           <div id="collapse3" class="panel-collapse collapse">
             <ul class="list-group sp">
-              <li class="list-group-item"><a class=" links " href="<?=base_url()?>remitentes"><i class="fa fa-user" aria-hidden="true"></i> Cotizador</a></li>
-              <li class="list-group-item"><a class=" links" href="<?=base_url()?>belleza-higiene"><i class="fa fa-usd" aria-hidden="true"></i> Cotizaciones</a></li>
-              <li class="list-group-item"><a class=" links"  href="<?=base_url()?>dermatologia"><i class="fa fa-plus" aria-hidden="true"></i> Cotizaciones recalculadas</a></li>
-              <li class="list-group-item"><a class=" links"  href="<?=base_url()?>aparatologia"><i class="fa fa-file-pdf-o" aria-hidden="true"></i> Documentos especiales</a></li>
-              <li class="list-group-item"><a class=" links"  href="<?=base_url()?>aparatologia"><i class="fa fa-street-view" aria-hidden="true"></i> Planilla de liquidación</a></li>
-            </ul>
-          </div>
-        </div>
-        <li style="background:#293072!important;" class=" text-warning links list-group-item list-group-item-dark list-group-item d-flex justify-content-between align-items-center"   data-toggle="collapse" href="#collapse4">
-          Centro De Descargas <i class="fa fa-bars" aria-hidden="true"></i>
-        </li>
-        <div class="panel panel-default">
-          <div id="collapse4" class="panel-collapse collapse">
-            <ul class="list-group sp">
-              <li class="list-group-item"><a class=" links" href="<?=base_url()?>remitentes"><i class="fa fa-user" aria-hidden="true"></i> Cotizador</a></li>
-              <li class="list-group-item"><a class=" links" href="<?=base_url()?>belleza-higiene"><i class="fa fa-usd" aria-hidden="true"></i> Cotizaciones</a></li>
-              <li class="list-group-item"><a class=" links"  href="<?=base_url()?>dermatologia"><i class="fa fa-plus" aria-hidden="true"></i> Cotizaciones recalculadas</a></li>
-              <li class="list-group-item"><a class=" links"  href="<?=base_url()?>aparatologia"><i class="fa fa-file-pdf-o" aria-hidden="true"></i> Documentos especiales</a></li>
-              <li class="list-group-item"><a class=" links"  href="<?=base_url()?>aparatologia"><i class="fa fa-street-view" aria-hidden="true"></i> Planilla de liquidación</a></li>
+              <li class="list-group-item"><a class="dropdown-item links" href="<?=base_url()?>Actas_entrega"><i class="fa fa-handshake-o" aria-hidden="true"></i> Actas de entrega</a></li>
+              <li class="list-group-item"><a class="dropdown-item links" href="<?=base_url()?>Actas_recogida"><i class="fa fa-cubes" aria-hidden="true"></i> Actas de recogida</a></li>
+              <li class="list-group-item"><a class=" links"  href="<?=base_url()?>Generados"><i class="fa fa-file-pdf-o" aria-hidden="true"></i> Documentos generados</a></li>
             </ul>
           </div>
         </div>

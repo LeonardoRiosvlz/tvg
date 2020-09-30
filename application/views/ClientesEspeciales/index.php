@@ -110,7 +110,7 @@
             </tr>
             </thead>
               <tr v-for="(cargas,index) in cargas">
-                <td class="links">{{cargas.codigo}}</td>
+                <td class="links">E-{{cargas.codigo}}</td>
                 <td class="links">{{cargas.ciudad_origen}}</td>
                 <td class="links">{{cargas.ciudad_destino}}</td>
                 <td class="links">{{cargas.nombre_cliente}}</td>

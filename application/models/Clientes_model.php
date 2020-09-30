@@ -167,6 +167,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
               ->get()
               ->result_array();
             }
+            public function getclientesa() {
+                return $this->db
+                ->select('c.*,f.forma, f.dias')
+                ->from('clientes c')
+                ->where('estado','Activo')
+                ->join('forma_pago f', 'c.forma_pago = f.id')
+                ->get()
+                ->result_array();
+              }
           public function deleteclientes($id) {
             $this->db->where('id', $id);
             $this->db->delete('clientes');
