@@ -10,7 +10,7 @@ class Root_user extends MY_Controller
       // Force SSL
       //$this->force_ssl();
       $this->load->model('User_model', 'user');
-      if( ! $this->verify_min_level(9)){
+      if( ! $this->verify_min_level(6)){
           redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
         }
       // Form and URL helpers always loaded (just for convenience)
@@ -32,7 +32,7 @@ class Root_user extends MY_Controller
       }
 
       public function eliminar() {
-  			if( ! $this->verify_min_level(9)){
+  			if( ! $this->verify_min_level(6)){
   				redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
   			}
               $id = $this->input->post('id');
@@ -48,7 +48,7 @@ class Root_user extends MY_Controller
 
       public function insertar() {
         $this->load->model('examples/examples_model');
-        if( ! $this->verify_min_level(9)){
+        if( ! $this->verify_min_level(6)){
           redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
         }
 
@@ -443,7 +443,7 @@ class Root_user extends MY_Controller
               echo json_encode(['documentos' => $data['documentos']]);
            }
            public function editar() {
-             if( ! $this->verify_min_level(9)){
+             if( ! $this->verify_min_level(6)){
                redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
              }
                  $data = json_decode($this->input->post('service_form'),true);
@@ -457,7 +457,7 @@ class Root_user extends MY_Controller
                }
              }
              public function editar_img() {
-               if( ! $this->verify_min_level(9)){
+               if( ! $this->verify_min_level(6)){
                  redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
                }
              $config['upload_path']          = './include/img/user/';

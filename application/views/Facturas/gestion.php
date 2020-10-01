@@ -1,89 +1,83 @@
-<style media="screen">
-.nopadding {
- padding: 0 !important;
- margin: 0 !important;
-}
-.jus{
-  text-align:justify;
-  text-justify:inter-word;
-  text-indent: 1.5em;
-}
-</style>
-<div id="app" class="container-fluid my-5">
-  <div class="row" v-if="facturas.length>0">
 
-  </div>
-  <div v-else class="col-12 my-5" style="height:1000px;">
-    <img src="<?=base_url();?>/img/404.svg" alt="">
-    {{ref_cod}}
-  </div>
-  <div v-for="facturas in facturas" class="container">
-
-  <div class="row">
-    <div class="col-7">
-        <p class="lead" style="font-size:17px;margin:0">Cliente: {{form.nombre_cliente}}</p>
-        <p class="lead" style="font-size:17px;margin:0">NIT/Cedula: {{form.cedula}}</p>
-        <p class="lead" style="font-size:17px;margin:0">Dirección: {{form.direccion_cliente}}</p>
-        <p class="lead" style="font-size:17px;margin:0">Teléfono: {{form.telefono_cliente}}</p>
-        <p class="lead" style="font-size:17px;margin:0">Ciudad: {{form.ciudad_cliente}}</p>
-
+<div  class="container-fluid my-5">
+  <div class="row" v-if="facturas.length>0 && form.estado==='Enviado'">
+    <div class="container">
+    <div class="row">
+      <div class="col-7">
+          <p class="lead" style="font-size:17px;margin:0">Cliente: {{form.nombre_cliente}}</p>
+          <p class="lead" style="font-size:17px;margin:0">NIT/Cedula: {{form.cedula}}</p>
+          <p class="lead" style="font-size:17px;margin:0">Dirección: {{form.direccion_cliente}}</p>
+          <p class="lead" style="font-size:17px;margin:0">Teléfono: {{form.telefono_cliente}}</p>
+          <p class="lead" style="font-size:17px;margin:0">Ciudad: {{form.ciudad_cliente}}</p>
+      </div>
+      <div class="col-5" >
+        <a href="#" class="list-group-item list-group-item-success" style=" font-size:30px; height:49px!important;">FV-{{form.id}}</a>
+        <a href="#" class="list-group-item  " styles="font-size:10px;">Fecha: {{form.fecha}}</a>
+        <a href="#" class="list-group-item " styles="font-size:10px;">Vencimiento: {{form.f_vencimiento}}</a>
+      </div>
     </div>
-           <div class="col-5" >
-             <a href="#" class="list-group-item list-group-item-success" style=" font-size:30px; height:49px!important;">FV-{{form.id}}</a>
-             <a href="#" class="list-group-item  " styles="font-size:10px;">Fecha: {{form.fecha}}</a>
-             <a href="#" class="list-group-item " styles="font-size:10px;">Vencimiento: {{form.f_vencimiento}}</a>
+    <div class="row my-1">
+             <table class="table" width="100%">
+              <thead>
+                <tr>
+                  <th scope="col" colspan="3">DESCRIPCIÓN</th>
+                  <th scope="col">VALOR</th>
+                  <th scope="col"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="items in form.items">
+                  <td scope="row" colspan="3">Valor correspondiente al transporte {{items.tipo_transporte}}, Nº guía {{items.n_guia}} {{items.origen}}-{{items.destino}}.</td>
+                  <th>{{items.total}} $</th>
+                </tr>
+              </tbody>
+            </table>
+      </div>
+       <div class="row">
+       <div class="panel panel-default">
+         <div class="panel-heading">Notas</div>
+         <div class="panel-body">
+           <p style="font-size:15px;" v-for="notas in form.notas">{{notas.descripcion}}</p>
            </div>
-       </div>
-       <div class="row my-1">
-           <table class="table" width="100%">
-            <thead>
-              <tr>
-                <th scope="col" colspan="3">DESCRIPCIÓN</th>
-                <th scope="col">VALOR</th>
-                <th scope="col"></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="items in form.items">
-                <td scope="row" colspan="3">Valor correspondiente al transporte {{items.tipo_transporte}}, Nº guía {{items.n_guia}} {{items.origen}}-{{items.destino}}.</td>
-                <th>{{items.total}} $</th>
-              </tr>
-            </tbody>
-          </table>
-
-       </div>
-           <div class="row">
-           <div class="panel panel-default">
-             <div class="panel-heading">Notas</div>
-             <div class="panel-body">
-               <p style="font-size:15px;" v-for="notas in form.notas">{{notas.descripcion}}</p>
-
-               </div>
-             </div>
-           </div>
-           <div class="row">
-           <div class="panel panel-default">
-
-
-             <div class="panel-heading">Tipo de pago{{form.forma_pago}}</div>
-             <div class="panel-body">
-
-             </div>
-             </div>
          </div>
-           <div class="row">
-           <div class="panel panel-default" style="width:65%; float:left">
-             <div class="panel-body ">
-             .
-             </div>
-           </div>
-           <ul class="list-group" style="width:35%; height: 50px;float:right">
-
-               <li class="list-group-item " >TOTAL: {{form.total}} $</li>
-             </ul>
+       </div>
+      <div class="row">
+      <div class="panel panel-default">
+       <div class="panel-heading">Tipo de pago{{form.forma_pago}}</div>
+       <div class="panel-body">
+       </div>
+      </div>
      </div>
-   </div>
+       <div class="row">
+       <div class="panel panel-default" style="width:65%; float:left">
+         <div class="panel-body ">
+         .
+         </div>
+       </div>
+       <ul class="list-group" style="width:35%; height: 50px;float:right">
+           <li class="list-group-item " >TOTAL: {{form.total}} $</li>
+         </ul>
+       </div>
+       <form role="form" id="form" @submit.prevent="validateBeforeSubmit">
+         <div class="row">
+             <div class="col-12">
 
+                <div class="form-group">
+                       <input type="file" v-validate="'required'"  id="image" name="image">
+                       <p class="text-danger my-1 small" v-if="(errors.first('image'))" >  Este dato es requerido  </p>
+                </div>
+             </div>
+            </div>
+           <button v-if="editMode===false"  class="button is-primary links btn btn-primary btn-block float-right my-3" type="submit">Cancelar</button>
+           <button v-if="editMode===true && !ver"  class="button is-primary btn btn-light links float-right my-3" type="submit">Editar</button>
+       </form>
+     </div>
+  </div>
+  <div v-else class="col-12 my-5" style="min-height:70%;">
+    <img src="<?=base_url();?>/img/404.svg" class="mx-auto d-block" width="50%" alt="">
+  </div>
+
+</div>
 </div>
 <script>
      axios.defaults.baseURL = '<?PHP echo base_url(); ?>';
@@ -94,8 +88,8 @@
          estado:'',
          departamento:0,
          ver:false,
-         <?php if(  isset( $_GET["ref_cot"] ) ): ?>
-          ref_cot:'<?=$_GET["ref_cot"];?>',
+         <?php if(  isset( $_GET["ref_"] ) ): ?>
+          ref_cot:'<?=$_GET["ref_"];?>',
          <?php else: ?>
            ref_cot:'',
          <?php endif; ?>
@@ -155,18 +149,20 @@
                    this.$validator.validateAll().then((result) => {
                      if (result) {
                        let data = new FormData();
+                       this.file_data = $('#image').prop('files')[0];
+                       data.append('files', this.file_data);
                        data.append('service_form',JSON.stringify(this.form));
                      if(!this.editMode){
-                       axios.post('index.php/Cargos/insertar',data)
+                       axios.post('index.php/Facturas/cancelar',data)
                        .then(response => {
                          if(response.data.status == 200){
                            Swal.fire({
                              type: 'success',
-                             title: 'Exito!',
-                             text: 'Agregado con exito'
+                             title: 'Éxito!',
+                             text: 'TVG CARGO RECIBIÓ CON ÉXITO  SU COMPROBANTE DE PAGO'
                            })
                            $('#modal-lg').modal('hide');
-                           this.loadcargos();
+                           this.loadcotizaciones();
                            this.resete();
                          }
                          else{
@@ -187,8 +183,8 @@
                            this.loadcargos();
                            Swal.fire({
                              type: 'success',
-                             title: 'Exito!',
-                             text: 'Editado correctamente'
+                             title: 'Éxito!',
+                             text: 'TVG CARGO RECIBIO CON ÉXITO  SU COMPROBANTE DE PAGO'
                           });
                           this.editMode=false;
                           this.resete();
@@ -212,105 +208,7 @@
                      );
                    });
                  },
-                 eliminarcargos(index){
-                   Swal({
-                     title: '¿Estás seguro?',
-                     text: "¡ será eliminado para siempre!",
-                     type: 'warning',
-                     showCancelButton: true,
-                     confirmButtonText: '¡Si! ¡eliminar!',
-                     cancelButtonText: '¡No! ¡cancelar!',
-                     reverseButtons: true
-                   }).then((result) => {
-                     if (result.value) {
-                       let data = new FormData();
-                       data.append('id',this.cargos[index].id);
-                         axios.post('index.php/Cargos/eliminar',data)
-                         .then(response => {
-                           if(response) {
-                             Swal(
-                               '¡Eliminado!',
-                               'Ha sido eliminado.',
-                               'success'
-                             ).then(response => {
-                                   this.loadcargos();
-                             })
-                           } else {
-                             Swal(
-                               'Error',
-                               'Ha ocurrido un error.',
-                               'warning'
-                             ).then(response => {
-                               this.loadcargos();
-                             })
-                           }
-                         })
-                     } else if (
-                       result.dismiss === Swal.DismissReason.cancel
-                     ) {
-                       Swal(
-                         'Cancelado',
-                         'No fue eliminado.',
-                         'success'
-                       )
-                     }
-                   })
-                 },
-                 setear(index){
-                   this.form.id=this.cargos[index].id,
-                   this.form.nombre_cargo=this.cargos[index].nombre_cargo,
-                   $('#modal-lg').modal('show');
-                   this.editMode=true
-                 },
-                 ver(index){
-                   this.form.id=this.cargos[index].id,
-                   this.form.nombre_cargo=this.cargos[index].nombre_cargo,
-                   $('#myModal').modal('show');
-                   this.editMode=false
-                 },
-                 editarEstad(index){
-                     Swal({
-                       title: '¿Estás seguro?',
-                       text: "",
-                       type: 'warning',
-                       showCancelButton: true,
-                       confirmButtonText: '¡Si!',
-                       cancelButtonText: '¡No! ',
-                       reverseButtons: true
-                     }).then((result) => {
-                       if (result.value) {
-                         let data = new FormData();
-                         data.append('estatus_gestion',this.estado);
-                         data.append('id',this.ref_cot);
-                         axios.post('index.php/Cotizaciones/editarEstad',data)
-                         .then(response => {
-                           if(response.data.status == 200){
-                             Swal.fire({
-                               type: 'success',
-                               title: 'Exito!',
-                               text: 'Editado con exito'
-                             });
-                             this.loadcotizaciones();
-                           }
-                           else{
-                             Swal.fire({
-                               type: 'error',
-                               title: 'Lo sentimos',
-                               text: 'Ha ocurrido un error'
-                             })
-                           }
-                         })
-                       } else if (
-                         result.dismiss === Swal.DismissReason.cancel
-                       ) {
-                         Swal(
-                           'Cancelado',
-                           'No fue eliminado.',
-                           'success'
-                         )
-                       }
-                     })
-                   },
+
                  async loadcotizaciones(){
                     let data = new FormData();
                        data.append('id',this.ref_cot);
@@ -356,9 +254,8 @@
        },
 
        created(){
-            this.loadempresa();
+
             this.loadcotizaciones();
-            this.loadCart();
        },
    })
  </script>

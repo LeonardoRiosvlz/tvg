@@ -51,7 +51,7 @@
             <label >CLIENTE</label>
             <input list="encodings" v-model="cedula"  @keyup="form.nombre_empresa='';form.direccion_cliente='';form.telefono_cliente='';"   value="" class="form-control " placeholder="Escriba una cedula" :disabled="ver">
               <datalist id="encodings">
-                  <option v-for="clientes in clientes"  v-if="clientes.cliente_especial==='No'" :value="clientes.cedula_cliente" :disabled="ver">{{clientes.nombre_cliente}}</option>
+                  <option v-for="clientes in clientes"   :value="clientes.cedula_cliente" :disabled="ver">{{clientes.nombre_cliente}}</option>
               </datalist>
           </div>
           <div class="col-md-3">
@@ -101,7 +101,9 @@
                           <span class="sr-only">Toggle Dropdown</span>
                           <div class="dropdown-menu" role="menu">
                             <a class="dropdown-item" href="#"@click="setear(index);ver=true">Ver</a>
-                            <a class="dropdown-item" href="#" @click="setear(index);ver=false">Editar</a>
+                            <a class="dropdown-item" href="#"@click="setear(index)">Editar</a>
+                            <a class="dropdown-item" href="#"@click="setear(index);editMode=false">Duplicar</a>
+                            <a class="dropdown-item" href="#" @click="gestionar(index)">Gestionar</a>
                             <a class="dropdown-item" href="#" @click="eliminarfacturas(index)">Eliminar</a>
                           </div>
                         </button>
@@ -127,9 +129,10 @@
         <div class="modal-body">
           <h2 class="links text-center">Factura</h2>
           <button type="button" class="btn btn-block btn-lg btn-success"><span class="mbri-bookmark"></span>{{archivo.nombre_archivo}}</button>
-          <button type="button" class="btn btn-block btn-lg btn-primary" @click="generar();">Generar <span class="mbri-share"></span></button>
-          <button type="button" class="btn btn-block btn-lg btn-secondary" @click="generarEnviar()">Generar y enviar <span class="mbri-share"></span></button>
-            <pre>{{archivo}}</pre>
+          <button type="button" class="btn btn-block btn-lg btn-primary" v-if="archivo.estado==='Creado'" @click="generar();">Generar <span class="mbri-share"></span></button>
+          <button type="button" class="btn btn-block btn-lg btn-secondary" v-if="archivo.estado==='Creado'" @click="generarEnviar()">Generar y enviar <span class="mbri-share"></span></button>
+          <button type="button" class="btn btn-block btn-lg btn-secondary" v-if="archivo.estado==='Generado'||archivo.estado==='Enviado'" @click="Enviar()">Enviar correo <span class="mbri-share"></span></button>
+          <button type="button" class="btn btn-block btn-lg btn-secondary"  @click="anular()">Anular <span class="mbri-share"></span></button>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
@@ -376,6 +379,18 @@
            'nombre_cliente':'',
            'correo_cliente':'',
            'id':'',
+           'numero_doc': '',
+         },
+         archivo:{
+           'nombre_archivo':'',
+           'usuario_responsable':'',
+           'url':'',
+           'url_gestion':'',
+           'nombre_cliente':'',
+           'correo_cliente':'',
+           'id':'',
+           'numero_doc': '',
+           'estado': '',
          },
          item:{
           'origen': '',
@@ -508,7 +523,98 @@
                        'Ha sido enviado con exito .',
                        'success'
                      ).then(response => {
-                           this.loadcotizaciones();
+                         $('#mplanilla').modal('hide');
+                           this.loadfacturas();
+                     })
+                   } else {
+                     Swal(
+                       'Error',
+                       'Ha ocurrido un error.',
+                       'warning'
+                     ).then(response => {
+                       this.loadcotizaciones();
+                     })
+                   }
+                 })
+             } else if (
+               result.dismiss === Swal.DismissReason.cancel
+             ) {
+               Swal(
+                 'Cancelado',
+                 'No fue enviado.',
+                 'success'
+               )
+             }
+           })
+         },
+         anular(index){
+           Swal({
+             title: '¿Estás seguro?',
+             text: "",
+             type: 'warning',
+             showCancelButton: true,
+             confirmButtonText: '¡Si! ¡Anular factura!',
+             cancelButtonText: '¡No!',
+             reverseButtons: true
+           }).then((result) => {
+             if (result.value) {
+               let data = new FormData();
+               data.append('service_form',JSON.stringify(this.archivo));
+                 axios.post('index.php/Facturas/anular',data)
+                 .then(response => {
+                   if(response) {
+                     Swal(
+                       '¡Enviado !',
+                       'Ha sido enviado con exito .',
+                       'success'
+                     ).then(response => {
+                         $('#mplanilla').modal('hide');
+                           this.loadfacturas();
+                     })
+                   } else {
+                     Swal(
+                       'Error',
+                       'Ha ocurrido un error.',
+                       'warning'
+                     ).then(response => {
+                       this.loadcotizaciones();
+                     })
+                   }
+                 })
+             } else if (
+               result.dismiss === Swal.DismissReason.cancel
+             ) {
+               Swal(
+                 'Cancelado',
+                 'No fue enviado.',
+                 'success'
+               )
+             }
+           })
+         },
+         Enviar(index){
+           Swal({
+             title: '¿Estás seguro?',
+             text: "",
+             type: 'warning',
+             showCancelButton: true,
+             confirmButtonText: '¡Si! ¡enviar!',
+             cancelButtonText: '¡No!',
+             reverseButtons: true
+           }).then((result) => {
+             if (result.value) {
+               let data = new FormData();
+               data.append('service_form',JSON.stringify(this.archivo));
+                 axios.post('index.php/Facturas/enviar',data)
+                 .then(response => {
+                   if(response) {
+                     Swal(
+                       '¡Enviado !',
+                       'Ha sido enviado con exito .',
+                       'success'
+                     ).then(response => {
+                         $('#mplanilla').modal('hide');
+                           this.loadfacturas();
                      })
                    } else {
                      Swal(
@@ -786,8 +892,23 @@
                    })
                  },
                  setear(index){
-                   this.form.id=this.facturas[index].id,
-                   this.form.nombre_cargo=this.facturas[index].nombre_cargo,
+                   this.form.id=this.facturas[index].id;
+                   this.form.items=JSON.parse(this.facturas[index].items);
+                   this.form.notas=JSON.parse(this.facturas[index].notas);
+                   this.form.fecha=this.facturas[index].fecha;
+                   this.form.f_vencimiento=this.facturas[index].f_vencimiento;
+                   this.form.cedula=this.facturas[index].cedula;
+                   this.form.nombre_cliente=this.facturas[index].nombre_cliente;
+                   this.form.direccion_cliente=this.facturas[index].direccion_cliente;
+                   this.form.correo_cliente=this.facturas[index].correo_cliente;
+                   this.form.telefono_cliente=this.facturas[index].telefono_cliente;
+                   this.form.ciudad_cliente=this.facturas[index].ciudad_cliente;
+                   this.form.valor_total=this.facturas[index].valor_total;
+                   this.form.forma_pago=this.facturas[index].forma_pago;
+                   this.form.precio_letras=this.facturas[index].precio_letras;
+                   this.form.total=this.facturas[index].total;
+                   this.form.dias_demora=this.facturas[index].dias_demora;
+                   this.form.estado=this.facturas[index].estado;
                    $('#modal-lg').modal('show');
                    this.editMode=true
                  },
@@ -796,6 +917,19 @@
                    this.form.nombre_cargo=this.facturas[index].nombre_cargo,
                    $('#myModal').modal('show');
                    this.editMode=false
+                 },
+                 gestionar(index){
+
+                      this.archivo.nombre_archivo='FV-'+this.facturas[index].id;
+                      this.archivo.url='Facturas/to_pdf/'+this.facturas[index].id;
+                      this.archivo.url_gestion='Facturas/fat?ref_='+this.facturas[index].id;
+                      this.archivo.usuario_responsable=this.facturas[index].user_id;
+                      this.archivo.correo_cliente=this.facturas[index].correo_cliente;
+                      this.archivo.nombre_cliente=this.facturas[index].nombre_cliente;
+                      this.archivo.estado=this.facturas[index].estado;
+                      this.archivo.numero_doc=this.facturas[index].id;
+                      this.archivo.id=this.facturas[index].id;
+                        $('#mplanilla').modal('show');
                  },
             async loadfacturas() {
                 await   axios.get('index.php/Facturas/getfacturas/')
@@ -811,7 +945,9 @@
                         this.archivo.usuario_responsable=this.facturas[i].user_id;
                         this.archivo.correo_cliente=this.facturas[i].correo_cliente;
                         this.archivo.nombre_cliente=this.facturas[i].nombre_cliente;
+                        this.archivo.estado=this.facturas[i].estado;
                         this.archivo.numero_doc=this.id;
+                        this.archivo.id=this.id;
                        }
                      }
                      this.id=0;
@@ -871,7 +1007,7 @@
                       this.loadclientes();
                       this.loadtransportes();
                       this.loadnotas();
-                      //this.loadfacturas();
+                      this.loadfacturas();
                       this.loadCart();
 
                  },

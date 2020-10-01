@@ -40,7 +40,7 @@
             <a href="#">
               <div class="card-counter  p-2 zoom" style="opacity:0.9;background:#3333FF;">
                 <span class=" fa mbri-briefcase text-white" style="font-size:3em;opacity:0.6"></span>
-                <span class="count-numbers text-white"></span>
+                <span class="count-numbers text-white">{{creada}}</span>
                 <span class="count-name links text-white my-2">Creadas</span>
               </div>
             </a>
@@ -49,7 +49,7 @@
             <a href="#">
               <div class="card-counter muted p-2 zoom" style="opacity:0.9;background:#FFA226;">
                 <span class=" fa mbri-help text-white" style="font-size:3em;opacity:0.6"></span>
-                <span class="count-numbers text-white"></span>
+                <span class="count-numbers text-white">{{enviada}}</span>
                 <span class="count-name links text-white">Enviadas</span>
               </div>
             </a>
@@ -58,7 +58,7 @@
             <a href="#">
               <div class="card-counter success p-2 zoom" style="opacity:0.9">
                 <span class=" fa mbri-like" style="font-size:3em;opacity:0.6"></span>
-                <span class="count-numbers"></span>
+                <span class="count-numbers">{{cumplida}}</span>
                 <span class="count-name links">Cumplidas</span>
               </div>
             </a>
@@ -67,7 +67,7 @@
             <a href="#">
               <div class="card-counter primary p-2 zoom" style="opacity:0.9">
                 <span class="mbri-paperclip" style="font-size:3em;opacity:0.6"></span>
-                <span class="count-numbers"></span>
+                <span class="count-numbers">{{fisico}}</span>
                 <span class="count-name links">En fisico</span>
               </div>
             </a>
@@ -76,7 +76,7 @@
             <a href="#">
               <div class="card-counter info p-2 zoom" style="opacity:0.9">
                 <span class="mbri-to-local-drive" style="font-size:3em;opacity:0.6"></span>
-                <span class="count-numbers"></span>
+                <span class="count-numbers">{{archivadas}}</span>
                 <span class="count-name links">Archivadas</span>
               </div>
             </a>
@@ -85,8 +85,8 @@
             <a href="#">
               <div class="card-counter danger p-2 zoom" style="opacity:0.9">
                 <span class=" fa mbri-error" style="font-size:3em;opacity:0.6"></span>
-                <span class="count-numbers"></span>
-                <span class="count-name links">Rechazadas</span>
+                <span class="count-numbers">{{anulada}}</span>
+                <span class="count-name links">Anuldas</span>
               </div>
             </a>
           </div>
@@ -161,6 +161,7 @@
               <th class="links">DESTINO</th>
               <th class="links">ESTADO</th>
               <th class="links">REMITENTE</th>
+              <th class="links">DESCARGAR</th>
               <th class="links">Action</th>
             </tr>
             </thead>
@@ -170,6 +171,7 @@
                 <td class="links">{{guias.ciudad_origen}}</td>
                 <td class="links">{{guias.ciudad_destino}}</td>
                 <td class="links">{{guias.estado}}</td>
+                <td class="links"><a :href="'<?=base_url()?>Guias/Guia_to_pdf/'+guias.id"  download>Descargar PDF</a></td>
                 <td class="links">{{guias.contacto_remitente}}</td>
                   <td>
                     <div class="btn-group">
@@ -179,8 +181,12 @@
                           <div class="dropdown-menu" role="menu">
                             <a class="dropdown-item" href="#"@click="setear(index);ver=true">Ver</a>
                             <a class="dropdown-item" href="#" @click="setear(index)">Duplicar</a>
-                            <a class="dropdown-item" href="#" @click="addFactura(index)">Agregar a factura</a>
+                            <a class="dropdown-item" v-show="guias.estado==='En físico'" href="#" @click="addFactura(index)">Agregar a factura</a>
                             <a class="dropdown-item" href="#" @click="anularguias(index)">Anular</a>
+                            <a class="dropdown-item"  href="#" @click="enviarguias(index)">Enviar Guía</a>
+                            <a class="dropdown-item" v-show="guias.estado==='Enviada'" href="#" @click="setearCumplida(index)">Cimplidas</a>
+                            <a class="dropdown-item" href="#" @click="enfisico(index)">En Físico</a>
+                            <a class="dropdown-item" href="#" @click="archivada(index)">Archivada</a>
                           </div>
                         </button>
                     </div>
@@ -189,6 +195,60 @@
           </table>
       </div>
       <!-- End -->
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="cumplidas"  role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Guías de carga cumplidas</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class=" col-md-6 col-sm-12">
+            <div class="form-group">
+               <label class="links">Fecha de entrega carga en destino</label>
+                 <flat-pickr
+                     v-model="form.f_cumplida"
+                     :config="config"
+                     class="form-control"
+                     placeholder="Selecciona fecha"
+                     name="hSasta">
+               </flat-pickr>
+             </div>
+          </div>
+          <div class="card col-12 my-3" v-if="form.cedula">
+            <div class="col-sm-12 p-2">
+             <div class="form-group">
+               <label for="colFormLabelSm" class="links">Documentos Relacionados</label>
+                      <div v-if="!ver"  class="col-sm-12">
+                        <div class="row ">
+                          <div class="col-8">
+                            <input type="file"   id="imagenFoto" name="imagenFoto" >
+                          </div>
+                            <div class="col-4">
+                            <button class="btn btn-light links btn-lg" type="button"  @click="uploadFoto()">Subir archivo</button>
+                          </div>
+                         </div>
+                    </div>
+              </div>
+          </div>
+          <div class="row pl-5 pr-5" v-if="form.cedula">
+           <table class="table">
+             <tr v-for="(img , index) in imagenes">
+               <th scope="row"><a :href="'<?=base_url()?>'+img.url" download>{{img.nombre}}</a></th>
+               <td v-if="!ver"><a href="#"  class="" @click="eliminarImagen(index)"><span class="mbri-trash"></span></a></td>
+             </tr>
+           </table>
+          </div>
+          </div>
+          <button type="button" class="btn btn-success btn-block my-2" @click="cumplidasGuias()" name="button">Guardar</button>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -468,6 +528,12 @@
      new Vue({
        el: '#app',
        data: {
+         creada:'',
+         enviada:'',
+         cumplida:'',
+         fisico:'',
+         archivadas:'',
+         anulada:'',
          url:'',
          cedula:'',
          estado:'',
@@ -485,6 +551,7 @@
          ver:false,
          cart:[],
          guias:[],
+         imagenes:[],
          liquidaciones:[],
          liquidacion:[],
          remitentes:[],
@@ -520,6 +587,84 @@
          }
        },
        methods: {
+         async    uploadFoto() {
+             this.file_data = $('#imagenFoto').prop('files')[0];
+             this.form_data = new FormData();
+             this.form_data.append('file', this.file_data);
+             this.form_data.append('guia', this.form.id);
+         await      axios.post('index.php/Guias/detail_foto', this.form_data)
+               .then(response => {
+                 if(response.data.status == 201){
+                   Swal.fire({
+                     type: 'success',
+                     title: 'Exito!',
+                     text: 'Agregado correctamente'
+                   });
+                  this.loadFotos();
+                  document.getElementById("imagenFoto").value = "";
+                 }
+                 else
+                 {
+                   Swal.fire({
+                     type: 'error',
+                     title: 'Lo sentimos',
+                     text: 'Ha ocurrido un error'
+                   })
+                 }
+               })
+           },
+         eliminarImagen(index){
+              Swal({
+                title: '¿Estás seguro?',
+                text: "¡ será eliminado para siempre!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonText: '¡Si! ¡eliminar!',
+                cancelButtonText: '¡No! ¡cancelar!',
+                reverseButtons: true
+              }).then((result) => {
+                if (result.value) {
+                  let data = new FormData();
+                  data.append('id',this.imagenes[index].id);
+                    axios.post('index.php/Guias/eliminarImagen',data)
+                    .then(response => {
+                      if(response) {
+                        Swal(
+                          '¡Eliminado!',
+                          'Ha sido eliminado.',
+                          'success'
+                        ).then(response => {
+                              this.loadFotos();
+                        })
+                      } else {
+                        Swal(
+                          'Error',
+                          'Ha ocurrido un error.',
+                          'warning'
+                        ).then(response => {
+                          this.loadFotos();
+                        })
+                      }
+                    })
+                } else if (
+                  result.dismiss === Swal.DismissReason.cancel
+                ) {
+                  Swal(
+                    'Cancelado',
+                    'No fue eliminado.',
+                    'success'
+                  )
+                }
+              })
+            },
+            async loadFotos(){
+               let data = new FormData();
+                  data.append('guia',this.form.id);
+                  await  axios.post('index.php/Guias/getimagenes/',data)
+                  .then(({data: {imagenes}}) => {
+                        this.imagenes = imagenes;
+                });
+              },
          crearFactura(){
            Swal({
              title: '¿Estás seguro?',
@@ -882,11 +1027,11 @@
                          .then(response => {
                            if(response) {
                              Swal(
-                               '¡Eliminado!',
+                               '¡Anulda la guia!',
                                'Ha sido anulado.',
                                'success'
                              ).then(response => {
-
+                               this.mathc();
                              })
                            } else {
                              Swal(
@@ -894,7 +1039,7 @@
                                'Ha ocurrido un error.',
                                'warning'
                              ).then(response => {
-
+                                  this.mathc();
                              })
                            }
                          })
@@ -908,6 +1053,222 @@
                        )
                      }
                    })
+                 },
+                 enfisico(index){
+                   Swal({
+                     title: '¿Estás seguro?',
+                     text: "¡ Cambiar el estado a en físico!",
+                     type: 'warning',
+                     showCancelButton: true,
+                     confirmButtonText: '¡Si! ',
+                     cancelButtonText: '¡No! ',
+                     reverseButtons: true
+                   }).then((result) => {
+                     if (result.value) {
+                       let data = new FormData();
+                       data.append('id',this.guias[index].id);
+                         axios.post('index.php/Guias/enfisico',data)
+                         .then(response => {
+                           if(response) {
+                             this.mathc();
+                             Swal(
+                               '¡Eliminado!',
+                               'Ha cambiado el estado.',
+                               'success'
+                             ).then(response => {
+                                this.mathc();
+                             })
+                           } else {
+                             Swal(
+                               'Error',
+                               'Ha ocurrido un error.',
+                               'warning'
+                             ).then(response => {
+                               this.mathc();
+                             })
+                           }
+                         })
+                     } else if (
+                       result.dismiss === Swal.DismissReason.cancel
+                     ) {
+                       Swal(
+                         'Cancelado',
+                         'No fue eliminado.',
+                         'success'
+                       )
+                     }
+                   })
+                 },
+                 archivada(index){
+                   Swal({
+                     title: '¿Estás seguro?',
+                     text: "¡ Cambiar a archivada!",
+                     type: 'warning',
+                     showCancelButton: true,
+                     confirmButtonText: '¡Si! ',
+                     cancelButtonText: '¡No! ',
+                     reverseButtons: true
+                   }).then((result) => {
+                     if (result.value) {
+                       let data = new FormData();
+                       data.append('id',this.guias[index].id);
+                         axios.post('index.php/Guias/archivada',data)
+                         .then(response => {
+                           if(response) {
+                             this.mathc();
+                             Swal(
+                               '¡Eliminado!',
+                               'Ha cambiado el estado.',
+                               'success'
+                             ).then(response => {
+                                this.mathc();
+                             })
+                           } else {
+                             Swal(
+                               'Error',
+                               'Ha ocurrido un error.',
+                               'warning'
+                             ).then(response => {
+                               this.mathc();
+                             })
+                           }
+                         })
+                     } else if (
+                       result.dismiss === Swal.DismissReason.cancel
+                     ) {
+                       Swal(
+                         'Cancelado',
+                         'No fue eliminado.',
+                         'success'
+                       )
+                     }
+                   })
+                 },
+                 enviarguias(index){
+                   Swal({
+                     title: '¿Estás seguro?',
+                     text: "¡ Cambiar el estado a enviada!",
+                     type: 'warning',
+                     showCancelButton: true,
+                     confirmButtonText: '¡Si! ',
+                     cancelButtonText: '¡No! ',
+                     reverseButtons: true
+                   }).then((result) => {
+                     if (result.value) {
+                       let data = new FormData();
+                       data.append('id',this.guias[index].id);
+                         axios.post('index.php/Guias/enviarguias',data)
+                         .then(response => {
+                           if(response) {
+                             this.mathc();
+                             Swal(
+                               '¡Eliminado!',
+                               'Ha cambiado el estado.',
+                               'success'
+                             ).then(response => {
+                                this.mathc();
+                             })
+                           } else {
+                             Swal(
+                               'Error',
+                               'Ha ocurrido un error.',
+                               'warning'
+                             ).then(response => {
+                               this.mathc();
+                             })
+                           }
+                         })
+                     } else if (
+                       result.dismiss === Swal.DismissReason.cancel
+                     ) {
+                       Swal(
+                         'Cancelado',
+                         'No fue eliminado.',
+                         'success'
+                       )
+                     }
+                   })
+                 },
+                 cumplidasGuias(index){
+                   Swal({
+                     title: '¿Estás seguro?',
+                     text: "¡ Cambiar el estado a cumplida!",
+                     type: 'warning',
+                     showCancelButton: true,
+                     confirmButtonText: '¡Si! ',
+                     cancelButtonText: '¡No! ',
+                     reverseButtons: true
+                   }).then((result) => {
+                     if (result.value) {
+                       let data = new FormData();
+                       data.append('id',this.form.id);
+                       data.append('f_cumplida',this.form.f_cumplida);
+                         axios.post('index.php/Guias/cumplidasguias',data)
+                         .then(response => {
+                           if(response) {
+                             this.mathc();
+                             Swal(
+                               '¡Eliminado!',
+                               'Ha cambiado el estado.',
+                               'success'
+                             ).then(response => {
+                                this.mathc();
+                                $('#cumplidas').modal('hide');
+                             })
+                           } else {
+                             Swal(
+                               'Error',
+                               'Ha ocurrido un error.',
+                               'warning'
+                             ).then(response => {
+                               this.mathc();
+                             })
+                           }
+                         })
+                     } else if (
+                       result.dismiss === Swal.DismissReason.cancel
+                     ) {
+                       Swal(
+                         'Cancelado',
+                         'No fue eliminado.',
+                         'success'
+                       )
+                     }
+                   })
+                 },
+                 setearCumplida(index){
+                   this.form.id=this.guias[index].id,
+                   this.form.fecha=this.guias[index].fecha,
+                   this.form.ciudad_origen=this.guias[index].ciudad_origen,
+                   this.form.ciudad_destino=this.guias[index].ciudad_destino,
+                   this.form.cedula=this.guias[index].cedula,
+                   this.form.nombre_empresa=this.guias[index].nombre_empresa,
+                   this.form.direccion_cliente=this.guias[index].direccion_cliente,
+                   this.form.telefono_cliente=this.guias[index].telefono_cliente,
+                   this.form.cedula_remitente=this.guias[index].cedula_remitente,
+                   this.form.contacto_remitente=this.guias[index].contacto_remitente,
+                   this.form.direccion_remitente=this.guias[index].direccion_remitente,
+                   this.form.telefono_remitente=this.guias[index].telefono_remitente,
+                   this.form.cantidad=this.guias[index].cantidad,
+                   this.form.totalKilos=this.guias[index].totalKilos,
+                   this.form.totalVolumen=this.guias[index].totalVolumen,
+                   this.form.valorDeclarado=this.guias[index].valorDeclarado,
+                   this.form.segurocarga=this.guias[index].segurocarga,
+                   this.form.totalSeguro=this.guias[index].totalSeguro,
+                   this.form.dicecontener=this.guias[index].dicecontener,
+                   this.form.forma_pago=this.guias[index].forma_pago,
+                   this.form.costeguia=this.guias[index].costeguia,
+                   this.form.totalPrecios=this.guias[index].valor_flete,
+                   this.form.otrosCargos=this.guias[index].otrosCargos,
+                   this.form.total=this.guias[index].total,
+                   this.form.id_tarifa=this.guias[index].id_tarifa,
+                   this.form.precioNegociado=this.guias[index].precioNegociado,
+                   this.form.f_cumplida=this.guias[index].f_cumplida,
+                   this.form.estado='Cumplida',
+                   this.editMode=true;
+                   this.tari();
+                   $('#cumplidas').modal('show');
+                   this.loadFotos();
                  },
                  setear(index){
                    this.form.fecha=this.guias[index].fecha,
@@ -1116,7 +1477,9 @@
                        .then(({data: {guias}}) => {
                          this.guias = guias
                        });
+                       this.contadors();
                        $("#example1").DataTable();
+
                      },
                      async   loadProfiles() {
                      await     axios.get('index.php/Root_user/get_profile/')
@@ -1131,6 +1494,25 @@
                                 this.cart = profiles;
                              });
                            },
+                    contadors(){
+                      this.creada=0;this.enviada=0;this.cumplida=0;this.fisico=0;this.archivadas=0;this.anulada=0;
+                      for (var i = 0; i < this.guias.length; i++) {
+                        if (this.guias[i].estado==='Creada') {
+                          this.creada=parseInt(this.creada)+1;
+                        }else if(this.guias[i].estado==='Enviada'){
+                          this.enviada=parseInt(this.enviada)+1;
+                        }else if(this.guias[i].estado==='Cimplida'){
+                          this.cumplida=parseInt(this.cumplida)+1;
+                        }else if(this.guias[i].estado==='En físico'){
+                          this.fisico=parseInt(this.fisico)+1;
+                        }else if(this.guias[i].estado==='Archivada'){
+                          this.archivadas=parseInt(this.archivadas)+1;
+                        }else if(this.guias[i].estado==='Anulada'){
+                          this.anulada=parseInt(this.anulada)+1;
+                        }
+
+                      }
+                    }
        },
 
        created(){
@@ -1143,6 +1525,7 @@
             this.loadtarifas();
             this.loadclientes();
             this.loadPln();
+            this.loadguias();
 
             this.loadCart();
        },

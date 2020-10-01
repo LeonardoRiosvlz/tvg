@@ -42,6 +42,36 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             ));
             return $this->db->error();
            }
+       public function archivada($id) {
+           $this->db->where('id',$id);
+           $this->db->update('carga', array(
+             'estado' => "Archivada",
+           ));
+           return $this->db->error();
+          }
+
+          public function enfisico($id) {
+              $this->db->where('id',$id);
+              $this->db->update('carga', array(
+                'estado' => "En Físico",
+              ));
+              return $this->db->error();
+             }
+       public function cumplidasguias($datas) {
+           $this->db->where('id',$datas['id']);
+           $this->db->update('carga', array(
+             'estado' =>    "Cumplida",
+             'f_cumplida'     => $datas['f_cumplida'],
+           ));
+           return $this->db->error();
+          }
+           public function enviarguias($id) {
+               $this->db->where('id',$id);
+               $this->db->update('carga', array(
+                 'estado' => "Enviada",
+               ));
+               return $this->db->error();
+              }
         public function getguias() {
             return $this->db
             ->select('c.*,cl.nombre_cliente,cl.nit_cliente,cl.nombre_empresa,cl.cedula_cliente,f.dias, f.forma, f.descripcion, u.username,u.nombre,u.apellido,u.cargo')
@@ -353,7 +383,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                       foreach($datos->result() as $row){
                           $output .= '
                           <div id="header">
-                            <img class="adapt-img" src="'.base_url($row->logo_uno).'" alt style="display: block;" width="100%" height="68px"></a>
+                            <img class="adapt-img" src="'.base_url($row->logo_uno).'" alt style="display: block;" width="100%" height="68px">
+                            ';
+                            foreach($data->result() as $rows){
+                              if ($rows->estado=="Anulada") {
+                                $output .= '
+                            <h1 style="color:red;transform: rotate(-40deg);font-size:80px;opacity:0.2px;">ANULADA</h1>
+                            ';
+                              }
+                            }
+                        $output .= '</a>
                           </div>
                           <div id="footer">
                             <img class="adapt-img" src="'.base_url($row->logo_dos).'" alt style="display: block;" width="100%" height="68px"></a>
@@ -428,4 +467,29 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                       return $output;
 
             }
+
+
+                    ////////////////
+          public function imagen_insert($data) {
+              $this->db->insert('soportes_guia', array(
+                  'guia'          => $data['guia'],
+                  'url'             => $data['url'],
+                  'nombre'             => $data['nombre'],
+              ));
+              return $this->db->error();
+             }
+          public function imagenes_get($data){
+           return $this->db
+              ->select('*')
+               ->from('soportes_guia')
+               ->where('guia',$data['guia'])
+               ->get()
+               ->result();
+              }
+              public function eliminarImagen($id) {
+                $this->db->where('id', $id);
+                $this->db->delete('soportes_guia');
+                return $this->db->error();
+              }
+              ///////////////////
     }

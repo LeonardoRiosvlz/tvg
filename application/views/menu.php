@@ -5,7 +5,7 @@
 
     <div class="container-fluid">
       <div class="row head-s">
-        <div class="col-3  imagisotipo d-none d-sm-none d-md-none d-xl-block py-4 ">
+        <div class="col-2  imagisotipo d-none d-sm-none d-md-none d-xl-block py-2 ">
            <a href="<?=base_url("User");?>"><img src="<?php echo base_url('include/img/logo.png');?>" alt="logo" style="width:90%;"></a>
         </div>
         <div class="menu col-xl-9 col-md-12  col-sm-12 d-sm-block">
@@ -110,11 +110,10 @@
                       Clientes y Proveedores
                     </button>
                     <div class="dropdown-menu">
-                      <a class="dropdown-item links" href="<?=base_url()?>Sedes"><i class="fa fa-paper-plane" aria-hidden="true"></i> Sedes</a>
+                      <a class="dropdown-item links" href="<?=base_url()?>Sedes"><i class="fa fa-paper-plane" aria-hidden="true"></i> Sedes Clientes</a>
                       <a class="dropdown-item links" href="<?=base_url()?>Clientes"><i class="fa fa-user-o" aria-hidden="true"></i> Clientes de la empresa</a>
                       <a class="dropdown-item links" href="<?=base_url()?>Remitentes"><i class="fa fa-terminal" aria-hidden="true"></i> Remitentes</a>
                       <a class="dropdown-item links"  href="<?=base_url()?>Proveedores"><i class="fa fa-car" aria-hidden="true"></i> Proveedores de transporte</a>
-                      <a class="dropdown-item links"  href="<?=base_url()?>aparatologia"><i class="fa fa-home" aria-hidden="true"></i> Sedes de clientes</a>
                       <a class="dropdown-item links"  href="<?=base_url()?>Satelites"><i class="fa fa-space-shuttle" aria-hidden="true"></i> Satélites</a>
                     </div>
                   </div>

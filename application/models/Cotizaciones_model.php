@@ -251,6 +251,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                               $output .= '
                               <div id="header">
                                 <img class="adapt-img" src="'.base_url($row->logo_uno).'" alt style="display: block;" width="100%" height="68px"></a>
+                                ';
+                                foreach($data->result() as $rows){
+                                  if ($rows->estatus_gestion=="Anulada") {
+                                    $output .= '
+                                <h1 style="color:red;transform: rotate(-40deg);font-size:80px;opacity:0.2px;">ANULADA</h1>
+                                ';
+                                  }
+                                }
+                            $output .= '
                               </div>
                               <div id="footer">
                                 <img class="adapt-img" src="'.base_url($row->logo_dos).'" alt style="display: block;" width="100%" height="68px"></a>

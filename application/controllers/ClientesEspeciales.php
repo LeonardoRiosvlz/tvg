@@ -16,7 +16,7 @@ class ClientesEspeciales extends MY_Controller {
 	  $this->load->library('Pdf');
 	  }
     public function index() {
-			if( ! $this->verify_min_level(9)){
+			if( ! $this->verify_min_level(6)){
 				redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
 			}
      		$this->is_logged_in();
@@ -100,7 +100,7 @@ class ClientesEspeciales extends MY_Controller {
 							}
 
 			public function insertar() {
-				if( ! $this->verify_min_level(9)){
+				if( ! $this->verify_min_level(6)){
 					redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
 				}
 				$data = json_decode($this->input->post('service_form'),true);
@@ -114,7 +114,7 @@ class ClientesEspeciales extends MY_Controller {
 					}
 				}
 			public function editar() {
-				if( ! $this->verify_min_level(9)){
+				if( ! $this->verify_min_level(6)){
 					redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
 				}
 			    $data = json_decode($this->input->post('service_form'),true);
@@ -127,7 +127,7 @@ class ClientesEspeciales extends MY_Controller {
 					}
 				}
 			public function eliminar() {
-				if( ! $this->verify_min_level(9)){
+				if( ! $this->verify_min_level(6)){
 					redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
 				}
 	            $id = $this->input->post('id');
@@ -148,7 +148,7 @@ class ClientesEspeciales extends MY_Controller {
 
 		////////////////
 				public function detail_foto() {
-					if( ! $this->verify_min_level(9)){
+					if( ! $this->verify_min_level(6)){
 							redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
 						}
 					$config['upload_path']          = './include/files';
@@ -179,7 +179,7 @@ class ClientesEspeciales extends MY_Controller {
 				}
 
 				public function eliminarImagen() {
-					if( ! $this->verify_min_level(9)){
+					if( ! $this->verify_min_level(6)){
 								redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
 							}
 					$id = $this->input->post('id');

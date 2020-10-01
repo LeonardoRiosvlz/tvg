@@ -7,7 +7,7 @@ class Trazabilidad extends MY_Controller {
 		$this->load->model('Guias_model', 'guias');
 	  }
     public function index() {
-			if( ! $this->verify_min_level(9)){
+			if( ! $this->verify_min_level(6)){
 				redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
 			}
      		$this->is_logged_in();
@@ -17,14 +17,19 @@ class Trazabilidad extends MY_Controller {
         $this->load->view('footer',["js"=>[""]]);
       }
 			public function timeline() {
-				if( ! $this->verify_min_level(9)){
-					redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
-				}
 	     		$this->is_logged_in();
 	        $this->load->view('header',["css"=>[""]]);
+					$this->load->view('menu_blank',["css"=>[""]]);
 	        $this->load->view('Trazabilidad/timeline');
 	        $this->load->view('footer',["js"=>[""]]);
 	      }
+				public function satelites() {
+						$this->is_logged_in();
+						$this->load->view('header',["css"=>[""]]);
+						$this->load->view('menu_blank',["css"=>[""]]);
+						$this->load->view('Trazabilidad/satelite');
+						$this->load->view('footer',["js"=>[""]]);
+					}
 			public function gettrazabilidad($id=0) {
 					$datas['id_guia'] = $this->input->post('id_guia');
 					$datas['prefijo'] = $this->input->post('prefijo');
@@ -35,7 +40,7 @@ class Trazabilidad extends MY_Controller {
 				}
 
 			public function insertar() {
-				if( ! $this->verify_min_level(9)){
+				if( ! $this->verify_min_level(6)){
 					redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
 				}
 				$config['upload_path']          = './include/img/trazabilidad/';
@@ -63,7 +68,7 @@ class Trazabilidad extends MY_Controller {
 
 				}
 			public function editar() {
-				if( ! $this->verify_min_level(9)){
+				if( ! $this->verify_min_level(6)){
 					redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
 				}
 			    $data = json_decode($this->input->post('service_form'),true);
@@ -76,7 +81,7 @@ class Trazabilidad extends MY_Controller {
 					}
 				}
 				public function editar_img() {
-					if( ! $this->verify_min_level(9)){
+					if( ! $this->verify_min_level(6)){
 						redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
 					}
 					$config['upload_path']          = './include/img/trazabilidad/';
@@ -114,8 +119,22 @@ class Trazabilidad extends MY_Controller {
 							header('Content-Type: application/json');
 							echo json_encode(['guias' => $data['guias']]);
 						}
+						public function get_id_ns($id=0) {
+								$datas['id'] = $this->input->post('id');
+								$datas['s'] = $this->input->post('s');
+								$data['guias'] = $this->trazabilidad->get_id_n($datas);
+								header('Content-Type: application/json');
+								echo json_encode(['guias' => $data['guias']]);
+							}
+							public function get_id_es($id=0) {
+									$datas['id'] = $this->input->post('id');
+									$datas['s'] = $this->input->post('s');
+									$data['guias'] = $this->trazabilidad->get_id_e($datas);
+									header('Content-Type: application/json');
+									echo json_encode(['guias' => $data['guias']]);
+								}
 			public function eliminar() {
-				if( ! $this->verify_min_level(9)){
+				if( ! $this->verify_min_level(6)){
 					redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
 				}
 	            $id = $this->input->post('id');
@@ -133,4 +152,10 @@ class Trazabilidad extends MY_Controller {
 					  header('Content-Type: application/json');
 					  echo json_encode(['trazabilidad' => $data['trazabilidad']]);
 		 }
+		 public function get_satelite() {
+				 $id = $this->input->post('id');
+				 $data['satelite'] = $this->trazabilidad->get_satelite($id);
+				 header('Content-Type: application/json');
+				 echo json_encode(['satelite' => $data['satelite']]);
+	}
 }

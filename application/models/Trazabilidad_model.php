@@ -74,6 +74,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             $this->db->delete('trazabilidad');
             return $this->db->error();
           }
+          public function get_satelite($id) {
+              return $this->db
+              ->select('*')
+              ->from('satelites s')
+              ->where('id', $id)
+              ->get()
+              ->result();
+            }
           public function get_id_n($datas) {
               return $this->db
               ->select('c.*,f.dias, f.forma, f.descripcion, u.username,u.nombre,u.apellido,u.cargo')

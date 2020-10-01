@@ -78,6 +78,8 @@
             <thead>
             <tr>
               <th class="links">Nº  COTIZACIÓN</th>
+              <th class="links">USUARIO RESPONSABLE</th>
+              <th class="links">CREADO</th>
               <th class="links">EMPRESA</th>
               <th class="links">TELEFONO</th>
               <th class="links">ESTADO</th>
@@ -85,7 +87,9 @@
             </tr>
             </thead>
               <tr v-for="(cotizaciones,index) in cotizaciones">
-                <td class="links">{{cotizaciones.username}}-{{cotizaciones.id}}</td>
+                <td class="links">COT-{{cotizaciones.id}}</td>
+                <td class="links">{{cotizaciones.username}}</td>
+                <td class="links">{{cotizaciones.fecha_creacion}}</td>
                 <td class="links">{{cotizaciones.nombre_empresa}}</td>
                 <td class="links">{{cotizaciones.telefono_cliente}}</td>
                 <td class="links" v-if="cotizaciones.status==='Generado' && cotizaciones.estatus_gestion==='Borrador'">Generado por enviar...</td>
@@ -127,6 +131,7 @@
                </button>
              </div>
              <div class="modal-body">
+
                <ul class="nav nav-tabs" id="myTab" role="tablist">
                 <li class="nav-item">
                   <a class="nav-link active" @click="form.recalculada='No'" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true" > Cotización</a>
@@ -412,31 +417,21 @@
               </div>
             </div>
           </div>
-          <div class="card col-12 my-3" v-if="form.cedula">
-            <div class="col-sm-12 p-2">
-             <div class="form-group">
-               <label for="colFormLabelSm" class="links">Documentos Relacionados</label>
-                      <div v-if="!ver"  class="col-sm-12">
-                        <div class="row ">
-                          <div class="col-8">
-                            <input type="file"   id="imagenFoto" name="imagenFoto" v-if="form.recalculada==='No'">
-                          </div>
-                            <div class="col-4">
-                            <button class="btn btn-light links btn-lg" type="button"  @click="uploadFoto()">Subir archivo</button>
-                          </div>
-                         </div>
+
+            <div class="card col-12 my-3" v-if="form.cedula">
+              <div class="col-sm-12 p-2">
+                <h5 class="links text-center"v-if="cotizaciones.length>0">Cotizaciones Relacionadas al cliente</h5>
+                <div class="card p-1" v-if="cotizaciones.length>0">
+                  <div class="row">
+
+                    <div v-for="cotizaciones in cotizaciones" v-if="cotizaciones.cedula===form.cedula" class="col-2">
+                        <a :href="'<?=base_url()?>Cotizaciones/cotizaciones_to_pdf/'+cotizaciones.codigo+'/'+cotizaciones.id"  download>COT-{{cotizaciones.id}}<i style="font-size:7em" class="fa fa-file-text-o" aria-hidden="true"></i></a>
                     </div>
-              </div>
-          </div>
-          <div class="row pl-5 pr-5" v-if="form.cedula">
-           <table class="table">
-             <tr v-for="(img , id) in imagenes">
-               <th scope="row"><a :href="'<?=base_url()?>'+img.url" download>{{img.nombre}}</a></th>
-               <td v-if="!ver"><a href="#"  class="" @click="eliminarImagen(index)"><span class="mbri-trash"></span></a></td>
-             </tr>
-           </table>
-          </div>
-          </div>
+                  </div>
+                </div>
+            </div>
+            </div>
+
         </div>
         <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
           <div class="row py-3 pt-3">
@@ -748,31 +743,19 @@ v-if="item.id_tarifa && item.segurocarga && item.costeguia && item.escala && ite
       </div>
     </div>
   </div>
-  <div class="card col-12 my-3" v-if="form.cedula">
-    <div class="col-sm-12 p-2">
-     <div class="form-group">
-       <label for="colFormLabelSm" class="links">Documentos Relacionados</label>
-              <div v-if="!ver"  class="col-sm-12">
-                <div class="row ">
-                  <div class="col-8">
-                    <input type="file"   id="imagenFoto" name="imagenFoto" v-if="form.recalculada==='Si'">
-                  </div>
-                    <div class="col-4">
-                    <button class="btn btn-light links btn-lg" type="button"  @click="uploadFoto()">Subir archivo</button>
-                  </div>
-                 </div>
+      <div class="card col-12 my-3" v-if="form.cedula">
+        <div class="col-sm-12 p-2">
+          <h5 class="links text-center"v-if="cotizaciones.length>0">Cotizaciones Relacionadas al cliente</h5>
+          <div class="card p-1" v-if="cotizaciones.length>0">
+            <div class="row">
+
+              <div v-for="cotizaciones in cotizaciones" v-if="cotizaciones.cedula===form.cedula" class="col-2">
+                  <a :href="'<?=base_url()?>Cotizaciones/cotizaciones_to_pdf/'+cotizaciones.codigo+'/'+cotizaciones.id"  download>COT-{{cotizaciones.id}}<i style="font-size:7em" class="fa fa-file-text-o" aria-hidden="true"></i></a>
+              </div>
             </div>
+          </div>
       </div>
-  </div>
-  <div class="row pl-5 pr-5" v-if="form.cedula">
-   <table class="table">
-     <tr v-for="(img , id) in imagenes">
-       <th scope="row"><a :href="'<?=base_url()?>'+img.url" download>{{img.nombre}}</a></th>
-       <td v-if="!ver"><a href="#"  class="" @click="eliminarImagen(index)"><span class="mbri-trash"></span></a></td>
-     </tr>
-   </table>
-  </div>
-  </div>
+      </div>
         </div>
       </div>
     </div>
@@ -860,6 +843,7 @@ v-if="item.id_tarifa && item.segurocarga && item.costeguia && item.escala && ite
          },
          form:{
              'id':'',
+             'cedula':'',
              'user_id':'<?=$auth_user_id;?>',
              'vnota':'Si',
              'recalculada':'No',
@@ -1019,14 +1003,6 @@ v-if="item.id_tarifa && item.segurocarga && item.costeguia && item.escala && ite
              }
            },
            cargarCotizacion(index){
-             if (this.imagenes.length<1) {
-               Swal.fire({
-                 type: 'warning',
-                 title: '',
-                 text: 'Debes agregar al menos un documento'
-               });
-               return;
-             }
              if (this.form.items.length<1) {
                Swal.fire({
                  type: 'warning',

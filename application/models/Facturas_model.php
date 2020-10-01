@@ -19,7 +19,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 'precio_letras'     => $data['precio_letras'],
                 'total'     => $data['total'],
                 'dias_demora'     => $data['dias_demora'],
-                'estado'     => $data['estado'],
+                'correo_cliente'     => $data['correo_cliente'],
+                'estado'     => 'Creado ',
             ));
             return $this->db->error();
         }
@@ -40,24 +41,40 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         public function editar($data) {
             $this->db->where('id',$data['id']);
             $this->db->update('facturas', array(
-              'fecha'     => $data['fecha'],
               'user_id'     => $data['user_id'],
+              'fecha'     => $data['fecha'],
               'f_vencimiento'     => $data['f_vencimiento'],
               'cedula'     => $data['cedula'],
               'nombre_cliente'     => $data['nombre_cliente'],
               'direccion_cliente'     => $data['direccion_cliente'],
               'telefono_cliente'     => $data['telefono_cliente'],
               'ciudad_cliente'     => $data['ciudad_cliente'],
-              'items'     =>  json_encode($data['items']),
+              'items'     => json_encode($data['items']),
               'notas'     => json_encode($data['notas']),
               'forma_pago'     => $data['forma_pago'],
               'precio_letras'     => $data['precio_letras'],
               'total'     => $data['total'],
               'dias_demora'     => $data['dias_demora'],
-              'estado'     => $data['estado'],
+              'correo_cliente'     => $data['correo_cliente'],
             ));
             return $this->db->error();
            }
+           public function cancelar($data) {
+               $this->db->where('id',$data['id']);
+               $this->db->update('facturas', array(
+                 'url_foto'     => $data['url_foto'],
+                 'estado'     => 'Cancelado',
+               ));
+               return $this->db->error();
+              }
+              public function anular($data) {
+                  $this->db->where('id',$data['id']);
+                  $this->db->update('facturas', array(
+                    'url_foto'     => $data['url_foto'],
+                    'estado'     => 'Anulado',
+                  ));
+                  return $this->db->error();
+                 }
         public function getfacturas() {
             return $this->db
             ->select('*')
@@ -252,8 +269,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 foreach($datos->result() as $row){
                                     $output .= '
                                     <div id="header">
-                                      <img class="adapt-img" src="'.base_url($row->logo_uno).'" alt style="display: block;" width="100%" height="68px"></a>
-                                    </div>
+                                      <img class="adapt-img" src="'.base_url($row->logo_uno).'" alt style="display: block;" width="100%" height="68px"></a>';
+                                      foreach($data->result() as $rows){
+                                        if ($rows->estado=="Anulado") {
+                                          $output .= '
+                                      <h1 style="color:red;transform: rotate(-40deg);font-size:80px;opacity:0.2px;">ANULADA</h1>
+                                      ';
+                                        }
+                                      }
+                                  $output .= '  </div>
                                     <div id="footer">
                                       <img class="adapt-img" src="'.base_url($row->logo_dos).'" alt style="display: block;" width="100%" height="68px"></a>
                                     </div>';
@@ -331,14 +355,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                         <div class="row">
                                         <div class="panel panel-default" style="width:65%; float:left">
                                           <div class="panel-heading">Firma Aturizada</div>
-                                          <div class="panel-body ">
-                                          .
-                                          </div>
                                         </div>';
                                         foreach($data->result() as $row){
-                                        $output .= '<ul class="list-group" style="width:35%; float:right">
+                                        $output .= '<ul class="list-group" style="width:30%; float:right">
 
-                                            <li class="list-group-item " style=" height:30px!important;">TOTAL: '.$row->total.'</li>
+                                            <li class="list-group-item " style=" height:30px!important;">TOTAL:$ '.$row->total.'</li>
                                           </ul>
                                   </div>';}
 

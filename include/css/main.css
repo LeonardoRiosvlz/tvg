@@ -122,7 +122,7 @@ p {
 
 /* Extra large devices (large laptops and desktops, 1200px and up) */
 @media only screen and (min-width: 1200px) {
-  .menu {padding-top: 130px!important;
+  .menu {padding-top: 30px!important;
         padding-bottom:20px!important; }
   .parrafo{
         color: black !important;
@@ -1358,4 +1358,11 @@ h4{text-align:center;margin:30px 0;color:#444!important}
 .preloader img {
   width: 100%;
   filter: hue-rotate(90deg);
+}
+
+.camion{
+  
+    background: url("https://spt.co.nz/wp-content/uploads/2014/12/new-truck-background-1.jpg")!important;
+    background-size: cover;
+
 }

@@ -21,22 +21,13 @@ align-items: center;
 width: 120px;
 }
 </style>
-
+<div class="container-fluid camion">
 <div id="app" class="container">
   <div class="row">
     <div class="col-lg-12 my-5 ">
       <!-- Shopping cart table -->
       <div class=" ">
-        <table id="example2" class="table">
-          <thead>
-            <tr>
-              <th scope="col" colspan="5" class="border-0 bg-white  text-center">
-                  <div class="bg-light rounded-pill px-4 py-3 text-uppercase font-weight-bold links">Trazabilidad de la carga <i class="fa fa-location-arrow" aria-hidden="true"></i></div>
-              </th>
-            </tr>
-          </thead>
-
-        </table>
+        <h1 class="text-white">Bienvenido!! Para tener información de su envío digite el serial de rastreo!!</h1>
         <transition name="slide-fade">
         <div class="row p-1 padre" v-if="trazabilidad.length<1" style="min-height:600px;">
           <div class="col-md-4 hijo">
@@ -47,7 +38,7 @@ width: 120px;
                 <option value="N">N</option>
               </select>
               <div class="input-group-append">
-                <input list="encodings" v-model="form.id_guia"  value="" class="form-control form-control-lg" placeholder="Escriba una cedula" :disabled="ver">
+                <input list="encodings" v-model="form.id_guia"  value="" class="form-control form-control-lg" placeholder="Serial ratreo" :disabled="ver">
               </div>
             </div>
 
@@ -255,7 +246,7 @@ width: 120px;
         </div>
    <!-- fin del modal -->
    </div>
-
+</div>
 </div>
 <script>
       Vue.component('flat-pickr', VueFlatpickr);

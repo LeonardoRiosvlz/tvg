@@ -1,4 +1,4 @@
-<div id="app" class="container">
+<div id="app" class="container" style="min-height:600px;">
   <div class="row">
     <div class="col-lg-12 my-2 ">
       <!-- Shopping cart table -->

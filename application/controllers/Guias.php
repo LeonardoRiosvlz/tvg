@@ -6,7 +6,7 @@ class Guias extends MY_Controller {
 		$this->load->model('Guias_model', 'guias');
 	  }
     public function index() {
-			if( ! $this->verify_min_level(9)){
+			if( ! $this->verify_min_level(6)){
 				redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
 			}
      		$this->is_logged_in();
@@ -130,7 +130,7 @@ class Guias extends MY_Controller {
 								echo json_encode(['guias' => $data['guias']]);
 							}
 			public function insertar() {
-				if( ! $this->verify_min_level(9)){
+				if( ! $this->verify_min_level(6)){
 					redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
 				}
 				$data = json_decode($this->input->post('service_form'),true);
@@ -144,7 +144,7 @@ class Guias extends MY_Controller {
 					}
 				}
 			public function editar() {
-				if( ! $this->verify_min_level(9)){
+				if( ! $this->verify_min_level(6)){
 					redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
 				}
 			    $data = json_decode($this->input->post('service_form'),true);
@@ -157,7 +157,7 @@ class Guias extends MY_Controller {
 					}
 				}
 			public function anular() {
-				if( ! $this->verify_min_level(9)){
+				if( ! $this->verify_min_level(1)){
 					redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
 				}
 	            $id = $this->input->post('id');
@@ -169,139 +169,237 @@ class Guias extends MY_Controller {
 	                    echo json_encode(['status' => '500', 'message' => ' No eliminado, ha ocurrido un error', 'response' => $result]);
 	                  }
      		 }
+				 public function enfisico() {
+					 if( ! $this->verify_min_level(1)){
+						 redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
+					 }
+								 $id = $this->input->post('id');
+								 $result = $this->guias->enfisico($id);
+										if($result['code'] == 0){
+												 echo json_encode(['status' => '200', 'message' => ' Eliminado correctamente']);
+											 }
+										 else{
+												 echo json_encode(['status' => '500', 'message' => ' No eliminado, ha ocurrido un error', 'response' => $result]);
+											 }
+							}
+					public function archivada() {
+						if( ! $this->verify_min_level(1)){
+							redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
+						}
+									$id = $this->input->post('id');
+									$result = $this->guias->archivada($id);
+										 if($result['code'] == 0){
+													echo json_encode(['status' => '200', 'message' => ' Eliminado correctamente']);
+												}
+											else{
+													echo json_encode(['status' => '500', 'message' => ' No eliminado, ha ocurrido un error', 'response' => $result]);
+												}
+							 }
+				 public function cumplidasguias() {
+					 if( ! $this->verify_min_level(1)){
+						 redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
+					 }
+								 $datas['id'] = $this->input->post('id');
+								 $datas['f_cumplida']= $this->input->post('f_cumplida');
+								 $result = $this->guias->cumplidasguias($datas);
+										if($result['code'] == 0){
+												 echo json_encode(['status' => '200', 'message' => ' Eliminado correctamente']);
+											 }
+										 else{
+												 echo json_encode(['status' => '500', 'message' => ' No eliminado, ha ocurrido un error', 'response' => $result]);
+											 }
+							}
+				 ////////////////
+			 public function detail_foto() {
+				 if( ! $this->verify_min_level(1)){
+						 redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
+					 }
+				 $config['upload_path']          = './include/guias';
+				 $config['allowed_types']        = 'jpg|png|jpeg';
+				 $config['max_size']             = 7500;
+				 $config['max_width']            = 2500;
+				 $config['max_height']           = 1400;
+				 $this->load->library('upload', $config);
+				 if ( ! $this->upload->do_upload('file')) {
+					 $error = array('error' => $this->upload->display_errors());
+					 echo json_encode($error);
+				 } else {
+						 $upload_data = $this->upload->data();
+					 $file_name = $upload_data['file_name'];
+					 $data['url'] ="/include/guias/".$file_name;
+					 $data['guia'] = $this->input->post('guia');
+					 $data['nombre'] = $upload_data['file_name'];
+					 $rut=$this->guias->imagen_insert($data);
+					 echo json_encode(['status' => '201', 'message' => 'Imagen creada exitosamente']);
+				 }
+			 }
+			 function getimagenes() {
+			 $data['guia'] = $this->input->post('guia');
+			 $data['imagenes'] = $this->guias->imagenes_get($data);
+			 header('Content-Type: application/json');
+			 echo json_encode(['imagenes' => $data['imagenes']]);
+
+			 }
+
+			 public function eliminarImagen() {
+				 if( ! $this->verify_min_level(1)){
+							 redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
+						 }
+				 $id = $this->input->post('id');
+				 $result = $this->guias->eliminarImagen($id);
+						if($result['code'] == 0){
+								 echo json_encode(['status' => '200', 'message' => ' Eliminado correctamente']);
+							 }
+						 else{
+								 echo json_encode(['status' => '500', 'message' => ' No eliminado, ha ocurrido un error', 'response' => $result]);
+							 }
+			}
+				 public function enviarguias() {
+					 if( ! $this->verify_min_level(1)){
+						 redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
+					 }
+								 $id = $this->input->post('id');
+								 $result = $this->guias->enviarguias($id);
+										if($result['code'] == 0){
+												 echo json_encode(['status' => '200', 'message' => ' Eliminado correctamente']);
+											 }
+										 else{
+												 echo json_encode(['status' => '500', 'message' => ' No eliminado, ha ocurrido un error', 'response' => $result]);
+											 }
+							}
 				public function get_guias() {
 		        $id = $this->input->post('id');
 					  $data['guias'] = $this->guias->get_guias($id);
 					  header('Content-Type: application/json');
 					  echo json_encode(['guias' => $data['guias']]);
 		 }
-		 public function Guia_to_pdf($id){
-			 $this->load->library('Pdf');
-				$hoy=date("d/m/y");
-				$html_content = $this->guias->fetch_details($id);
-				//$this->pdf->set_paper('letter', 'landscape');
-				$this->pdf->loadHtml($html_content);
-				$this->pdf->render();
-				$this->pdf->stream("GDC-".$id.".pdf", array("Attachment"=>0));
+				 public function Guia_to_pdf($id){
+					 $this->load->library('Pdf');
+						$hoy=date("d/m/y");
+						$html_content = $this->guias->fetch_details($id);
+						//$this->pdf->set_paper('letter', 'landscape');
+						$this->pdf->loadHtml($html_content);
+						$this->pdf->render();
+						$this->pdf->stream("GDC-".$id.".pdf", array("Attachment"=>0));
 
-		}
-		public function excelexport_tiempo($desde,$hasta){
-			$datas['desde'] = $desde;
-			$datas['hasta'] = $hasta;
-			$llamadas = $this->guias->get_tiempo($datas);
-		 if(count($llamadas) > 0){
-				 //Cargamos la librería de excel.
-				 $this->load->library('excel'); $this->excel->setActiveSheetIndex(0);
-				 $this->excel->getActiveSheet()->setTitle('Cargas');
-				 //Contador de filas
-				 $contador = 1;
-				 //Le aplicamos ancho las columnas.
-				 $this->excel->getActiveSheet()->getColumnDimension('A')->setWidth(20);
-				 $this->excel->getActiveSheet()->getColumnDimension('B')->setWidth(20);
-				 $this->excel->getActiveSheet()->getColumnDimension('C')->setWidth(20);
-				 $this->excel->getActiveSheet()->getColumnDimension('D')->setWidth(20);
-				 $this->excel->getActiveSheet()->getColumnDimension('E')->setWidth(20);
-				 $this->excel->getActiveSheet()->getColumnDimension('F')->setWidth(20);
-				 $this->excel->getActiveSheet()->getColumnDimension('G')->setWidth(20);
-				 $this->excel->getActiveSheet()->getColumnDimension('H')->setWidth(20);
-				 $this->excel->getActiveSheet()->getColumnDimension('I')->setWidth(20);
-				 $this->excel->getActiveSheet()->getColumnDimension('J')->setWidth(20);
-				 $this->excel->getActiveSheet()->getColumnDimension('K')->setWidth(20);
-				 $this->excel->getActiveSheet()->getColumnDimension('L')->setWidth(20);
-				 $this->excel->getActiveSheet()->getColumnDimension('M')->setWidth(20);
-				 $this->excel->getActiveSheet()->getColumnDimension('N')->setWidth(20);
-				 $this->excel->getActiveSheet()->getColumnDimension('O')->setWidth(20);
-				 $this->excel->getActiveSheet()->getColumnDimension('P')->setWidth(20);
-				 $this->excel->getActiveSheet()->getColumnDimension('Q')->setWidth(20);
-				 $this->excel->getActiveSheet()->getColumnDimension('R')->setWidth(20);
-				 $this->excel->getActiveSheet()->getColumnDimension('S')->setWidth(20);
-				 $this->excel->getActiveSheet()->getColumnDimension('T')->setWidth(20);
-				 $this->excel->getActiveSheet()->getColumnDimension('U')->setWidth(20);
-				 $this->excel->getActiveSheet()->getColumnDimension('V')->setWidth(20);
-				 $this->excel->getActiveSheet()->getColumnDimension('W')->setWidth(20);
-				 $this->excel->getActiveSheet()->getColumnDimension('X')->setWidth(20);
-				 //Le aplicamos negrita a los títulos de la cabecera.
-				 $this->excel->getActiveSheet()->getStyle("A{$contador}")->getFont()->setBold(true);
-				 $this->excel->getActiveSheet()->getStyle("B{$contador}")->getFont()->setBold(true);
-				 $this->excel->getActiveSheet()->getStyle("C{$contador}")->getFont()->setBold(true);
-				 $this->excel->getActiveSheet()->getStyle("D{$contador}")->getFont()->setBold(true);
-				 $this->excel->getActiveSheet()->getStyle("E{$contador}")->getFont()->setBold(true);
-				 $this->excel->getActiveSheet()->getStyle("F{$contador}")->getFont()->setBold(true);
-				 $this->excel->getActiveSheet()->getStyle("G{$contador}")->getFont()->setBold(true);
-				 $this->excel->getActiveSheet()->getStyle("H{$contador}")->getFont()->setBold(true);
-				 $this->excel->getActiveSheet()->getStyle("I{$contador}")->getFont()->setBold(true);
-				 $this->excel->getActiveSheet()->getStyle("J{$contador}")->getFont()->setBold(true);
-				 $this->excel->getActiveSheet()->getStyle("K{$contador}")->getFont()->setBold(true);
-				 $this->excel->getActiveSheet()->getStyle("L{$contador}")->getFont()->setBold(true);
-				 $this->excel->getActiveSheet()->getStyle("M{$contador}")->getFont()->setBold(true);
-				 $this->excel->getActiveSheet()->getStyle("N{$contador}")->getFont()->setBold(true);
-				 $this->excel->getActiveSheet()->getStyle("O{$contador}")->getFont()->setBold(true);
-				 $this->excel->getActiveSheet()->getStyle("P{$contador}")->getFont()->setBold(true);
-				 $this->excel->getActiveSheet()->getStyle("Q{$contador}")->getFont()->setBold(true);
-				 $this->excel->getActiveSheet()->getStyle("R{$contador}")->getFont()->setBold(true);
-				 $this->excel->getActiveSheet()->getStyle("S{$contador}")->getFont()->setBold(true);
-				 $this->excel->getActiveSheet()->getStyle("T{$contador}")->getFont()->setBold(true);
-				 $this->excel->getActiveSheet()->getStyle("U{$contador}")->getFont()->setBold(true);
-				 $this->excel->getActiveSheet()->getStyle("V{$contador}")->getFont()->setBold(true);
-				 $this->excel->getActiveSheet()->getStyle("W{$contador}")->getFont()->setBold(true);
-				 $this->excel->getActiveSheet()->getStyle("X{$contador}")->getFont()->setBold(true);
+				}
+				public function excelexport_tiempo($desde,$hasta){
+					$datas['desde'] = $desde;
+					$datas['hasta'] = $hasta;
+					$llamadas = $this->guias->get_tiempo($datas);
+				 if(count($llamadas) > 0){
+						 //Cargamos la librería de excel.
+						 $this->load->library('excel'); $this->excel->setActiveSheetIndex(0);
+						 $this->excel->getActiveSheet()->setTitle('Cargas');
+						 //Contador de filas
+						 $contador = 1;
+						 //Le aplicamos ancho las columnas.
+						 $this->excel->getActiveSheet()->getColumnDimension('A')->setWidth(20);
+						 $this->excel->getActiveSheet()->getColumnDimension('B')->setWidth(20);
+						 $this->excel->getActiveSheet()->getColumnDimension('C')->setWidth(20);
+						 $this->excel->getActiveSheet()->getColumnDimension('D')->setWidth(20);
+						 $this->excel->getActiveSheet()->getColumnDimension('E')->setWidth(20);
+						 $this->excel->getActiveSheet()->getColumnDimension('F')->setWidth(20);
+						 $this->excel->getActiveSheet()->getColumnDimension('G')->setWidth(20);
+						 $this->excel->getActiveSheet()->getColumnDimension('H')->setWidth(20);
+						 $this->excel->getActiveSheet()->getColumnDimension('I')->setWidth(20);
+						 $this->excel->getActiveSheet()->getColumnDimension('J')->setWidth(20);
+						 $this->excel->getActiveSheet()->getColumnDimension('K')->setWidth(20);
+						 $this->excel->getActiveSheet()->getColumnDimension('L')->setWidth(20);
+						 $this->excel->getActiveSheet()->getColumnDimension('M')->setWidth(20);
+						 $this->excel->getActiveSheet()->getColumnDimension('N')->setWidth(20);
+						 $this->excel->getActiveSheet()->getColumnDimension('O')->setWidth(20);
+						 $this->excel->getActiveSheet()->getColumnDimension('P')->setWidth(20);
+						 $this->excel->getActiveSheet()->getColumnDimension('Q')->setWidth(20);
+						 $this->excel->getActiveSheet()->getColumnDimension('R')->setWidth(20);
+						 $this->excel->getActiveSheet()->getColumnDimension('S')->setWidth(20);
+						 $this->excel->getActiveSheet()->getColumnDimension('T')->setWidth(20);
+						 $this->excel->getActiveSheet()->getColumnDimension('U')->setWidth(20);
+						 $this->excel->getActiveSheet()->getColumnDimension('V')->setWidth(20);
+						 $this->excel->getActiveSheet()->getColumnDimension('W')->setWidth(20);
+						 $this->excel->getActiveSheet()->getColumnDimension('X')->setWidth(20);
+						 //Le aplicamos negrita a los títulos de la cabecera.
+						 $this->excel->getActiveSheet()->getStyle("A{$contador}")->getFont()->setBold(true);
+						 $this->excel->getActiveSheet()->getStyle("B{$contador}")->getFont()->setBold(true);
+						 $this->excel->getActiveSheet()->getStyle("C{$contador}")->getFont()->setBold(true);
+						 $this->excel->getActiveSheet()->getStyle("D{$contador}")->getFont()->setBold(true);
+						 $this->excel->getActiveSheet()->getStyle("E{$contador}")->getFont()->setBold(true);
+						 $this->excel->getActiveSheet()->getStyle("F{$contador}")->getFont()->setBold(true);
+						 $this->excel->getActiveSheet()->getStyle("G{$contador}")->getFont()->setBold(true);
+						 $this->excel->getActiveSheet()->getStyle("H{$contador}")->getFont()->setBold(true);
+						 $this->excel->getActiveSheet()->getStyle("I{$contador}")->getFont()->setBold(true);
+						 $this->excel->getActiveSheet()->getStyle("J{$contador}")->getFont()->setBold(true);
+						 $this->excel->getActiveSheet()->getStyle("K{$contador}")->getFont()->setBold(true);
+						 $this->excel->getActiveSheet()->getStyle("L{$contador}")->getFont()->setBold(true);
+						 $this->excel->getActiveSheet()->getStyle("M{$contador}")->getFont()->setBold(true);
+						 $this->excel->getActiveSheet()->getStyle("N{$contador}")->getFont()->setBold(true);
+						 $this->excel->getActiveSheet()->getStyle("O{$contador}")->getFont()->setBold(true);
+						 $this->excel->getActiveSheet()->getStyle("P{$contador}")->getFont()->setBold(true);
+						 $this->excel->getActiveSheet()->getStyle("Q{$contador}")->getFont()->setBold(true);
+						 $this->excel->getActiveSheet()->getStyle("R{$contador}")->getFont()->setBold(true);
+						 $this->excel->getActiveSheet()->getStyle("S{$contador}")->getFont()->setBold(true);
+						 $this->excel->getActiveSheet()->getStyle("T{$contador}")->getFont()->setBold(true);
+						 $this->excel->getActiveSheet()->getStyle("U{$contador}")->getFont()->setBold(true);
+						 $this->excel->getActiveSheet()->getStyle("V{$contador}")->getFont()->setBold(true);
+						 $this->excel->getActiveSheet()->getStyle("W{$contador}")->getFont()->setBold(true);
+						 $this->excel->getActiveSheet()->getStyle("X{$contador}")->getFont()->setBold(true);
 
-				 $this->excel->getActiveSheet()->setCellValue("A{$contador}", 'CDR');
-				 $this->excel->getActiveSheet()->setCellValue("B{$contador}", 'FECHA');
-				 $this->excel->getActiveSheet()->setCellValue("C{$contador}", 'ORIGEN');
-				 $this->excel->getActiveSheet()->setCellValue("D{$contador}", 'DESTINO');
-				 $this->excel->getActiveSheet()->setCellValue("E{$contador}", 'CEDULA CLIENTE');
-				 $this->excel->getActiveSheet()->setCellValue("F{$contador}", 'CLIENTE');
-				 $this->excel->getActiveSheet()->setCellValue("G{$contador}", 'DIRECCION CLIENTE');
-				 $this->excel->getActiveSheet()->setCellValue("H{$contador}", 'TELFONO CLIENTE');
-				 $this->excel->getActiveSheet()->setCellValue("I{$contador}", 'CEDULA REMITENTE');
-				 $this->excel->getActiveSheet()->setCellValue("J{$contador}", 'REMITENTE');
-				 $this->excel->getActiveSheet()->setCellValue("K{$contador}", 'DIRECCION REMITENTE');
-				 $this->excel->getActiveSheet()->setCellValue("L{$contador}", 'TELEFONO REMITENTE');
-				 $this->excel->getActiveSheet()->setCellValue("M{$contador}", 'PIEZAS');
-				 $this->excel->getActiveSheet()->setCellValue("N{$contador}", 'KILOS');
-				 $this->excel->getActiveSheet()->setCellValue("O{$contador}", 'VOLUMEN');
-				 $this->excel->getActiveSheet()->setCellValue("P{$contador}", 'VALOR DECLARADO');
-				 $this->excel->getActiveSheet()->setCellValue("Q{$contador}", 'VALOR SEGURO');
-				 $this->excel->getActiveSheet()->setCellValue("R{$contador}", 'DICE CONTENER');
-				 $this->excel->getActiveSheet()->setCellValue("S{$contador}", 'LIQUIDADOR');
-				 $this->excel->getActiveSheet()->setCellValue("T{$contador}", 'VALUACION');
-				 $this->excel->getActiveSheet()->setCellValue("U{$contador}", 'FORMA DE PAGO');
-				 $this->excel->getActiveSheet()->setCellValue("V{$contador}", 'VALOR DE ENVIO');
-				 $this->excel->getActiveSheet()->setCellValue("W{$contador}", 'OTORS CARGOS');
-				 $this->excel->getActiveSheet()->setCellValue("X{$contador}", 'TOTAL');
-				 //Definimos la data del cuerpo.
-				 foreach($llamadas as $l){
-						//Incrementamos una fila más, para ir a la siguiente.
-						$contador++;
-						//Informacion de las filas de la consulta.
-						$this->excel->getActiveSheet()->setCellValue("A{$contador}", $l->id);
-						$this->excel->getActiveSheet()->setCellValue("B{$contador}", $l->fecha);
-						$this->excel->getActiveSheet()->setCellValue("C{$contador}", $l->ciudad_origen);
-						$this->excel->getActiveSheet()->setCellValue("D{$contador}", $l->ciudad_destino);
-						$this->excel->getActiveSheet()->setCellValue("E{$contador}", $l->cedula);
-						$this->excel->getActiveSheet()->setCellValue("F{$contador}", $l->nombre_empresa);
-						$this->excel->getActiveSheet()->setCellValue("G{$contador}", $l->direccion_cliente);
-						$this->excel->getActiveSheet()->setCellValue("H{$contador}", $l->telefono_cliente);
-						$this->excel->getActiveSheet()->setCellValue("I{$contador}", $l->cedula_remitente);
-						$this->excel->getActiveSheet()->setCellValue("J{$contador}", $l->contacto_remitente);
-						$this->excel->getActiveSheet()->setCellValue("K{$contador}", $l->direccion_remitente);
-						$this->excel->getActiveSheet()->setCellValue("L{$contador}", $l->telefono_remitente);
-						$this->excel->getActiveSheet()->setCellValue("M{$contador}", $l->cantidad);
-						$this->excel->getActiveSheet()->setCellValue("N{$contador}", $l->totalKilos);
-						$this->excel->getActiveSheet()->setCellValue("O{$contador}", $l->totalVolumen);
-						$this->excel->getActiveSheet()->setCellValue("P{$contador}", $l->valorDeclarado);
-						$this->excel->getActiveSheet()->setCellValue("Q{$contador}", $l->totalSeguro);
-						$this->excel->getActiveSheet()->setCellValue("R{$contador}", $l->dicecontener);
-						$this->excel->getActiveSheet()->setCellValue("S{$contador}", $l->nombre." ".$l->apellido);
-						$this->excel->getActiveSheet()->setCellValue("T{$contador}", $l->costeguia);
-						$this->excel->getActiveSheet()->setCellValue("U{$contador}", $l->forma);
-						$this->excel->getActiveSheet()->setCellValue("V{$contador}", $l->valor_flete);
-						$this->excel->getActiveSheet()->setCellValue("W{$contador}", $l->otrosCargos);
-						$this->excel->getActiveSheet()->setCellValue("X{$contador}", $l->total);
+						 $this->excel->getActiveSheet()->setCellValue("A{$contador}", 'CDR');
+						 $this->excel->getActiveSheet()->setCellValue("B{$contador}", 'FECHA');
+						 $this->excel->getActiveSheet()->setCellValue("C{$contador}", 'ORIGEN');
+						 $this->excel->getActiveSheet()->setCellValue("D{$contador}", 'DESTINO');
+						 $this->excel->getActiveSheet()->setCellValue("E{$contador}", 'CEDULA CLIENTE');
+						 $this->excel->getActiveSheet()->setCellValue("F{$contador}", 'CLIENTE');
+						 $this->excel->getActiveSheet()->setCellValue("G{$contador}", 'DIRECCION CLIENTE');
+						 $this->excel->getActiveSheet()->setCellValue("H{$contador}", 'TELFONO CLIENTE');
+						 $this->excel->getActiveSheet()->setCellValue("I{$contador}", 'CEDULA REMITENTE');
+						 $this->excel->getActiveSheet()->setCellValue("J{$contador}", 'REMITENTE');
+						 $this->excel->getActiveSheet()->setCellValue("K{$contador}", 'DIRECCION REMITENTE');
+						 $this->excel->getActiveSheet()->setCellValue("L{$contador}", 'TELEFONO REMITENTE');
+						 $this->excel->getActiveSheet()->setCellValue("M{$contador}", 'PIEZAS');
+						 $this->excel->getActiveSheet()->setCellValue("N{$contador}", 'KILOS');
+						 $this->excel->getActiveSheet()->setCellValue("O{$contador}", 'VOLUMEN');
+						 $this->excel->getActiveSheet()->setCellValue("P{$contador}", 'VALOR DECLARADO');
+						 $this->excel->getActiveSheet()->setCellValue("Q{$contador}", 'VALOR SEGURO');
+						 $this->excel->getActiveSheet()->setCellValue("R{$contador}", 'DICE CONTENER');
+						 $this->excel->getActiveSheet()->setCellValue("S{$contador}", 'LIQUIDADOR');
+						 $this->excel->getActiveSheet()->setCellValue("T{$contador}", 'VALUACION');
+						 $this->excel->getActiveSheet()->setCellValue("U{$contador}", 'FORMA DE PAGO');
+						 $this->excel->getActiveSheet()->setCellValue("V{$contador}", 'VALOR DE ENVIO');
+						 $this->excel->getActiveSheet()->setCellValue("W{$contador}", 'OTORS CARGOS');
+						 $this->excel->getActiveSheet()->setCellValue("X{$contador}", 'TOTAL');
+						 //Definimos la data del cuerpo.
+						 foreach($llamadas as $l){
+								//Incrementamos una fila más, para ir a la siguiente.
+								$contador++;
+								//Informacion de las filas de la consulta.
+								$this->excel->getActiveSheet()->setCellValue("A{$contador}", $l->id);
+								$this->excel->getActiveSheet()->setCellValue("B{$contador}", $l->fecha);
+								$this->excel->getActiveSheet()->setCellValue("C{$contador}", $l->ciudad_origen);
+								$this->excel->getActiveSheet()->setCellValue("D{$contador}", $l->ciudad_destino);
+								$this->excel->getActiveSheet()->setCellValue("E{$contador}", $l->cedula);
+								$this->excel->getActiveSheet()->setCellValue("F{$contador}", $l->nombre_empresa);
+								$this->excel->getActiveSheet()->setCellValue("G{$contador}", $l->direccion_cliente);
+								$this->excel->getActiveSheet()->setCellValue("H{$contador}", $l->telefono_cliente);
+								$this->excel->getActiveSheet()->setCellValue("I{$contador}", $l->cedula_remitente);
+								$this->excel->getActiveSheet()->setCellValue("J{$contador}", $l->contacto_remitente);
+								$this->excel->getActiveSheet()->setCellValue("K{$contador}", $l->direccion_remitente);
+								$this->excel->getActiveSheet()->setCellValue("L{$contador}", $l->telefono_remitente);
+								$this->excel->getActiveSheet()->setCellValue("M{$contador}", $l->cantidad);
+								$this->excel->getActiveSheet()->setCellValue("N{$contador}", $l->totalKilos);
+								$this->excel->getActiveSheet()->setCellValue("O{$contador}", $l->totalVolumen);
+								$this->excel->getActiveSheet()->setCellValue("P{$contador}", $l->valorDeclarado);
+								$this->excel->getActiveSheet()->setCellValue("Q{$contador}", $l->totalSeguro);
+								$this->excel->getActiveSheet()->setCellValue("R{$contador}", $l->dicecontener);
+								$this->excel->getActiveSheet()->setCellValue("S{$contador}", $l->nombre." ".$l->apellido);
+								$this->excel->getActiveSheet()->setCellValue("T{$contador}", $l->costeguia);
+								$this->excel->getActiveSheet()->setCellValue("U{$contador}", $l->forma);
+								$this->excel->getActiveSheet()->setCellValue("V{$contador}", $l->valor_flete);
+								$this->excel->getActiveSheet()->setCellValue("W{$contador}", $l->otrosCargos);
+								$this->excel->getActiveSheet()->setCellValue("X{$contador}", $l->total);
 
 
-				 }
+						 }
 				 //Le ponemos un nombre al archivo que se va a generar.
 				 $archivo = "Guias_De_Carga.xls";
 				 header('Content-Type: application/vnd.ms-excel');
