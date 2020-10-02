@@ -46,7 +46,7 @@
             </div>
               <div class="col-sm-12">
 
-                  <label class="links">Trazabilidad</label>
+                  <label class="links">Ruta de envío</label>
                   <input list="tarifas" v-model="form.id_tarifa" @change="tari()"  value="" class="form-control form-control-lg" placeholder="Escriba una ruta">
                     <datalist id="tarifas">
                         <option v-for="tarifas in tarifas" v-if="tarifas.tipo_envio===form.tipo_envio && tarifas.tipo_transporte===form.tipo_transporte"  :value="tarifas.id">De {{tarifas.ciudad_origen}} a {{tarifas.ciudad_destino}} Tiempo:{{tarifas.tiempos}}</option>

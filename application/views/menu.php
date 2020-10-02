@@ -67,9 +67,11 @@
                 </ul>
                 <ul class="navbar-nav sp">
                   <div class="dropdown sp">
-                    <button class="btn btn-default nav-link links dropdown-toggle sp" type="button" data-toggle="dropdown" data-hover="dropdown">
-                      Super Administrador
-                    </button>
+                    <?php if ($this->auth_role == 'customer' ||   $this->auth_role == 'manager' || $this->auth_role == 'admin'): ?>
+                      <button class="btn btn-default nav-link links dropdown-toggle sp" type="button" data-toggle="dropdown" data-hover="dropdown">
+                        Super Administrador
+                      </button>
+                    <?php endif; ?>
                     <div class="dropdown-menu">
                       <a class="dropdown-item links" href="<?=base_url()?>DatosEmpresa"><i class="fa fa-sitemap" aria-hidden="true"></i> Datos de la epresa</a>
                       <a class="dropdown-item links" href="<?=base_url()?>sucursales"><i class="fa fa-bank" aria-hidden="true"></i> Sucursales</a>
@@ -102,7 +104,7 @@
                     </button>
                     <div class="dropdown-menu">
                       <a class="dropdown-item links" href="<?=base_url()?>Notas"><i class="fa fa-sticky-note-o" aria-hidden="true"></i> Notas</a>
-                      <a class="dropdown-item links" href="<?=base_url()?>alertas"><i class="fa fa-bell" aria-hidden="true"></i> Alertas</a>
+                      <a class="dropdown-item links" href="<?=base_url()?>Alertas"><i class="fa fa-bell" aria-hidden="true"></i> Alertas</a>
                     </div>
                   </div>
                   <div class="dropdown">

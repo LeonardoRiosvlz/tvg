@@ -3,7 +3,7 @@ class FormasPago extends MY_Controller {
 	private $request;
 	public function __construct(){
 		parent::__construct();
-		$this->load->model('formaspago_model', 'formaspago');
+		$this->load->model('FormasPago_model', 'formaspago');
 	  }
     public function index() {
 			if( ! $this->verify_min_level(6)){

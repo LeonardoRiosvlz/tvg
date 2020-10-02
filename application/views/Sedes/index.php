@@ -89,10 +89,10 @@
                        <form role="form" id="form" @submit.prevent="validateBeforeSubmit">
                          <div class="row">
                            <div class="col-md-6">
-                             <label class="links">Nombre del cliente</label>
+                             <label class="links">Nombre del cliente {{form.id_cliente}}</label>
                              <div class="form-group">
-                               <select v-model="form.id_cliente" @change="form.id_cliente=form.cedula" v-validate="'required'" name="tipo_envio" class="form-control" disabled >
-                                 <option v-for="clientes in clientes" v-if="clientes.cliente_especial==='Si'" :value="clientes.cedula_cliente">{{clientes.nombre_cliente}}</option>
+                               <select v-model="form.id_cliente"  v-validate="'required'" name="tipo_envio" class="form-control">
+                                 <option v-for="clientes in clientes" v-if="form.id_cliente===clientes.cedula_cliente" :value="clientes.cedula_cliente">{{clientes.nombre_cliente}}-{{clientes.nombre_empresa}}</option>
                                </select>
                                <p class="text-danger my-1 small" v-if="(errors.first('tipo_envio'))" >  Este dato es requerido  </p>
                              </div>

@@ -5,15 +5,18 @@
       <thead>
       <tr>
         <th class="links">Anexo legalización</th>
+        <th class="links">Nº Guía</th>
         <th class="links">Valor</th>
         <th class="links">Action</th>
       </tr>
       <tr v-for="(factura,index) in factura">
-        <td>{{factura.codigo}}</td>
-        <td>{{factura.flete_total}}$</td>
+        <td>E-{{factura.codigo}}</td>
+        <td>{{factura.numero_anexo_l}}</td>
+        <td>{{factura.total}}$</td>
         <td><button class="btn btn-danger" @click="eliminarItem(index)"><span class="mbri-trash"></span></button></td>
       </tr>
     </table>
+    <pre>{{factura}}</pre>
     <button v-if="factura.length>0"  @click="crearFactura()" type="button" class="btn-primary btn-block" name="button">Generar Factura</button>
   </div>
   <div class="row">
@@ -596,6 +599,10 @@
          factura:[],
          cargas:[],
          legalizaciones:[],
+         tiposenvios:[],
+         transportes:[],
+         tipocarga:[],
+         proveedores:[],
          cargas_t:[],
          tarifas:[],
          imagenes:[],
@@ -1962,7 +1969,7 @@
                if (result.value) {
                 localStorage.setItem("factura", JSON.stringify(this.factura));
                 window.setTimeout(function () {
-                     location.href = "http://tvgcargo.co/Facturas";
+                     location.href = "<?=base_url();?>Facturas";
                  }, 500);
                } else if (
                  result.dismiss === Swal.DismissReason.cancel
@@ -1985,7 +1992,16 @@
                   }
                 },
                 async  mathc(){
-                    if (this.desde && this.hasta && !this.form.cedula && !this.numero) {
+                  if (this.anexo && !this.facturar) {
+                    this.loadcargas_anexos();
+                    console.log("anexo");
+                    return;
+                  }else if (this.anexo && this.facturar) {
+                    this.loadAnexos();
+                    this.loadcargas_anexos();
+                    console.log("anexo fac");
+                    return;
+                  } else  if (this.desde && this.hasta && !this.form.cedula && !this.numero) {
                       console.log("solo fecha");
                       let data = new FormData();
                        data.append('desde',this.desde);
@@ -2483,6 +2499,7 @@
                            ciudad_cliente:this.legalizaciones[i].ciudad,
                            forma:this.legalizaciones[i].forma,
                            dias:this.legalizaciones[i].dias,
+                           numero_anexo_l:this.legalizaciones[i].numero_anexo_l,
                          });
                      }
                    }else{
@@ -2510,7 +2527,7 @@
                            ciudad_cliente:this.legalizaciones[i].ciudad,
                            forma:this.legalizaciones[i].forma,
                            dias:this.legalizaciones[i].dias,
-
+                          numero_anexo_l:this.legalizaciones[i].numero_anexo_l,
                           });
                        }
                    }

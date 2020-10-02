@@ -1723,7 +1723,7 @@
                     });
                   },
               async loadtiposenvios() {
-                 await   axios.get('index.php/Tiposenvios/gettiposenvios/')
+                 await   axios.get('index.php/TiposEnvios/gettiposenvios/')
                     .then(({data: {tiposenvios}}) => {
                       this.tiposenvios = tiposenvios
                     });

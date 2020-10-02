@@ -21,6 +21,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 'dias_demora'     => $data['dias_demora'],
                 'correo_cliente'     => $data['correo_cliente'],
                 'estado'     => 'Creado ',
+                'alertar'     => 'Si ',
             ));
             return $this->db->error();
         }
@@ -64,6 +65,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                $this->db->update('facturas', array(
                  'url_foto'     => $data['url_foto'],
                  'estado'     => 'Cancelado',
+                 'alertar'     => 'No',
                ));
                return $this->db->error();
               }
@@ -78,6 +80,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         public function getfacturas() {
             return $this->db
             ->select('*')
+            ->select("TIMESTAMPDIFF(DAY,f_vencimiento, CURDATE()) AS age", false)
             ->from('facturas')
             ->get()
             ->result();

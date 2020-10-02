@@ -74,7 +74,6 @@
           </div>
         </div>
 
-
           <table id="example1" class="table ">
             <thead>
             <tr>
@@ -84,6 +83,7 @@
               <th class="links">Total</th>
               <th class="links">Estado</th>
               <th class="links">Dia Hábiles</th>
+              <th class="links">Descargar</th>
               <th class="links">Action</th>
             </tr>
             </thead>
@@ -94,6 +94,8 @@
                 <td class="links">{{facturas.total}} $</td>
                 <td class="links">{{facturas.estado}}</td>
                 <td class="links">{{facturas.dias_demora}}</td>
+                <td class="links"><a :href="'<?=base_url()?>Facturas/to_pdf/'+facturas.id"  download>Descargar PDF</a></td>
+
                   <td>
                     <div class="btn-group">
                         <button type="button" class="btn btn-default">Action</button>
@@ -153,12 +155,12 @@
              </div>
              <div class="modal-body">
                <div class="row">
-                 <div class="col-md-3">
-                   <!-- textarea -->
-                   <div class="form-group">
-                     <label class="links">Cedula cliente</label>
-                      <input type="text" @change="setearCliente()" v-model="cedula"  class="form-control" id="" :disabled="ver">
-                   </div>
+                 <div class="col-md-4">
+                   <label class="links">Clientes</label>
+                   <input list="encodings" v-model="cedula"  value="" class="form-control form-control-lg" placeholder="Escriba una cedula">
+                     <datalist id="encodings">
+                         <option v-for="clientes in clientes":value="clientes.cedula_cliente">{{clientes.nombre_cliente}}</option>
+                     </datalist>
                  </div>
                  <div class="col-3 py-4">
                     <button type="button" @click="setearCliente()" class="btn btn-primary btn-lg">Buscar Cliente</button>
@@ -642,7 +644,7 @@
            for (var i = 0; i < this.clientes.length; i++) {
              if (this.clientes[i].cedula_cliente===this.cedula) {
                if(this.clientes[i].nombre_empresa==='No aplica'){
-                 this.form.cedula=this.this.clientes[i].cedula_cliente;
+                 this.form.cedula=this.clientes[i].cedula_cliente;
                  this.form.nombre_cliente=this.clientes[i].nombre_cliente;
                }else{
                  this.form.cedula=this.clientes[i].nit_cliente;
@@ -775,11 +777,26 @@
              console.log(this.form.dep);
            },
            resete(){
-
+             this.form.id=="";
+             this.form.items=[];
+             this.form.notas=[];
+             this.form.fecha="";
+             this.form.f_vencimiento="";
+             this.form.cedula="";
+             this.form.nombre_cliente="";
+             this.form.direccion_cliente="";
+             this.form.correo_cliente="";
+             this.form.telefono_cliente="";
+             this.form.ciudad_cliente="";
+             this.form.valor_total="";
+             this.form.forma_pago="";
+             this.form.precio_letras="";
+             this.form.total="";
+             this.form.dias_demora="";
+             this.form.estado="";
                this.$validator.reset();
                document.getElementById("form").reset();
                this.editMode=false;
-               this.form.nombre_cargo='';
                $('#modal-lg').modal('show');
            },
       validateBeforeSubmit() {

@@ -678,7 +678,7 @@
              if (result.value) {
               localStorage.setItem("factura", JSON.stringify(this.factura));
               window.setTimeout(function () {
-                   location.href = "http://tvgcargo.co/Facturas";
+                   location.href = "<?=base_url();?>Facturas";
                }, 500);
              } else if (
                result.dismiss === Swal.DismissReason.cancel
@@ -765,7 +765,10 @@
            })
          },
           async  mathc(){
-              if (this.desde && this.hasta && !this.cedula && !this.estado && !this.ciudad) {
+            if (!this.desde && !this.hasta && !this.cedula && !this.estado && !this.ciudad) {
+                this.loadguias();
+                this.url='';
+            }else  if (this.desde && this.hasta && !this.cedula && !this.estado && !this.ciudad) {
                 console.log("solo fecha");
                 let data = new FormData();
                  data.append('desde',this.desde);
