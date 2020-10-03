@@ -5,7 +5,7 @@ class Dashboard extends MY_Controller {
 	private $request;
 	public function __construct() {
 		parent::__construct();
-		$this->load->model('Dashboard_model', 'dashboard');
+		//$this->load->model('Dashboard_model', 'dashboard');
 	  }
     public function index() {
 

@@ -395,6 +395,7 @@
          corregirMode:false,
          departamento:0,
          cart:[],
+         permisos:[],
          cargos:[],
          ver:false,
          factores:[],
@@ -917,6 +918,7 @@
                               .then(({data: {profiles}}) => {
                                  this.cart = profiles;
                               });
+                              this.permisos=JSON.parse(this.cart[0].permisos);
                             },
        },
 
@@ -926,7 +928,7 @@
              this.loadtipocarga();
              this.loadtiposenvios();
              this.loadtransportes();
-            this.loadCart();
+             this.loadCart();
        },
    })
  </script>

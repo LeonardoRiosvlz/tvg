@@ -154,9 +154,10 @@
                </button>
              </div>
              <div class="modal-body">
-               <div class="row">
+               <h2 class="text-danger">FV-{{form.id}} ( {{form.estado}})</h2>
+               <div class="row" v-if="!ver">
                  <div class="col-md-4">
-                   <label class="links">Clientes</label>
+                   <label class="links" >Clientes</label>
                    <input list="encodings" v-model="cedula"  value="" class="form-control form-control-lg" placeholder="Escriba una cedula">
                      <datalist id="encodings">
                          <option v-for="clientes in clientes":value="clientes.cedula_cliente">{{clientes.nombre_cliente}}</option>
@@ -332,6 +333,11 @@
                             </div>
 
                             </div>
+                            <div class="row" v-if="form.url_foto">
+                              <div class="col-md-3">
+                                <a :href="'<?=base_url()?>'+form.url_foto"  download>Descargar PDF</a>
+                              </div>
+                            </div>
                            <button v-if="editMode===false"  class="button is-primary links btn btn-light float-right my-3" type="submit">Guardar</button>
                            <button v-if="editMode===true && !ver"  class="button is-primary btn btn-light links float-right my-3" type="submit">Editar</button>
                        </form>
@@ -419,6 +425,7 @@
               'total':'',
               'dias_demora':'',
               'estado':'',
+              'url_foto':'',
          }
        },
        methods: {
@@ -926,6 +933,7 @@
                    this.form.total=this.facturas[index].total;
                    this.form.dias_demora=this.facturas[index].dias_demora;
                    this.form.estado=this.facturas[index].estado;
+                   this.form.url_foto=this.facturas[index].url_foto;
                    $('#modal-lg').modal('show');
                    this.editMode=true
                  },

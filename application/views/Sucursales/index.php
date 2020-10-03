@@ -1465,6 +1465,7 @@
           ],
           ver:false,
          cart:[],
+         permisos:[],
          sucursales:[],
          editMode:false,
          form:{
@@ -1644,6 +1645,7 @@
                       .then(({data: {profiles}}) => {
                          this.cart = profiles;
                       });
+                      this.permisos=JSON.parse(this.cart[0].permisos);
                     },
        },
 

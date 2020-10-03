@@ -93,6 +93,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
               ->get()
               ->result();
             }
+            public function dejarNotificar($id) {
+              $this->db->where('id',$id);
+              $this->db->update('facturas', array(
+                'alertar'     => 'No',
+              ));
+              return $this->db->error();
+              }
           public function get_tiempo($datas) {
               return $this->db
               ->select('*')
@@ -203,7 +210,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
                                     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
                                     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-                                    <title>GIA DE CARGA-TVG CARGOS</title>
+                                    <title>FACTURA DE VENTA-TVG CARGOS</title>
                                     <style media="screen">
                                       .bounce-enter-active {
                                         animation: bounce-in .5s;

@@ -150,6 +150,7 @@
          departamento:0,
          ver:false,
          cart:[],
+         permisos:[],        
          proveedores:[],
          editMode:false,
          form:{
@@ -320,6 +321,7 @@
                       .then(({data: {profiles}}) => {
                          this.cart = profiles;
                       });
+                      this.permisos=JSON.parse(this.cart[0].permisos);
                     },
        },
 

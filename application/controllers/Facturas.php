@@ -1560,7 +1560,7 @@ class Facturas extends MY_Controller {
 				 $upload_data = $this->upload->data();
 				 $file_name = $upload_data['file_name'];
 				 $data = json_decode($this->input->post('service_form'),true);
-				 $data['url_foto'] ="/include/img/trazabilidad/".$file_name;
+				 $data['url_foto'] ="/include/img/comprobantes/".$file_name;
 				 $result = $this->facturas->cancelar($data);
 				 if($result['code'] == 0){
 					 echo json_encode(['status' => '200', 'message' => 'editado exitosamente']);

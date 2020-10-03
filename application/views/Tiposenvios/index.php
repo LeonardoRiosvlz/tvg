@@ -106,6 +106,7 @@
          departamento:0,
          ver:false,
          cart:[],
+         permisos:[],
          tiposenvios:[],
          transportes:[],
          editMode:false,
@@ -262,6 +263,7 @@
                       .then(({data: {profiles}}) => {
                          this.cart = profiles;
                       });
+                        this.permisos=JSON.parse(this.cart[0].permisos);
                     },
        },
 

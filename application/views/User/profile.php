@@ -14,7 +14,7 @@
                                                   <div class="col-12 ">
                                                       <h3 class="mb-0 text-truncated links">{{profile.nombre}} {{profile.apellido}}</h3>
                                                       <hr>
-                                                    
+
                                                   </div>
                                                   <div class="col-12  text-center">
                                                       <img :src="'<?=base_url();?>'+profile.url_foto" alt="" class="mx-auto  img-fluid">
@@ -157,6 +157,7 @@
                  cart:[],
                  profiles:[],
                  documentos:[],
+                 permisos:[],
                  editMode:false,
                  form:{
                      'id_usuario':'',
@@ -393,7 +394,9 @@
                                 await  axios.get('index.php/User/get_profile/')
                                  .then(({data: {profiles}}) => {
                                     this.cart = profiles;
+
                                  });
+                                 this.permisos=JSON.parse(this.cart[0].permisos);
                                },
                             depp(){
                               this.form.departamento=this.colombia[this.form.dep].departamento;

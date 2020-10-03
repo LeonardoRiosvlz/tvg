@@ -28,7 +28,7 @@
                   <?php if ($this->auth_role == 'customer' ||   $this->auth_role == 'manager' || $this->auth_role == 'admin'): ?>
 
                   <?php endif; ?>
-                <?php if ($this->auth_role == 'admin'): ?>
+                <?php if ($this->auth_role == 'customer' ||   $this->auth_role == 'manager' || $this->auth_role == 'admin'): ?>
                   <li class="nav-item">
                     <a class="nav-link btn-icono sp" onclick="openNav2()" ><span class="mbri-setting"></span></a>
                   </li>
@@ -59,7 +59,7 @@
                   <?php if ($this->auth_role == 'customer' ||   $this->auth_role == 'manager' || $this->auth_role == 'admin'): ?>
 
                   <?php endif; ?>
-                <?php if ($this->auth_role == 'admin'): ?>
+                <?php if ($this->auth_role == 'customer' ||   $this->auth_role == 'manager' || $this->auth_role == 'admin'): ?>
                   <li class="nav-item">
                     <a class="nav-link btn-icono sp" onclick="openNav2()" ><span class="mbri-setting"></span></a>
                   </li>
@@ -67,23 +67,24 @@
                 </ul>
                 <ul class="navbar-nav sp">
                   <div class="dropdown sp">
-                    <?php if ($this->auth_role == 'customer' ||   $this->auth_role == 'manager' || $this->auth_role == 'admin'): ?>
+                    <?php if (  $this->auth_role == 'manager' || $this->auth_role == 'admin'): ?>
                       <button class="btn btn-default nav-link links dropdown-toggle sp" type="button" data-toggle="dropdown" data-hover="dropdown">
                         Super Administrador
                       </button>
                     <?php endif; ?>
                     <div class="dropdown-menu">
-                      <a class="dropdown-item links" href="<?=base_url()?>DatosEmpresa"><i class="fa fa-sitemap" aria-hidden="true"></i> Datos de la epresa</a>
+                      <a class="dropdown-item links" href="<?=base_url()?>DatosEmpresa"><i class="fa fa-sitemap" aria-hidden="true"></i> Datos de la empresa</a>
                       <a class="dropdown-item links" href="<?=base_url()?>sucursales"><i class="fa fa-bank" aria-hidden="true"></i> Sucursales</a>
                       <a class="dropdown-item links" href="<?=base_url()?>Root_user"><i class="fa fa-users" aria-hidden="true"></i> Usuarios del sistema</a>
-                      <a class="dropdown-item links" href="<?=base_url()?>cambios_estado"><i class="fa fa-recycle" aria-hidden="true"></i> Cambio de estado</a>
                       <a class="dropdown-item links" href="<?=base_url()?>FormasPago"><i class="fa fa-money" aria-hidden="true"></i> Formas de pago </a>
                     </div>
                   </div>
                   <div class="dropdown">
+                  <?php if (  $this->auth_role == 'manager' || $this->auth_role == 'admin'): ?>
                     <button type="button" class="btn nav-link links dropdown-toggle sp" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-hover="dropdown">
                       Catálogo
                     </button>
+                    <?php endif; ?>
                     <div class="dropdown-menu">
                       <a class="dropdown-item links" href="<?=base_url()?>cargos"><i class="fa fa-street-view" aria-hidden="true"></i> Cargos</a>
                       <a class="dropdown-item links" href="<?=base_url()?>Tiempo"><i class="fa fa-clock-o" aria-hidden="true"></i> Tiempos de entrega</a>
@@ -132,7 +133,9 @@
         <img style="background:#293072!important;width:40%; float:center; margin-left: auto;margin-right: auto;"  class="card-img-top rounded-circle" :src="'<?=base_url();?>'+profiles.url_foto" alt="Card image cap">
         <div  class="card-body">
           <h5 class="card-title text-center text-white ">{{profiles.nombre}} {{profiles.apellido}}</h5>
+          <h5 class="card-title text-white text-center lead">{{profiles.sucursal}}</h5>
           <h5 class="card-title text-white text-center lead">{{profiles.cargo}}</h5>
+
         </div>
       </div>
       <ul class="list-group">
@@ -143,9 +146,9 @@
           <div id="collapse1" class="panel-collapse collapse">
             <ul class="list-group sp">
               <li class="list-group-item"><a class="dropdown-item links" href="<?=base_url()?>Cotizador"><i class="fa fa-calculator" aria-hidden="true"></i> Cotizador</a></li>
-              <li class="list-group-item"><a class="dropdown-item links" href="<?=base_url()?>Cotizaciones"><i class="fa fa-calculator" aria-hidden="true"></i> Cotizaciones</a></li>
-              <li class="list-group-item"><a class="dropdown-item links" href="<?=base_url()?>Recalculadas"><i class="fa fa-calculator" aria-hidden="true"></i> Cotizaciones Recalculadas</a></li>
-              <li class="list-group-item"><a class="dropdown-item links" href="<?=base_url()?>Liquidaciones"><i class="fa fa-file-powerpoint-o" aria-hidden="true"></i> Planillas De Liquidación</a></li>
+              <li class="list-group-item" v-show="permisos.cotizaciones"><a class="dropdown-item links" href="<?=base_url()?>Cotizaciones"><i class="fa fa-calculator" aria-hidden="true"></i> Cotizaciones</a></li>
+              <li class="list-group-item"v-show="permisos.cotizaciones"><a class="dropdown-item links" href="<?=base_url()?>Recalculadas"><i class="fa fa-calculator" aria-hidden="true"></i> Cotizaciones Recalculadas</a></li>
+              <li class="list-group-item"v-show="permisos.planillas"><a class="dropdown-item links" href="<?=base_url()?>Liquidaciones"><i class="fa fa-file-powerpoint-o" aria-hidden="true"></i> Planillas De Liquidación</a></li>
             </ul>
           </div>
         </div>
@@ -155,9 +158,9 @@
         <div class="panel panel-default">
           <div id="collapse2" class="panel-collapse collapse">
             <ul class="list-group sp">
-              <li class="list-group-item"><a class="dropdown-item links" href="<?=base_url()?>Guias"><i class="fa fa-road" aria-hidden="true"></i> Guías De Carga Clientes Normales</a></li>
-              <li class="list-group-item"><a class="dropdown-item links" href="<?=base_url()?>ClientesEspeciales"><i class="fa fa-road" aria-hidden="true"></i> Guías De Carga Clientes Especiales</a></li>
-              <li class="list-group-item"><a class="dropdown-item links" href="<?=base_url()?>Facturas"><i class="fa fa-file-text" aria-hidden="true"></i> Facturas</a></li>
+              <li class="list-group-item" v-show="permisos.guiasNormales"><a class="dropdown-item links" href="<?=base_url()?>Guias"><i class="fa fa-road" aria-hidden="true"></i> Guías De Carga Clientes Normales</a></li>
+              <li class="list-group-item"v-show="permisos.guiasEspeciales"><a class="dropdown-item links" href="<?=base_url()?>ClientesEspeciales"><i class="fa fa-road" aria-hidden="true"></i> Guías De Carga Clientes Especiales</a></li>
+              <li class="list-group-item"v-show="permisos.facturas"><a class="dropdown-item links" href="<?=base_url()?>Facturas"><i class="fa fa-file-text" aria-hidden="true"></i> Facturas</a></li>
             </ul>
           </div>
         </div>

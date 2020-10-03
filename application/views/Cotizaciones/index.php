@@ -80,7 +80,8 @@
               <th class="links">Nº  COTIZACIÓN</th>
               <th class="links">USUARIO RESPONSABLE</th>
               <th class="links">CREADO</th>
-              <th class="links">EMPRESA</th>
+              <th class="links">DIAS DE VIGENCIA</th>
+              <th class="links">CLIENTE</th>
               <th class="links">TELEFONO</th>
               <th class="links">ESTADO</th>
                 <th class="links">Action</th>
@@ -90,7 +91,9 @@
                 <td class="links">COT-{{cotizaciones.id}}</td>
                 <td class="links">{{cotizaciones.username}}</td>
                 <td class="links">{{cotizaciones.fecha_creacion}}</td>
-                <td class="links">{{cotizaciones.nombre_empresa}}</td>
+                <td class="links">Dias{{cotizaciones.age}}</td>
+                <td class="links" v-if="cotizaciones.nombre_empresa==='No aplica'">{{cotizaciones.nombre_cliente}}</td>
+                 <td class="links" v-else>{{cotizaciones.nombre_empresa}}</td>
                 <td class="links">{{cotizaciones.telefono_cliente}}</td>
                 <td class="links" v-if="cotizaciones.status==='Generado' && cotizaciones.estatus_gestion==='Borrador'">Generado por enviar...</td>
                 <td class="links" v-else>{{cotizaciones.estatus_gestion}}</td>
@@ -112,7 +115,7 @@
                           </div>
                         </button>
                     </div>
-                  </td>
+                  </t d>
                </tr>
           </table>
       </div>
@@ -146,12 +149,25 @@
                   <div class="row py-3 pt-3">
                     <div class="col-md-4">
                       <label class="links">Clientes</label>
-                      <input list="encodings" v-model="form.cedula"  value="" class="form-control form-control-lg" placeholder="Escriba una cedula" :disabled="ver">
+                      <input list="encodings" v-model="form.cedula"  value="" class="form-control form-control-lg" placeholder="Escriba una cedula o Nit" :disabled="ver">
                         <datalist id="encodings">
-                            <option v-for="clientes in clientes"  v-if="clientes.cliente_especial==='No'" :value="clientes.cedula_cliente">{{clientes.nombre_cliente}}</option>
+                            <option v-for="clientes in clientes"  v-if="clientes.cliente_especial==='No'" :value="clientes.cedula_cliente">{{clientes.nit_cliente}}</option>
                         </datalist>
                     </div>
+                    <div class=" col-md-3 col-sm-12">
+                      <div class="form-group">
+                         <label class="links">Válida Hasta</label>
+                           <flat-pickr
+                               v-model="form.f_vencimiento"
+                               :config="config"
+                               class="form-control form-control-lg"
+                               placeholder="Selecciona fecha"
+                               name="hSasta">
+                         </flat-pickr>
+                       </div>
+                    </div>
                   </div>
+
                   <div class="card col-12 p-3">
                      <h5 >Datos del cliente</h5>
                      <div class="row" v-if="form.cedula">
@@ -401,9 +417,13 @@
               </tbody>
             </table>
           </div>
+
           <label class="switch pull-right col-12">
             <input type="checkbox" v-model="form.vernota" checked @change="verNotas()" :disabled="ver">
             <span class="slider round"></span>
+          </label>
+          <label class="switch pull-right col-12">
+            Notas
           </label>
           <div class="card col-12" v-if="form.vernota">
             <div class="card-body p-3">
@@ -441,6 +461,18 @@
                 <datalist id="encodings">
                     <option v-for="clientes in clientes"  v-if="clientes.cliente_especial==='No'" :value="clientes.cedula_cliente">{{clientes.nombre_cliente}}</option>
                 </datalist>
+            </div>
+            <div class=" col-md-3 col-sm-12">
+              <div class="form-group">
+                 <label class="links">Válida Hasta</label>
+                   <flat-pickr
+                       v-model="form.f_vencimiento"
+                       :config="config"
+                       class="form-control form-control-lg"
+                       placeholder="Selecciona fecha"
+                       name="hSasta">
+                 </flat-pickr>
+               </div>
             </div>
           </div>
           <div class="card col-12 p-3">
@@ -731,6 +763,9 @@ v-if="item.id_tarifa && item.segurocarga && item.costeguia && item.escala && ite
     <input type="checkbox" v-model="form.vernota" checked @change="verNotas()" :disabled="ver">
     <span class="slider round"></span>
   </label>
+  <label class="switch pull-right col-12">
+    Notas
+  </label>
   <div class="card col-12" v-if="form.vernota">
     <div class="card-body p-3">
       <h5 class="card-title">Notas</h5>
@@ -779,11 +814,18 @@ v-if="item.id_tarifa && item.segurocarga && item.costeguia && item.escala && ite
 
 </div>
 <script>
+    Vue.component('flat-pickr', VueFlatpickr);
      axios.defaults.baseURL = '<?PHP echo base_url(); ?>';
      Vue.use(VeeValidate ,{locale: 'vi'});
      new Vue({
        el: '#app',
        data: {
+         config: {
+            wrap: true,
+            enableTime: false,
+            dateFormat: 'yy-m-d',
+            locale: flatpickr.l10ns.es
+          },
          estados:{
            'enviado':0,
            'borrador':0,
@@ -796,6 +838,7 @@ v-if="item.id_tarifa && item.segurocarga && item.costeguia && item.escala && ite
          departamento:0,
          ver:false,
          cart:[],
+         permisos:[],
          profiles:[],
          factura:[],
          cargas:[],
@@ -850,6 +893,7 @@ v-if="item.id_tarifa && item.segurocarga && item.costeguia && item.escala && ite
              'renegociar':'No',
              'tiempo':'',
              'observaciones':'',
+             'f_vencimiento':'',
              'vernota':true,
              'items':[],
              'notas':[],
@@ -1003,6 +1047,14 @@ v-if="item.id_tarifa && item.segurocarga && item.costeguia && item.escala && ite
              }
            },
            cargarCotizacion(index){
+             if (this.form.f_vencimiento==='') {
+               Swal.fire({
+                 type: 'warning',
+                 title: '',
+                 text: 'Debes señalar una fecha de vencimiento'
+               });
+               return;
+             }
              if (this.form.items.length<1) {
                Swal.fire({
                  type: 'warning',
@@ -1112,14 +1164,6 @@ v-if="item.id_tarifa && item.segurocarga && item.costeguia && item.escala && ite
                  })
                },
                editarCotizacion(index){
-                 if (this.imagenes.length<1) {
-                   Swal.fire({
-                     type: 'warning',
-                     title: '',
-                     text: 'Debes agregar al menos un documento'
-                   });
-                   return;
-                 }
                  if (this.form.items.length<1) {
                    Swal.fire({
                      type: 'warning',
@@ -1575,6 +1619,7 @@ v-if="item.id_tarifa && item.segurocarga && item.costeguia && item.escala && ite
                    this.form.estatus=this.cotizaciones[index].estatus,
                    this.form.vnota=this.cotizaciones[index].vnota,
                    this.form.tiempo=this.cotizaciones[index].tiempo,
+                   this.form.f_vencimiento=this.cotizaciones[index].f_vencimiento,
                    this.form.observaciones=this.cotizaciones[index].observaciones,
                    this.form.items=JSON.parse(this.cotizaciones[index].items),
                    this.form.notas=JSON.parse(this.cotizaciones[index].notas),
@@ -1749,6 +1794,7 @@ v-if="item.id_tarifa && item.segurocarga && item.costeguia && item.escala && ite
                                      .then(({data: {profiles}}) => {
                                         this.cart = profiles;
                                      });
+                                     this.permisos=JSON.parse(this.cart[0].permisos);
                                    },
        },
 

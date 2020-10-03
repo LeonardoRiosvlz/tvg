@@ -1,4 +1,4 @@
-<div id="app" class="container">
+<div id="app" class="container" >
   <div class="row">
     <div class="col-lg-12 my-2 ">
       <!-- Shopping cart table -->
@@ -23,7 +23,7 @@
             </tr>
           </thead>
         </table>
-        <div class="">
+        <div class="table-responsive">
           <table id="example1" class="table my-2" >
             <thead>
             <tr >
@@ -288,6 +288,7 @@
          departamento:0,
          ver:false,
          cart:[],
+         permisos:[],
          sedes:[],
          actas_recogida:[],
          tipocarga:[],
@@ -2065,6 +2066,7 @@
                          .then(({data: {actas_recogida}}) => {
                            this.actas_recogida = actas_recogida
                          });
+                         $("#example1").DataTable();
                        },
                        async loadCart() {
 
@@ -2072,6 +2074,7 @@
                             .then(({data: {profiles}}) => {
                                this.cart = profiles;
                             });
+                            this.permisos=JSON.parse(this.cart[0].permisos);
                           },
        },
 

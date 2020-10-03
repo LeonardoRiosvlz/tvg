@@ -14,7 +14,7 @@ class User_model extends MY_Model {
 
   function get_profile($id){
     return $this->db
-    ->select('u.user_id, u.username, u.url_foto, u.nombre, u.apellido, u.cedula, u.cargo, u.telefono_personal, u.telefono_corporativo, u.sucursal, u.email')
+    ->select('u.user_id, u.username,u.permisos, u.url_foto, u.nombre, u.apellido, u.cedula, u.cargo, u.telefono_personal, u.telefono_corporativo, u.sucursal, u.email')
     ->from('users u')
     ->where('user_id', $id)
     ->get()
@@ -155,6 +155,7 @@ public function insertar($data){
         'telefono_corporativo'         => $data['telefono_corporativo'],
         'sucursal'         => $data['sucursal'],
         'url_foto'         => $data['url_foto'],
+        'permisos'         => json_encode($data['permisos']),
     ));
     return $this->db->error();
 }
@@ -172,6 +173,7 @@ public function editar($data) {
       'telefono_personal'         => $data['telefono_personal'],
       'telefono_corporativo'         => $data['telefono_corporativo'],
       'sucursal'         => $data['sucursal'],
+      'permisos'         => json_encode($data['permisos']),
     ));
     return $this->db->error();
    }
@@ -201,6 +203,7 @@ public function editar_img($data) {
       'telefono_personal'         => $data['telefono_personal'],
       'telefono_corporativo'         => $data['telefono_corporativo'],
       'sucursal'         => $data['sucursal'],
+      'permisos'         => json_encode($data['permisos']),
     ));
     return $this->db->error();
    }

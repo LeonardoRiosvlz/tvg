@@ -45,7 +45,7 @@
                           </div>
                         </button>
                     </div>
-                    <p class="small" v-else>No editabel</p>
+                    <p class="small" v-else>No editable</p>
                   </td>
                </tr>
           </table>
@@ -117,6 +117,7 @@
          departamento:0,
          ver:false,
          cart:[],
+         permisos:[],
          formaspago:[],
          editMode:false,
          form:{
@@ -273,6 +274,7 @@
                       .then(({data: {profiles}}) => {
                          this.cart = profiles;
                       });
+                        this.permisos=JSON.parse(this.cart[0].permisos);
                     },
        },
 

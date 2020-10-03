@@ -96,6 +96,7 @@
          departamento:0,
          ver:false,
          cart:[],
+         permisos:[],
          tiempos:[],
          editMode:false,
          form:{
@@ -237,11 +238,12 @@
                    $("#example1").DataTable();
                  },
                  async loadCart() {
-                     console.log("hol");
+
                      await  axios.get('index.php/User/get_profile/')
                       .then(({data: {profiles}}) => {
                          this.cart = profiles;
                       });
+                      this.permisos=JSON.parse(this.cart[0].permisos);
                     },
        },
 

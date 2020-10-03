@@ -321,6 +321,7 @@
          departamento:0,
          ver:false,
          cart:[],
+         permisos:[],
          form:{
              'id':'',
              'nit_cliente':'',
@@ -1896,6 +1897,7 @@
                              .then(({data: {profiles}}) => {
                                 this.cart = profiles;
                              });
+                             this.permisos=JSON.parse(this.cart[0].permisos);
                            },
        },
 

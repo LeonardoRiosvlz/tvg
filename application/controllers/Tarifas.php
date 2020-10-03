@@ -220,7 +220,7 @@ class Tarifas extends MY_Controller {
 											if(!empty($csvData)){
 													foreach($csvData as $element){
 															// Prepare data for Database insertion
-															$data[] = array(
+															$datos[] = array(
 																'id'     => $element['id'],
 																'departamento_origen'     => $element['departamento_origen'],
 									              'ciudad_origen'     => $element['ciudad_origen'],
@@ -239,7 +239,7 @@ class Tarifas extends MY_Controller {
 											}
 									}
 									// insert/update data into database
-									foreach($data as $element) {
+									foreach($datos as $element) {
 											$this->tarifas->setId($element['id']);
 											$this->tarifas->setDepartamento_origen($element['departamento_origen']);
 											$this->tarifas->setCiudad_origen($element['ciudad_origen']);

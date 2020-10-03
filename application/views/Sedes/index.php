@@ -15,13 +15,10 @@
         </table>
         <div class="row">
           <div class="col-6">
-            <input list="encodings" v-model="form.id_cliente" value="" class="form-control form-control-lg" placeholder="Escriba una cedula">
+            <input list="encodings" @change="match()" v-model="form.id_cliente" value="" class="form-control form-control-lg" placeholder="Escriba una cedula">
               <datalist id="encodings">
-                  <option v-for="clientes in clientes"  :value="clientes.cedula_cliente">{{clientes.nombre_cliente}}</option>
+                  <option v-for="clientes in clientes"  :value="clientes.cedula_cliente">{{clientes.nit_cliente}}</option>
               </datalist>
-          </div>
-          <div class="col-3">
-            <button type="button" class="btn btn-info btn-block btn-lg" @click="match()">Buscar <span class="mbri-search"></span></button>
           </div>
         </div>
         <div class="alert alert-danger" role="alert" v-if="alerta">
@@ -181,6 +178,7 @@
          departamento:0,
          ver:false,
          cart:[],
+         permisos:[],
          sedes:[],
          clientes:[],
          marca:0,
@@ -1687,6 +1685,7 @@
                             .then(({data: {profiles}}) => {
                                this.cart = profiles;
                             });
+                            this.permisos=JSON.parse(this.cart[0].permisos);
                           },
        },
 

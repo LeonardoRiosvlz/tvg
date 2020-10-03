@@ -157,7 +157,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                           <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
                                           <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
                                           <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-                                          <title>COTIZACIÓN TVG CARGOS</title>
+                                          <title>PLANILLA DE LIQUIDACION TVG CARGOS</title>
                                           <style media="screen">
                                             .bounce-enter-active {
                                               animation: bounce-in .5s;
@@ -315,7 +315,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                      $output .= '  <tr>
                                                          <td colspan="4" style=" border-style: none;"></td>
                                                          <td colspan="3" style="white-space: nowrap;">VALOR FLETE</td>
-                                                                 <td>$ '.$row->totalPrecios.'</td></tr>';
+                                                                 <td style="white-space: nowrap;">$ '.$row->totalPrecios.'</td></tr>';
                                                     $output .= '  <tr>
                                                         <td colspan=4 style="border-style: none;"></td>
                                                         <td colspan="2" style="white-space: nowrap;">SEGURO SOBRE VALOR DECLARADO</td>
@@ -325,7 +325,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                        <td colspan=4 style=" border-style: none;"></td>
                                                        <td colspan="3" style="white-space: nowrap; background:yellow;">TOTAL</td>
 
-                                                               <td>$ '.$row->totalPrecios.'</td></tr>';
+                                                               <td style="white-space: nowrap;">$ '.$row->totalPrecios.'</td></tr>';
                                                  }
                                         $output .= '</table>';
 

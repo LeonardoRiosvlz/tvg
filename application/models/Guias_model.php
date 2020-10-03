@@ -401,12 +401,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                       foreach($data->result() as $row){
                           $output .= '
 
-                          <table style="float: right;">
+                          <table class="table table-striped" style="float: right;">
         									  <tr>
-        										<th colspan="2"style="font-size:20px; padding:1em;">Guía de carga</th>
-        										<th style="color:red;font-size:20px;padding:1em;">Nº'.$row->id.'</th>
-        										<th style="font-size:20px;padding:1em;">Fecha</th>
-        										<th style="color:red;font-size:20px;padding:1em;white-space: nowrap;">'.$row->fecha.'</th>
+        										<th colspan="2"style="font-size:15px; padding:1em;">Guía de carga</th>
+        										<th style="color:red;font-size:15px;padding:1em;">N-'.$row->id.'</th>
+        										<th style="font-size:15px;padding:1em;">Fecha</th>
+        										<th style="color:red;font-size:15px;padding:1em;white-space: nowrap;">'.$row->fecha.'</th>
         									  </tr>
         									  <tr>
         										<th colspan="2" style="font-size:15px;">Origen</th>
@@ -441,11 +441,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         										<th >Valor de envío<p style="color:red"> $ '.$row->valor_flete.'</p></th>
         									  </tr>
         									  <tr>
-        										<td colspan="4" style="font-size:9px; color:red;justify;">EL REMITENTE ACEPTA IMPLÍCITAMENTE LAS CONDICIONES Y LA TARIFA DE LA EMPRESA TVG CARGO S.A.S. Y LAS DEMAS QUE SEÑALA EL CODIGO DE CORMERCIO, ADEMAS DEJA CONSTANCIA EXPRESA QUE ESTA REMESA NO CONTIENE DINERO Y DEBERA AGREGAR A LA EMPRESA, LOS DOCUMENTOS NECESARIOS PARA EL CUMPLIMIENTO ANTE LAS AUTORIDADES DE POLICIA, ADUANA Y SANIDAD Y SE RESPONSABILIZA ANTE LAS AUTORIDADES, POR EL ORIGEN Y EL CONTENIDO DE LAS MERCANCIAS.</td>
+        										<td colspan="4" style="font-size:9px; justify;">EL REMITENTE ACEPTA IMPLÍCITAMENTE LAS CONDICIONES Y LA TARIFA DE LA EMPRESA TVG CARGO S.A.S. Y LAS DEMAS QUE SEÑALA EL CODIGO DE CORMERCIO, ADEMAS DEJA CONSTANCIA EXPRESA QUE ESTA REMESA NO CONTIENE DINERO Y DEBERA AGREGAR A LA EMPRESA, LOS DOCUMENTOS NECESARIOS PARA EL CUMPLIMIENTO ANTE LAS AUTORIDADES DE POLICIA, ADUANA Y SANIDAD Y SE RESPONSABILIZA ANTE LAS AUTORIDADES, POR EL ORIGEN Y EL CONTENIDO DE LAS MERCANCIAS.</td>
         										<th >Otros cargos <p style="color:red"> $ '.$row->otrosCargos.'</p></th>
         									  </tr>
         									  <tr>
-        										<td colspan="4" style="font-size:7px; color:red; justify;" >EL SEGURO SOLO CUBRE PERDIDA TOTAL, NO PERDIDAS PARCIALES O DAÑOS QUE SE PRESENTEN EN LA MERCANCIA A TRANSPORTAR. PARA EVITAR DAÑOS DEBE ESTAR BIEN EMBALADA LA CARGA A TRANSPORTAR. NO SE RESPONDE POR VIDRIOS</td>
+        										<td colspan="4" style="font-size:7px;  justify;" >EL SEGURO SOLO CUBRE PERDIDA TOTAL, NO PERDIDAS PARCIALES O DAÑOS QUE SE PRESENTEN EN LA MERCANCIA A TRANSPORTAR. PARA EVITAR DAÑOS DEBE ESTAR BIEN EMBALADA LA CARGA A TRANSPORTAR. NO SE RESPONDE POR VIDRIOS</td>
         										<th >Total <p style="color:red">  $ '.$row->total.'</p></th>
         									  </tr>
         									  <tr>
@@ -455,7 +455,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                               <th colspan="5" style="padding-button:1em!importan;" >Nombre, firma y c.c. Destinatario  </th>
                             </tr>
                             <tr>
-                              <th colspan="5"  style="font-size:20px; float:center;">MERCANCIA SUJETA A CUPO </th>
+                              <th colspan="5"  style="font-size:15px; float:center;">MERCANCIA SUJETA A CUPO </th>
                             </tr>
         									</table>';
                           }

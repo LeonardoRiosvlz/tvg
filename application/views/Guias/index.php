@@ -181,7 +181,7 @@
                           <div class="dropdown-menu" role="menu">
                             <a class="dropdown-item" href="#"@click="setear(index);ver=true">Ver</a>
                             <a class="dropdown-item" href="#" @click="setear(index)">Duplicar</a>
-                            <a class="dropdown-item" v-show="guias.estado==='En físico'" href="#" @click="addFactura(index)">Agregar a factura</a>
+                            <a class="dropdown-item" v-show="guias.estado==='En físico'" href="#" @click="archivada(index)">Agregar a factura</a>
                             <a class="dropdown-item" href="#" @click="anularguias(index)">Anular</a>
                             <a class="dropdown-item"  href="#" @click="enviarguias(index)">Enviar Guía</a>
                             <a class="dropdown-item" v-show="guias.estado==='Enviada'" href="#" @click="setearCumplida(index)">Cimplidas</a>
@@ -550,6 +550,7 @@
          departamento:0,
          ver:false,
          cart:[],
+         permisos:[],
          guias:[],
          imagenes:[],
          liquidaciones:[],
@@ -701,7 +702,15 @@
              reverseButtons: true
            }).then((result) => {
              if (result.value) {
-               this.factura.splice(index, 1);
+               for (var i = 0; i < this.guias.length; i++) {
+                 if (this.factura[index].id===this.guias[i].id) {
+                   this.factura.splice(index, 1);
+                   console.log("hallado");
+                   this.senfisico(i);
+                   return;
+                 }
+               }
+
              } else if (
                result.dismiss === Swal.DismissReason.cancel
              ) {
@@ -714,55 +723,24 @@
            })
          },
          addFactura(index){
-
-           Swal({
-             title: '¿Estás seguro?',
-             type: 'warning',
-             showCancelButton: true,
-             confirmButtonText: '¡Si! ¡agregar!',
-             cancelButtonText: '¡No! ¡cancelar!',
-             reverseButtons: true
-           }).then((result) => {
-             for (var i = 0; i < this.factura.length; i++) {
-               if (this.factura[i].id===this.guias[index].id) {
-                 Swal(
-                   'Esta guía ya esta anexada',
-                   '',
-                   'warning'
-                 );
-                 return;
-               }
-             }
-             if (result.value) {
-               this.factura.push({
-                  origen:this.guias[index].ciudad_origen,
-                  destino:this.guias[index].ciudad_destino,
-                  tipo_transporte:this.guias[index].tipo_transporte,
-                  tipo_transporte:this.guias[index].tipo_transporte,
-                  total:this.guias[index].total,
-                  n_guia:'N-'+this.guias[index].id,
-                  id:this.guias[index].id,
-                  nombre_cliente:this.guias[index].nombre_cliente,
-                  nombre_empresa:this.guias[index].nombre_empresa,
-                  nit_cliente:this.guias[index].nit_cliente,
-                  direccion_cliente:this.guias[index].direccion_cliente,
-                  telefono_cliente:this.guias[index].telefono_cliente,
-                  cedula_cliente:this.guias[index].cedula,
-                  ciudad_cliente:this.guias[index].ciudad,
-                  forma:this.guias[index].forma,
-                  dias:this.guias[index].dias,
-
-                });
-             } else if (
-               result.dismiss === Swal.DismissReason.cancel
-             ) {
-               Swal(
-                 'Cancelado',
-                 'No fue eliminado.',
-                 'success'
-               )
-             }
-           })
+           this.factura.push({
+              origen:this.guias[index].ciudad_origen,
+              destino:this.guias[index].ciudad_destino,
+              tipo_transporte:this.guias[index].tipo_transporte,
+              tipo_transporte:this.guias[index].tipo_transporte,
+              total:this.guias[index].total,
+              n_guia:'N-'+this.guias[index].id,
+              id:this.guias[index].id,
+              nombre_cliente:this.guias[index].nombre_cliente,
+              nombre_empresa:this.guias[index].nombre_empresa,
+              nit_cliente:this.guias[index].nit_cliente,
+              direccion_cliente:this.guias[index].direccion_cliente,
+              telefono_cliente:this.guias[index].telefono_cliente,
+              cedula_cliente:this.guias[index].cedula,
+              ciudad_cliente:this.guias[index].ciudad,
+              forma:this.guias[index].forma,
+              dias:this.guias[index].dias,
+            });
          },
           async  mathc(){
             if (!this.desde && !this.hasta && !this.cedula && !this.estado && !this.ciudad) {
@@ -1057,7 +1035,32 @@
                      }
                    })
                  },
-                 enfisico(index){
+              senfisico(index){
+                let data = new FormData();
+                data.append('id',this.guias[index].id);
+                  axios.post('index.php/Guias/enfisico',data)
+                  .then(response => {
+                    if(response) {
+                      this.mathc();
+                      Swal(
+                        '¡Eliminado!',
+                        '',
+                        'success'
+                      ).then(response => {
+                         this.mathc();
+                      })
+                    } else {
+                      Swal(
+                        'Error',
+                        'Ha ocurrido un error.',
+                        'warning'
+                      ).then(response => {
+                        this.mathc();
+                      })
+                    }
+                  })
+                },
+                enfisico(index){
                    Swal({
                      title: '¿Estás seguro?',
                      text: "¡ Cambiar el estado a en físico!",
@@ -1075,8 +1078,8 @@
                            if(response) {
                              this.mathc();
                              Swal(
-                               '¡Eliminado!',
-                               'Ha cambiado el estado.',
+                               '¡Exito!',
+                               'Ha cambiado el estado de la guía.',
                                'success'
                              ).then(response => {
                                 this.mathc();
@@ -1102,40 +1105,18 @@
                      }
                    })
                  },
-                 archivada(index){
+          archivada(index){
                    Swal({
                      title: '¿Estás seguro?',
-                     text: "¡ Cambiar a archivada!",
+                     text: "¡ Esta guia cambiara a estado archivado para enviar a facturacion!",
                      type: 'warning',
                      showCancelButton: true,
-                     confirmButtonText: '¡Si! ',
+                     confirmButtonText: '¡Si archivar y generar factura! ',
                      cancelButtonText: '¡No! ',
                      reverseButtons: true
                    }).then((result) => {
                      if (result.value) {
-                       let data = new FormData();
-                       data.append('id',this.guias[index].id);
-                         axios.post('index.php/Guias/archivada',data)
-                         .then(response => {
-                           if(response) {
-                             this.mathc();
-                             Swal(
-                               '¡Eliminado!',
-                               'Ha cambiado el estado.',
-                               'success'
-                             ).then(response => {
-                                this.mathc();
-                             })
-                           } else {
-                             Swal(
-                               'Error',
-                               'Ha ocurrido un error.',
-                               'warning'
-                             ).then(response => {
-                               this.mathc();
-                             })
-                           }
-                         })
+                        this.archivar(index);
                      } else if (
                        result.dismiss === Swal.DismissReason.cancel
                      ) {
@@ -1146,6 +1127,32 @@
                        )
                      }
                    })
+                 },
+              async   archivar(index){
+                   let data = new FormData();
+                   data.append('id',this.guias[index].id);
+            await    axios.post('index.php/Guias/archivada',data)
+                     .then(response => {
+                       if(response) {
+                         this.mathc();
+                         Swal(
+                           '¡Arvchivado co Exito!',
+                           '',
+                           'success'
+                         ).then(response => {
+                           this.addFactura(index);
+                            this.mathc();
+                         })
+                       } else {
+                         Swal(
+                           'Error',
+                           'Ha ocurrido un error.',
+                           'warning'
+                         ).then(response => {
+                           this.mathc();
+                         })
+                       }
+                     })
                  },
                  enviarguias(index){
                    Swal({
@@ -1496,6 +1503,7 @@
                              .then(({data: {profiles}}) => {
                                 this.cart = profiles;
                              });
+                              this.permisos=JSON.parse(this.cart[0].permisos);
                            },
                     contadors(){
                       this.creada=0;this.enviada=0;this.cumplida=0;this.fisico=0;this.archivadas=0;this.anulada=0;
@@ -1539,7 +1547,7 @@
  dragElement(document.getElementById("mydiv"));
 
  function dragElement(elmnt) {
-   var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+   var pos1 = 50, pos2 = 52, pos3 = 0, pos4 = 0;
    if (document.getElementById(elmnt.id + "header")) {
      /* if present, the header is where you move the DIV from:*/
      document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;

@@ -744,6 +744,7 @@ v-if="item.id_tarifa && item.segurocarga && item.costeguia && item.escala && ite
          departamento:0,
          ver:false,
          cart:[],
+         permisos:[],
          profiles:[],
          factura:[],
          cargas:[],
@@ -1704,6 +1705,7 @@ v-if="item.id_tarifa && item.segurocarga && item.costeguia && item.escala && ite
                                      .then(({data: {profiles}}) => {
                                         this.cart = profiles;
                                      });
+                                     this.permisos=JSON.parse(this.cart[0].permisos);
                                    },
        },
 

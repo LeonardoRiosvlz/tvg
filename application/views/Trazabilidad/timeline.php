@@ -38,7 +38,7 @@ width: 120px;
                 <option value="N">N</option>
               </select>
               <div class="input-group-append">
-                <input list="encodings" v-model="form.id_guia"  value="" class="form-control form-control-lg" placeholder="Serial ratreo" :disabled="ver">
+                <input list="encodings" v-model="form.id_guia"  value="" class="form-control form-control-lg" placeholder="Serial de rastreo" :disabled="ver">
               </div>
             </div>
 

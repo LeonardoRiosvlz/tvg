@@ -1,4 +1,4 @@
-<div id="app" class="container">
+<div id="app" class="container" style="min-height:700px;">
   <div class="row">
     <div class="col-lg-12 my-5 ">
       <!-- Shopping cart table -->
@@ -22,9 +22,9 @@
         <div class="row p-1 ">
           <div class="col-md-4">
             <label class="links">Clientes</label>
-            <input list="encodings" v-model="form.cedula" @change="loadLiquidaciones();loadCotizaciones()"  value="" class="form-control form-control-lg" placeholder="Escriba una cedula" :disabled="ver">
+            <input list="encodings" v-model="form.cedula" @change="loadLiquidaciones();loadCotizaciones()"  value="" class="form-control form-control-lg" placeholder="Escriba una cedula o NIT" :disabled="ver">
               <datalist id="encodings">
-                  <option v-for="clientes in clientes"  v-if="clientes.cliente_especial==='No'" :value="clientes.cedula_cliente">{{clientes.nombre_cliente}}</option>
+                  <option v-for="clientes in clientes"  v-if="clientes.cliente_especial==='No'" :value="clientes.cedula_cliente">{{clientes.nit_cliente}}</option>
               </datalist>
           </div>
         </div>
@@ -117,9 +117,9 @@
                  <div class="row p-1 d-flex justify-content-between">
                    <div class="col-md-4">
                      <label class="links">CLIENTE</label>
-                     <input list="encodings" v-model="form.cedula" @change="loadCotizaciones();loadLiquidaciones();"  value="" class="form-control form-control-lg" placeholder="Escriba una cedula" :disabled="ver">
+                     <input list="encodings" v-model="form.cedula" @change="loadCotizaciones();loadLiquidaciones();"  value="" class="form-control form-control-lg" placeholder="Escriba una cedula o NIT" :disabled="ver">
                        <datalist id="encodings">
-                           <option v-for="clientes in clientes"  v-if="clientes.cliente_especial==='No'" :value="clientes.cedula_cliente" :disabled="ver">{{clientes.nombre_cliente}}</option>
+                           <option v-for="clientes in clientes"  v-if="clientes.cliente_especial==='No'" :value="clientes.cedula_cliente" :disabled="ver">{{clientes.nit_cliente}}</option>
                        </datalist>
                    </div>
                    <div class="col-md-4">
@@ -613,6 +613,7 @@
          departamento:0,
          ver:false,
          cart:[],
+         permisos:[],
          cargos:[],
          items:[],
          factores:[],
@@ -1494,11 +1495,11 @@
                       });
                     },
                     async loadCart() {
-
                         await  axios.get('index.php/User/get_profile/')
                          .then(({data: {profiles}}) => {
                             this.cart = profiles;
                          });
+                          this.permisos=JSON.parse(this.cart[0].permisos);
                        },
        },
 

@@ -259,6 +259,7 @@
          departamento:0,
          ver:false,
          cart:[],
+         permisos:[],
          guias:[],
          trazabilidad:[],
          sedes:[],
@@ -554,6 +555,7 @@
                       .then(({data: {profiles}}) => {
                          this.cart = profiles;
                       });
+                      this.permisos=JSON.parse(this.cart[0].permisos);
                     },
        },
 

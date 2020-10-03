@@ -1,4 +1,4 @@
-<div id="app" class="container">
+<div id="app" class="container"style="min-height:1000px;">
   <div id="mydiv" v-show="facturar">
     <div id="mydivheader">ANEXOS PARA FACTURAR</div>
     <table  class="table ">
@@ -16,7 +16,7 @@
         <td><button class="btn btn-danger" @click="eliminarItem(index)"><span class="mbri-trash"></span></button></td>
       </tr>
     </table>
-    <pre>{{factura}}</pre>
+
     <button v-if="factura.length>0"  @click="crearFactura()" type="button" class="btn-primary btn-block" name="button">Generar Factura</button>
   </div>
   <div class="row">
@@ -27,7 +27,7 @@
           <thead>
             <tr>
               <th scope="col" colspan="5" class="border-0 bg-white  text-center">
-                  <div class="bg-light rounded-pill px-4 py-1 text-uppercase font-weight-bold links">Clientes  <i class="fa fa-street-view" aria-hidden="true"></i></div>
+                  <div class="bg-light rounded-pill px-4 py-1 text-uppercase font-weight-bold links">Guía de carga clientes especiales  <i class="fa fa-road" aria-hidden="true"></i></div>
               </th>
             </tr>
             <tr>
@@ -40,7 +40,7 @@
         <div class="row">
           <div class=" col-md-3 col-sm-12">
             <div class="form-group">
-               <label class="links">Dede</label>
+               <label class="links">Desde</label>
                  <flat-pickr
                      v-model="desde"
                      :config="config"
@@ -70,9 +70,9 @@
         <div class="row ">
           <div class="col-md-4">
             <label class="links">Clientes</label>
-            <input list="encodings" v-model="form.cedula"  value="" class="form-control form-control-lg" placeholder="Escriba una cedula">
+            <input list="encodings" v-model="form.cedula"  value="" class="form-control form-control-lg" placeholder="Escriba una cedula o nit">
               <datalist id="encodings">
-                  <option v-for="clientes in clientes" v-if="clientes.cliente_especial==='Si'" :value="clientes.cedula_cliente">{{clientes.nombre_cliente}}</option>
+                  <option v-for="clientes in clientes" v-if="clientes.cliente_especial==='Si'" :value="clientes.cedula_cliente">{{clientes.nit_cliente}}</option>
               </datalist>
           </div>
           <div class="col-md-4">
@@ -596,6 +596,7 @@
          departamento:0,
          ver:false,
          cart:[],
+         permisos:[],
          factura:[],
          cargas:[],
          legalizaciones:[],
@@ -2632,6 +2633,7 @@
                      .then(({data: {profiles}}) => {
                         this.cart = profiles;
                      });
+                     this.permisos=JSON.parse(this.cart[0].permisos);
                    },
        },
 

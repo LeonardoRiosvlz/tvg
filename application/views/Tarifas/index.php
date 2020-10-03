@@ -48,6 +48,7 @@
         <table id="example1" class="table ">
           <thead>
           <tr>
+            <th class="links">Guía de ruta</th>
             <th class="links">Origen departamento</th>
             <th class="links">Origen ciudad</th>
             <th class="links">Destino despartamento</th>
@@ -58,6 +59,7 @@
           </tr>
           </thead>
             <tr v-for="(tarifas,index) in tarifas">
+              <td class="links">{{tarifas.id}}</td>
               <td class="links">{{tarifas.departamento_origen}}</td>
               <td class="links">{{tarifas.ciudad_origen}}</td>
               <td class="links">{{tarifas.departamento_destino}}</td>
@@ -1522,6 +1524,7 @@
           ],
           ver:false,
          cart:[],
+         permisos:[],
          transportes:[],
          tiposenvios:[],
          itinerarios:[],
@@ -1746,6 +1749,7 @@
                        .then(({data: {profiles}}) => {
                           this.cart = profiles;
                        });
+                        this.permisos=JSON.parse(this.cart[0].permisos);
                      },
        },
 

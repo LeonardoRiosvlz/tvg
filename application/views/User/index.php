@@ -6,7 +6,7 @@
         <thead>
           <tr>
             <th scope="col" colspan="5" class="border-0 bg-white  text-center">
-                <div class="bg-light rounded-pill px-4 text-uppercase font-weight-bold links">Gestió de usuarios <i class="fa fa-users" aria-hidden="true"></i></div>
+                <div class="bg-light rounded-pill px-4 text-uppercase font-weight-bold links">Gestión de usuarios <i class="fa fa-users" aria-hidden="true"></i></div>
             </th>
           </tr>
           <tr>
@@ -22,6 +22,7 @@
                               <tr>
                                 <th scope="col">Nombre</th>
                                 <th scope="col">Cedula</th>
+                                <th scope="col">Sucursal</th>
                                 <th scope="col">Cargo</th>
                                 <th scope="col">Estado</th>
                                 <th scope="col">Detalles</th>
@@ -31,7 +32,8 @@
                               <tr v-for="(profile, index) in profiles">
                                 <th class="links">{{profile.nombre}} {{profile.apellido}}</th>
                                 <td class="links">{{profile.cedula}}</td>
-                                <td class="links"><span >{{profile.created_at}}</span></td>
+                                <td class="links">{{profile.sucursal}}</td>
+                                <td class="links"><span >{{profile.cargo}}</span></td>
                                 <td v-if="profile.banned==='1'" class="links"><span class="badge badge-danger">Baneado</span></td>
                                 <td v-else><span class="badge badge-success">Activo</span></td>
                                 <td>
@@ -61,7 +63,7 @@
            <div class="modal-dialog modal-lg">
              <div class="modal-content">
                <div class="modal-header">
-                 <h4 class="modal-title links">Gestió de usuarios <i class="fa fa-users" aria-hidden="true"></i></h4>
+                 <h4 class="modal-title links">Gestión de usuarios <i class="fa fa-users" aria-hidden="true"></i></h4>
                  <button type="button" @click="resete()" class="close" data-dismiss="modal" aria-label="Close">
                    <span class="mbri-close " ></span>
                  </button>
@@ -222,6 +224,64 @@
                                    <p class="text-danger my-1 small" v-if="(errors.first('banned'))" >  Este dato es requerido  </p>
                                  </div>
                                </div>
+                               <div class="col-12" v-show="form.auth_level==='1'">
+                                 <label for="">Permisos</label>
+                                  <div class="row">
+                                    <div class="col-3 ">
+                                      <input type="checkbox" id="check1" v-model="form.permisos.cotizaciones" checked/>
+                                       <label class="labels" for="check1"><i class="fa fa-calculator" aria-hidden="true"></i> Cotizaciones</label>
+                                    </div>
+                                    <div class="col-3 ">
+                                      <input type="checkbox" id="check2" v-model="form.permisos.planillas" checked/>
+                                       <label class="labels" for="check2"><i class="fa fa-file-powerpoint-o" aria-hidden="true"></i> Planilas de liquidacion</label>
+                                    </div>
+                                    <div class="col-3 ">
+                                      <input type="checkbox" id="check3" v-model="form.permisos.guiasNormales" checked/>
+                                       <label class="labels" for="check3"><i class="fa fa-road" aria-hidden="true"></i> Guías (clientes normales)</label>
+                                    </div>
+                                    <div class="col-3 ">
+                                      <input type="checkbox" id="check4" v-model="form.permisos.guiasEspeciales" checked/>
+                                       <label class="labels" for="check4"><i class="fa fa-road" aria-hidden="true"></i> Guías  (clientes especiales)</label>
+                                    </div>
+                                    <div class="col-3 ">
+                                      <input type="checkbox" id="check43" v-model="form.permisos.facturas" checked/>
+                                       <label class="labels" for="check43"><i class="fa fa-file" aria-hidden="true"></i> Facturas</label>
+                                    </div>
+                                    <div class="col-3 ">
+                                      <input type="checkbox" id="check5" v-model="form.permisos.actasEntrega" checked/>
+                                       <label class="labels" for="check5"><i class="fa fa-handshake-o" aria-hidden="true"></i> Actas de entrega</label>
+                                    </div>
+                                    <div class="col-3 ">
+                                      <input type="checkbox" id="check6" v-model="form.permisos.actasRecogidas" checked/>
+                                       <label class="labels" for="check6"><i class="fa fa-cubes" aria-hidden="true"></i> Acta de Recogida</label>
+                                    </div>
+                                    <div class="col-3 ">
+                                      <input type="checkbox" id="check7" v-model="form.permisos.documentosGenerados" checked/>
+                                       <label class="labels" for="check7"><i class="fa fa-file-pdf-o" aria-hidden="true"></i> Documentos Generados</label>
+                                    </div>
+                                    <div class="col-3 ">
+                                      <input type="checkbox" id="check8" v-model="form.permisos.alertas" checked/>
+                                       <label class="labels" for="check8"><i class="fa fa-file-pdf-o" aria-hidden="true"></i> Alertas</label>
+                                    </div>
+                                    <div class="col-3 ">
+                                      <input type="checkbox" id="check9" v-model="form.permisos.remitentes" checked/>
+                                       <label class="labels" for="check9"><i class="fa fa-terminal" aria-hidden="true"></i> Remitentes</label>
+                                    </div>
+                                    <div class="col-3 ">
+                                      <input type="checkbox" id="check10" v-model="form.permisos.clientes" checked/>
+                                       <label class="labels" for="check10"><i class="fa fa-user-o" aria-hidden="true"></i> Clientes</label>
+                                    </div>
+                                    <div class="col-3 ">
+                                      <input type="checkbox" id="check11" v-model="form.permisos.proveedores" checked/>
+                                       <label class="labels" for="check11"><i class="fa fa-car" aria-hidden="true"></i> Proveedores de transpote</label>
+                                    </div>
+                                    <div class="col-3 ">
+                                      <input type="checkbox" id="check12" v-model="form.permisos.trazabilidad" checked/>
+                                       <label class="labels" for="check12"><i class="fa fa-file" aria-hidden="true"></i> Trazabilidad de la carga</label>
+                                    </div>
+                                  </div>
+
+                               </div>
 
                               </div>
                              <button v-if="editMode===false"  class="btn btn-primary btn-lg btn-block" type="submit">Guardar</button>
@@ -323,12 +383,6 @@
                </table>
              </div>
              <!-- End -->
-             <h3 class="links" v-if="form.profesional==='Si'">Documentos de acreditación</h3>
-             <div class="row" v-if="form.profesional==='Si'">
-               <div v-for="(img ,index) in documentos" class="card col-lg-4 col-md-6 col-sm-12 col-xs-12 m-3 pr-3 py-3 border-0" >
-                   <a :href="'<?=base_url();?>'+img.url_documento" class="card-img-top" download="documento" alt="..."><span class="mbri-file" style="font-size:7em"></span></a>
-                 </div>
-             </div>
            </div>
          </div>
          </div>
@@ -352,6 +406,7 @@
          profiles:[],
          cargos:[],
          sucursales:[],
+         permisos:[],
          editMode:false,
          ver:false,
          form:{
@@ -367,6 +422,21 @@
              'datos':[{
                'sucursal':'',
              }],
+             'permisos':{
+               'cotizaciones':true,
+               'planillas':true,
+               'guiasNormales':true,
+               'guiasEspeciales':true,
+               'actasEntrega':true,
+               'actasRecogidas':true,
+               'documentosGenerados':true,
+               'alertas':true,
+               'remitentes':true,
+               'clientes':true,
+               'proveedores':true,
+               'trazabilidad':true,
+               'facturas':true,
+             },
              'url_foto':''
          },
        },
@@ -576,6 +646,7 @@
                        this.form.telefono_personal=this.profiles[index].telefono_personal;
                        this.form.telefono_corporativo=this.profiles[index].telefono_corporativo;
                        this.form.sucursal=this.profiles[index].sucursal;
+                        this.form.permisos=JSON.parse(this.profiles[index].permisos);
                        $('#modal-lg').modal('show');
                        this.editMode=true
                  },
@@ -621,6 +692,7 @@
                       .then(({data: {profiles}}) => {
                          this.cart = profiles;
                       });
+                       this.permisos=JSON.parse(this.cart[0].permisos);
                     }
        },
 

@@ -3,8 +3,8 @@
     <div class="row hero-image" style="min-height:800px; background-">
       <div class="col-lg-12 my-5 ">
         <!-- Shopping cart table -->
-        <div class="table-responsive ">
-          <table id="example2" class="table">
+        <div class=" ">
+          <table id="example2" class="table" v-show="trazabilidad.length>0">
             <thead>
               <tr>
                 <th scope="col" colspan="5" class="border-0 bg-white  text-center">
@@ -44,7 +44,7 @@
             </div>
           </div>
 
-            <table  class="table bg-white">
+            <table  class="table bg-white"  v-show="trazabilidad.length>0">
               <thead>
               <tr class="bg-white">
                 <th class="links">Tipo de reporte</th>
@@ -270,10 +270,10 @@
          form:{
              'id':'',
              'prefijo':'',
-             'id_guia':'165382146',
+             'id_guia':'',
              'hora':'',
              'id_sede':'',
-             'id_satelite':'2409538544',
+             'id_satelite':'',
              'fecha_recogida':'',
              'llegada_destino':'',
              'tipo_reporte':'',
