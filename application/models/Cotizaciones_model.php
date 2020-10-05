@@ -98,16 +98,52 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                ));
                return $this->db->error();
               }
-        public function getcotizaciones() {
+
+        public function getcotizacionesu($id) {
             return $this->db
             ->select('c.*, u.username,cl.correo_cliente, cl.nombre_empresa,cl.nombre_cliente, cl.telefono_cliente')
             ->select("TIMESTAMPDIFF(DAY,c.f_vencimiento, CURDATE()) AS age", false)
             ->from('cotizaciones c')
+            ->where('c.user_id',$id)
             ->join('users u', 'c.user_id = u.user_id', 'left outer')
             ->join('clientes cl', 'c.cedula = cl.cedula_cliente', 'left outer')
             ->get()
             ->result();
           }
+          public function getcc($id) {
+              return $this->db
+              ->select('c.*, u.username,cl.correo_cliente, cl.nombre_empresa,cl.nombre_cliente, cl.telefono_cliente')
+              ->select("TIMESTAMPDIFF(DAY,c.f_vencimiento, CURDATE()) AS age", false)
+              ->from('cotizaciones c')
+              ->where('c.cedula',$id)
+              ->join('users u', 'c.user_id = u.user_id', 'left outer')
+              ->join('clientes cl', 'c.cedula = cl.cedula_cliente', 'left outer')
+              ->get()
+              ->result();
+            }
+            public function getcca($id) {
+                return $this->db
+                ->select('c.*, u.username,cl.correo_cliente, cl.nombre_empresa,cl.nombre_cliente, cl.telefono_cliente')
+                ->select("TIMESTAMPDIFF(DAY,c.f_vencimiento, CURDATE()) AS age", false)
+                ->from('cotizaciones c')
+                ->where('c.cedula',$id)
+                ->where('c.estatus_gestion',"Aprobada")
+                ->join('users u', 'c.user_id = u.user_id', 'left outer')
+                ->join('clientes cl', 'c.cedula = cl.cedula_cliente', 'left outer')
+                ->get()
+                ->result();
+              }
+          public function getcotizaciones() {
+              return $this->db
+              ->select('c.*, u.username,cl.correo_cliente, cl.nombre_empresa,cl.nombre_cliente, cl.telefono_cliente')
+              ->select("TIMESTAMPDIFF(DAY,c.f_vencimiento, CURDATE()) AS age", false)
+              ->from('cotizaciones c')
+              ->join('users u', 'c.user_id = u.user_id', 'left outer')
+              ->join('clientes cl', 'c.cedula = cl.cedula_cliente', 'left outer')
+              ->get()
+              ->result();
+            }
+
           public function getcotizacionesr() {
               return $this->db
               ->select('c.*, u.username,cl.correo_cliente, cl.nombre_empresa,cl.nombre_cliente, cl.telefono_cliente')

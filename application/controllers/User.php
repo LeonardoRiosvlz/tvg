@@ -9,7 +9,6 @@ class User extends MY_Controller{
       $this->load->model('User_model', 'user');
       if( ! $this->verify_min_level(1)){
           redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
-
         }
       // Form and URL helpers always loaded (just for convenience)
       $this->load->helper('url');
@@ -59,7 +58,7 @@ class User extends MY_Controller{
         echo json_encode(['profiles' => $data['profiles']]);
 
       }
-           public function editarp() {
+               public function editarp() {
        		    $data = json_decode($this->input->post('service_form'),true);
        			$result = $this->user->editarp($data);
        				if($result['code'] == 0){

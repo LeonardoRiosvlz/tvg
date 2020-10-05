@@ -91,6 +91,8 @@
             </a>
           </div>
         </div>
+
+
         <div class="row">
           <div class=" col-md-3 col-sm-12">
             <div class="form-group">
@@ -125,13 +127,14 @@
             <label >CLIENTE</label>
             <input list="encodings" v-model="cedula"  @keyup="form.nombre_empresa='';form.direccion_cliente='';form.telefono_cliente='';"   value="" class="form-control " placeholder="Escriba una cedula" :disabled="ver">
               <datalist id="encodings">
-                  <option v-for="clientes in clientes"  v-if="clientes.cliente_especial==='No'" :value="clientes.cedula_cliente" :disabled="ver">{{clientes.nombre_cliente}}</option>
+                  <option v-for="clientes in clientes"  v-if="clientes.cliente_especial==='No'" :value="clientes.cedula_cliente" :disabled="ver">{{clientes.nit_cliente}}</option>
               </datalist>
           </div>
           <div class="col-md-3">
             <div class="form-group">
               <label >Estado</label>
               <select v-model="estado" class="form-control" id="sel1">
+                <option value=""></option>
                 <option value="Creada">Creada</option>
                 <option value="Enviada">Enviada</option>
                 <option value="Cumplida">Cumplida</option>
@@ -146,12 +149,14 @@
              <input type="text" v-model="ciudad"    class="form-control"  >
           </div>
         </div>
+
+      <?php if ( $this->auth_role == 'manager' || $this->auth_role == 'admin'): ?>
         <div class="row">
           <div class="col-2 p-2 ml-auto">
               <a v-if="guias.length>0" :href="'<?=base_url();?>'+url" type="button"  class="btn btn-block btn-primary btn-sm links" >Exportar Excel <span class="mbri-save"></span></a>
           </div>
         </div>
-
+      <?php endif; ?>
           <table id="example1" class="table ">
             <thead>
             <tr>
@@ -171,8 +176,9 @@
                 <td class="links">{{guias.ciudad_origen}}</td>
                 <td class="links">{{guias.ciudad_destino}}</td>
                 <td class="links">{{guias.estado}}</td>
-                <td class="links"><a :href="'<?=base_url()?>Guias/Guia_to_pdf/'+guias.id"  download>Descargar PDF</a></td>
                 <td class="links">{{guias.contacto_remitente}}</td>
+                <td class="links"><a :href="'<?=base_url()?>Guias/Guia_to_pdf/'+guias.id"  download>Descargar PDF</a></td>
+
                   <td>
                     <div class="btn-group">
                         <button type="button" class="btn btn-default">Action</button>
@@ -277,11 +283,21 @@
                    <button type="button" class="btn btn-primary btn-lg" @click="buscarCliente()" style="margin-top:37px;">Buscar <span class="mbri-search"></span></button>
                  </div>
                  <div class="col-md-4">
-                   <label class="links">PLANILLAS</label>
-                   <input list="encodingss" v-model="form.id_planilla" @keyup="loadLiquidacion()"  value="" class="form-control form-control-lg" placeholder="Escriba una cedula" :disabled="!form.cedula">
-                     <datalist id="encodingss">
-                         <option v-for="liquidaciones in liquidaciones" v-if="liquidaciones.estado==='Generado'" :value="liquidaciones.id">{{liquidaciones.id}}</option>
-                     </datalist>
+
+                   <?php if ($this->auth_role == 'customer'): ?>
+                     <label class="links">PLANILLAS</label>
+                      <input list="encodingss" v-model="form.id_planilla" @keyup="loadLiquidacion()"  value="" class="form-control form-control-lg" placeholder="Escriba una cedula" :disabled="!form.cedula">
+                        <datalist id="encodingss">
+                           <option v-for="liquidaciones in liquidaciones" v-if="liquidaciones.estado==='Generado' && liquidaciones.user_id==='<?=$auth_user_id;?>'" :value="liquidaciones.id">{{liquidaciones.id}}</option>
+                      </datalist>
+                   <?php endif; ?>
+                   <?php if ( $this->auth_role == 'manager' || $this->auth_role == 'admin'): ?>
+                     <label class="links">PLANILLAS</label>
+                      <input list="encodingss" v-model="form.id_planilla" @keyup="loadLiquidacion()"  value="" class="form-control form-control-lg" placeholder="Escriba una cedula" :disabled="!form.cedula">
+                        <datalist id="encodingss">
+                           <option v-for="liquidaciones in liquidaciones" v-if="liquidaciones.estado==='Generado'" :value="liquidaciones.id">PLN-{{liquidaciones.id}}</option>
+                      </datalist>
+                    <?php endif; ?>
                  </div>
                </div>
               <form role="form" id="form" @submit.prevent="validateBeforeSubmit">
@@ -494,14 +510,6 @@
                     <option v-for="formaspago in formaspago" :value="formaspago.id">{{formaspago.descripcion}} {{formaspago.dias}} dias</option>
                   </select>
                   <p class="text-danger my-1 small" v-if="(errors.first('forma_pago'))" >  Este dato es requerido  </p>
-                </div>
-              </div>
-              <div class="col-4">
-                <div class="form-group">
-                  <label for="exampleFormControlSelect1">Liquidador</label>
-                  <select class="form-control" id="exampleFormControlSelect1" value="<?=$auth_user_id;?>">
-                    <option v-for="profiles in profiles" v-if="profiles.user_id==='<?=$auth_user_id;?>'" :value="profiles.user_id">{{profiles.username}}</option>
-                  </select>
                 </div>
               </div>
             </div>
@@ -742,6 +750,192 @@
               dias:this.guias[index].dias,
             });
          },
+         <?php if ($this->auth_role == 'customer'): ?>
+         async  mathc(){
+           if (!this.desde && !this.hasta && !this.cedula && !this.estado && !this.ciudad) {
+               this.loadguias();
+               this.url='';
+           }else  if (this.desde && this.hasta && !this.cedula && !this.estado && !this.ciudad) {
+               console.log("solo fecha");
+               let data = new FormData();
+                data.append('desde',this.desde);
+                data.append('hasta',this.hasta);
+                 data.append('user_id',this.form.user_id);
+                await axios.post('index.php/Guias/get_tiempou/',data)
+                .then(({data: {guias}}) => {
+                  this.guias = guias
+                });
+                 $("#example1").DataTable();
+                 this.url='Guias/excelexport_tiempo/'+this.desde+'/'+this.hasta;
+             }else if(!this.desde && !this.hasta && this.cedula && !this.estado && !this.ciudad) {
+               console.log("solo cedula");
+               let data = new FormData();
+                data.append('cedula',this.cedula);
+                 data.append('user_id',this.form.user_id);
+                await axios.post('index.php/Guias/get_cedulau/',data)
+                .then(({data: {guias}}) => {
+                  this.guias = guias
+                });
+                 $("#example1").DataTable();
+                 this.url='Guias/excelexport_cedula/'+this.cedula;
+             }else if(!this.desde && !this.hasta && !this.cedula && this.estado && !this.ciudad) {
+                 console.log("solo estado");
+                 let data = new FormData();
+                  data.append('estado',this.estado);
+                   data.append('user_id',this.form.user_id);
+                  await axios.post('index.php/Guias/get_estadou/',data)
+                  .then(({data: {guias}}) => {
+                    this.guias = guias
+                  });
+                   $("#example1").DataTable();
+                   this.url='Guias/excelexport_estado/'+this.estado;
+             }else if(!this.desde && !this.hasta && !this.cedula && !this.estado && this.ciudad) {
+                 console.log("solo ciudad");
+                 let data = new FormData();
+                  data.append('ciudad',this.ciudad);
+                   data.append('user_id',this.form.user_id);
+                  await axios.post('index.php/Guias/get_ciudadu/',data)
+                  .then(({data: {guias}}) => {
+                    this.guias = guias
+                  });
+                   $("#example1").DataTable();
+                   this.url='Guias/excelexport_ciudad/'+this.ciudad;
+             }else if(this.desde && this.hasta && this.cedula && !this.estado && !this.ciudad) {
+                 console.log("Fecha y cedula");
+                 let data = new FormData();
+                 data.append('desde',this.desde);
+                 data.append('hasta',this.hasta);
+                  data.append('cedula',this.cedula);
+                   data.append('user_id',this.form.user_id);
+                  await axios.post('index.php/Guias/get_fecha_cedulau/',data)
+                  .then(({data: {guias}}) => {
+                    this.guias = guias
+                  });
+                   $("#example1").DataTable();
+               this.url='Guias/excelexport_fecha_cedula/'+this.desde+'/'+this.hasta+'/'+this.cedula;
+             }else if(this.desde && this.hasta && !this.cedula && this.estado && !this.ciudad) {
+                 console.log("Fecha y estado")
+                 let data = new FormData();
+                 data.append('desde',this.desde);
+                 data.append('hasta',this.hasta);
+                  data.append('estado',this.estado);
+                   data.append('user_id',this.form.user_id);
+                  await axios.post('index.php/Guias/get_fecha_estadou/',data)
+                  .then(({data: {guias}}) => {
+                    this.guias = guias
+                  });
+                   $("#example1").DataTable();
+                   this.url='Guias/excelexport_fecha_estado/'+this.desde+'/'+this.hasta+'/'+this.estado;
+             }else if(this.desde && this.hasta && !this.cedula && !this.estado && this.ciudad) {
+                 console.log("Fecha y ciudad");
+                 let data = new FormData();
+                 data.append('desde',this.desde);
+                 data.append('hasta',this.hasta);
+                  data.append('ciudad',this.ciudad);
+                   data.append('user_id',this.form.user_id);
+                  await axios.post('index.php/Guias/get_fecha_ciudadu/',data)
+                  .then(({data: {guias}}) => {
+                    this.guias = guias
+                  });
+                   $("#example1").DataTable();
+                   this.url='Guias/excelexport_fecha_ciudad/'+this.desde+'/'+this.hasta+'/'+this.ciudad;
+             }else if(!this.desde && !this.hasta && this.cedula && this.estado && !this.ciudad) {
+                 console.log("cedula y estado");
+                 let data = new FormData();
+                 data.append('cedula',this.cedula);
+                 data.append('estado',this.estado);
+                  data.append('user_id',this.form.user_id);
+                  await axios.post('index.php/Guias/get_cedula_estadou/',data)
+                  .then(({data: {guias}}) => {
+                    this.guias = guias
+                  });
+                   $("#example1").DataTable();
+                   this.url='Guias/excelexport_cedula_estado/'+this.cedula+'/'+this.estado;
+             }else if(!this.desde && !this.hasta && this.cedula && !this.estado && this.ciudad) {
+                 console.log("cedula y ciudad");
+                 let data = new FormData();
+                 data.append('cedula',this.cedula);
+                 data.append('ciudad',this.ciudad);
+                  data.append('user_id',this.form.user_id);
+                  await axios.post('index.php/Guias/get_cedula_ciudadu/',data)
+                  .then(({data: {guias}}) => {
+                    this.guias = guias
+                  });
+                   $("#example1").DataTable();
+                 this.url='Guias/excelexport_cedula_ciudad/'+this.cedula+'/'+this.ciudad;
+             }else if(!this.desde && !this.hasta && !this.cedula && this.estado && this.ciudad) {
+                 console.log("estado y ciudad")
+                 let data = new FormData();
+                 data.append('estado',this.estado);
+                 data.append('ciudad',this.ciudad);
+                  data.append('user_id',this.form.user_id);
+                  await axios.post('index.php/Guias/get_estado_ciudadu/',data)
+                  .then(({data: {guias}}) => {
+                    this.guias = guias
+                  });
+                   $("#example1").DataTable();
+                   this.url='Guias/excelexport_estado_ciudad/'+this.estado+'/'+this.ciudad;
+             }else if(this.desde && this.hasta && this.cedula && !this.estado && this.ciudad) {
+                 console.log("fecha y cedula y ciudad");
+                 let data = new FormData();
+                 data.append('desde',this.desde);
+                 data.append('hasta',this.hasta);
+                 data.append('cedula',this.cedula);
+                 data.append('ciudad',this.ciudad);
+                  data.append('user_id',this.form.user_id);
+                  await axios.post('index.php/Guias/get_fecha_cedula_ciudadu/',data)
+                  .then(({data: {guias}}) => {
+                    this.guias = guias
+                  });
+                   $("#example1").DataTable();
+               this.url='Guias/excelexport_fecha_ciudad_cedula/'+this.desde+'/'+this.hasta+'/'+this.cedula+'/'+this.ciudad;
+             }else if(this.desde && this.hasta && !this.cedula && this.estado && this.ciudad) {
+                 console.log("fecha y estado y ciudad");
+                 let data = new FormData();
+                 data.append('desde',this.desde);
+                 data.append('hasta',this.hasta);
+                 data.append('estado',this.estado);
+                 data.append('ciudad',this.ciudad);
+                  data.append('user_id',this.form.user_id);
+                  await axios.post('index.php/Guias/get_fecha_estado_ciudadu/',data)
+                  .then(({data: {guias}}) => {
+                    this.guias = guias
+                  });
+                   $("#example1").DataTable();
+               this.url='Guias/excelexport_fecha_estado_ciudad/'+this.desde+'/'+this.hasta+'/'+this.estado+'/'+this.ciudad;
+             }else if(this.desde && this.hasta && this.cedula && this.estado && this.ciudad) {
+                 console.log("fecha y estado y cedula y ciudad")
+                 let data = new FormData();
+                 data.append('desde',this.desde);
+                 data.append('hasta',this.hasta);
+                 data.append('estado',this.estado);
+                 data.append('ciudad',this.ciudad);
+                 data.append('cedula',this.cedula);
+                  data.append('user_id',this.form.user_id);
+                  await axios.post('index.php/Guias/get_fecha_estado_ciudad_cedulau/',data)
+                  .then(({data: {guias}}) => {
+                    this.guias = guias
+                  });
+                   $("#example1").DataTable();
+                   this.url='Guias/excelexport_fecha_estado_ciudad_cedula/'+this.desde+'/'+this.hasta+'/'+this.estado+'/'+this.ciudad+'/'+this.cedula;
+             }else if(this.desde && this.hasta && this.cedula && this.estado && !this.ciudad) {
+                 console.log("fecha y estado y cedula");
+                 let data = new FormData();
+                 data.append('desde',this.desde);
+                 data.append('hasta',this.hasta);
+                 data.append('estado',this.estado);
+                 data.append('cedula',this.cedula);
+                 data.append('user_id',this.form.user_id);
+                  await axios.post('index.php/Guias/get_fecha_estado_cedulau/',data)
+                  .then(({data: {guias}}) => {
+                    this.guias = guias
+                  });
+                   $("#example1").DataTable();
+                   this.url='Guias/excelexport_fecha_estado_cedula/'+this.desde+'/'+this.hasta+'/'+this.estado+'/'+this.cedula;
+             }
+           },
+           <?php endif; ?>
+           <?php if ( $this->auth_role == 'manager' || $this->auth_role == 'admin'): ?>
           async  mathc(){
             if (!this.desde && !this.hasta && !this.cedula && !this.estado && !this.ciudad) {
                 this.loadguias();
@@ -911,6 +1105,7 @@
                     this.url='Guias/excelexport_fecha_estado_cedula/'+this.desde+'/'+this.hasta+'/'+this.estado+'/'+this.cedula;
               }
             },
+            <?php endif; ?>
             sumar(){
             this.form.total=parseFloat(this.form.totalSeguro)+parseFloat(this.form.costeguia)+parseFloat(this.form.totalPrecios)+parseFloat(this.form.otrosCargos);
             },
@@ -1482,6 +1677,21 @@
                        });
 
                      },
+
+                     <?php if ($this->auth_role == 'customer'): ?>
+                  async loadguias() {
+                    let data = new FormData();
+                       data.append('id',this.form.user_id);
+                    await   axios.post('index.php/Guias/getguiasu/',data)
+                       .then(({data: {guias}}) => {
+                         this.guias = guias
+                       });
+                       this.contadors();
+                       $("#example1").DataTable();
+
+                     },
+                     <?php endif; ?>
+                     <?php if ( $this->auth_role == 'manager' || $this->auth_role == 'admin'): ?>
                      async loadguias() {
                     await   axios.get('index.php/Guias/getguias/')
                        .then(({data: {guias}}) => {
@@ -1491,12 +1701,8 @@
                        $("#example1").DataTable();
 
                      },
-                     async   loadProfiles() {
-                     await     axios.get('index.php/Root_user/get_profile/')
-                          .then(({data: {profiles}}) => {
-                            this.profiles = profiles
-                          });
-                        },
+                      <?php endif; ?>
+
                         async loadCart() {
 
                             await  axios.get('index.php/User/get_profile/')
@@ -1504,6 +1710,11 @@
                                 this.cart = profiles;
                              });
                               this.permisos=JSON.parse(this.cart[0].permisos);
+                              if (! this.permisos.guiasNormales) {
+                               window.setTimeout(function () {
+                                     location.href = "<?=base_url();?>";
+                                }, 0);
+                              }
                            },
                     contadors(){
                       this.creada=0;this.enviada=0;this.cumplida=0;this.fisico=0;this.archivadas=0;this.anulada=0;
@@ -1527,7 +1738,7 @@
        },
 
        created(){
-            this.loadProfiles();
+
             this.loadformaspago();
             this.loadremitentes();
             this.loadtransportes();

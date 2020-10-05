@@ -1,4 +1,4 @@
-<div id="app" class="container">
+<div id="app" class="container"style="min-height:1100px;">
   <div class="row">
     <div class="col-lg-12 my-1 ">
       <!-- Shopping cart table -->
@@ -49,15 +49,15 @@
         <div class="row">
           <div class="col-md-3">
             <label >CLIENTE</label>
-            <input list="encodings" v-model="cedula"  @keyup="form.nombre_empresa='';form.direccion_cliente='';form.telefono_cliente='';"   value="" class="form-control " placeholder="Escriba una cedula" :disabled="ver">
-              <datalist id="encodings">
-                  <option v-for="clientes in clientes"   :value="clientes.cedula_cliente" :disabled="ver">{{clientes.nombre_cliente}}</option>
-              </datalist>
+            <input  v-model="cedula"  @keyup="form.nombre_empresa='';form.direccion_cliente='';form.telefono_cliente='';"   value="" class="form-control " placeholder="Escriba una cedula" :disabled="ver">
+
           </div>
           <div class="col-md-3">
             <div class="form-group">
               <label >Estado</label>
               <select v-model="estado" class="form-control" id="sel1">
+                <option value=""></option>
+                <option value="Creado">Creado</option>
                 <option value="Generado">Generado</option>
                 <option value="Enviada">Enviada</option>
                 <option value="Cumplida">Cumplida</option>
@@ -68,12 +68,14 @@
             </div>
           </div>
         </div>
+
+      <?php if ( $this->auth_role == 'manager' || $this->auth_role == 'admin'): ?>
         <div class="row">
           <div class="col-2 p-2 ml-auto">
               <a v-if="facturas.length>0" :href="'<?=base_url();?>'+url" type="button"  class="btn btn-block btn-primary btn-sm links" >Exportar Excel <span class="mbri-save"></span></a>
           </div>
         </div>
-
+      <?php endif; ?>
           <table id="example1" class="table ">
             <thead>
             <tr>
@@ -154,13 +156,13 @@
                </button>
              </div>
              <div class="modal-body">
-               <h2 class="text-danger">FV-{{form.id}} ( {{form.estado}})</h2>
+               <h2 class="text-danger"v-if="ver">FV-{{form.id}} ( {{form.estado}})</h2>
                <div class="row" v-if="!ver">
                  <div class="col-md-4">
-                   <label class="links" >Clientes</label>
+                   <label class="links" >Cedula/ Nit</label>
                    <input list="encodings" v-model="cedula"  value="" class="form-control form-control-lg" placeholder="Escriba una cedula">
                      <datalist id="encodings">
-                         <option v-for="clientes in clientes":value="clientes.cedula_cliente">{{clientes.nombre_cliente}}</option>
+                         <option v-for="clientes in clientes":value="clientes.cedula_cliente">{{clientes.nit_cliente}}</option>
                      </datalist>
                  </div>
                  <div class="col-3 py-4">
@@ -247,21 +249,23 @@
                                  <p class="text-danger my-1" v-if="(errors.first('ciudad_cliente'))" >  Este dato es requerido  </p>
                                </div>
                              </div>
-                             <div class="col-md-6">
+                             <div class="card col-12 ">
+                               <div class="row">
+                             <div class="col-md-6" v-if="!ver">
                                <!-- textarea -->
                                <div class="form-group">
                                  <label class="links">Origen</label>
                                   <input type="text" v-model="item.origen"  name="ciudad_cliente" class="form-control" id="" :disabled="ver">
                                </div>
                              </div>
-                             <div class="col-md-6">
+                             <div class="col-md-6" v-if="!ver">
                                <!-- textarea -->
                                <div class="form-group">
                                  <label class="links">Destino</label>
                                   <input type="text" v-model="item.destino"  name="ciudad_cliente" class="form-control" id="" :disabled="ver">
                                </div>
                              </div>
-                             <div class="col-md-4">
+                             <div class="col-md-4" v-if="!ver">
                                <div class="form-group">
                                   <label for="exampleFormControlSelect2">Tipo de transporte</label>
                                   <select v-model="item.tipo_transporte"  class="form-control" id="exampleFormControlSelect2">
@@ -271,14 +275,14 @@
                                 </div>
                              </div>
 
-                             <div class="col-md-4">
+                             <div class="col-md-4" v-if="!ver">
                                <!-- textarea -->
                                <div class="form-group">
                                  <label class="links">Id de la carga</label>
                                   <input type="text" v-model="item.n_guia"  name="n_guia" class="form-control" id="" :disabled="ver">
                                </div>
                              </div>
-                             <div class="col-md-4">
+                             <div class="col-md-4" v-if="!ver">
                                <!-- textarea -->
                                <div class="form-group">
                                  <label class="links">Subtotal</label>
@@ -288,6 +292,8 @@
                              <button
                              v-if="item.origen && item.destino && item.n_guia && item.total && item.tipo_transporte"
                               type="button" class="btn btn-success btn-lg btn-block my-2" @click="pushearItem()">Agregar <span class="mbri-save"></span></button>
+                            </div>
+                            </div>
                              <table class="table">
                               <thead>
                                 <tr>
@@ -375,6 +381,7 @@
          cedula:"",
          ver:false,
          cart:[],
+         permisos:[],
          clientes:[],
          transportes:[],
          facturas:[],
@@ -429,8 +436,106 @@
          }
        },
        methods: {
+         <?php if ($this->auth_role == 'customer'): ?>
          async  mathc(){
-             if (this.desde && this.hasta && !this.cedula && !this.estado ) {
+           if (!this.desde && !this.hasta && !this.cedula && !this.estado) {
+               this.loadfacturas();
+               this.url='';
+           }else if (this.desde && this.hasta && !this.cedula && !this.estado ) {
+               console.log("solo fecha");
+               let data = new FormData();
+                data.append('desde',this.desde);
+                data.append('hasta',this.hasta);
+                data.append('user_id',this.form.user_id);
+                await axios.post('index.php/Facturas/get_tiempou/',data)
+                .then(({data: {facturas}}) => {
+                  this.facturas = facturas
+                });
+                 $("#example1").DataTable();
+                 this.url='Facturas/excelexport_tiempo/'+this.desde+'/'+this.hasta;
+             }else if(!this.desde && !this.hasta && this.cedula && !this.estado ) {
+               console.log("solo cedula");
+               let data = new FormData();
+                data.append('cedula',this.cedula);console.log(this.cedula);
+              data.append('user_id',this.form.user_id);
+                await axios.post('index.php/Facturas/get_cedulau/',data)
+                .then(({data: {facturas}}) => {
+                  this.facturas = facturas
+                });
+                 $("#example1").DataTable();
+                 this.url='Facturas/excelexport_cedula/'+this.cedula;
+             }else if(!this.desde && !this.hasta && !this.cedula && this.estado ) {
+                 console.log("solo estado");
+                 let data = new FormData();
+                  data.append('estado',this.estado);
+                data.append('user_id',this.form.user_id);
+                  await axios.post('index.php/Facturas/get_estadou/',data)
+                  .then(({data: {facturas}}) => {
+                    this.facturas = facturas
+                  });
+                   $("#example1").DataTable();
+                   this.url='Facturas/excelexport_estado/'+this.estado;
+             }else if(this.desde && this.hasta && this.cedula && !this.estado ) {
+                 console.log("Fecha y cedula");
+                 let data = new FormData();
+                 data.append('desde',this.desde);
+                 data.append('hasta',this.hasta);
+                  data.append('cedula',this.cedula);
+                data.append('user_id',this.form.user_id);
+                  await axios.post('index.php/Facturas/get_fecha_cedulau/',data)
+                  .then(({data: {facturas}}) => {
+                    this.facturas = facturas
+                  });
+                   $("#example1").DataTable();
+               this.url='Facturas/excelexport_fecha_cedula/'+this.desde+'/'+this.hasta+'/'+this.cedula;
+             }else if(this.desde && this.hasta && !this.cedula && this.estado && !this.ciudad) {
+                 console.log("Fecha y estado")
+                 let data = new FormData();
+                 data.append('desde',this.desde);
+                 data.append('hasta',this.hasta);
+                  data.append('estado',this.estado);
+                data.append('user_id',this.form.user_id);
+                  await axios.post('index.php/Facturas/get_fecha_estadou/',data)
+                  .then(({data: {facturas}}) => {
+                    this.facturas = facturas
+                  });
+                   $("#example1").DataTable();
+                   this.url='Facturas/excelexport_fecha_estado/'+this.desde+'/'+this.hasta+'/'+this.estado;
+             }else if(!this.desde && !this.hasta && this.cedula && this.estado) {
+                 console.log("cedula y estado");
+                 let data = new FormData();
+                 data.append('cedula',this.cedula);
+                 data.append('estado',this.estado);
+                 data.append('user_id',this.form.user_id);
+                  await axios.post('index.php/Facturas/get_cedula_estadou/',data)
+                  .then(({data: {facturas}}) => {
+                    this.facturas = facturas
+                  });
+                   $("#example1").DataTable();
+                   this.url='Facturas/excelexport_cedula_estado/'+this.cedula+'/'+this.estado;
+             }else if(this.desde && this.hasta && this.cedula && this.estado) {
+                 console.log("fecha y estado y cedula");
+                 let data = new FormData();
+                 data.append('desde',this.desde);
+                 data.append('hasta',this.hasta);
+                 data.append('estado',this.estado);
+                 data.append('cedula',this.cedula);
+                data.append('user_id',this.form.user_id);
+                  await axios.post('index.php/Facturas/get_fecha_estado_cedulau/',data)
+                  .then(({data: {facturas}}) => {
+                    this.facturas = facturas
+                  });
+                   $("#example1").DataTable();
+                   this.url='Facturas/excelexport_fecha_estado_cedula/'+this.desde+'/'+this.hasta+'/'+this.estado+'/'+this.cedula;
+             }
+           },
+           <?php endif; ?>
+           <?php if ( $this->auth_role == 'manager' || $this->auth_role == 'admin'): ?>
+         async  mathc(){
+           if (!this.desde && !this.hasta && !this.cedula && !this.estado ) {
+               this.loadfacturas();
+               this.url='';
+           }else if (this.desde && this.hasta && !this.cedula && !this.estado ) {
                console.log("solo fecha");
                let data = new FormData();
                 data.append('desde',this.desde);
@@ -511,6 +616,7 @@
                    this.url='Facturas/excelexport_fecha_estado_cedula/'+this.desde+'/'+this.hasta+'/'+this.estado+'/'+this.cedula;
              }
            },
+        <?php endif; ?>
          generarEnviar(index){
            Swal({
              title: '¿Estás seguro?',
@@ -956,8 +1062,11 @@
                       this.archivo.id=this.facturas[index].id;
                         $('#mplanilla').modal('show');
                  },
+                  <?php if ($this->auth_role == 'customer'): ?>
             async loadfacturas() {
-                await   axios.get('index.php/Facturas/getfacturas/')
+              let data = new FormData();
+              data.append('user_id',this.form.user_id);
+                await axios.post('index.php/Facturas/getfacturasu/',data)
                    .then(({data: {facturas}}) => {
                      this.facturas = facturas
                    });
@@ -979,6 +1088,32 @@
                    }
                    $("#example1").DataTable();
                  },
+                 <?php endif; ?>
+                 <?php if ( $this->auth_role == 'manager' || $this->auth_role == 'admin'): ?>
+                 async loadfacturas() {
+                     await   axios.get('index.php/Facturas/getfacturas/')
+                        .then(({data: {facturas}}) => {
+                          this.facturas = facturas
+                        });
+                        if (!this.id==0) {
+                          for (var i = 0; i < this.facturas.length; i++) {
+                            if (this.facturas[i].id==this.id) {
+                             this.archivo.nombre_archivo='FV-'+this.id;
+                             this.archivo.url='Facturas/to_pdf/'+this.id;
+                             this.archivo.url_gestion='Facturas/fat?ref_='+this.id;
+                             this.archivo.usuario_responsable=this.facturas[i].user_id;
+                             this.archivo.correo_cliente=this.facturas[i].correo_cliente;
+                             this.archivo.nombre_cliente=this.facturas[i].nombre_cliente;
+                             this.archivo.estado=this.facturas[i].estado;
+                             this.archivo.numero_doc=this.id;
+                             this.archivo.id=this.id;
+                            }
+                          }
+                          this.id=0;
+                        }
+                        $("#example1").DataTable();
+                      },
+                       <?php endif; ?>
                  loadPln(){
                    this.form.items=JSON.parse(localStorage.factura);
                    if(this.form.items.length>0){
@@ -1025,6 +1160,12 @@
                              .then(({data: {profiles}}) => {
                                 this.cart = profiles;
                              });
+                             this.permisos=JSON.parse(this.cart[0].permisos);
+                             if (! this.permisos.facturas) {
+                              window.setTimeout(function () {
+                                    location.href = "<?=base_url();?>";
+                               }, 0);
+                             }
                            },
                       },
 

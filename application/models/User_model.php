@@ -11,7 +11,13 @@ class User_model extends MY_Model {
     ->get()
     ->result();
   }
-
+  function get_profiless($id){
+    return $this->db
+    ->select('u.user_id, u.username,u.permisos, u.url_foto, u.nombre, u.apellido, u.cedula, u.cargo, u.telefono_personal, u.telefono_corporativo, u.sucursal, u.email')
+    ->from('users u')
+    ->get()
+    ->result();
+  }
   function get_profile($id){
     return $this->db
     ->select('u.user_id, u.username,u.permisos, u.url_foto, u.nombre, u.apellido, u.cedula, u.cargo, u.telefono_personal, u.telefono_corporativo, u.sucursal, u.email')

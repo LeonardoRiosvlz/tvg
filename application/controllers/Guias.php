@@ -6,7 +6,7 @@ class Guias extends MY_Controller {
 		$this->load->model('Guias_model', 'guias');
 	  }
     public function index() {
-			if( ! $this->verify_min_level(6)){
+			if( ! $this->verify_min_level(1)){
 				redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
 			}
      		$this->is_logged_in();
@@ -22,6 +22,13 @@ class Guias extends MY_Controller {
 				  echo json_encode(['guias' => $data['guias']]);
 
 				}
+				public function getguiasu($id=0) {
+						$id = $this->input->post('id');
+						$data['guias'] = $this->guias->getguiasu($id);
+						header('Content-Type: application/json');
+						echo json_encode(['guias' => $data['guias']]);
+
+					}
 				public function get_tiempo($id=0) {
 						$datas['desde'] = $this->input->post('desde');
 						$datas['hasta'] = $this->input->post('hasta');
@@ -29,24 +36,52 @@ class Guias extends MY_Controller {
 						header('Content-Type: application/json');
 						echo json_encode(['guias' => $data['guias']]);
 					}
+			public function get_tiempou($id=0) {
+					$datas['desde'] = $this->input->post('desde');
+					$datas['hasta'] = $this->input->post('hasta');
+					$datas['user_id'] = $this->input->post('user_id');
+					$data['guias'] = $this->guias->get_tiempou($datas);
+					header('Content-Type: application/json');
+					echo json_encode(['guias' => $data['guias']]);
+				}
 					public function get_cedula($id=0) {
 							$datas['cedula'] = $this->input->post('cedula');
 							$data['guias'] = $this->guias->get_cedula($datas);
 							header('Content-Type: application/json');
 							echo json_encode(['guias' => $data['guias']]);
 						}
+						public function get_cedulau($id=0) {
+								$datas['cedula'] = $this->input->post('cedula');
+								$datas['user_id'] = $this->input->post('user_id');
+								$data['guias'] = $this->guias->get_cedulau($datas);
+								header('Content-Type: application/json');
+								echo json_encode(['guias' => $data['guias']]);
+							}
 					public function get_estado($id=0) {
 							$datas['estado'] = $this->input->post('estado');
 							$data['guias'] = $this->guias->get_estado($datas);
 							header('Content-Type: application/json');
 							echo json_encode(['guias' => $data['guias']]);
 						}
+			 	public function get_estadou($id=0) {
+					  $datas['user_id'] = $this->input->post('user_id');
+			 			$datas['estado'] = $this->input->post('estado');
+			 			$data['guias'] = $this->guias->get_estadou($datas);
+			 			header('Content-Type: application/json');
+			 			echo json_encode(['guias' => $data['guias']]);
+			 		}
 					public function get_ciudad($id=0) {
 							$datas['ciudad'] = $this->input->post('ciudad');
 							$data['guias'] = $this->guias->get_ciudad($datas);
 							header('Content-Type: application/json');
 							echo json_encode(['guias' => $data['guias']]);
 						}
+						public function get_ciudadu($id=0) {
+								$datas['user_id'] = $this->input->post('user_id');
+								$data['guias'] = $this->guias->get_ciudadu($datas);
+								header('Content-Type: application/json');
+								echo json_encode(['guias' => $data['guias']]);
+							}
 						public function get_fecha_cedula($id=0) {
 								$datas['desde'] = $this->input->post('desde');
 								$datas['hasta'] = $this->input->post('hasta');
@@ -55,6 +90,15 @@ class Guias extends MY_Controller {
 								header('Content-Type: application/json');
 								echo json_encode(['guias' => $data['guias']]);
 							}
+					public function get_fecha_cedulau($id=0) {
+							$datas['desde'] = $this->input->post('desde');
+							$datas['hasta'] = $this->input->post('hasta');
+							$datas['cedula'] = $this->input->post('cedula');
+							$datas['user_id'] = $this->input->post('user_id');
+							$data['guias'] = $this->guias->get_fecha_cedulau($datas);
+							header('Content-Type: application/json');
+							echo json_encode(['guias' => $data['guias']]);
+						}
 				public function get_fecha_estado($id=0) {
 						$datas['desde'] = $this->input->post('desde');
 						$datas['hasta'] = $this->input->post('hasta');
@@ -63,11 +107,29 @@ class Guias extends MY_Controller {
 						header('Content-Type: application/json');
 						echo json_encode(['guias' => $data['guias']]);
 					}
+					public function get_fecha_estadou($id=0) {
+							$datas['desde'] = $this->input->post('desde');
+							$datas['hasta'] = $this->input->post('hasta');
+							$datas['estado'] = $this->input->post('estado');
+							$datas['user_id'] = $this->input->post('user_id');
+							$data['guias'] = $this->guias->get_fecha_estadou($datas);
+							header('Content-Type: application/json');
+							echo json_encode(['guias' => $data['guias']]);
+						}
 					public function get_fecha_ciudad($id=0) {
 							$datas['desde'] = $this->input->post('desde');
 							$datas['hasta'] = $this->input->post('hasta');
 							$datas['ciudad'] = $this->input->post('ciudad');
 							$data['guias'] = $this->guias->get_fecha_ciudad($datas);
+							header('Content-Type: application/json');
+							echo json_encode(['guias' => $data['guias']]);
+						}
+					public function get_fecha_ciudadu($id=0) {
+							$datas['desde'] = $this->input->post('desde');
+							$datas['hasta'] = $this->input->post('hasta');
+							$datas['ciudad'] = $this->input->post('ciudad');
+							$datas['user_id'] = $this->input->post('user_id');
+							$data['guias'] = $this->guias->get_fecha_ciudadu($datas);
 							header('Content-Type: application/json');
 							echo json_encode(['guias' => $data['guias']]);
 						}
@@ -78,6 +140,14 @@ class Guias extends MY_Controller {
 								header('Content-Type: application/json');
 								echo json_encode(['guias' => $data['guias']]);
 							}
+					public function get_cedula_estadou($id=0) {
+							$datas['cedula'] = $this->input->post('cedula');
+							$datas['estado'] = $this->input->post('estado');
+							$datas['user_id'] = $this->input->post('user_id');
+							$data['guias'] = $this->guias->get_cedula_estadou($datas);
+							header('Content-Type: application/json');
+							echo json_encode(['guias' => $data['guias']]);
+						}
 						public function get_cedula_ciudad($id=0) {
 								$datas['cedula'] = $this->input->post('cedula');
 								$datas['ciudad'] = $this->input->post('ciudad');
@@ -85,10 +155,11 @@ class Guias extends MY_Controller {
 								header('Content-Type: application/json');
 								echo json_encode(['guias' => $data['guias']]);
 							}
-						public function get_estado_ciudad($id=0) {
+						public function get_estado_ciudadu($id=0) {
 								$datas['estado'] = $this->input->post('estado');
 								$datas['ciudad'] = $this->input->post('ciudad');
-								$data['guias'] = $this->guias->get_estado_ciudad($datas);
+								$datas['user_id'] = $this->input->post('user_id');
+								$data['guias'] = $this->guias->get_estado_ciudadu($datas);
 								header('Content-Type: application/json');
 								echo json_encode(['guias' => $data['guias']]);
 							}
@@ -101,6 +172,16 @@ class Guias extends MY_Controller {
 									header('Content-Type: application/json');
 									echo json_encode(['guias' => $data['guias']]);
 								}
+						public function get_fecha_cedula_ciudadu($id=0) {
+								$datas['desde'] = $this->input->post('desde');
+								$datas['hasta'] = $this->input->post('hasta');
+								$datas['cedula'] = $this->input->post('cedula');
+								$datas['ciudad'] = $this->input->post('ciudad');
+								$datas['user_id'] = $this->input->post('user_id');
+								$data['guias'] = $this->guias->get_fecha_cedula_ciudadu($datas);
+								header('Content-Type: application/json');
+								echo json_encode(['guias' => $data['guias']]);
+							}
 							public function get_fecha_estado_ciudad($id=0) {
 									$datas['desde'] = $this->input->post('desde');
 									$datas['hasta'] = $this->input->post('hasta');
@@ -110,6 +191,16 @@ class Guias extends MY_Controller {
 									header('Content-Type: application/json');
 									echo json_encode(['guias' => $data['guias']]);
 								}
+						public function get_fecha_estado_ciudadu($id=0) {
+								$datas['desde'] = $this->input->post('desde');
+								$datas['hasta'] = $this->input->post('hasta');
+								$datas['estado'] = $this->input->post('estado');
+								$datas['ciudad'] = $this->input->post('ciudad');
+								$datas['user_id'] = $this->input->post('user_id');
+								$data['guias'] = $this->guias->get_fecha_estado_ciudadu($datas);
+								header('Content-Type: application/json');
+								echo json_encode(['guias' => $data['guias']]);
+							}
 							public function get_fecha_estado_cedula($id=0) {
 									$datas['desde'] = $this->input->post('desde');
 									$datas['hasta'] = $this->input->post('hasta');
@@ -119,6 +210,16 @@ class Guias extends MY_Controller {
 									header('Content-Type: application/json');
 									echo json_encode(['guias' => $data['guias']]);
 								}
+						public function get_fecha_estado_cedulau($id=0) {
+								$datas['desde'] = $this->input->post('desde');
+								$datas['hasta'] = $this->input->post('hasta');
+								$datas['estado'] = $this->input->post('estado');
+								$datas['cedula'] = $this->input->post('cedula');
+								$datas['user_id'] = $this->input->post('user_id');
+								$data['guias'] = $this->guias->get_fecha_estado_cedulau($datas);
+								header('Content-Type: application/json');
+								echo json_encode(['guias' => $data['guias']]);
+							}
 						public function get_fecha_estado_ciudad_cedula($id=0) {
 								$datas['desde'] = $this->input->post('desde');
 								$datas['hasta'] = $this->input->post('hasta');
@@ -129,8 +230,19 @@ class Guias extends MY_Controller {
 								header('Content-Type: application/json');
 								echo json_encode(['guias' => $data['guias']]);
 							}
+					public function get_fecha_estado_ciudad_cedulau($id=0) {
+							$datas['desde'] = $this->input->post('desde');
+							$datas['hasta'] = $this->input->post('hasta');
+							$datas['estado'] = $this->input->post('estado');
+							$datas['ciudad'] = $this->input->post('ciudad');
+							$datas['cedula'] = $this->input->post('cedula');
+							$datas['user_id'] = $this->input->post('user_id');
+							$data['guias'] = $this->guias->get_fecha_estado_ciudad_cedulau($datas);
+							header('Content-Type: application/json');
+							echo json_encode(['guias' => $data['guias']]);
+						}
 			public function insertar() {
-				if( ! $this->verify_min_level(6)){
+				if( ! $this->verify_min_level(1)){
 					redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
 				}
 				$data = json_decode($this->input->post('service_form'),true);
@@ -144,7 +256,7 @@ class Guias extends MY_Controller {
 					}
 				}
 			public function editar() {
-				if( ! $this->verify_min_level(6)){
+				if( ! $this->verify_min_level(1)){
 					redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
 				}
 			    $data = json_decode($this->input->post('service_form'),true);

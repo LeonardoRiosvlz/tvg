@@ -71,7 +71,7 @@
                 <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                   <div class="row py-3 pt-3">
                     <div class="col-md-4">
-                      <label class="links">Clientes</label>
+                      <label class="links">Cliente</label>
                       <input list="encodings" v-model="form.cedula"  value="" class="form-control form-control-lg" placeholder="Escriba una cedula" :disabled="ver">
                         <datalist id="encodings">
                             <option v-for="clientes in clientes"  v-if="clientes.cliente_especial==='No'" :value="clientes.cedula_cliente">{{clientes.nombre_cliente}}</option>
@@ -343,31 +343,7 @@
               </div>
             </div>
           </div>
-          <div class="card col-12 my-3" v-if="form.cedula">
-            <div class="col-sm-12 p-2">
-             <div class="form-group">
-               <label for="colFormLabelSm" class="links">Documentos Relacionados</label>
-                      <div v-if="!ver"  class="col-sm-12">
-                        <div class="row ">
-                          <div class="col-8">
-                            <input type="file"   id="imagenFoto" name="imagenFoto" v-if="form.recalculada==='No'">
-                          </div>
-                            <div class="col-4">
-                            <button class="btn btn-light links btn-lg" type="button"  @click="uploadFoto()">Subir archivo</button>
-                          </div>
-                         </div>
-                    </div>
-              </div>
-          </div>
-          <div class="row pl-5 pr-5" v-if="form.cedula">
-           <table class="table">
-             <tr v-for="(img , id) in imagenes">
-               <th scope="row"><a :href="'<?=base_url()?>'+img.url" download>{{img.nombre}}</a></th>
-               <td v-if="!ver"><a href="#"  class="" @click="eliminarImagen(index)"><span class="mbri-trash"></span></a></td>
-             </tr>
-           </table>
-          </div>
-          </div>
+
         </div>
         <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
           <div class="row py-3 pt-3">
@@ -681,28 +657,9 @@ v-if="item.id_tarifa && item.segurocarga && item.costeguia && item.escala && ite
   </div>
   <div class="card col-12 my-3" v-if="form.cedula">
     <div class="col-sm-12 p-2">
-     <div class="form-group">
-       <label for="colFormLabelSm" class="links">Documentos Relacionados</label>
-              <div v-if="!ver"  class="col-sm-12">
-                <div class="row ">
-                  <div class="col-8">
-                    <input type="file"   id="imagenFoto" name="imagenFoto" v-if="form.recalculada==='Si'">
-                  </div>
-                    <div class="col-4">
-                    <button class="btn btn-light links btn-lg" type="button"  @click="uploadFoto()">Subir archivo</button>
-                  </div>
-                 </div>
-            </div>
-      </div>
+
   </div>
-  <div class="row pl-5 pr-5" v-if="form.cedula">
-   <table class="table">
-     <tr v-for="(img , id) in imagenes">
-       <th scope="row"><a :href="'<?=base_url()?>'+img.url" download>{{img.nombre}}</a></th>
-       <td v-if="!ver"><a href="#"  class="" @click="eliminarImagen(index)"><span class="mbri-trash"></span></a></td>
-     </tr>
-   </table>
-  </div>
+
   </div>
         </div>
       </div>
@@ -1693,12 +1650,7 @@ v-if="item.id_tarifa && item.segurocarga && item.costeguia && item.escala && ite
                                  }
                                }
                              },
-                             async   loadProfiles() {
-                             await     axios.get('index.php/Root_user/get_profile/')
-                                  .then(({data: {profiles}}) => {
-                                    this.profiles = profiles
-                                  });
-                                },
+
                                 async loadCart() {
 
                                     await  axios.get('index.php/User/get_profile/')
@@ -1710,7 +1662,7 @@ v-if="item.id_tarifa && item.segurocarga && item.costeguia && item.escala && ite
        },
 
        created(){
-           this.loadProfiles();
+
            this.loadnotas();
            this.loadcosteguia();
            this.loadfactores();

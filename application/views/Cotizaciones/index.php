@@ -1,5 +1,5 @@
-<div id="app" class="container">
-  <div class="row">
+<div id="app" class="container" style="min-height:1000px;">
+  <div class="row" v-cloak>
     <div class="col-lg-12 my-5 ">
       <!-- Shopping cart table -->
       <div class="table-responsive ">
@@ -77,26 +77,26 @@
           <table id="example1" class="table ">
             <thead>
             <tr>
-              <th class="links">Nº  COTIZACIÓN</th>
-              <th class="links">USUARIO RESPONSABLE</th>
-              <th class="links">CREADO</th>
-              <th class="links">DIAS DE VIGENCIA</th>
-              <th class="links">CLIENTE</th>
-              <th class="links">TELEFONO</th>
-              <th class="links">ESTADO</th>
-                <th class="links">Action</th>
+              <th class="links" style="white-space: nowrap;">Nº  COTIZACIÓN</th>
+              <th class="links" style="white-space: nowrap;">USUARIO</th>
+              <th class="links" style="white-space: nowrap;">CREADO</th>
+              <th class="links" style="white-space: nowrap;">DIAS DE VIGENCIA</th>
+              <th class="links" style="white-space: nowrap;">CLIENTE</th>
+              <th class="links" style="white-space: nowrap;">TELEFONO</th>
+              <th class="links" style="white-space: nowrap;">ESTADO</th>
+                <th class="links"style="white-space: nowrap;">Action</th>
             </tr>
             </thead>
-              <tr v-for="(cotizaciones,index) in cotizaciones">
-                <td class="links">COT-{{cotizaciones.id}}</td>
-                <td class="links">{{cotizaciones.username}}</td>
-                <td class="links">{{cotizaciones.fecha_creacion}}</td>
-                <td class="links">Dias{{cotizaciones.age}}</td>
-                <td class="links" v-if="cotizaciones.nombre_empresa==='No aplica'">{{cotizaciones.nombre_cliente}}</td>
-                 <td class="links" v-else>{{cotizaciones.nombre_empresa}}</td>
-                <td class="links">{{cotizaciones.telefono_cliente}}</td>
-                <td class="links" v-if="cotizaciones.status==='Generado' && cotizaciones.estatus_gestion==='Borrador'">Generado por enviar...</td>
-                <td class="links" v-else>{{cotizaciones.estatus_gestion}}</td>
+                <tr v-for="(cotizaciones,index) in cotizaciones">
+                <td style="white-space: nowrap;" class="links">COT-{{cotizaciones.id}}</td>
+                <td style="white-space: nowrap;" class="links">{{cotizaciones.username}}</td>
+                <td style="white-space: nowrap;" class="links">{{cotizaciones.fecha_creacion}}</td>
+                <td style="white-space: nowrap;" class="links">Dias{{cotizaciones.age}}</td>
+                <td style="white-space: nowrap;" class="links" v-if="cotizaciones.nombre_empresa==='No aplica'">{{cotizaciones.nombre_cliente}}</td>
+                 <td style="white-space: nowrap;" class="links" v-else>{{cotizaciones.nombre_empresa}}</td>
+                <td style="white-space: nowrap;" class="links">{{cotizaciones.telefono_cliente}}</td>
+                <td style="white-space: nowrap;" class="links" v-if="cotizaciones.status==='Generado' && cotizaciones.estatus_gestion==='Borrador'">Generado por enviar...</td>
+                <td style="white-space: nowrap;" class="links" v-else>{{cotizaciones.estatus_gestion}}</td>
                   <td>
                     <div class="btn-group">
                         <button type="button" class="btn btn-default">Action</button>
@@ -149,7 +149,7 @@
                   <div class="row py-3 pt-3">
                     <div class="col-md-4">
                       <label class="links">Clientes</label>
-                      <input list="encodings" v-model="form.cedula"  value="" class="form-control form-control-lg" placeholder="Escriba una cedula o Nit" :disabled="ver">
+                      <input list="encodings" v-model="form.cedula"  @change="loadCotizacionesclientes()"  value="" class="form-control form-control-lg" placeholder="Escriba una cedula o Nit" :disabled="ver">
                         <datalist id="encodings">
                             <option v-for="clientes in clientes"  v-if="clientes.cliente_especial==='No'" :value="clientes.cedula_cliente">{{clientes.nit_cliente}}</option>
                         </datalist>
@@ -255,7 +255,7 @@
                             <label class="links">Ruta de envío</label>
                             <input list="tarifas" v-model="item.id_tarifa" @change="tari()"  value="" class="form-control form-control-lg" placeholder="Escriba una ruta">
                               <datalist id="tarifas">
-                                  <option v-for="tarifas in tarifas" v-if="tarifas.tipo_envio===item.tipo_envio && tarifas.tipo_transporte===item.tipo_transporte"  :value="tarifas.id">De {{tarifas.ciudad_origen}} a {{tarifas.ciudad_destino}} Tiempo:{{tarifas.tiempos}}</option>
+                                  <option v-for="tarifas in tarifas" v-if="tarifas.tipo_envio===item.tipo_envio && tarifas.tipo_transporte===item.tipo_transporte"  :value="tarifas.id">De {{tarifas.ciudad_origen}} a {{tarifas.ciudad_destino}} - {{tarifas.itinerarios}}</option>
                               </datalist>
                           </div>
                       <div class="col-sm-3">
@@ -439,13 +439,16 @@
           </div>
 
             <div class="card col-12 my-3" v-if="form.cedula">
-              <div class="col-sm-12 p-2">
+              <div class="col-sm-12">
                 <h5 class="links text-center"v-if="cotizaciones.length>0">Cotizaciones Relacionadas al cliente</h5>
-                <div class="card p-1" v-if="cotizaciones.length>0">
+                <div class=" p-1" v-if="cotizaciones.length>0">
                   <div class="row">
-
-                    <div v-for="cotizaciones in cotizaciones" v-if="cotizaciones.cedula===form.cedula" class="col-2">
-                        <a :href="'<?=base_url()?>Cotizaciones/cotizaciones_to_pdf/'+cotizaciones.codigo+'/'+cotizaciones.id"  download>COT-{{cotizaciones.id}}<i style="font-size:7em" class="fa fa-file-text-o" aria-hidden="true"></i></a>
+                    <div v-for="cotizaciones in cotizacionesCliente" v-if="cotizaciones.cedula===form.cedula" class="card col-3">
+                      <div class="card-body">
+                        <h5 class="card-title">COT-{{cotizaciones.id}}</h5>
+                        <p class="card-text">{{cotizaciones.username}}</p>
+                        <a :href="'<?=base_url()?>Cotizaciones/cotizaciones_to_pdf/'+cotizaciones.codigo+'/'+cotizaciones.id" class="btn btn-primary" download>Descargar <span class="mbri-download"></span></a>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -692,7 +695,7 @@
 </div>
 <button
 v-if="item.id_tarifa && item.segurocarga && item.costeguia && item.escala && item.formula && item.variable && item.nuevo_precio && !corregirMode"
- type="button" class="btn btn-success btn-lg btn-block my-2" @click="pushearItem()">Agregar <span class="mbri-save"></span></button>
+ type="button" class="btn btn-success btn-lg btn-block my-2" @click="pushearItemr()">Agregar <span class="mbri-save"></span></button>
  <button
  v-if="item.id_tarifa && item.segurocarga && item.costeguia && item.escala && item.formula && item.variable && item.nuevo_precio && corregirMode"
   type="button" class="btn btn-success btn-lg btn-block my-2" @click="editarItem()">Editar <span class="mbri-save"></span></button>
@@ -778,19 +781,22 @@ v-if="item.id_tarifa && item.segurocarga && item.costeguia && item.escala && ite
       </div>
     </div>
   </div>
-      <div class="card col-12 my-3" v-if="form.cedula">
-        <div class="col-sm-12 p-2">
-          <h5 class="links text-center"v-if="cotizaciones.length>0">Cotizaciones Relacionadas al cliente</h5>
-          <div class="card p-1" v-if="cotizaciones.length>0">
-            <div class="row">
-
-              <div v-for="cotizaciones in cotizaciones" v-if="cotizaciones.cedula===form.cedula" class="col-2">
-                  <a :href="'<?=base_url()?>Cotizaciones/cotizaciones_to_pdf/'+cotizaciones.codigo+'/'+cotizaciones.id"  download>COT-{{cotizaciones.id}}<i style="font-size:7em" class="fa fa-file-text-o" aria-hidden="true"></i></a>
-              </div>
+  <div class="card col-12 my-3" v-if="form.cedula">
+    <div class="col-sm-12">
+      <h5 class="links text-center"v-if="cotizaciones.length>0">Cotizaciones Relacionadas al cliente</h5>
+      <div class=" p-1" v-if="cotizaciones.length>0">
+        <div class="row">
+          <div v-for="cotizaciones in cotizacionesCliente" v-if="cotizaciones.cedula===form.cedula" class="card col-3">
+            <div class="card-body">
+              <h5 class="card-title">COT-{{cotizaciones.id}}</h5>
+              <p class="card-text">{{cotizaciones.username}}</p>
+              <a :href="'<?=base_url()?>Cotizaciones/cotizaciones_to_pdf/'+cotizaciones.codigo+'/'+cotizaciones.id" class="btn btn-primary" download>Descargar <span class="mbri-download"></span></a>
             </div>
           </div>
+        </div>
       </div>
-      </div>
+  </div>
+  </div>
         </div>
       </div>
     </div>
@@ -843,6 +849,7 @@ v-if="item.id_tarifa && item.segurocarga && item.costeguia && item.escala && ite
          factura:[],
          cargas:[],
          notas:[],
+         cotizacionesCliente:[],
          legalizaciones:[],
          cargas_t:[],
          tarifas:[],
@@ -1311,7 +1318,87 @@ v-if="item.id_tarifa && item.segurocarga && item.costeguia && item.escala && ite
                  }
                })
              },
-                 pushearItem(index){
+             pushearItem(index){
+               Swal({
+                 title: '¿Estás seguro?',
+                 type: 'warning',
+                 showCancelButton: true,
+                 confirmButtonText: '¡Si!',
+                 cancelButtonText: '¡No!',
+                 reverseButtons: true
+               }).then((result) => {
+                 if (result.value) {
+                   this.form.items.push({
+                      id_tarifa:this.item.id_tarifa,
+                      departamento_destino:this.item.departamento_destino,
+                      departamento_origen:this.item.departamento_origen,
+                      ciudad_origen:this.item.ciudad_origen,
+                      ciudad_destino:this.item.ciudad_destino,
+                      cedula_cliente:this.item.cedula_cliente,
+                      tipo_transporte:this.item.tipo_transporte,
+                      tipo_envio:this.item.tipo_envio,
+                      precio:this.item.precio,
+                      factor:this.item.factor,
+                      tipo_carga:this.item.tipo_carga,
+                      itinerarios:this.item.itinerarios,
+                      tiempos:this.item.tiempos,
+                      segurocarga:this.item.segurocarga,
+                      costeguia:this.item.costeguia,
+                      escala:this.item.escala,
+                      formula:this.item.formula,
+                      variable:this.item.variable,
+                    });
+                    if (this.form.notas.length<1) {
+                      for (var i = 0; i < this.notas.length; i++) {
+                        if (this.notas[i].tipo_transporte===this.item.tipo_transporte && this.notas[i].estado==='Activo') {
+                            this.form.notas.push(this.notas[i]);
+                        }
+                      }
+                    }else if (this.form.notas.length>0) {
+                      this.copiaNotas=this.notas;
+                      for (var i = 0; i < this.form.notas.length; i++) {
+                        for (var j = 0; j < this.copiaNotas.length; j++) {
+                          if (this.copiaNotas[j].tipo_transporte===this.item.tipo_transporte && this.copiaNotas[i].estado==='Activo') {
+                              if (this.form.notas[i].id===this.copiaNotas[j].id || this.copiaNotas[i].estado==='Inactivo') {
+                                this.copiaNotas.splice(j, 1);
+                              }else{
+                                this.form.notas.push(this.copiaNotas[j]);
+                                this.copiaNotas.splice(j, 1);
+                              }
+                          }
+                        }
+
+                      }
+                    }
+                    this.item.id_tarifa="";
+                    this.item.departamento_destino="";
+                    this.item.departamento_origen="";
+                    this.item.ciudad_origen="";
+                    this.item.cedula_cliente="";
+                    this.item.tipo_transporte="";
+                    this.item.tipo_envio="";
+                    this.item.precio="";
+                    this.item.tipo_carga="";
+                    this.item.itinerarios="";
+                    this.item.tiempos="";
+                    this.item.segurocarga="";
+                    this.item.costeguia="";
+                    this.item.escala="";
+                    this.item.formula="";
+                    this.item.variable="";
+
+                 } else if (
+                   result.dismiss === Swal.DismissReason.cancel
+                 ) {
+                   Swal(
+                     'Cancelado',
+                     'No fue eliminado.',
+                     'success'
+                   )
+                 }
+               })
+             },
+                 pushearItemr(index){
                    Swal({
                      title: '¿Estás seguro?',
                      type: 'warning',
@@ -1330,7 +1417,7 @@ v-if="item.id_tarifa && item.segurocarga && item.costeguia && item.escala && ite
                           cedula_cliente:this.item.cedula_cliente,
                           tipo_transporte:this.item.tipo_transporte,
                           tipo_envio:this.item.tipo_envio,
-                          precio:this.item.precio,
+                          precio:this.item.nuevo_precio,
                           factor:this.item.factor,
                           tipo_carga:this.item.tipo_carga,
                           itinerarios:this.item.itinerarios,
@@ -1672,6 +1759,41 @@ v-if="item.id_tarifa && item.segurocarga && item.costeguia && item.escala && ite
                    $('#myModal').modal('show');
                    this.editMode=false
                  },
+                 <?php if ($this->auth_role == 'customer'): ?>
+                 async loadcotizaciones(){
+                   let data = new FormData();
+                   console.log(this.form.user_id);
+                  data.append('id',this.form.user_id);
+                   await   axios.post('index.php/Cotizaciones/getcotizacionesu/',data)
+                    .then(({data: {cotizaciones}}) => {
+                      this.cotizaciones = cotizaciones
+                    });
+                    $("#example1").DataTable();
+                    this.estado.enviados=0;
+                    this.estado.anuladas=0;
+                    this.estado.rechazadas=0;
+                    this.estado.estudio=0;
+                    this.estado.borrador=0;
+                    this.estado.aceptadas=0;
+                    for (var i = 0; i < this.cotizaciones.length; i++) {
+                      if (this.cotizaciones[i].estatus_gestion==='Enviado' && this.cotizaciones[i].estatus_gestion==='Enviado') {
+                        this.estados.enviados=this.estados.enviados+1;
+                      }else if (this.cotizaciones[i].estatus_gestion==='Anulada') {
+                        this.estados.anuladas=this.estados.anuladas+1;
+                      }else if (this.cotizaciones[i].estatus_gestion==='Borrador' || this.cotizaciones[i].estatus_gestion==='Renegociado') {
+                        this.estados.borrador=this.estados.borrador+1;
+                      }else if (this.cotizaciones[i].estatus_gestion==='Rechazada') {
+                        this.estados.rechazadas=this.estados.rechazadas+1;
+                      }else if (this.cotizaciones[i].estatus_gestion==='En estudio') {
+                        this.estados.estudio=this.estados.estudio+1;
+                      }else if (this.cotizaciones[i].estatus_gestion==='Aprobada') {
+                        this.estados.aceptadas=this.estados.aceptadas+1;
+                      }
+
+                    }
+                  },
+                 <?php endif; ?>
+                 <?php if ( $this->auth_role == 'manager' || $this->auth_role == 'admin'): ?>
                  async loadcotizaciones(){
                    await   axios.get('index.php/Cotizaciones/getcotizaciones/')
                     .then(({data: {cotizaciones}}) => {
@@ -1701,6 +1823,8 @@ v-if="item.id_tarifa && item.segurocarga && item.costeguia && item.escala && ite
 
                     }
                   },
+                 <?php endif; ?>
+
                  async loadclientes() {
                       await   axios.get('index.php/Clientes/getclientes/')
                          .then(({data: {clientes}}) => {
@@ -1739,6 +1863,15 @@ v-if="item.id_tarifa && item.segurocarga && item.costeguia && item.escala && ite
                           this.sedes = sedes
                         });
                       },
+                      async loadCotizacionesclientes(){
+
+                              let data = new FormData();
+                               data.append('id_cliente',this.form.cedula);
+                               await axios.post('index.php/Cotizaciones/getcc/',data)
+                              .then(({data: {cotizacionesCliente}}) => {
+                                this.cotizacionesCliente = cotizacionesCliente
+                              });
+                            },
                   async loadproveedores() {
                      await   axios.get('index.php/Proveedores/getproveedores/')
                         .then(({data: {proveedores}}) => {
@@ -1783,7 +1916,7 @@ v-if="item.id_tarifa && item.segurocarga && item.costeguia && item.escala && ite
                                }
                              },
                              async   loadProfiles() {
-                             await     axios.get('index.php/Root_user/get_profile/')
+                             await     axios.get('index.php/User/get_profile/')
                                   .then(({data: {profiles}}) => {
                                     this.profiles = profiles
                                   });
@@ -1795,10 +1928,16 @@ v-if="item.id_tarifa && item.segurocarga && item.costeguia && item.escala && ite
                                         this.cart = profiles;
                                      });
                                      this.permisos=JSON.parse(this.cart[0].permisos);
+                                     if (! this.permisos.cotizaciones) {
+                                      window.setTimeout(function () {
+                                            location.href = "<?=base_url();?>";
+                                       }, 0);
+                                     }
                                    },
        },
 
        created(){
+           this.loadCart();
            this.loadProfiles();
            this.loadnotas();
            this.loadcosteguia();
@@ -1811,7 +1950,7 @@ v-if="item.id_tarifa && item.segurocarga && item.costeguia && item.escala && ite
            this.loadtransportes();
            this.loadclientes();
            this.loadcotizaciones();
-           this.loadCart();
+
        },
    })
  </script>

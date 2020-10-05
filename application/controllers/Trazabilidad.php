@@ -7,7 +7,7 @@ class Trazabilidad extends MY_Controller {
 		$this->load->model('Guias_model', 'guias');
 	  }
     public function index() {
-			if( ! $this->verify_min_level(6)){
+			if( ! $this->verify_min_level(1)){
 				redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
 			}
      		$this->is_logged_in();
@@ -40,7 +40,7 @@ class Trazabilidad extends MY_Controller {
 				}
 
 			public function insertar() {
-				if( ! $this->verify_min_level(6)){
+				if( ! $this->verify_min_level(1)){
 					redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
 				}
 				$config['upload_path']          = './include/img/trazabilidad/';
@@ -68,7 +68,7 @@ class Trazabilidad extends MY_Controller {
 
 				}
 			public function editar() {
-				if( ! $this->verify_min_level(6)){
+				if( ! $this->verify_min_level(1)){
 					redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
 				}
 			    $data = json_decode($this->input->post('service_form'),true);
@@ -81,7 +81,7 @@ class Trazabilidad extends MY_Controller {
 					}
 				}
 				public function editar_img() {
-					if( ! $this->verify_min_level(6)){
+					if( ! $this->verify_min_level(1)){
 						redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
 					}
 					$config['upload_path']          = './include/img/trazabilidad/';
@@ -134,7 +134,7 @@ class Trazabilidad extends MY_Controller {
 									echo json_encode(['guias' => $data['guias']]);
 								}
 			public function eliminar() {
-				if( ! $this->verify_min_level(6)){
+				if( ! $this->verify_min_level(1)){
 					redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
 				}
 	            $id = $this->input->post('id');

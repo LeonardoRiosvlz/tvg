@@ -668,7 +668,7 @@
                        this.editMode=false
                  },
               async   loadProfiles() {
-              await     axios.get('index.php/Root_user/get_profile/')
+              await     axios.get('index.php/Root_user/get_profilet/')
                    .then(({data: {profiles}}) => {
                      this.profiles = profiles
                    });

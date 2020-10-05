@@ -6,17 +6,7 @@
 <script src="<?php echo base_url('include/plugins/datatables-bs4/js/dataTables.bootstrap4.js');?>"></script>
 <script>
 
-  $(function () {
 
-  $('#example2').DataTable({
-    "paging": true,
-    "lengthChange": false,
-    "searching": true,
-    "ordering": false,
-    "info": true,
-    "autoWidth": false,
-  });
-  });
 </script>
 <script>
 function openNav() {
@@ -55,7 +45,7 @@ function closeNav2() {
           </div>
           <div class="row sp">
             <div class="col-xs-12 col-sm-12 col-md-12 mt-2 mt-sm-2 text-center text-white">
-                   <p class="h6">© 2020 SVG CARGO S.A.S</p>
+                   <p class="h6">© 2020 TVG CARGO S.A.S</p>
             </div>
             <hr>
           </div>

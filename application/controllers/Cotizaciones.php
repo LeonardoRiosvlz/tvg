@@ -8,7 +8,7 @@ class Cotizaciones extends MY_Controller {
 	  $this->load->library('Pdf');
 	  }
     public function index() {
-			if( ! $this->verify_min_level(6)){
+			if( ! $this->verify_min_level(1)){
 				redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
 			}
      		$this->is_logged_in();
@@ -24,6 +24,27 @@ class Cotizaciones extends MY_Controller {
 				  echo json_encode(['cotizaciones' => $data['cotizaciones']]);
 
 				}
+				public function getcotizacionesu($id=0) {
+						$id= $this->input->post('id');
+						$data['cotizaciones'] = $this->cotizaciones->getcotizacionesu($id);
+						header('Content-Type: application/json');
+						echo json_encode(['cotizaciones' => $data['cotizaciones']]);
+
+					}
+					public function getcc($id=0) {
+							$id= $this->input->post('id_cliente');
+							$data['cotizacionesCliente'] = $this->cotizaciones->getcc($id);
+							header('Content-Type: application/json');
+							echo json_encode(['cotizacionesCliente' => $data['cotizacionesCliente']]);
+
+						}
+						public function getcca($id=0) {
+								$id= $this->input->post('id_cliente');
+								$data['cotizacionesCliente'] = $this->cotizaciones->getcca($id);
+								header('Content-Type: application/json');
+								echo json_encode(['cotizacionesCliente' => $data['cotizacionesCliente']]);
+
+							}
 				public function getcotizacion($id=0) {
 						$data['id']= $this->input->post('id');
 						$data['codigo']= $this->input->post('codigo');
@@ -33,7 +54,7 @@ class Cotizaciones extends MY_Controller {
 
 					}
 			public function insertar() {
-				if( ! $this->verify_min_level(6)){
+				if( ! $this->verify_min_level(1)){
 					redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
 				}
 
@@ -52,7 +73,7 @@ class Cotizaciones extends MY_Controller {
 					}
 				}
 			public function editar() {
-				if( ! $this->verify_min_level(6)){
+				if( ! $this->verify_min_level(1)){
 					redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
 				}
 			  $data = json_decode($this->input->post('service_form'),true);
@@ -73,7 +94,7 @@ class Cotizaciones extends MY_Controller {
 					}
 				}
 			public function eliminar() {
-				if( ! $this->verify_min_level(6)){
+				if( ! $this->verify_min_level(1)){
 					redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
 				}
 	            $id = $this->input->post('id');
@@ -95,7 +116,7 @@ class Cotizaciones extends MY_Controller {
 
 		 ////////////////
 				 public function detail_foto() {
-					 if( ! $this->verify_min_level(6)){
+					 if( ! $this->verify_min_level(1)){
 							 redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
 						 }
 					 $config['upload_path']          = './include/files';
@@ -129,7 +150,7 @@ class Cotizaciones extends MY_Controller {
 				 }
 
 				 public function eliminarImagen() {
-					 if( ! $this->verify_min_level(6)){
+					 if( ! $this->verify_min_level(1)){
 								 redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
 							 }
 					 $id = $this->input->post('id');
@@ -1018,7 +1039,7 @@ class Cotizaciones extends MY_Controller {
 				 }
 				 public function cot(){
 					 $this->load->view('header',["css"=>[""]]);
-
+					 $this->load->view('menu_blank',["css"=>[""]]);
 					 $this->load->view('Cotizaciones/gestion');
 					 $this->load->view('footer',["js"=>[""]]);
 				 }

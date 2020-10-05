@@ -7,7 +7,7 @@ class Facturas extends MY_Controller {
 		$this->load->model('Archivos_model', 'archivos');
 	  }
     public function index() {
-			if( ! $this->verify_min_level(6)){
+			if( ! $this->verify_min_level(1)){
 				redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
 			}
      		$this->is_logged_in();
@@ -23,6 +23,12 @@ class Facturas extends MY_Controller {
 				  echo json_encode(['facturas' => $data['facturas']]);
 
 				}
+				public function getfacturasu($id=0) {
+					$datas['user_id'] = $this->input->post('user_id');
+						$data['facturas'] = $this->facturas->getfacturasu($datas);
+						header('Content-Type: application/json');
+						echo json_encode(['facturas' => $data['facturas']]);
+					}
 				public function get_tiempo($id=0) {
 						$datas['desde'] = $this->input->post('desde');
 						$datas['hasta'] = $this->input->post('hasta');
@@ -30,6 +36,15 @@ class Facturas extends MY_Controller {
 						header('Content-Type: application/json');
 						echo json_encode(['facturas' => $data['facturas']]);
 					}
+				public function get_tiempou($id=0) {
+						$datas['desde'] = $this->input->post('desde');
+						$datas['hasta'] = $this->input->post('hasta');
+						$datas['user_id'] = $this->input->post('user_id');
+						$data['facturas'] = $this->facturas->get_tiempou($datas);
+						header('Content-Type: application/json');
+						echo json_encode(['facturas' => $data['facturas']]);
+					}
+
 					public function excelexport_tiempo($desde,$hasta){
 						$datas['desde'] = $desde;
 						$datas['hasta'] = $hasta;
@@ -117,6 +132,13 @@ class Facturas extends MY_Controller {
 							header('Content-Type: application/json');
 							echo json_encode(['facturas' => $data['facturas']]);
 						}
+						public function get_cedulau($id=0) {
+								$datas['cedula'] = $this->input->post('cedula');
+								$datas['user_id'] = $this->input->post('user_id');
+								$data['facturas'] = $this->facturas->get_cedulau($datas);
+								header('Content-Type: application/json');
+								echo json_encode(['facturas' => $data['facturas']]);
+							}
 						public function excelexport_cedula($id){
 							$datas['cedula'] = $id;
 							$llamadas = $this->facturas->get_cedula($datas);
@@ -200,6 +222,13 @@ class Facturas extends MY_Controller {
 					public function get_estado($id=0) {
 							$datas['estado'] = $this->input->post('estado');
 							$data['facturas'] = $this->facturas->get_estado($datas);
+							header('Content-Type: application/json');
+							echo json_encode(['facturas' => $data['facturas']]);
+						}
+					public function get_estadou($id=0) {
+							$datas['estado'] = $this->input->post('estado');
+							$datas['user_id'] = $this->input->post('user_id');
+							$data['facturas'] = $this->facturas->get_estadou($datas);
 							header('Content-Type: application/json');
 							echo json_encode(['facturas' => $data['facturas']]);
 						}
@@ -288,6 +317,15 @@ class Facturas extends MY_Controller {
 								$datas['hasta'] = $this->input->post('hasta');
 								$datas['cedula'] = $this->input->post('cedula');
 								$data['facturas'] = $this->facturas->get_fecha_cedula($datas);
+								header('Content-Type: application/json');
+								echo json_encode(['facturas' => $data['facturas']]);
+							}
+						public function get_fecha_cedulau($id=0) {
+								$datas['desde'] = $this->input->post('desde');
+								$datas['hasta'] = $this->input->post('hasta');
+								$datas['cedula'] = $this->input->post('cedula');
+								$datas['user_id'] = $this->input->post('user_id');
+								$data['facturas'] = $this->facturas->get_fecha_cedulau($datas);
 								header('Content-Type: application/json');
 								echo json_encode(['facturas' => $data['facturas']]);
 							}
@@ -381,6 +419,15 @@ class Facturas extends MY_Controller {
 									header('Content-Type: application/json');
 									echo json_encode(['facturas' => $data['facturas']]);
 								}
+								public function get_fecha_estadou($id=0) {
+										$datas['desde'] = $this->input->post('desde');
+										$datas['hasta'] = $this->input->post('hasta');
+										$datas['estado'] = $this->input->post('estado');
+										$datas['user_id'] = $this->input->post('user_id');
+										$data['facturas'] = $this->facturas->get_fecha_estadou($datas);
+										header('Content-Type: application/json');
+										echo json_encode(['facturas' => $data['facturas']]);
+									}
 								public function excelexport_fecha_estado($desde,$hasta,$estado){
 									$datas['desde'] = $desde;
 									$datas['hasta'] = $hasta;
@@ -472,6 +519,15 @@ class Facturas extends MY_Controller {
 										header('Content-Type: application/json');
 										echo json_encode(['facturas' => $data['facturas']]);
 									}
+									public function get_cedula_estadou($id=0) {
+
+											$datas['cedula'] = $this->input->post('cedula');
+											$datas['estado'] = $this->input->post('estado');
+											$datas['user_id'] = $this->input->post('user_id');
+											$data['facturas'] = $this->facturas->get_cedula_estadou($datas);
+											header('Content-Type: application/json');
+											echo json_encode(['facturas' => $data['facturas']]);
+										}
 									public function excelexport_cedula_estado($cedula,$estado){
 										$datas['cedula'] = $cedula;
 										$datas['estado'] = $estado;
@@ -562,6 +618,16 @@ class Facturas extends MY_Controller {
 											header('Content-Type: application/json');
 											echo json_encode(['facturas' => $data['facturas']]);
 										}
+										public function get_fecha_estado_cedulau($id=0) {
+												$datas['desde'] = $this->input->post('desde');
+												$datas['hasta'] = $this->input->post('hasta');
+												$datas['cedula'] = $this->input->post('cedula');
+												$datas['estado'] = $this->input->post('estado');
+												$datas['user_id'] = $this->input->post('user_id');
+												$data['facturas'] = $this->facturas->get_fecha_estado_cedulau($datas);
+												header('Content-Type: application/json');
+												echo json_encode(['facturas' => $data['facturas']]);
+											}
 										public function excelexport_fecha_estado_cedula($desde,$hasta,$estado,$cedula){
 											$datas['cedula'] = $cedula;
 											$datas['estado'] = $estado;
@@ -646,7 +712,7 @@ class Facturas extends MY_Controller {
 											}
 										}
 			public function insertar() {
-				if( ! $this->verify_min_level(6)){
+				if( ! $this->verify_min_level(1)){
 					redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
 				}
 				$data = json_decode($this->input->post('service_form'),true);
@@ -660,7 +726,7 @@ class Facturas extends MY_Controller {
 					}
 				}
 				public function editar() {
-					if( ! $this->verify_min_level(6)){
+					if( ! $this->verify_min_level(1)){
 						redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
 					}
 					$data = json_decode($this->input->post('service_form'),true);
@@ -673,7 +739,7 @@ class Facturas extends MY_Controller {
 						}
 					}
 			public function anular() {
-				if( ! $this->verify_min_level(6)){
+				if( ! $this->verify_min_level(1)){
 					redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
 				}
 			    $data = json_decode($this->input->post('service_form'),true);
@@ -686,7 +752,7 @@ class Facturas extends MY_Controller {
 					}
 				}
 			public function eliminar() {
-				if( ! $this->verify_min_level(6)){
+				if( ! $this->verify_min_level(1)){
 					redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
 				}
 	            $id = $this->input->post('id');

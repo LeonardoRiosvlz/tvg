@@ -82,6 +82,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             ->get()
             ->result();
           }
+          public function getguiasu($id) {
+              return $this->db
+              ->select('c.*,cl.nombre_cliente,cl.nit_cliente,cl.nombre_empresa,cl.cedula_cliente,f.dias, f.forma, f.descripcion, u.username,u.nombre,u.apellido,u.cargo')
+              ->from('carga c')
+              ->where('c.user_id', $id)
+              ->join('users u', 'c.user_id = u.user_id', 'left outer')
+              ->join('clientes cl', 'c.cedula = cl.cedula_cliente', 'left outer')
+              ->join('forma_pago f', 'c.forma_pago = f.id', 'left outer')
+              ->get()
+              ->result();
+            }
           public function get_tiempo($datas) {
               return $this->db
               ->select('c.*,cl.nombre_cliente,cl.nit_cliente,cl.nombre_empresa,cl.ciudad,t.tipo_transporte,f.dias, f.forma, f.descripcion, u.username,u.nombre,u.apellido,u.cargo')
@@ -95,6 +106,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
               ->get()
               ->result();
             }
+            public function get_tiempou($datas) {
+                return $this->db
+                ->select('c.*,cl.nombre_cliente,cl.nit_cliente,cl.nombre_empresa,cl.ciudad,t.tipo_transporte,f.dias, f.forma, f.descripcion, u.username,u.nombre,u.apellido,u.cargo')
+                ->from('carga c')
+                ->where('fecha >=', $datas['desde'])
+                ->where('fecha <=', $datas['hasta'])
+                ->where('c.user_id', $datas['user_id'])
+                ->join('users u', 'c.user_id = u.user_id', 'left outer')
+                ->join('tarifas t', 'c.id_tarifa = t.id', 'left outer')
+                ->join('clientes cl', 'c.cedula = cl.cedula_cliente', 'left outer')
+                ->join('forma_pago f', 'c.forma_pago = f.id', 'left outer')
+                ->get()
+                ->result();
+              }
             public function get_cedula($datas) {
                 return $this->db
                 ->select('c.*,cl.nombre_cliente,cl.nit_cliente,cl.nombre_empresa,cl.ciudad,t.tipo_transporte,f.dias, f.forma, f.descripcion, u.username,u.nombre,u.apellido,u.cargo')
@@ -107,6 +132,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 ->get()
                 ->result();
               }
+              public function get_cedulau($datas) {
+                  return $this->db
+                  ->select('c.*,cl.nombre_cliente,cl.nit_cliente,cl.nombre_empresa,cl.ciudad,t.tipo_transporte,f.dias, f.forma, f.descripcion, u.username,u.nombre,u.apellido,u.cargo')
+                  ->from('carga c')
+                  ->where('c.cedula', $datas['cedula'])
+                  ->where('c.user_id', $datas['user_id'])
+                  ->join('users u', 'c.user_id = u.user_id', 'left outer')
+                  ->join('tarifas t', 'c.id_tarifa = t.id', 'left outer')
+                  ->join('clientes cl', 'c.cedula = cl.cedula_cliente', 'left outer')
+                  ->join('forma_pago f', 'c.forma_pago = f.id', 'left outer')
+                  ->get()
+                  ->result();
+                }
               public function get_estado($datas) {
                   return $this->db
                   ->select('c.*,cl.nombre_cliente,cl.nit_cliente,cl.nombre_empresa,cl.ciudad,t.tipo_transporte,f.dias, f.forma, f.descripcion, u.username,u.nombre,u.apellido,u.cargo')
@@ -119,6 +157,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                   ->get()
                   ->result();
                 }
+                public function get_estadou($datas) {
+                    return $this->db
+                    ->select('c.*,cl.nombre_cliente,cl.nit_cliente,cl.nombre_empresa,cl.ciudad,t.tipo_transporte,f.dias, f.forma, f.descripcion, u.username,u.nombre,u.apellido,u.cargo')
+                    ->from('carga c')
+                    ->where('c.estado', $datas['estado'])
+                    ->where('c.user_id', $datas['user_id'])
+                    ->join('users u', 'c.user_id = u.user_id', 'left outer')
+                    ->join('tarifas t', 'c.id_tarifa = t.id', 'left outer')
+                    ->join('clientes cl', 'c.cedula = cl.cedula_cliente', 'left outer')
+                    ->join('forma_pago f', 'c.forma_pago = f.id', 'left outer')
+                    ->get()
+                    ->result();
+                  }
                 public function get_ciudad($datas) {
                     return $this->db
                     ->select('c.*,cl.nombre_cliente,cl.nit_cliente,cl.nombre_empresa,cl.ciudad,t.tipo_transporte,f.dias, f.forma, f.descripcion, u.username,u.nombre,u.apellido,u.cargo')
@@ -131,6 +182,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     ->get()
                     ->result();
                   }
+                  public function get_ciudadu($datas) {
+                      return $this->db
+                      ->select('c.*,cl.nombre_cliente,cl.nit_cliente,cl.nombre_empresa,cl.ciudad,t.tipo_transporte,f.dias, f.forma, f.descripcion, u.username,u.nombre,u.apellido,u.cargo')
+                      ->from('carga c')
+                      ->where('c.ciudad_destino', $datas['ciudad'])
+                      ->where('c.user_id', $datas['user_id'])
+                      ->join('users u', 'c.user_id = u.user_id', 'left outer')
+                      ->join('tarifas t', 'c.id_tarifa = t.id', 'left outer')
+                      ->join('clientes cl', 'c.cedula = cl.cedula_cliente', 'left outer')
+                      ->join('forma_pago f', 'c.forma_pago = f.id', 'left outer')
+                      ->get()
+                      ->result();
+                    }
                   public function get_fecha_cedula($datas) {
                       return $this->db
                       ->select('c.*,cl.nombre_cliente,cl.nit_cliente,cl.nombre_empresa,cl.ciudad,t.tipo_transporte,f.dias, f.forma, f.descripcion, u.username,u.nombre,u.apellido,u.cargo')
@@ -145,6 +209,21 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                       ->get()
                       ->result();
                     }
+                    public function get_fecha_cedulau($datas) {
+                        return $this->db
+                        ->select('c.*,cl.nombre_cliente,cl.nit_cliente,cl.nombre_empresa,cl.ciudad,t.tipo_transporte,f.dias, f.forma, f.descripcion, u.username,u.nombre,u.apellido,u.cargo')
+                        ->from('carga c')
+                        ->where('fecha >=', $datas['desde'])
+                        ->where('fecha <=', $datas['hasta'])
+                        ->where('c.cedula', $datas['cedula'])
+                        ->where('c.user_id', $datas['user_id'])
+                        ->join('users u', 'c.user_id = u.user_id', 'left outer')
+                        ->join('tarifas t', 'c.id_tarifa = t.id', 'left outer')
+                        ->join('clientes cl', 'c.cedula = cl.cedula_cliente', 'left outer')
+                        ->join('forma_pago f', 'c.forma_pago = f.id', 'left outer')
+                        ->get()
+                        ->result();
+                      }
               public function get_fecha_estado($datas) {
                   return $this->db
                   ->select('c.*,cl.nombre_cliente,cl.nit_cliente,cl.nombre_empresa,cl.ciudad,t.tipo_transporte,f.dias, f.forma, f.descripcion, u.username,u.nombre,u.apellido,u.cargo')
@@ -159,6 +238,21 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                   ->get()
                   ->result();
                 }
+                public function get_fecha_estadou($datas) {
+                    return $this->db
+                    ->select('c.*,cl.nombre_cliente,cl.nit_cliente,cl.nombre_empresa,cl.ciudad,t.tipo_transporte,f.dias, f.forma, f.descripcion, u.username,u.nombre,u.apellido,u.cargo')
+                    ->from('carga c')
+                    ->where('fecha >=', $datas['desde'])
+                    ->where('fecha <=', $datas['hasta'])
+                    ->where('c.estado', $datas['estado'])
+                    ->where('c.user_id', $datas['user_id'])
+                    ->join('users u', 'c.user_id = u.user_id', 'left outer')
+                    ->join('tarifas t', 'c.id_tarifa = t.id', 'left outer')
+                    ->join('clientes cl', 'c.cedula = cl.cedula_cliente', 'left outer')
+                    ->join('forma_pago f', 'c.forma_pago = f.id', 'left outer')
+                    ->get()
+                    ->result();
+                  }
                 public function get_fecha_ciudad($datas) {
                     return $this->db
                     ->select('c.*,cl.nombre_cliente,cl.nit_cliente,cl.nombre_empresa,cl.ciudad,t.tipo_transporte,f.dias, f.forma, f.descripcion, u.username,u.nombre,u.apellido,u.cargo')
@@ -173,6 +267,21 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     ->get()
                     ->result();
                   }
+                  public function get_fecha_ciudadu($datas) {
+                      return $this->db
+                      ->select('c.*,cl.nombre_cliente,cl.nit_cliente,cl.nombre_empresa,cl.ciudad,t.tipo_transporte,f.dias, f.forma, f.descripcion, u.username,u.nombre,u.apellido,u.cargo')
+                      ->from('carga c')
+                      ->where('fecha >=', $datas['desde'])
+                      ->where('fecha <=', $datas['hasta'])
+                      ->where('c.ciudad_destino', $datas['ciudad'])
+                      ->where('c.user_id', $datas['user_id'])
+                      ->join('users u', 'c.user_id = u.user_id', 'left outer')
+                      ->join('tarifas t', 'c.id_tarifa = t.id', 'left outer')
+                      ->join('clientes cl', 'c.cedula = cl.cedula_cliente', 'left outer')
+                      ->join('forma_pago f', 'c.forma_pago = f.id', 'left outer')
+                      ->get()
+                      ->result();
+                    }
                   public function get_cedula_estado($datas) {
                       return $this->db
                       ->select('c.*,cl.nombre_cliente,cl.nit_cliente,cl.nombre_empresa,cl.ciudad,t.tipo_transporte,f.dias, f.forma, f.descripcion, u.username,u.nombre,u.apellido,u.cargo')
@@ -186,6 +295,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                       ->get()
                       ->result();
                     }
+                    public function get_cedula_estadou($datas) {
+                        return $this->db
+                        ->select('c.*,cl.nombre_cliente,cl.nit_cliente,cl.nombre_empresa,cl.ciudad,t.tipo_transporte,f.dias, f.forma, f.descripcion, u.username,u.nombre,u.apellido,u.cargo')
+                        ->from('carga c')
+                        ->where('c.cedula', $datas['cedula'])
+                        ->where('c.estado', $datas['estado'])
+                        ->where('c.user_id', $datas['user_id'])
+                        ->join('users u', 'c.user_id = u.user_id', 'left outer')
+                        ->join('tarifas t', 'c.id_tarifa = t.id', 'left outer')
+                        ->join('clientes cl', 'c.cedula = cl.cedula_cliente', 'left outer')
+                        ->join('forma_pago f', 'c.forma_pago = f.id', 'left outer')
+                        ->get()
+                        ->result();
+                      }
                 public function get_cedula_ciudad($datas) {
                     return $this->db
                     ->select('c.*,cl.nombre_cliente,cl.nit_cliente,cl.nombre_empresa,cl.ciudad,t.tipo_transporte,f.dias, f.forma, f.descripcion, u.username,u.nombre,u.apellido,u.cargo')
@@ -199,6 +322,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     ->get()
                     ->result();
                   }
+                  public function get_cedula_ciudadu($datas) {
+                      return $this->db
+                      ->select('c.*,cl.nombre_cliente,cl.nit_cliente,cl.nombre_empresa,cl.ciudad,t.tipo_transporte,f.dias, f.forma, f.descripcion, u.username,u.nombre,u.apellido,u.cargo')
+                      ->from('carga c')
+                      ->where('c.cedula', $datas['cedula'])
+                      ->where('c.ciudad_destino', $datas['ciudad'])
+                      ->where('c.user_id', $datas['user_id'])
+                      ->join('users u', 'c.user_id = u.user_id', 'left outer')
+                      ->join('tarifas t', 'c.id_tarifa = t.id', 'left outer')
+                      ->join('clientes cl', 'c.cedula = cl.cedula_cliente', 'left outer')
+                      ->join('forma_pago f', 'c.forma_pago = f.id', 'left outer')
+                      ->get()
+                      ->result();
+                    }
                   public function get_estado_ciudad($datas) {
                       return $this->db
                       ->select('c.*,cl.nombre_cliente,cl.nit_cliente,cl.nombre_empresa,cl.ciudad,t.tipo_transporte,f.dias, f.forma, f.descripcion, u.username,u.nombre,u.apellido,u.cargo')
@@ -212,6 +349,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                       ->get()
                       ->result();
                     }
+                    public function get_estado_ciudadu($datas) {
+                        return $this->db
+                        ->select('c.*,cl.nombre_cliente,cl.nit_cliente,cl.nombre_empresa,cl.ciudad,t.tipo_transporte,f.dias, f.forma, f.descripcion, u.username,u.nombre,u.apellido,u.cargo')
+                        ->from('carga c')
+                        ->where('c.estado', $datas['estado'])
+                        ->where('c.ciudad_destino', $datas['ciudad'])
+                        ->where('c.user_id', $datas['user_id'])
+                        ->join('users u', 'c.user_id = u.user_id', 'left outer')
+                        ->join('tarifas t', 'c.id_tarifa = t.id', 'left outer')
+                        ->join('clientes cl', 'c.cedula = cl.cedula_cliente', 'left outer')
+                        ->join('forma_pago f', 'c.forma_pago = f.id', 'left outer')
+                        ->get()
+                        ->result();
+                      }
                 public function get_fecha_cedula_ciudad($datas) {
                     return $this->db
                     ->select('c.*,cl.nombre_cliente,cl.nit_cliente,cl.nombre_empresa,cl.ciudad,t.tipo_transporte,f.dias, f.forma, f.descripcion, u.username,u.nombre,u.apellido,u.cargo')
@@ -227,6 +378,22 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     ->get()
                     ->result();
                   }
+                  public function get_fecha_cedula_ciudadu($datas) {
+                      return $this->db
+                      ->select('c.*,cl.nombre_cliente,cl.nit_cliente,cl.nombre_empresa,cl.ciudad,t.tipo_transporte,f.dias, f.forma, f.descripcion, u.username,u.nombre,u.apellido,u.cargo')
+                      ->from('carga c')
+                      ->where('fecha >=', $datas['desde'])
+                      ->where('fecha <=', $datas['hasta'])
+                      ->where('c.cedula', $datas['cedula'])
+                      ->where('c.ciudad_destino', $datas['ciudad'])
+                      ->where('c.user_id', $datas['user_id'])
+                      ->join('users u', 'c.user_id = u.user_id', 'left outer')
+                      ->join('tarifas t', 'c.id_tarifa = t.id', 'left outer')
+                      ->join('clientes cl', 'c.cedula = cl.cedula_cliente', 'left outer')
+                      ->join('forma_pago f', 'c.forma_pago = f.id', 'left outer')
+                      ->get()
+                      ->result();
+                    }
               public function get_fecha_estado_ciudad($datas) {
                   return $this->db
                   ->select('c.*,cl.nombre_cliente,cl.nit_cliente,cl.nombre_empresa,cl.ciudad,t.tipo_transporte,f.dias, f.forma, f.descripcion, u.username,u.nombre,u.apellido,u.cargo')
@@ -242,6 +409,22 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                   ->get()
                   ->result();
                 }
+                public function get_fecha_estado_ciudadu($datas) {
+                    return $this->db
+                    ->select('c.*,cl.nombre_cliente,cl.nit_cliente,cl.nombre_empresa,cl.ciudad,t.tipo_transporte,f.dias, f.forma, f.descripcion, u.username,u.nombre,u.apellido,u.cargo')
+                    ->from('carga c')
+                    ->where('fecha >=', $datas['desde'])
+                    ->where('fecha <=', $datas['hasta'])
+                    ->where('c.estado', $datas['estado'])
+                    ->where('c.ciudad_destino', $datas['ciudad'])
+                    ->where('c.user_id', $datas['user_id'])
+                    ->join('users u', 'c.user_id = u.user_id', 'left outer')
+                    ->join('tarifas t', 'c.id_tarifa = t.id', 'left outer')
+                    ->join('clientes cl', 'c.cedula = cl.cedula_cliente', 'left outer')
+                    ->join('forma_pago f', 'c.forma_pago = f.id', 'left outer')
+                    ->get()
+                    ->result();
+                  }
                 public function get_fecha_estado_cedula($datas) {
                     return $this->db
                     ->select('c.*,cl.nombre_cliente,cl.nit_cliente,cl.nombre_empresa,cl.ciudad,t.tipo_transporte,f.dias, f.forma, f.descripcion, u.username,u.nombre,u.apellido,u.cargo')
@@ -257,6 +440,22 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     ->get()
                     ->result();
                   }
+                  public function get_fecha_estado_cedulau($datas) {
+                      return $this->db
+                      ->select('c.*,cl.nombre_cliente,cl.nit_cliente,cl.nombre_empresa,cl.ciudad,t.tipo_transporte,f.dias, f.forma, f.descripcion, u.username,u.nombre,u.apellido,u.cargo')
+                      ->from('carga c')
+                      ->where('fecha >=', $datas['desde'])
+                      ->where('fecha <=', $datas['hasta'])
+                      ->where('c.estado', $datas['estado'])
+                      ->where('c.cedula', $datas['cedula'])
+                      ->where('c.user_id', $datas['user_id'])
+                      ->join('users u', 'c.user_id = u.user_id', 'left outer')
+                      ->join('tarifas t', 'c.id_tarifa = t.id', 'left outer')
+                      ->join('clientes cl', 'c.cedula = cl.cedula_cliente', 'left outer')
+                      ->join('forma_pago f', 'c.forma_pago = f.id', 'left outer')
+                      ->get()
+                      ->result();
+                    }
                 public function get_fecha_estado_ciudad_cedula($datas) {
                     return $this->db
                     ->select('c.*,cl.nit_cliente,cl.nombre_empresa,cl.ciudad,t.tipo_transporte,f.dias, f.forma, f.descripcion, u.username,u.nombre,u.apellido,u.cargo')
@@ -273,7 +472,23 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     ->get()
                     ->result();
                   }
-
+                  public function get_fecha_estado_ciudad_cedulau($datas) {
+                      return $this->db
+                      ->select('c.*,cl.nit_cliente,cl.nombre_empresa,cl.ciudad,t.tipo_transporte,f.dias, f.forma, f.descripcion, u.username,u.nombre,u.apellido,u.cargo')
+                      ->from('carga c')
+                      ->where('fecha >=', $datas['desde'])
+                      ->where('fecha <=', $datas['hasta'])
+                      ->where('c.estado', $datas['estado'])
+                      ->where('c.cedula', $datas['cedula'])
+                      ->where('c.ciudad_destino', $datas['ciudad'])
+                      ->where('c.user_id', $datas['user_id'])
+                      ->join('clientes cl', 'c.cedula = cl.cedula_cliente', 'left outer')
+                      ->join('users u', 'c.user_id = u.user_id', 'left outer')
+                      ->join('tarifas t', 'c.id_tarifa = t.id', 'left outer')
+                      ->join('forma_pago f', 'c.forma_pago = f.id', 'left outer')
+                      ->get()
+                      ->result();
+                    }
           ///////////////////
           public function get_unused_id(){
                 // Create a random user id between 1200 and 4294967295

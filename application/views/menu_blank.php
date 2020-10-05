@@ -1,7 +1,7 @@
 
 <div id="app">
 
-    <div class="container-fluid text-center text-warning" style="background-color:#293072;">SVG CARGO S.A.S.</div>
+    <div class="container-fluid text-center text-warning" style="background-color:#293072;">TVG CARGO S.A.S.</div>
 
     <div class="container-fluid">
       <div class="row head-s">

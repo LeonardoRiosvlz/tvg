@@ -22,7 +22,7 @@
         <div class="row p-1 ">
           <div class="col-md-4">
             <label class="links">Clientes</label>
-            <input list="encodings" v-model="form.cedula" @change="loadLiquidaciones();loadCotizaciones()"  value="" class="form-control form-control-lg" placeholder="Escriba una cedula o NIT" :disabled="ver">
+            <input list="encodings" v-model="form.cedula" @change="loadLiquidaciones();loadCotizacionesclientes()"  value="" class="form-control form-control-lg" placeholder="Escriba una cedula o NIT" :disabled="ver">
               <datalist id="encodings">
                   <option v-for="clientes in clientes"  v-if="clientes.cliente_especial==='No'" :value="clientes.cedula_cliente">{{clientes.nit_cliente}}</option>
               </datalist>
@@ -42,7 +42,13 @@
               <th class="links">Action</th>
             </tr>
             </thead>
+            <?php if ($this->auth_role == 'customer'): ?>
+              <tr v-for="(liquidaciones,index) in liquidaciones" v-if="liquidaciones.user_id==='<?=$auth_user_id;?>'">
+            <?php endif; ?>
+            <?php if ( $this->auth_role == 'manager' || $this->auth_role == 'admin'): ?>
               <tr v-for="(liquidaciones,index) in liquidaciones">
+            <?php endif; ?>
+
                 <td class="links">{{liquidaciones.id}}</td>
                 <td class="links">{{liquidaciones.nombre_cliente}}</td>
                 <td class="links">{{liquidaciones.ciudad_origen}}</td>
@@ -117,7 +123,7 @@
                  <div class="row p-1 d-flex justify-content-between">
                    <div class="col-md-4">
                      <label class="links">CLIENTE</label>
-                     <input list="encodings" v-model="form.cedula" @change="loadCotizaciones();loadLiquidaciones();"  value="" class="form-control form-control-lg" placeholder="Escriba una cedula o NIT" :disabled="ver">
+                     <input list="encodings" v-model="form.cedula" @change="loadCotizacionesclientes();loadLiquidaciones();"  value="" class="form-control form-control-lg" placeholder="Escriba una cedula o NIT" :disabled="ver">
                        <datalist id="encodings">
                            <option v-for="clientes in clientes"  v-if="clientes.cliente_especial==='No'" :value="clientes.cedula_cliente" :disabled="ver">{{clientes.nit_cliente}}</option>
                        </datalist>
@@ -126,7 +132,7 @@
                      <label class="links">COTIZACIÓN</label>
                      <input list="encodingss" v-model="form.id_cotizacion" @change="cargarItems()"  value="" class="form-control form-control-lg" placeholder="Escriba una cedula" :disabled="!form.cedula">
                        <datalist id="encodingss">
-                           <option v-for="cotizaciones in cotizaciones" :value="cotizaciones.id">{{cotizaciones.id}}</option>
+                           <option v-for="cotizaciones in cotizaciones"  :value="cotizaciones.id">{{cotizaciones.id}}</option>
                        </datalist>
                    </div>
                  </div>
@@ -387,19 +393,19 @@
                      <div class="col-3">
                        <label class="links">LA</label>
                        <div class="input-group">
-                         <input v-model="item.la" type="number" @change="metros()" class="form-control" placeholder="" :disabled="ver">
+                         <input v-model="item.la" type="number" class="form-control" placeholder="" :disabled="ver">
                        </div>
                      </div>
                      <div class="col-3">
                     <label class="links">AN</label>
                        <div class="input-group">
-                         <input v-model="item.an" type="number" @change="metros()" class="form-control" placeholder="" :disabled="ver">
+                         <input v-model="item.an" type="number"  class="form-control" placeholder="" :disabled="ver">
                        </div>
                      </div>
                      <div class="col-3">
                        <label class="links">AL</label>
                        <div class="input-group">
-                         <input  v-model="item.al" type="number" @change="metros()" class="form-control" placeholder="" :disabled="ver">
+                         <input  v-model="item.al" type="number"  class="form-control" placeholder="" :disabled="ver">
                        </div>
                      </div>
                      <div class="col-3">
@@ -416,19 +422,19 @@
                      <div class="col-3">
                        <label class="links">LA</label>
                        <div class="input-group">
-                         <input v-model="item.la" type="number" @change="centimetros()" class="form-control" placeholder="" :disabled="ver">
+                         <input v-model="item.la" type="number"  class="form-control" placeholder="" :disabled="ver">
                        </div>
                      </div>
                      <div class="col-3">
                     <label class="links">AN</label>
                        <div class="input-group">
-                         <input v-model="item.an" type="number" @change="centimetros()" class="form-control" placeholder="" :disabled="ver">
+                         <input v-model="item.an" type="number"  class="form-control" placeholder="" :disabled="ver">
                        </div>
                      </div>
                      <div class="col-3">
                        <label class="links">AL</label>
                        <div class="input-group">
-                         <input  v-model="item.al" type="number" @change="centimetros()" class="form-control" placeholder="" :disabled="ver">
+                         <input  v-model="item.al" type="number"  class="form-control" placeholder="" :disabled="ver">
                        </div>
                      </div>
                      <div class="col-3">
@@ -439,13 +445,13 @@
                      </div>
                    </div>
                  </div>
-                 <div class="col-5 row" v-if="form.escala===''||form.escala==='Centímetros'|| form.escala==='Metros'" :disabled="ver">
+                 <div class="col-5 row" v-if="item.escala===''||item.escala==='Centímetros'|| item.escala==='Metros'">
                    <label class="links lead">Peso</label>
                    <div class="row">
                      <div class="col-5">
                     <label class="links">KILOS BASC</label>
                        <div class="input-group">
-                         <input @change="kilos();selector();" v-model="item.kilosbascula" type="number" class="form-control" placeholder="" :disabled="ver">
+                         <input  v-model="item.kilosbascula" @change="kilos()" type="number" class="form-control" placeholder="">
                        </div>
                      </div>
                      <div class="col-6">
@@ -453,6 +459,11 @@
                        <div class="input-group">
                          <input v-model="item.kilostotal" type="number" class="form-control" placeholder="" disabled>
                        </div>
+                     </div>
+                     <div class="col-1 " style="margin-top:39px;">
+                        <button v-if="form.escala==='Metros'" class="btn btn-success float-left" type="button" @click="metros()" name="button"><span class="mbri-play"></span></button>
+                        <button v-if="form.escala==='Centímetros'" class="btn btn-success float-left" type="button" @click="centimetros()" name="button"><span class="mbri-play"></span></button>
+                        <button v-if="form.escala==='Porcientos'" class="btn btn-success float-left" type="button" @click="porcientos()" name="button"><span class="mbri-play"></span></button>
                      </div>
                    </div>
                  </div>
@@ -462,16 +473,18 @@
                      <div class="col-5">
                     <label class="links">KILOS BASC</label>
                        <div class="input-group">
-                         <input @change="kilos();porcientos();" v-model="item.kilosbascula" type="number" class="form-control" placeholder="">
+                         <input  v-model="item.kilosbascula" @change="kilos()" type="number" class="form-control" placeholder="">
                        </div>
                      </div>
                      <div class="col-6">
                        <label class="links">TOT. KILOS</label>
                        <div class="input-group">
-                         <input v-model="item.kilostotal" @change="kilos()" type="number" class="form-control" placeholder="" disabled>
+                         <input v-model="item.kilostotal" type="number" class="form-control" placeholder="" disabled>
                        </div>
                      </div>
+
                    </div>
+
                  </div>
               </div>
               <div class="row" v-if="item.precioItem>0" v-if="form.id_tarifa">
@@ -506,6 +519,8 @@
                  </div>
                 </div>
               </div>
+
+
               <button
               v-if="form.id_tarifa && form.escala && !corregirMode && item.kilostotal && item.volumen  && item.precioItem || form.id_tarifa && form.escala==='Porcientos' && form.formula && form.variable && !corregirMode && item.kilostotal && item.precioItem"
                type="button" class="btn btn-success btn-lg btn-block my-2" @click="pushearItem()">Agregar <span class="mbri-save"></span></button>
@@ -612,8 +627,24 @@
          vertable:true,
          departamento:0,
          ver:false,
-         cart:[],
-         permisos:[],
+         cart:{
+           'username':'',
+         },
+         permisos:{
+           'cotizaciones':true,
+           'planillas':true,
+           'guiasNormales':true,
+           'guiasEspeciales':true,
+           'actasEntrega':true,
+           'actasRecogidas':true,
+           'documentosGenerados':true,
+           'alertas':true,
+           'remitentes':true,
+           'clientes':true,
+           'proveedores':true,
+           'trazabilidad':true,
+           'facturas':true,
+         },
          cargos:[],
          items:[],
          factores:[],
@@ -1314,30 +1345,32 @@
                    }
                  })
                },
-           selector(){
-             if (this.item.escala==="Centímetros") {
-               this.centimetros();
-             } else if (this.item.escala==="Metros"){
-               this.metros();
-             } else if (this.item.escala==="Porcientos") {
-               this.porcientos();
-             }
-           },
-           kilos(){
-             this.item.kilostotal=0;
-             this.item.kilostotal=parseFloat(this.item.kilosbascula) * parseFloat(this.item.cantidad) ;
-             this.selector();
-           },
+               selector(){
+                 if (this.item.escala==="Centímetros") {
+                   this.centimetros();
+                 } else if (this.item.escala==="Metros"){
+                   this.metros();
+                 } else if (this.item.escala==="Porcientos") {
+                   this.porcientos();
+                 }
+               },
+               kilos(){
+                 this.item.kilostotal=0;
+                 this.item.kilostotal=parseFloat(this.item.kilosbascula) * parseFloat(this.item.cantidad) ;
+                 this.selector();
+               },
             metros(){
               this.item.volumen=0;
               this.item.precioItem=0;
-              this.item.volumen=parseFloat(this.item.an) * parseFloat(this.item.la) * parseFloat(this.item.al) * parseFloat(this.form.variable) * parseFloat(this.item.cantidad);
+              this.item.volumen=parseFloat(this.item.an) * parseFloat(this.item.la) * parseFloat(this.item.al) * parseInt(this.form.variable) * parseInt(this.item.cantidad);
               if (this.item.escala==='Porcientos') {
                   this.item.precioItem=this.item.kilostotal*parseFloat(this.form.precioItem);
               }else{
                 if (this.item.volumen>this.item.kilostotal) {
+                  console.log("volumen");
                   this.item.precioItem=this.item.volumen*this.form.precioItem;
                 }else if(this.item.volumen<this.item.kilostotal){
+                  console.log("kilos");
                   this.item.precioItem=this.item.kilostotal*this.form.precioItem;
                 }else if(this.item.volumen==this.item.kilostotal){
                   this.item.precioItem=this.item.kilostotal*this.form.precioItem;
@@ -1346,6 +1379,7 @@
 
             },
             centimetros(){
+              console.log("metros");
               this.item.volumen=0;
               this.item.precioItem=0;
               this.item.volumen=((parseFloat(this.item.an) * parseFloat(this.item.la) * parseFloat(this.item.al) )/ parseFloat(this.form.variable) )* parseFloat(this.item.cantidad);
@@ -1401,8 +1435,7 @@
                   this.form.escala=this.factores[i].escala;
                   this.form.formula=this.factores[i].formula;
                   this.form.variable=this.factores[i].variable;
-
-                   this.selector();
+                  this.selector();
                 }
               }
             },
@@ -1464,14 +1497,14 @@
                             this.tarifas = tarifas
                           });
                         },
-           async loadCotizaciones(){
-              let data = new FormData();
-                 data.append('cedula',this.form.cedula);
-                 await  axios.post('index.php/Liquidaciones/getcotizaciones/',data)
-                 .then(({data: {cotizaciones}}) => {
-                       this.cotizaciones = cotizaciones;
-               });
-             },
+             async loadCotizacionesclientes(){
+                     let data = new FormData();
+                      data.append('id_cliente',this.form.cedula);
+                      await axios.post('index.php/Cotizaciones/getcca/',data)
+                     .then(({data: {cotizacionesCliente}}) => {
+                       this.cotizaciones = cotizacionesCliente
+                     });
+                   },
              async loadLiquidaciones(){
                 let data = new FormData();
                    data.append('cedula',this.form.cedula);
@@ -1500,12 +1533,15 @@
                             this.cart = profiles;
                          });
                           this.permisos=JSON.parse(this.cart[0].permisos);
+                          if (! this.permisos.planillas) {
+                           window.setTimeout(function () {
+                                 location.href = "<?=base_url();?>";
+                            }, 0);
+                          }
                        },
        },
 
        created(){
-
-            this.loadCotizaciones();
             this.loadfactores();
             this.loadtipocarga();
             this.loadclientes();

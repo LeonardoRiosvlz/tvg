@@ -16,7 +16,7 @@ class Clientes extends MY_Controller {
 	  $this->load->library('Pdf');
 	  }
     public function index() {
-			if( ! $this->verify_min_level(6)){
+			if( ! $this->verify_min_level(1)){
 				redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
 			}
      		$this->is_logged_in();
@@ -47,7 +47,7 @@ class Clientes extends MY_Controller {
 
 					}
 			public function insertar() {
-				if( ! $this->verify_min_level(6)){
+				if( ! $this->verify_min_level(1)){
 					redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
 				}
 				$data = json_decode($this->input->post('service_form'),true);
@@ -63,7 +63,7 @@ class Clientes extends MY_Controller {
 					}
 				}
 			public function editar() {
-				if( ! $this->verify_min_level(6)){
+				if( ! $this->verify_min_level(1)){
 					redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
 				}
 			    $data = json_decode($this->input->post('service_form'),true);
@@ -79,7 +79,7 @@ class Clientes extends MY_Controller {
 					}
 				}
 			public function eliminar() {
-				if( ! $this->verify_min_level(6)){
+				if( ! $this->verify_min_level(1)){
 					redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
 				}
 	            $id = $this->input->post('id');

@@ -23,7 +23,7 @@
 
       </div>
       <div class="row" v-show="!ver">
-        <div class="card col-12 p-3 border-0" >
+        <div class="card col-12 pl-3 pr-3 border-0" >
          <h4 class="card-title">Tarifa Acorde</h4>
           <div class="card-body row sp">
             <div class="col-md-6" >
@@ -49,7 +49,7 @@
                   <label class="links">Ruta de envío</label>
                   <input list="tarifas" v-model="form.id_tarifa" @change="tari()"  value="" class="form-control form-control-lg" placeholder="Escriba una ruta">
                     <datalist id="tarifas">
-                        <option v-for="tarifas in tarifas" v-if="tarifas.tipo_envio===form.tipo_envio && tarifas.tipo_transporte===form.tipo_transporte"  :value="tarifas.id">De {{tarifas.ciudad_origen}} a {{tarifas.ciudad_destino}} Tiempo:{{tarifas.tiempos}}</option>
+                        <option v-for="tarifas in tarifas" v-if="tarifas.tipo_envio===form.tipo_envio && tarifas.tipo_transporte===form.tipo_transporte"  :value="tarifas.id">De {{tarifas.ciudad_origen}} a {{tarifas.ciudad_destino}}  -{{tarifas.itinerarios}}</option>
                     </datalist>
 
               </div>
@@ -178,19 +178,19 @@
          <div class="col-3">
            <label class="links">LA</label>
            <div class="input-group">
-             <input v-model="item.la" type="number" @change="metros()" class="form-control" placeholder="">
+             <input v-model="item.la" type="number"  class="form-control" placeholder="">
            </div>
          </div>
          <div class="col-3">
         <label class="links">AN</label>
            <div class="input-group">
-             <input v-model="item.an" type="number" @change="metros()" class="form-control" placeholder="">
+             <input v-model="item.an" type="number" class="form-control" placeholder="">
            </div>
          </div>
          <div class="col-3">
            <label class="links">AL</label>
            <div class="input-group">
-             <input  v-model="item.al" type="number" @change="metros()" class="form-control" placeholder="">
+             <input  v-model="item.al" type="number"  class="form-control" placeholder="">
            </div>
          </div>
          <div class="col-3">
@@ -207,19 +207,19 @@
          <div class="col-3">
            <label class="links">LA</label>
            <div class="input-group">
-             <input v-model="item.la" type="number" @change="centimetros()" class="form-control" placeholder="">
+             <input v-model="item.la" type="number"  class="form-control" placeholder="">
            </div>
          </div>
          <div class="col-3">
         <label class="links">AN</label>
            <div class="input-group">
-             <input v-model="item.an" type="number" @change="centimetros()" class="form-control" placeholder="">
+             <input v-model="item.an" type="number"  class="form-control" placeholder="">
            </div>
          </div>
          <div class="col-3">
            <label class="links">AL</label>
            <div class="input-group">
-             <input  v-model="item.al" type="number" @change="centimetros()" class="form-control" placeholder="">
+             <input  v-model="item.al" type="number"  class="form-control" placeholder="">
            </div>
          </div>
          <div class="col-3">
@@ -236,7 +236,7 @@
          <div class="col-5">
         <label class="links">KILOS BASC</label>
            <div class="input-group">
-             <input @change="kilos" v-model="item.kilosbascula" type="number" class="form-control" placeholder="">
+             <input @change="kilos()" v-model="item.kilosbascula" type="number" class="form-control" placeholder="">
            </div>
          </div>
          <div class="col-6">
@@ -246,8 +246,9 @@
            </div>
          </div>
          <div class="col-1 " style="margin-top:39px;">
-           <input type="checkbox" id="check17" />
-            <label class="labels" for="check17"></label>
+           <button v-if="item.escala==='Metros'" class="btn btn-success float-left" type="button" @click="metros()" name="button"><span class="mbri-play"></span></button>
+           <button v-if="item.escala==='Centímetros'" class="btn btn-success float-left" type="button" @click="centimetros()" name="button"><span class="mbri-play"></span></button>
+           <button v-if="item.escala==='Porcientos'" class="btn btn-success float-left" type="button" @click="porcientos()" name="button"><span class="mbri-play"></span></button>
          </div>
        </div>
      </div>
@@ -257,7 +258,7 @@
          <div class="col-5">
         <label class="links">KILOS BASC</label>
            <div class="input-group">
-             <input @change="kilos();" v-model="item.kilosbascula" type="number" class="form-control" placeholder="">
+             <input @change="kilos()"  v-model="item.kilosbascula" type="number" class="form-control" placeholder="">
            </div>
          </div>
          <div class="col-6">
@@ -267,8 +268,9 @@
            </div>
          </div>
          <div class="col-1 " style="margin-top:39px;">
-           <input type="checkbox" id="check17" />
-            <label class="labels" for="check17"></label>
+           <button v-if="item.escala==='Metros'" class="btn btn-success float-left" type="button" @click="metros()" name="button"><span class="mbri-play"></span></button>
+           <button v-if="item.escala==='Centímetros'" class="btn btn-success float-left" type="button" @click="centimetros()" name="button"><span class="mbri-play"></span></button>
+           <button v-if="item.escala==='Porcientos'" class="btn btn-success float-left" type="button" @click="porcientos()" name="button"><span class="mbri-play"></span></button>
          </div>
        </div>
      </div>
@@ -677,7 +679,7 @@
          kilos(){
            this.item.kilostotal=0;
            this.item.kilostotal=parseFloat(this.item.kilosbascula) * parseFloat(this.item.cantidad) ;
-           this.selector();
+
          },
           metros(){
             this.item.volumen=0;

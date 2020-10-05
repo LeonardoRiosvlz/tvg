@@ -6,7 +6,7 @@ class DatosEmpresa extends MY_Controller {
 		$this->load->model('DatosEmpresa_model', 'empresa');
 	  }
     public function index() {
-			if( ! $this->verify_min_level(6)){
+			if( ! $this->verify_min_level(1)){
 				redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
 			}
      		$this->is_logged_in();
@@ -30,7 +30,7 @@ class DatosEmpresa extends MY_Controller {
 
 			}
 			public function editar() {
-				if( ! $this->verify_min_level(6)){
+				if( ! $this->verify_min_level(1)){
 					redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
 				}
 			    $data = json_decode($this->input->post('service_form'),true);
