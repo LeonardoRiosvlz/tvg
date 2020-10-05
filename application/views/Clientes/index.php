@@ -257,6 +257,7 @@
                                 <p class="text-danger small my-1" v-if="(errors.first('ciudad'))" >  Este dato es requerido  </p>
                               </div>
                            </div>
+                        <?php if (  $this->auth_role == 'admin'): ?>
                            <div class="col-md-6 col-sm-12">
                              <label class="links">Forma de pago</label>
                              <div class="form-group">
@@ -288,6 +289,7 @@
                                  <p class="text-danger my-1 small" v-if="(errors.first('estado'))" >  Este dato es requerido/o es inválido  </p>
                                </div>
                              </div>
+                          <?php endif; ?>
                              <div class="col-md-6 col-sm-12" v-if="form.estado==='Inactivo'">
                                <!-- textarea -->
                                <div class="form-group">

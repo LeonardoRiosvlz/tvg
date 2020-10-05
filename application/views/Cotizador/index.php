@@ -7,7 +7,7 @@
           <thead>
             <tr>
               <th scope="col" colspan="5" class="border-0 bg-white  text-center">
-                  <div class="bg-light rounded-pill px-4 py-3 text-uppercase font-weight-bold links">Cotizador <i class="fa fa-street-view" aria-hidden="true"></i></div>
+                  <div class="bg-light rounded-pill px-4 py-3 text-uppercase font-weight-bold links">Cotizador <i class="fa fa-calculator" aria-hidden="true"></i></div>
               </th>
             </tr>
             <tr>

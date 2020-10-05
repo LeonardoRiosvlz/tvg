@@ -63,6 +63,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             ->get()
             ->result();
           }
+          public function getactas_recogidau($id) {
+              return $this->db
+              ->select('*')
+              ->from('actas_recogida')
+              ->where('user_id', $id)
+              ->get()
+              ->result();
+            }
           public function getacta_recogida($id) {
               return $this->db
               ->select('*')

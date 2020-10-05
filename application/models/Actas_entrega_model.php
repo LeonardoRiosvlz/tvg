@@ -70,6 +70,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             ->get()
             ->result();
           }
+          public function getactas_entregau($id) {
+              return $this->db
+              ->select('*')
+              ->from('actas_entrega')
+              ->where('user_id', $id)
+              ->get()
+              ->result();
+            }
           public function deleteactas_entrega($id) {
             $this->db->where('id', $id);
             $this->db->delete('actas_entrega');

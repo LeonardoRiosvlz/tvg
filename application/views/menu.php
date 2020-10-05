@@ -96,7 +96,7 @@
                       <a class="dropdown-item links" href="<?=base_url()?>Tarifas"><i class="fa fa-usd" aria-hidden="true"></i> Tabla de tarifas</a>
                       <a class="dropdown-item links" href="<?=base_url()?>SeguroCarga"><i class="fa fa-shield" aria-hidden="true"></i> Seguros de carga</a>
                       <a class="dropdown-item links" href="<?=base_url()?>CosteGuia"><i class="fa fa-credit-card-alt" aria-hidden="true"></i> Coste de guía</a>
-                      <a class="dropdown-item links" href="<?=base_url()?>Trazabilidad"><i class="fa fa-location-arrow" aria-hidden="true"></i> Trazabilidad de la carga</a>
+
                     </div>
                   </div>
                   <div class="dropdown">
@@ -104,7 +104,7 @@
                       Notas y Alertas
                     </button>
                     <div class="dropdown-menu">
-                      <a class="dropdown-item links" href="<?=base_url()?>Notas"><i class="fa fa-sticky-note-o" aria-hidden="true"></i> Notas</a>
+                      <a class="dropdown-item links" v-show="permisos.Notas" href="<?=base_url()?>Notas"><i class="fa fa-sticky-note-o" aria-hidden="true"></i> Notas</a>
                       <a class="dropdown-item links" href="<?=base_url()?>Alertas"><i class="fa fa-bell" aria-hidden="true"></i> Alertas</a>
                     </div>
                   </div>
@@ -113,11 +113,12 @@
                       Clientes y Proveedores
                     </button>
                     <div class="dropdown-menu">
-                      <a class="dropdown-item links" href="<?=base_url()?>Sedes"><i class="fa fa-paper-plane" aria-hidden="true"></i> Sedes Clientes</a>
-                      <a class="dropdown-item links" href="<?=base_url()?>Clientes"><i class="fa fa-user-o" aria-hidden="true"></i> Clientes de la empresa</a>
-                      <a class="dropdown-item links" href="<?=base_url()?>Remitentes"><i class="fa fa-terminal" aria-hidden="true"></i> Remitentes</a>
-                      <a class="dropdown-item links"  href="<?=base_url()?>Proveedores"><i class="fa fa-car" aria-hidden="true"></i> Proveedores de transporte</a>
-                      <a class="dropdown-item links"  href="<?=base_url()?>Satelites"><i class="fa fa-space-shuttle" aria-hidden="true"></i> Satélites</a>
+                      <a class="dropdown-item links" v-show="permisos.sedesClientes" href="<?=base_url()?>Sedes"><i class="fa fa-paper-plane" aria-hidden="true"></i> Sedes Clientes</a>
+                      <a class="dropdown-item links" v-show="permisos.clientes"  href="<?=base_url()?>Clientes"><i class="fa fa-user-o" aria-hidden="true"></i> Clientes de la empresa</a>
+                      <a class="dropdown-item links" v-show="permisos.remitentes"  href="<?=base_url()?>Remitentes"><i class="fa fa-terminal" aria-hidden="true"></i> Remitentes</a>
+                      <a class="dropdown-item links" v-show="permisos.proveedores"  href="<?=base_url()?>Proveedores"><i class="fa fa-car" aria-hidden="true"></i> Proveedores de transporte</a>
+                      <a class="dropdown-item links" v-show="permisos.satelites" href="<?=base_url()?>Satelites"><i class="fa fa-space-shuttle" aria-hidden="true"></i> Satélites</a>
+                      <a class="dropdown-item links" v-show="permisos.trazabilidad" href="<?=base_url()?>Trazabilidad"><i class="fa fa-location-arrow" aria-hidden="true"></i> Trazabilidad de la carga</a>
                     </div>
                   </div>
                 </div>
@@ -170,9 +171,9 @@
         <div class="panel panel-default">
           <div id="collapse3" class="panel-collapse collapse">
             <ul class="list-group sp">
-              <li class="list-group-item"><a class="dropdown-item links" href="<?=base_url()?>Actas_entrega"><i class="fa fa-handshake-o" aria-hidden="true"></i> Actas de entrega</a></li>
-              <li class="list-group-item"><a class="dropdown-item links" href="<?=base_url()?>Actas_recogida"><i class="fa fa-cubes" aria-hidden="true"></i> Actas de recogida</a></li>
-              <li class="list-group-item"><a class=" links"  href="<?=base_url()?>Generados"><i class="fa fa-file-pdf-o" aria-hidden="true"></i> Documentos generados</a></li>
+              <li class="list-group-item" v-show="permisos.actasEntrega"><a class="dropdown-item links" href="<?=base_url()?>Actas_entrega"><i class="fa fa-handshake-o" aria-hidden="true"></i> Actas de entrega</a></li>
+              <li class="list-group-item" v-show="permisos.actasRecogidas"><a class="dropdown-item links" href="<?=base_url()?>Actas_recogida"><i class="fa fa-cubes" aria-hidden="true"></i> Actas de recogida</a></li>
+              <li class="list-group-item" v-show="permisos.documentosGenerados"><a class=" links"  href="<?=base_url()?>Generados"><i class="fa fa-file-pdf-o" aria-hidden="true"></i> Documentos generados</a></li>
             </ul>
           </div>
         </div>

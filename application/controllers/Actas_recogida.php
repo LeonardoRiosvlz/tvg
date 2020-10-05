@@ -22,7 +22,13 @@ class Actas_recogida extends MY_Controller {
 				  echo json_encode(['actas_recogida' => $data['actas_recogida']]);
 
 				}
+				public function getactas_recogidau($id=0) {
+					$id = $this->input->post('user_id');
+					  $data['actas_recogida'] = $this->actas_recogida->getactas_recogidau($id);
+					  header('Content-Type: application/json');
+					  echo json_encode(['actas_recogida' => $data['actas_recogida']]);
 
+					}
 			public function insertar() {
 				if( ! $this->verify_min_level(1)){
 					redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
@@ -260,17 +266,17 @@ class Actas_recogida extends MY_Controller {
 													                                                                                 </tr>
 																																																					 <tr>
 																																																							 <td class="esd-block-text es-p5b" align="left">
-																																																									 <h2>Estimados de '.$data['nombre_empresa'].':</h2>
+																																																									 <h2>Estimados de '.$data['nombre_empresa'].'</h2>
 																																																							 </td>
 																																																					 </tr>
 																																																					 <tr>
 																																																							 <td class="esd-block-text es-p5b" align="left">
-																																																									 <h2>Dirección: '.$data['direccion_cliente'].':</h2>
+																																																									 <h2>Dirección: '.$data['direccion_cliente'].'</h2>
 																																																							 </td>
 																																																					 </tr>
 																																																					 <tr>
 																																																							 <td class="esd-block-text es-p5b" align="left">
-																																																									 <h2>Cel:  '.$data['telefono_cliente'].':</h2>
+																																																									 <h2>Cel:  '.$data['telefono_cliente'].'</h2>
 																																																							 </td>
 																																																					 </tr>
 													                                                                                 <tr>
@@ -281,17 +287,17 @@ recoger la mercancía en sus instalaciones, el día '.$data['fecha_recogida'].'<
 													                                                                                 </tr>
 																																																					 <tr>
 																																																							 <td class="esd-block-text es-p5b" align="left">
-																																																									 <h2>Nombre:  '.$data['conductor'].':</h2>
+																																																									 <h2>Nombre:  '.$data['conductor'].'</h2>
 																																																							 </td>
 																																																					 </tr>
 																																																					 <tr>
 																																																							 <td class="esd-block-text es-p5b" align="left">
-																																																									 <h2>C.C.  '.$data['cedula_c'].':</h2>
+																																																									 <h2>C.C.  '.$data['cedula_c'].'</h2>
 																																																							 </td>
 																																																					 </tr>
 																																																					 <tr>
 																																																							 <td class="esd-block-text es-p5b" align="left">
-																																																									 <h2>Datos del Vehículo:  '.$data['placa'].':</h2>
+																																																									 <h2>Datos del Vehículo:  '.$data['placa'].'</h2>
 																																																							 </td>
 																																																					 </tr>
 													                                                                             </tbody>

@@ -1,4 +1,4 @@
-<div id="app" class="container" >
+<div id="app" class="container" style="min-height:1000px">
   <div class="row">
     <div class="col-lg-12 my-2 ">
       <!-- Shopping cart table -->
@@ -1811,10 +1811,12 @@
                            window.setTimeout(function () {
                               $('#mplanilla').modal('show');
                             }, 50);
-                           this.setear_to_email();
+
                            $('#modal-lg').modal('hide');
                            this.loadActas();
+                           this.setear_to_email();
                            this.resete();
+
                          }
                          else{
                            Swal.fire({
@@ -1959,7 +1961,7 @@
                          .then(response => {
                            if(response) {
                              Swal(
-                               '¡Eliminado!',
+                               'Enviado!',
                                'Ha sido enviado.',
                                'success'
                              ).then(response => {
@@ -1980,17 +1982,17 @@
                      ) {
                        Swal(
                          'Cancelado',
-                         'No fue eliminado.',
+                         'No fue enviado.',
                          'success'
                        )
                      }
                    })
                  },
                  setear_to_email(){
-                     console.log("hola");
-                    for (var i = 0; i < this.actas_recogida.length; i++) {
-                      if (this.id===this.actas_recogida[i].id) {
 
+                    for (var i = 0; i < this.actas_recogida.length; i++) {
+                      if (this.actas_recogida[i].id==this.id) {
+                        console.log("sasdsada");
                         this.form.id=this.id;
                         this.form.codigo=this.actas_recogida[i].codigo;
                         this.form.creado=this.actas_recogida[i].creado;
@@ -2061,13 +2063,33 @@
                            this.clientes = clientes
                          });
                        },
-                 async loadActas() {
-                      await   axios.get('index.php/actas_recogida/getactas_recogida/')
-                         .then(({data: {actas_recogida}}) => {
-                           this.actas_recogida = actas_recogida
-                         });
-                         $("#example1").DataTable();
-                       },
+                       <?php if ($this->auth_role == 'customer'): ?>
+                           async loadActas() {
+                             let data = new FormData();
+                              data.append('user_id',this.form.user_id);
+                             await   axios.post('index.php/Actas_recogida/getactas_recogidau/',data)
+                                .then(({data: {actas_recogida}}) => {
+                                  this.actas_recogida = actas_recogida
+                                });
+                                if (this.id) {
+                                    this.setear_to_email();
+                                }
+
+                                 $("#example1").DataTable();
+                              },
+                          <?php endif; ?>
+                          <?php if ( $this->auth_role == 'manager' || $this->auth_role == 'admin'): ?>
+                               async loadActas() {
+                                 await   axios.get('index.php/Actas_recogida/getactas_recogida/')
+                                    .then(({data: {actas_recogida}}) => {
+                                      this.actas_recogida = actas_recogida
+                                    });
+                                    if (this.id) {
+                                        this.setear_to_email();
+                                    }
+                                     $("#example1").DataTable();
+                                  },
+                             <?php endif; ?>
                        async loadCart() {
 
                            await  axios.get('index.php/User/get_profile/')

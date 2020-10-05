@@ -30,7 +30,7 @@
               <th class="links">SERIAL</th>
               <th class="links">FECHA</th>
               <th class="links">CLIENTE</th>
-              <th class="links">CEDULDA</th>
+              <th class="links">CEDULA</th>
               <th class="links">CIUDAD ORIGEN</th>
               <th class="links">CIUDAD DESTINO</th>
               <th class="links">CANTIDAD</th>
@@ -104,7 +104,7 @@
                            <div class="col-6">
                              <input list="encodings" v-model="form.id_cliente" v-validate="'required'" value="" class="form-control form-control-lg" placeholder="Escriba una cedula">
                                <datalist id="encodings">
-                                   <option v-for="clientes in clientes" :value="clientes.cedula_cliente">{{clientes.nombre_cliente}}</option>
+                                   <option v-for="clientes in clientes" :value="clientes.cedula_cliente">{{clientes.nit_cliente}}</option>
                                </datalist>
                            </div>
                            <div class="col-3">
@@ -173,6 +173,7 @@
                                   <p class="text-danger my-1" v-if="(errors.first('id_sede'))" >  Este dato es requerido  </p>
                                 </div>
                              </div>
+                          
                              <div class="col-4">
                                <!-- textarea -->
                                <div class="form-group">
@@ -2014,6 +2015,7 @@
                  async loadsedes(index) {
                    console.log(index);
                    let data = new FormData();
+                   console.log(index);
                     data.append('id_cliente',index);
                     await axios.post('index.php/Sedes/getsedes/',data)
                    .then(({data: {sedes}}) => {
@@ -2026,20 +2028,38 @@
                            this.clientes = clientes
                          });
                        },
-                 async loadActas() {
+            <?php if ($this->auth_role == 'customer'): ?>
+                async loadActas() {
+                  let data = new FormData();
+                   data.append('user_id',this.form.user_id);
+                  await   axios.post('index.php/Actas_entrega/getactas_entregau/',data)
+                     .then(({data: {actas_entrega}}) => {
+                       this.actas_entrega = actas_entrega
+                     });
+                      $("#example1").DataTable();
+                   },
+               <?php endif; ?>
+               <?php if ( $this->auth_role == 'manager' || $this->auth_role == 'admin'): ?>
+                    async loadActas() {
                       await   axios.get('index.php/Actas_entrega/getactas_entrega/')
                          .then(({data: {actas_entrega}}) => {
                            this.actas_entrega = actas_entrega
                          });
                           $("#example1").DataTable();
                        },
-                       async loadCart() {
+                  <?php endif; ?>
+                        async loadCart() {
 
                            await  axios.get('index.php/User/get_profile/')
                             .then(({data: {profiles}}) => {
                                this.cart = profiles;
                             });
                             this.permisos=JSON.parse(this.cart[0].permisos);
+                            if (! this.permisos.actasEntrega) {
+                             window.setTimeout(function () {
+                                   location.href = "<?=base_url();?>";
+                              }, 0);
+                            }
                           },
        },
 

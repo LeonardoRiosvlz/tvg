@@ -279,6 +279,14 @@
                                       <input type="checkbox" id="check12" v-model="form.permisos.trazabilidad" checked/>
                                        <label class="labels" for="check12"><i class="fa fa-file" aria-hidden="true"></i> Trazabilidad de la carga</label>
                                     </div>
+                                    <div class="col-3 ">
+                                      <input type="checkbox" id="check13" v-model="form.permisos.sedesClientes" checked/>
+                                       <label class="labels" for="check13"><i class="fa fa-paper-plane" aria-hidden="true"></i> Sedes Clientes</label>
+                                    </div>
+                                    <div class="col-3 ">
+                                      <input type="checkbox" id="check14" v-model="form.permisos.satelites" checked/>
+                                       <label class="labels" for="check14"><i class="fa fa-space-shuttle" aria-hidden="true"></i> Satélites</label>
+                                    </div>
                                   </div>
 
                                </div>
@@ -407,6 +415,7 @@
          cargos:[],
          sucursales:[],
          permisos:[],
+         cart:[],
          editMode:false,
          ver:false,
          form:{
@@ -436,6 +445,8 @@
                'proveedores':true,
                'trazabilidad':true,
                'facturas':true,
+               'sedesClientes':true,
+               'satelites':true,
              },
              'url_foto':''
          },

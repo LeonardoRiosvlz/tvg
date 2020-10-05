@@ -106,10 +106,10 @@
                                 <label for="exampleFormControlSelect1">Tipo de raporte</label>
                                   <select v-model="form.tipo_reporte" name="tipo_reporte"   v-validate="'required'" class="form-control" id="exampleFormControlSelect1">
                                     <option value=""></option>
-                                    <option v-if="trazabilidad.length<1"  value="Alistamiento">Alistamiento</option>
-                                    <option v-if="trazabilidad.length>0"  value="Salida">Salida</option>
-                                    <option v-if="trazabilidad.length>0"  value="Redireccionamiento">Redireccionamiento</option>
-                                    <option v-if="trazabilidad.length>0" value="LLegada">LLegada</option>
+                                    <option   value="Alistamiento">Alistamiento</option>
+                                    <option  value="Salida">Salida</option>
+                                    <option  value="Redireccionamiento">Redireccionamiento</option>
+                                    <option  value="Llegada">Llegada</option>
                                   </select>
                                   <p class="text-danger my-1" v-if="(errors.first('tipo_reporte'))" >  Este dato es requerido  </p>
                                 </div>

@@ -250,7 +250,7 @@
                            </div>
                            <div class="col-sm-12" v-if="!form.id_tarifa">
 
-                               <label class="links">Trazabilidad</label>
+                               <label class="links">Ruta de envío</label>
                                <input list="tarifas" v-model="form.id_tarifa" @change="tari()"  value="" class="form-control form-control-lg" placeholder="Escriba una ruta">
                                  <datalist id="tarifas">
                                      <option v-for="tarifas in tarifas" v-if="tarifas.tipo_envio===form.tipo_envio && tarifas.tipo_transporte===form.tipo_transporte"  :value="tarifas.id">De {{tarifas.ciudad_origen}} a {{tarifas.ciudad_destino}} Tiempo:{{tarifas.tiempos}}</option>
@@ -425,52 +425,8 @@
                              <p class="text-danger my-1 small" v-if="(errors.first('flete_total'))" >  Este dato es requerido  </p>
                            </div>
                          </div>
-                         <div class=" col-md-4 col-sm-12">
-                           <div class="form-group">
-                              <label class="links">Fecha despacho</label>
-                                <flat-pickr
-                                    v-validate="'required'"
-                                    v-model="form.fecha_despacho"
-                                    :config="config"
-                                    class="form-control"
-                                    placeholder="Selecciona fecha"
-                                    name="fecha_despacho"
-                                    :disabled="ver">
-                              </flat-pickr>
-                              <p class="text-danger my-1 small" v-if="(errors.first('fecha_despacho'))" >  Este dato es requerido  </p>
-                            </div>
-                         </div>
-                         <div class="col-md-4">
-                           <label class="links">Proveedor</label>
-                           <div class="form-group">
-                             <select v-model="form.proveedor" v-validate="'required'" name="proveedor" class="form-control" :disabled="ver" >
-                               <option value=""></option>
-                               <option v-for="proveedores in proveedores" :value="proveedores.id">{{proveedores.nombre_proveedor}}</option>
-                             </select>
-                             <p class="text-danger my-1 small" v-if="(errors.first('proveedor'))" >  Este dato es requerido  </p>
-                           </div>
-                         </div>
-                         <div class="col-md-4">
-                           <label class="links">Nº guía proveedor</label>
-                           <div class="form-group">
-                             <input v-model="form.n_guia_proveedor" v-validate="'required'" name="n_guia_proveedor" class="form-control" :disabled="ver" >
-                             <p class="text-danger my-1 small" v-if="(errors.first('n_guia_proveedor'))" >  Este dato es requerido  </p>
-                           </div>
-                         </div>
-                         <div class=" col-md-4 col-sm-12">
-                           <div class="form-group">
-                              <label class="links">Fecha de entrega en destino</label>
-                                <flat-pickr
-                                    v-model="form.fecha_en_destino"
-                                    :config="config"
-                                    class="form-control"
-                                    placeholder="Selecciona fecha"
-                                    name="fecha_en_destino"
-                                    :disabled="ver">
-                              </flat-pickr>
-                              <p class="text-danger my-1 small" v-if="(errors.first('fecha_en_destino'))" >  Este dato es requerido  </p>
-                            </div>
-                         </div>
+
+
                          <div class="col-md-4">
                            <label class="links">Sede Cliente</label>
                            <div class="form-group">
@@ -479,46 +435,6 @@
                              </select>
                              <p class="text-danger my-1 small" v-if="(errors.first('tipo_envio'))" >  Este dato es requerido  </p>
                            </div>
-                         </div>
-                         <div class="card col-12">
-                           <div class="col-sm-12">
-                            <div class="form-group">
-                              <label for="colFormLabelSm" class="links">Fotos detalladas</label>
-                                     <div class="col-sm-12">
-                                       <div class="row ">
-                                         <div class="col-8">
-                                           <input type="file"   id="imagenFoto" name="imagenFoto">
-                                         </div>
-                                           <div class="col-4">
-                                           <button class="btn btn-light links btn-lg" type="button"  @click="uploadFoto()">Subir archivo</button>
-                                         </div>
-                                        </div>
-                                   </div>
-                             </div>
-                         </div>
-                         <div class="row">
-                           <div v-for="(img ,index) in imagenes" class="card col-lg-4 col-md-6 col-sm-12 col-xs-12" >
-                               <img :src="'<?=base_url();?>'+img.url" class="card-img-top" alt="...">
-                               <div class="card-body">
-                                 <a  class="list-group-item list-group-item-action" @click="eliminarImagen(index)"><span class="mbri-close"></span> Eliminar</a>
-                               </div>
-                             </div>
-                         </div>
-                         </div>
-                         <div class=" col-md-4 col-sm-12">
-                           <div class="form-group">
-                              <label class="links">Fecha de conectividad</label>
-                                <flat-pickr
-                                    v-validate="'required'"
-                                    v-model="form.fecha_conectividad"
-                                    :config="config"
-                                    class="form-control"
-                                    placeholder="Selecciona fecha"
-                                    name="fecha_conectividad"
-                                    :disabled="ver">
-                              </flat-pickr>
-                              <p class="text-danger my-1 small" v-if="(errors.first('fecha_conectividad'))" >  Este dato es requerido  </p>
-                            </div>
                          </div>
                          <div class="col-md-4">
                            <label class="links">Numero de referencia</label>
@@ -546,20 +462,6 @@
                            <div class="form-group">
                              <input v-model="form.numero_anexo_l" v-validate="'required'" name="numero_anexo_l" class="form-control" :disabled="ver" >
                              <p class="text-danger my-1 small" v-if="(errors.first('numero_anexo_l'))" >  Este dato es requerido  </p>
-                           </div>
-                         </div>
-                         <div class="col-md-4">
-                           <label class="links">Número factura</label>
-                           <div class="form-group">
-                             <input v-model="form.numero_factura" v-validate="'required'" name="numero_factura" class="form-control" :disabled="ver" >
-                             <p class="text-danger my-1 small" v-if="(errors.first('numero_factura'))" >  Este dato es requerido  </p>
-                           </div>
-                         </div>
-                         <div class="col-md-4">
-                           <label class="links">Fecha factura</label>
-                           <div class="form-group">
-                             <input v-model="form.fecha_factura" v-validate="'required'" name="fecha_factura" class="form-control" :disabled="ver" >
-                             <p class="text-danger my-1 small" v-if="(errors.first('fecha_factura'))" >  Este dato es requerido  </p>
                            </div>
                          </div>
 

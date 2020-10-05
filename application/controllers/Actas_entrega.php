@@ -22,7 +22,13 @@ class Actas_entrega extends MY_Controller {
 				  echo json_encode(['actas_entrega' => $data['actas_entrega']]);
 
 				}
+				public function getactas_entregau($id=0) {
+						$id = $this->input->post('user_id');
+					  $data['actas_entrega'] = $this->actas_entrega->getactas_entregau($id);
+					  header('Content-Type: application/json');
+					  echo json_encode(['actas_entrega' => $data['actas_entrega']]);
 
+					}
 			public function insertar() {
 				if( ! $this->verify_min_level(1)){
 					redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
