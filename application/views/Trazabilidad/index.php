@@ -110,7 +110,7 @@
                                     <option   value="Alistamiento">Alistamiento</option>
                                     <option  value="Salida">Salida</option>
                                     <option  value="Redireccionamiento">Redireccionamiento</option>
-                                    <option  value="Llegada">Llegada</option
+                                    <option  value="Llegada">Llegada</option>
                                       <option  value="Llegada Destino">Llegada Destino</option>
                                   </select>
                                   <p class="text-danger my-1" v-if="(errors.first('tipo_reporte'))" >  Este dato es requerido  </p>
@@ -145,8 +145,47 @@
                                  <p class="text-danger my-1" v-if="(errors.first('fecha_despacho'))" >  Este dato es requerido  </p>
                                </div>
                             </div>
+                            <div class="col-4">
+                              <div class="form-group">
+                                <label for="exampleFormControlSelect1">Satélite encargado</label>
+                                  <select v-model="form.id_satelite"   v-validate="'required'" name="id_satelite" class="form-control" id="exampleFormControlSelect1" :disabled="ver||form.tipo_reporte==='Recogida'||form.tipo_reporte==='Alistamiento'||form.tipo_reporte==='Llegada Destino'">
+                                    <option value=""></option>
+                                    <option v-for="satelites in satelites" :value="satelites.id">{{satelites.nombre_sat}}</option>
+                                  </select>
+                                  <p class="text-danger my-1" v-if="(errors.first('id_satelite'))" >  Este dato es requerido  </p>
+                                </div>
+                            </div>
 
-                             <div class="col-md-8">
+                            <div class=" col-md-4 col-sm-12" v-show="form.tipo_reporte">
+                              <div class="form-group">
+                                <label v-if="form.tipo_reporte==='Recogida'" class="links">Fecha De Alistamiento</label>
+                                <label v-if="form.tipo_reporte==='Alistamiento'" class="links">Fecha De Envío</label>
+                                 <label v-if="form.tipo_reporte==='Salida'||form.tipo_reporte==='Redireccionamiento'"  class="links">LLegada carga destino</label>
+                                 <label v-if="form.tipo_reporte==='Llegada'"  class="links">Fecha de despacho</label>
+                                 <label v-if="form.tipo_reporte==='Llegada Destino'"  class="links">Fecha lista para entregar </label>
+                                   <flat-pickr
+                                       v-validate="'required'"
+                                       v-model="form.llegada_destino"
+                                       :config="config"
+                                       class="form-control"
+                                       placeholder="Selecciona fecha"
+                                       name="llegada_destino">
+                                 </flat-pickr>
+                                 <p class="text-danger my-1" v-if="(errors.first('llegada_destino'))" >  Este dato es requerido  </p>
+                               </div>
+                            </div>
+                            <div class="col-4">
+                             <label for="colFormLabelSm" class="links">Foto Referecial</label>
+                              <div class="form-group" v-if="editMode">
+                                <input type="file"  id="image" name="image">
+                                 <p class="text-danger my-1 small" v-if="(errors.first('image'))" >  Este dato es requerido  </p>
+                               </div>
+                               <div v-else class="form-group">
+                                      <input type="file" v-validate="'required'"  id="image" name="image">
+                                      <p class="text-danger my-1 small" v-if="(errors.first('image'))" >  Este dato es requerido  </p>
+                               </div>
+                            </div>
+                             <div class="col-md-6">
                                <!-- textarea -->
                                <div class="form-group">
                                  <label class="links">Detalles de carga</label>
@@ -154,17 +193,7 @@
                                  <p class="text-danger my-1" v-if="(errors.first('detalles_carga'))" >  Este dato es requerido  </p>
                                </div>
                              </div>
-                             <div class="col-4">
-                               <div class="form-group">
-                                 <label for="exampleFormControlSelect1">Satélite encargado</label>
-                                   <select v-model="form.id_satelite"   v-validate="'required'" name="id_satelite" class="form-control" id="exampleFormControlSelect1" :disabled="ver||form.tipo_reporte==='Recogida'">
-                                     <option value=""></option>
-                                     <option v-for="satelites in satelites" :value="satelites.id">{{satelites.nombre_sat}}</option>
-                                   </select>
-                                   <p class="text-danger my-1" v-if="(errors.first('id_satelite'))" >  Este dato es requerido  </p>
-                                 </div>
-                             </div>
-                             <div class="col-md-8">
+                             <div class="col-md-6">
                                <!-- textarea -->
                                <div class="form-group">
                                  <label class="links">observaciones</label>
@@ -172,25 +201,11 @@
                                  <p class="text-danger my-1" v-if="(errors.first('observaciones'))" >  Este dato es requerido  </p>
                                </div>
                              </div>
-                             <div class=" col-md-4 col-sm-12">
-                               <div class="form-group">
-                                 <label v-if="form.tipo_reporte==='Recogida'" class="links">Fecha De Alistamiento</label>
-                                  <label v-else class="links">LLegada carga destino</label>
-                                    <flat-pickr
-                                        v-validate="'required'"
-                                        v-model="form.llegada_destino"
-                                        :config="config"
-                                        class="form-control"
-                                        placeholder="Selecciona fecha"
-                                        name="llegada_destino">
-                                  </flat-pickr>
-                                  <p class="text-danger my-1" v-if="(errors.first('llegada_destino'))" >  Este dato es requerido  </p>
-                                </div>
-                             </div>
+
                              <div class="col-4">
                                <div class="form-group">
                                  <label for="exampleFormControlSelect1">Proveedores</label>
-                                   <select v-model="form.id_proveedor"   v-validate="'required'" name="id_proveedor" class="form-control" id="exampleFormControlSelect1">
+                                   <select v-model="form.id_proveedor"   v-validate="'required'" name="id_proveedor" class="form-control" id="exampleFormControlSelect1" :disabled="ver||form.tipo_reporte==='Alistamiento'||form.tipo_reporte==='Recogida'">
                                      <option value=""></option>
                                      <option v-for="proveedores in proveedores" :value="proveedores.id">{{proveedores.nombre_proveedor}}</option>
                                    </select>
@@ -201,21 +216,11 @@
                                 <!-- textarea -->
                                 <div class="form-group">
                                   <label class="links">Nº Guía proveedor</label>
-                                   <input type="text" v-model="form.guia_proveedor" v-validate="'required'" name="guia_proveedor" class="form-control" id="" :disabled="ver">
+                                   <input type="text" v-model="form.guia_proveedor" v-validate="'required'" name="guia_proveedor" class="form-control" id="" :disabled="ver||form.tipo_reporte==='Alistamiento'||form.tipo_reporte==='Recogida'">
                                   <p class="text-danger my-1" v-if="(errors.first('guia_proveedor'))" >  Este dato es requerido  </p>
                                 </div>
                               </div>
-                             <div class="col-4">
-                              <label for="colFormLabelSm" class="links">Foto Referecial</label>
-                               <div class="form-group" v-if="editMode">
-                                 <input type="file"  id="image" name="image">
-                                  <p class="text-danger my-1 small" v-if="(errors.first('image'))" >  Este dato es requerido  </p>
-                                </div>
-                                <div v-else class="form-group">
-                                       <input type="file" v-validate="'required'"  id="image" name="image">
-                                       <p class="text-danger my-1 small" v-if="(errors.first('image'))" >  Este dato es requerido  </p>
-                                </div>
-                             </div>
+
                              <div class="card col-12">
                               <div class="col-sm-12">
                                <div class="form-group">
@@ -233,7 +238,7 @@
                                 </div>
                             </div>
                             <div class="row">
-                              <div v-for="(img ,index) in imagenes" class="card col-lg-4 col-md-6 col-sm-12 col-xs-12" >
+                              <div v-for="(img ,index) in imagenes" class="card col-lg-3 col-md-3 col-sm-12 col-xs-12" >
                                   <img :src="'<?=base_url();?>'+img.url" class="card-img-top" alt="...">
                                   <div class="card-body">
                                     <a  class="list-group-item list-group-item-action" @click="eliminarImagen(index)"><span class="mbri-close"></span> Eliminar</a>
@@ -256,7 +261,7 @@
         </div>
    <!-- fin del modal -->
    </div>
-
+  <pre>{{form}}</pre>
 </div>
 <script>
       Vue.component('flat-pickr', VueFlatpickr);
@@ -281,6 +286,8 @@
          departamento:0,
          ver:false,
          cart:[],
+         imagenes:[],
+         satelites:[],
          permisos:[],
          guias:[],
          trazabilidad:[],
@@ -293,7 +300,7 @@
              'prefijo':'',
              'id_guia':'',
              'hora':'',
-             'id_sede':'',
+             'tiempo':'',
              'id_satelite':'',
              'fecha_recogida':'',
              'llegada_destino':'',
@@ -302,6 +309,7 @@
              'guia_proveedor':'',
              'detalles_carga':'',
              'observaciones':'',
+
          }
        },
        methods: {
@@ -313,8 +321,9 @@
                this.file_data = $('#imagenFoto').prop('files')[0];
                this.form_data = new FormData();
                this.form_data.append('file', this.file_data);
-               this.form_data.append('id_carga_cliente', this.form.id_carga_cliente);
-           await      axios.post('index.php/ClientesEspeciales/detail_foto', this.form_data)
+               this.form_data.append('id_guia', this.form.id_guia);
+               this.form_data.append('tiempo', this.form.tiempo);
+           await      axios.post('index.php/Trazabilidad/detail_foto', this.form_data)
                  .then(response => {
                    if(response.data.status == 201){
                      Swal.fire({
@@ -349,7 +358,7 @@
                  if (result.value) {
                    let data = new FormData();
                    data.append('id',this.imagenes[index].id);
-                     axios.post('index.php/ClientesEspeciales/eliminarImagen',data)
+                     axios.post('index.php/Trazabilidad/eliminarImagen',data)
                      .then(response => {
                        if(response) {
                          Swal(
@@ -382,14 +391,16 @@
              },
               async    loadFotos(){
               let data = new FormData();
-               data.append('id_carga_cliente',this.form.id_carga_cliente);
-          await      axios.post('index.php/ClientesEspeciales/getimagenes/',data)
+               data.append('id_guia',this.form.id_guia);
+               data.append('tiempo',this.form.tiempo);
+          await      axios.post('index.php/Trazabilidad/getimagenes/',data)
                .then(({data: {imagenes}}) => {
                      this.imagenes = imagenes;
                    });
                },
            resete(){
-
+             const dateTime = Date.now();
+               this.form.tiempo = Math.floor(dateTime / 1000);
                this.$validator.reset();
                document.getElementById("form").reset();
                  this.form.guia_proveedor="";
@@ -551,7 +562,7 @@
                     this.form.prefijo=this.trazabilidad[index].prefijo;
                      this.form.id_guia=this.trazabilidad[index].id_guia;
                      this.form.guia_proveedor=this.trazabilidad[index].guia_proveedor;
-                      this.form.id_sede=this.trazabilidad[index].id_sede;
+                      this.form.tiempo=this.trazabilidad[index].tiempo;
                        this.form.id_satelite=this.trazabilidad[index].id_satelite;
                         this.form.fecha_despacho=this.trazabilidad[index].fecha_despacho;
                          this.form.llegada_destino=this.trazabilidad[index].llegada_destino;
@@ -560,6 +571,7 @@
                             this.form.detalles_carga=this.trazabilidad[index].detalles_carga;
                              this.form.observaciones=this.trazabilidad[index].observaciones;
                              this.form.hora=this.trazabilidad[index].hora;
+                             this.loadFotos();
                    $('#modal-lg').modal('show');
                    this.editMode=true
                  },
@@ -567,7 +579,7 @@
                    this.form.id=this.trazabilidad[index].id;
                     this.form.prefijo=this.trazabilidad[index].prefijo;
                      this.form.id_guia=this.trazabilidad[index].id_guia;
-                      this.form.id_sede=this.trazabilidad[index].id_sede;
+                      this.form.tiempo=this.trazabilidad[index].tiempo;
                        this.form.id_satelite=this.trazabilidad[index].id_satelite;
                         this.form.fecha_despacho=this.trazabilidad[index].fecha_despacho;
                          this.form.llegada_destino=this.trazabilidad[index].llegada_destino;
@@ -575,6 +587,7 @@
                            this.form.id_proveedor=this.trazabilidad[index].id_proveedor;
                             this.form.detalles_carga=this.trazabilidad[index].detalles_carga;
                              this.form.observaciones=this.trazabilidad[index].observaciones;
+                             this.loadFotos();
                    $('#myModal').modal('show');
                    this.editMode=false
                  },

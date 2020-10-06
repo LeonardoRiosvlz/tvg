@@ -156,51 +156,6 @@ class ClientesEspeciales extends MY_Controller {
 					  echo json_encode(['clientes' => $data['clientes']]);
 		 }
 
-		////////////////
-				public function detail_foto() {
-					if( ! $this->verify_min_level(1)){
-							redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
-						}
-					$config['upload_path']          = './include/files';
-					$config['allowed_types']        = 'jpg|png|jpeg';
-					$config['max_size']             = 7500;
-					$config['max_width']            = 2500;
-					$config['max_height']           = 1400;
-					$this->load->library('upload', $config);
-					if ( ! $this->upload->do_upload('file')) {
-						$error = array('error' => $this->upload->display_errors());
-						echo json_encode($error);
-					} else {
-							$upload_data = $this->upload->data();
-						$file_name = $upload_data['file_name'];
-						$data['url'] ="/include/files/".$file_name;
-						$data['id_carga_cliente'] = $this->input->post('id_carga_cliente');
-						$rut=$this->historial->imagen_insert($data);
-						echo json_encode(['status' => '201', 'message' => 'Imagen creada exitosamente']);
-					}
-				}
-				function getimagenes() {
-
-				$id = $this->input->post('id_carga_cliente');
-				$data['imagenes'] = $this->historial->imagenes_get($id);
-				header('Content-Type: application/json');
-				echo json_encode(['imagenes' => $data['imagenes']]);
-
-				}
-
-				public function eliminarImagen() {
-					if( ! $this->verify_min_level(1)){
-								redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
-							}
-					$id = $this->input->post('id');
-					$result = $this->historial->eliminarImagen($id);
-						 if($result['code'] == 0){
-									echo json_encode(['status' => '200', 'message' => ' Eliminado correctamente']);
-								}
-							else{
-									echo json_encode(['status' => '500', 'message' => ' No eliminado, ha ocurrido un error', 'response' => $result]);
-								}
-			 }
 
 
 

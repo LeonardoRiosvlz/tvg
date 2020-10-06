@@ -339,7 +339,7 @@
                            <p class="text-danger my-1 small" v-if="(errors.first('ciudad_destino'))" >  Este dato es requerido  </p>
                          </div>
                       </div>
-                             <a href="#" @click="form.departamento_origen='Amazonas';form.ciudad_destino='';form.departamento_destino='';form.ciudad_destino='';form.tipo_transporte='';form.tipo_envio='';form.id_tarifa=''" class="card-link">Cambiar tarifa</a>
+                             <a href="#" @click="form.departamento_origen='Amazonas';form.ciudad_destino='';form.departamento_destino='';form.ciudad_destino='';form.tipo_transporte='';form.tipo_envio='';form.id_tarifa=''" class="card-link">Cambiar Ruta</a>
                            </div>
                          </div>
                          <div class="col-md-3">

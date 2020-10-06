@@ -232,4 +232,51 @@ class Trazabilidad extends MY_Controller {
 			 exit;
 		}
 	}
+
+
+	////////////////
+			public function detail_foto() {
+
+				$config['upload_path']          = './include/img/trazabilidad/';
+				$config['allowed_types']        = 'jpg|png|jpeg';
+				$config['max_size']             = 7500;
+				$config['max_width']            = 2500;
+				$config['max_height']           = 1400;
+				$this->load->library('upload', $config);
+				if ( ! $this->upload->do_upload('file')) {
+					$error = array('error' => $this->upload->display_errors());
+					echo json_encode($error);
+				} else {
+					$upload_data = $this->upload->data();
+					$file_name = $upload_data['file_name'];
+					$data['url'] ="/include/img/trazabilidad/".$file_name;
+					$data['id_guia'] = $this->input->post('id_guia');
+					$data['tiempo'] = $this->input->post('tiempo');
+					$rut=$this->trazabilidad->imagen_insert($data);
+					echo json_encode(['status' => '201', 'message' => 'Imagen creada exitosamente']);
+				}
+			}
+			function getimagenes() {
+				$datas['id_guia'] = $this->input->post('id_guia');
+			$datas['tiempo'] = $this->input->post('tiempo');
+			$data['imagenes'] = $this->trazabilidad->imagenes_get($datas);
+			header('Content-Type: application/json');
+			echo json_encode(['imagenes' => $data['imagenes']]);
+
+			}
+
+			public function eliminarImagen() {
+	
+				$id = $this->input->post('id');
+				$result = $this->trazabilidad->eliminarImagen($id);
+					 if($result['code'] == 0){
+								echo json_encode(['status' => '200', 'message' => ' Eliminado correctamente']);
+							}
+						else{
+								echo json_encode(['status' => '500', 'message' => ' No eliminado, ha ocurrido un error', 'response' => $result]);
+							}
+		 }
+
+
+
 }

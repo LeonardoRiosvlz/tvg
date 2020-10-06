@@ -14,7 +14,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 'id_satelite'     => $data['id_satelite'],
                 'tipo_reporte'     => $data['tipo_reporte'],
                 'prefijo'     => $data['prefijo'],
-                'id_sede'     => $data['id_sede'],
+                'tiempo'     => $data['tiempo'],
                 'hora'     => $data['hora'],
                 'url_foto'     => $data['url_foto'],
             ));
@@ -34,7 +34,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
               'tipo_reporte'     => $data['tipo_reporte'],
               'prefijo'     => $data['prefijo'],
               'hora'     => $data['hora'],
-              'id_sede'     => $data['id_sede'],
+              'tiempo'     => $data['tiempo'],
             ));
             return $this->db->error();
            }
@@ -104,8 +104,29 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 ->get()
                 ->result();
               }
-
-
+///////////////////////////////
+        public function imagen_insert($data) {
+            $this->db->insert('documentos_historial', array(
+                'id_guia'          => $data['id_guia'],
+                'tiempo'          => $data['tiempo'],
+                'url'             => $data['url'],
+            ));
+            return $this->db->error();
+           }
+        public function imagenes_get($datas){
+         return $this->db
+            ->select('*')
+             ->from('documentos_historial')
+             ->where('id_guia',$datas['id_guia'])
+             ->where('tiempo',$datas['tiempo'])
+             ->get()
+             ->result();
+            }
+            public function eliminarImagen($id) {
+              $this->db->where('id', $id);
+              $this->db->delete('documentos_historial');
+              return $this->db->error();
+            }
 
 
     }

@@ -100,51 +100,109 @@
                  <div class="card-body">
                          <form role="form" id="form" @submit.prevent="validateBeforeSubmit">
                            <div class="row">
+                             <div class="col-4">
+                               <div class="form-group">
+                                 <label for="exampleFormControlSelect1">Tipo de raporte</label>
+                                   <select v-model="form.tipo_reporte" name="tipo_reporte"   v-validate="'required'" class="form-control" id="exampleFormControlSelect1">
+                                     <option value=""></option>
+                                     <option  value="Salida">Salida</option>
+                                     <option  value="Redireccionamiento">Redireccionamiento</option>
+                                     <option  value="Llegada">Llegada</option>
+                                       <option  value="Llegada Destino">Llegada Destino</option>
+                                   </select>
+                                   <p class="text-danger my-1" v-if="(errors.first('tipo_reporte'))" >  Este dato es requerido  </p>
+                                 </div>
+                             </div>
+                             <div class=" col-md-4 col-sm-12">
+                               <div class="form-group">
+                                  <label class="links">Hora de {{form.tipo_reporte}}</label>
+                                    <flat-pickr
+                                        v-validate="'required'"
+                                        v-model="form.hora"
+                                        :config="dconfig"
+                                        class="form-control"
+                                        placeholder="Selecciona fecha"
+                                        name="hora">
+                                  </flat-pickr>
+                                  <p class="text-danger my-1" v-if="(errors.first('hora'))" >  Este dato es requerido  </p>
+                                </div>
+                             </div>
+                             <div class=" col-md-4 col-sm-12">
+                               <div class="form-group">
+
+                                  <label  class="links">Fecha de {{form.tipo_reporte}}</label>
+                                    <flat-pickr
+                                        v-validate="'required'"
+                                        v-model="form.fecha_despacho"
+                                        :config="config"
+                                        class="form-control"
+                                        placeholder="Selecciona fecha"
+                                        name="fecha_despacho">
+                                  </flat-pickr>
+                                  <p class="text-danger my-1" v-if="(errors.first('fecha_despacho'))" >  Este dato es requerido  </p>
+                                </div>
+                             </div>
+                             <div class="col-4">
+                               <div class="form-group">
+                                 <label for="exampleFormControlSelect1">Satélite encargado</label>
+                                   <select v-model="form.id_satelite"   v-validate="'required'" name="id_satelite" class="form-control" id="exampleFormControlSelect1" disabled>
+                                     <option value=""></option>
+                                     <option v-for="satelites in satelites" :value="satelites.id">{{satelites.nombre_sat}}</option>
+                                   </select>
+                                   <p class="text-danger my-1" v-if="(errors.first('id_satelite'))" >  Este dato es requerido  </p>
+                                 </div>
+                             </div>
+
+                             <div class=" col-md-4 col-sm-12" v-show="form.tipo_reporte">
+                               <div class="form-group">
+                                 <label v-if="form.tipo_reporte==='Recogida'" class="links">Fecha De Alistamiento</label>
+                                 <label v-if="form.tipo_reporte==='Alistamiento'" class="links">Fecha De Envío</label>
+                                  <label v-if="form.tipo_reporte==='Salida'||form.tipo_reporte==='Redireccionamiento'"  class="links">LLegada carga destino</label>
+                                  <label v-if="form.tipo_reporte==='Llegada'"  class="links">Fecha de despacho</label>
+                                  <label v-if="form.tipo_reporte==='Llegada Destino'"  class="links">Fecha lista para entregar </label>
+                                    <flat-pickr
+                                        v-validate="'required'"
+                                        v-model="form.llegada_destino"
+                                        :config="config"
+                                        class="form-control"
+                                        placeholder="Selecciona fecha"
+                                        name="llegada_destino">
+                                  </flat-pickr>
+                                  <p class="text-danger my-1" v-if="(errors.first('llegada_destino'))" >  Este dato es requerido  </p>
+                                </div>
+                             </div>
+                             <div class="col-4">
+                              <label for="colFormLabelSm" class="links">Foto Referecial</label>
+                               <div class="form-group" v-if="editMode">
+                                 <input type="file"  id="image" name="image">
+                                  <p class="text-danger my-1 small" v-if="(errors.first('image'))" >  Este dato es requerido  </p>
+                                </div>
+                                <div v-else class="form-group">
+                                       <input type="file" v-validate="'required'"  id="image" name="image">
+                                       <p class="text-danger my-1 small" v-if="(errors.first('image'))" >  Foto portada es obligatoria </p>
+                                </div>
+                             </div>
+                              <div class="col-md-6">
+                                <!-- textarea -->
+                                <div class="form-group">
+                                  <label class="links">Detalles de carga</label>
+                                   <textarea type="text" v-model="form.detalles_carga" v-validate="'required'" name="detalles_carga" class="form-control" id="" :disabled="ver"></textarea>
+                                  <p class="text-danger my-1" v-if="(errors.first('detalles_carga'))" >  Este dato es requerido  </p>
+                                </div>
+                              </div>
+                              <div class="col-md-6">
+                                <!-- textarea -->
+                                <div class="form-group">
+                                  <label class="links">observaciones</label>
+                                   <textarea type="text" v-model="form.observaciones" v-validate="'required'" name="observaciones" class="form-control" id="" :disabled="ver"></textarea>
+                                  <p class="text-danger my-1" v-if="(errors.first('observaciones'))" >  Este dato es requerido  </p>
+                                </div>
+                              </div>
+
                               <div class="col-4">
                                 <div class="form-group">
-                                  <label for="exampleFormControlSelect1">Tipo de raporte</label>
-                                    <select v-model="form.tipo_reporte" name="tipo_reporte"   v-validate="'required'" class="form-control" id="exampleFormControlSelect1">
-                                      <option value=""></option>
-                                      <option v-if="trazabilidad.length<1"  value="Alistamiento">Alistamiento</option>
-                                      <option v-if="trazabilidad.length>0"  value="Salida">Salida</option>
-                                      <option v-if="trazabilidad.length>0"  value="Redireccionamiento">Redireccionamiento</option>
-                                      <option v-if="trazabilidad.length>0" value="LLegada">LLegada</option>
-                                    </select>
-                                    <p class="text-danger my-1" v-if="(errors.first('tipo_reporte'))" >  Este dato es requerido  </p>
-                                  </div>
-                              </div>
-                              <div class=" col-md-4 col-sm-12">
-                                <div class="form-group">
-                                   <label class="links">Hora de {{form.tipo_reporte}}</label>
-                                     <flat-pickr
-                                         v-validate="'required'"
-                                         v-model="form.hora"
-                                         :config="dconfig"
-                                         class="form-control"
-                                         placeholder="Selecciona fecha"
-                                         name="hora">
-                                   </flat-pickr>
-                                   <p class="text-danger my-1" v-if="(errors.first('hora'))" >  Este dato es requerido  </p>
-                                 </div>
-                              </div>
-                              <div class=" col-md-4 col-sm-12">
-                                <div class="form-group">
-                                   <label class="links">Fecha Despacho</label>
-                                     <flat-pickr
-                                         v-validate="'required'"
-                                         v-model="form.fecha_despacho"
-                                         :config="config"
-                                         class="form-control"
-                                         placeholder="Selecciona fecha"
-                                         name="fecha_despacho">
-                                   </flat-pickr>
-                                   <p class="text-danger my-1" v-if="(errors.first('fecha_despacho'))" >  Este dato es requerido  </p>
-                                 </div>
-                              </div>
-                              <div class="col-4">
-                                <div class="form-group">
-                                  <label for="exampleFormControlSelect1">Proveedores</label>
-                                    <select v-model="form.id_proveedor"   v-validate="'required'" name="id_proveedor" class="form-control" id="exampleFormControlSelect1">
+                                  <label for="exampleFormControlSelect1">Proveedor de transporte</label>
+                                    <select v-model="form.id_proveedor"   v-validate="'required'" name="id_proveedor" class="form-control" id="exampleFormControlSelect1" :disabled="ver||form.tipo_reporte==='Alistamiento'||form.tipo_reporte==='Recogida'">
                                       <option value=""></option>
                                       <option v-for="proveedores in proveedores" :value="proveedores.id">{{proveedores.nombre_proveedor}}</option>
                                     </select>
@@ -155,70 +213,36 @@
                                  <!-- textarea -->
                                  <div class="form-group">
                                    <label class="links">Nº Guía proveedor</label>
-                                    <input type="text" v-model="form.guia_proveedor" v-validate="'required'" name="guia_proveedor" class="form-control" id="" :disabled="ver">
+                                    <input type="text" v-model="form.guia_proveedor" v-validate="'required'" name="guia_proveedor" class="form-control" id="" :disabled="ver||form.tipo_reporte==='Alistamiento'||form.tipo_reporte==='Recogida'">
                                    <p class="text-danger my-1" v-if="(errors.first('guia_proveedor'))" >  Este dato es requerido  </p>
                                  </div>
                                </div>
-                               <div class="col-md-8">
-                                 <!-- textarea -->
-                                 <div class="form-group">
-                                   <label class="links">Detalles de carga</label>
-                                    <textarea type="text" v-model="form.detalles_carga" v-validate="'required'" name="detalles_carga" class="form-control" id="" :disabled="ver"></textarea>
-                                   <p class="text-danger my-1" v-if="(errors.first('detalles_carga'))" >  Este dato es requerido  </p>
+
+                              <div class="card col-12">
+                               <div class="col-sm-12">
+                                <div class="form-group">
+                                  <label for="colFormLabelSm" class="links">Fotos detalladas</label>
+                                         <div class="col-sm-12">
+                                           <div class="row ">
+                                             <div class="col-8">
+                                               <input type="file"   id="imagenFoto" name="imagenFoto">
+                                             </div>
+                                               <div class="col-4">
+                                               <button class="btn btn-light links btn-lg" type="button"  @click="uploadFoto()">Subir archivo</button>
+                                             </div>
+                                            </div>
+                                       </div>
                                  </div>
-                               </div>
-                               <div class="col-4">
-                                 <div class="form-group">
-                                   <label for="exampleFormControlSelect1">Satélite encargado</label>
-                                     <select v-model="form.id_satelite"   v-validate="'required'" name="id_satelite" class="form-control" id="exampleFormControlSelect1" disabled>
-                                       <option value=""></option>
-                                       <option v-for="satelites in satelites" :value="satelites.id">{{satelites.nombre_sat}}</option>
-                                     </select>
-                                     <p class="text-danger my-1" v-if="(errors.first('id_satelite'))" >  Este dato es requerido  </p>
+                             </div>
+                             <div class="row">
+                               <div v-for="(img ,index) in imagenes" class="card col-lg-3 col-md-3 col-sm-12 col-xs-12" >
+                                   <img :src="'<?=base_url();?>'+img.url" class="card-img-top" alt="...">
+                                   <div class="card-body">
+                                     <a  class="list-group-item list-group-item-action" @click="eliminarImagen(index)"><span class="mbri-close"></span> Eliminar</a>
                                    </div>
-                               </div>
-                               <div class="col-md-8">
-                                 <!-- textarea -->
-                                 <div class="form-group">
-                                   <label class="links">observaciones</label>
-                                    <textarea type="text" v-model="form.observaciones" v-validate="'required'" name="observaciones" class="form-control" id="" :disabled="ver"></textarea>
-                                   <p class="text-danger my-1" v-if="(errors.first('observaciones'))" >  Este dato es requerido  </p>
                                  </div>
-                               </div>
-                               <div class=" col-md-4 col-sm-12">
-                                 <div class="form-group">
-                                    <label class="links">LLegada carga destino</label>
-                                      <flat-pickr
-                                          v-validate="'required'"
-                                          v-model="form.llegada_destino"
-                                          :config="config"
-                                          class="form-control"
-                                          placeholder="Selecciona fecha"
-                                          name="llegada_destino">
-                                    </flat-pickr>
-                                    <p class="text-danger my-1" v-if="(errors.first('llegada_destino'))" >  Este dato es requerido  </p>
-                                  </div>
-                               </div>
-                               <div class="col-4">
-                                 <div class="form-group">
-                                   <label for="exampleFormControlSelect1">Sede cliente</label>
-                                     <select v-model="form.id_sede"   v-validate="'required'" name="id_sede" class="form-control" id="exampleFormControlSelect1">
-                                       <option value=""></option>
-                                       <option v-for="sedes in sedes" :value="sedes.id">{{sedes.nombre_sede}}</option>
-                                     </select>
-                                     <p class="text-danger my-1" v-if="(errors.first('id_sede'))" >  Este dato es requerido  </p>
-                                   </div>
-                               </div>
-                               <div class="col-4">
-                                 <div class="form-group" v-if="editMode">
-                                   <input type="file"  id="image" name="image">
-                                    <p class="text-danger my-1 small" v-if="(errors.first('image'))" >  Este dato es requerido  </p>
-                                  </div>
-                                  <div v-else class="form-group">
-                                         <input type="file" v-validate="'required'"  id="image" name="image">
-                                         <p class="text-danger my-1 small" v-if="(errors.first('image'))" >  Este dato es requerido  </p>
-                                  </div>
-                               </div>
+                             </div>
+                             </div>
                               </div>
                              <button v-if="editMode===false"  class="button is-primary links btn btn-light float-right my-3" type="submit">Guardar</button>
                              <button v-if="editMode===true && !ver"  class="button is-primary btn btn-light links float-right my-3" type="submit">Editar</button>
@@ -263,6 +287,7 @@
          guias:[],
          trazabilidad:[],
          sedes:[],
+         imagenes:[],
          proveedores:[],
          sates:[],
          satelites:[],
@@ -272,7 +297,7 @@
              'prefijo':'',
              'id_guia':'',
              'hora':'',
-             'id_sede':'',
+             'tiempo':'',
              'id_satelite':'',
              'fecha_recogida':'',
              'llegada_destino':'',
@@ -284,6 +309,87 @@
          }
        },
        methods: {
+         async    uploadFoto() {
+             this.file_data = $('#imagenFoto').prop('files')[0];
+             this.form_data = new FormData();
+             this.form_data.append('file', this.file_data);
+             this.form_data.append('id_guia', this.form.id_guia);
+             this.form_data.append('tiempo', this.form.tiempo);
+         await      axios.post('index.php/Trazabilidad/detail_foto', this.form_data)
+               .then(response => {
+                 if(response.data.status == 201){
+                   Swal.fire({
+                     type: 'success',
+                     title: 'Exito!',
+                     text: 'Agregado correctamente'
+                   });
+                  this.loadFotos();
+                  document.getElementById("imagenFoto").value = "";
+                 }
+                 else
+                 {
+                   Swal.fire({
+                     type: 'error',
+                     title: 'Lo sentimos',
+                     text: 'Ha ocurrido un error'
+                   })
+                 }
+               })
+           },
+
+           eliminarImagen(index){
+             Swal({
+               title: '¿Estás seguro?',
+               text: "¡ será eliminado para siempre!",
+               type: 'warning',
+               showCancelButton: true,
+               confirmButtonText: '¡Si! ¡eliminar!',
+               cancelButtonText: '¡No! ¡cancelar!',
+               reverseButtons: true
+             }).then((result) => {
+               if (result.value) {
+                 let data = new FormData();
+                 data.append('id',this.imagenes[index].id);
+                   axios.post('index.php/Trazabilidad/eliminarImagen',data)
+                   .then(response => {
+                     if(response) {
+                       Swal(
+                         '¡Eliminado!',
+                         'Ha sido eliminado.',
+                         'success'
+                       ).then(response => {
+                             this.loadFotos();
+                       })
+                     } else {
+                       Swal(
+                         'Error',
+                         'Ha ocurrido un error.',
+                         'warning'
+                       ).then(response => {
+                         this.loadFotos();
+                       })
+                     }
+                   })
+               } else if (
+                 result.dismiss === Swal.DismissReason.cancel
+               ) {
+                 Swal(
+                   'Cancelado',
+                   'No fue eliminado.',
+                   'success'
+                 )
+               }
+             })
+           },
+            async    loadFotos(){
+            let data = new FormData();
+             data.append('id_guia',this.form.id_guia);
+             data.append('tiempo',this.form.tiempo);
+        await      axios.post('index.php/Trazabilidad/getimagenes/',data)
+             .then(({data: {imagenes}}) => {
+                   this.imagenes = imagenes;
+                 });
+             },
          buscar(){
            for (var i = 0; i < this.satelites.length; i++) {
              if (this.satelites[i].id===this.satelite) {
@@ -296,7 +402,8 @@
              console.log(this.form.dep);
            },
            resete(){
-
+             const dateTime = Date.now();
+              this.form.tiempo = Math.floor(dateTime / 1000);
                this.$validator.reset();
                document.getElementById("form").reset();
                  this.form.guia_proveedor="";
