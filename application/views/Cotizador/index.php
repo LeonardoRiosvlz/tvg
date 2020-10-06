@@ -618,6 +618,7 @@
                     this.item.tipo_carga="";
                     this.item.itinerarios="";
                     this.item.tiempos="";
+                    this.item.factor="";
                     this.item.segurocarga="";
                     this.item.costeguia="";
                     this.item.escala="";

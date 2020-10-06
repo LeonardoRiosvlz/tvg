@@ -158,4 +158,78 @@ class Trazabilidad extends MY_Controller {
 				 header('Content-Type: application/json');
 				 echo json_encode(['satelite' => $data['satelite']]);
 	}
+	public function excelexport($id){
+		$datas['id_guia'] = $id;
+		$datas['prefijo'] = "E";
+		$llamadas= $this->trazabilidad->gettrazabilidad($datas);
+	 if(count($llamadas) > 0){
+			 //Cargamos la librería de excel.
+			 $this->load->library('excel'); $this->excel->setActiveSheetIndex(0);
+			 $this->excel->getActiveSheet()->setTitle('Cargas');
+			 //Contador de filas
+			 $contador = 1;
+			 //Le aplicamos ancho las columnas.
+			 $this->excel->getActiveSheet()->getColumnDimension('A')->setWidth(30);
+			 $this->excel->getActiveSheet()->getColumnDimension('B')->setWidth(30);
+			 $this->excel->getActiveSheet()->getColumnDimension('C')->setWidth(30);
+			 $this->excel->getActiveSheet()->getColumnDimension('D')->setWidth(30);
+			 $this->excel->getActiveSheet()->getColumnDimension('E')->setWidth(30);
+			 $this->excel->getActiveSheet()->getColumnDimension('F')->setWidth(30);
+			 $this->excel->getActiveSheet()->getColumnDimension('G')->setWidth(30);
+			 $this->excel->getActiveSheet()->getColumnDimension('H')->setWidth(30);
+			 $this->excel->getActiveSheet()->getColumnDimension('I')->setWidth(30);
+
+
+			 //Le aplicamos negrita a los títulos de la cabecera.
+			 $this->excel->getActiveSheet()->getStyle("A{$contador}")->getFont()->setBold(true);
+			 $this->excel->getActiveSheet()->getStyle("B{$contador}")->getFont()->setBold(true);
+			 $this->excel->getActiveSheet()->getStyle("C{$contador}")->getFont()->setBold(true);
+			 $this->excel->getActiveSheet()->getStyle("D{$contador}")->getFont()->setBold(true);
+			 $this->excel->getActiveSheet()->getStyle("E{$contador}")->getFont()->setBold(true);
+			 $this->excel->getActiveSheet()->getStyle("F{$contador}")->getFont()->setBold(true);
+			 $this->excel->getActiveSheet()->getStyle("G{$contador}")->getFont()->setBold(true);
+			 $this->excel->getActiveSheet()->getStyle("H{$contador}")->getFont()->setBold(true);
+			 $this->excel->getActiveSheet()->getStyle("I{$contador}")->getFont()->setBold(true);
+
+			 $this->excel->getActiveSheet()->setCellValue("A{$contador}", 'CDR');
+			 $this->excel->getActiveSheet()->setCellValue("B{$contador}", 'REPORTE');
+			 $this->excel->getActiveSheet()->setCellValue("C{$contador}", 'HORA');
+			 $this->excel->getActiveSheet()->setCellValue("D{$contador}", 'FECHA');
+			 $this->excel->getActiveSheet()->setCellValue("E{$contador}", 'PROVEEDOR');
+			 $this->excel->getActiveSheet()->setCellValue("F{$contador}", 'GUIA PROVEEDOR');
+			 $this->excel->getActiveSheet()->setCellValue("G{$contador}", 'FECHA (ESTIMADA PRÓXIMO TRAZO)');
+			 $this->excel->getActiveSheet()->setCellValue("H{$contador}", 'CIUDAD');
+			 $this->excel->getActiveSheet()->setCellValue("I{$contador}", 'Nº ANEXO LEGALIZACION');
+			 //Definimos la data del cuerpo.
+			 foreach($llamadas as $l){
+					//Incrementamos una fila más, para ir a la siguiente.
+					$contador++;
+					//Informacion de las filas de la consulta.
+					$this->excel->getActiveSheet()->setCellValue("A{$contador}","E-".$l->id_guia);
+					$this->excel->getActiveSheet()->setCellValue("B{$contador}", $l->tipo_reporte);
+				  $this->excel->getActiveSheet()->setCellValue("C{$contador}", $l->hora);
+					$this->excel->getActiveSheet()->setCellValue("D{$contador}", $l->fecha_despacho);
+					$this->excel->getActiveSheet()->setCellValue("E{$contador}", $l->nombre_proveedor);
+					$this->excel->getActiveSheet()->setCellValue("F{$contador}", $l->guia_proveedor);
+					$this->excel->getActiveSheet()->setCellValue("G{$contador}", $l->llegada_destino);
+					$this->excel->getActiveSheet()->setCellValue("H{$contador}", $l->ciudad_sat);
+					$this->excel->getActiveSheet()->setCellValue("I{$contador}", $l->numero_anexo_l);
+
+
+
+
+			 }
+			 //Le ponemos un nombre al archivo que se va a generar.
+			 $archivo = "Trazabilidad-E-.$id.xls";
+			 header('Content-Type: application/vnd.ms-excel');
+			 header('Content-Disposition: attachment;filename="'.$archivo.'"');
+			 header('Cache-Control: max-age=0');
+			 $objWriter = PHPExcel_IOFactory::createWriter($this->excel, 'Excel5');
+			 //Hacemos una salida al navegador con el archivo Excel.
+			 $objWriter->save('php://output');
+		}else{
+			 echo 'No se han encontrado llamadas';
+			 exit;
+		}
+	}
 }

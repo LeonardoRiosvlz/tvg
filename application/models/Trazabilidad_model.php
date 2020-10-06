@@ -60,15 +60,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
               }
         public function gettrazabilidad($datas) {
             return $this->db
-            ->select('t.*,s.ciudad_sat')
+            ->select('t.*,s.ciudad_sat,p.nombre_proveedor,h.numero_anexo_l,c.id as `guia`')
             ->where('id_guia', $datas['id_guia'])
             ->where('prefijo', $datas['prefijo'])
             ->join('satelites s', 't.id_satelite = s.id', 'left outer')
+            ->join('proveedores p', 't.id_proveedor = p.id', 'left outer')
+            ->join('historial_ce h', 't.id_guia = h.codigo', 'left outer')
+            ->join('carga c', 't.id_guia = c.id', 'left outer')
             ->order_by("t.id", "desc")
             ->from('trazabilidad t')
             ->get()
             ->result();
           }
+
           public function deletetrazabilidad($id) {
             $this->db->where('id', $id);
             $this->db->delete('trazabilidad');
@@ -100,4 +104,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 ->get()
                 ->result();
               }
+
+
+
+
     }

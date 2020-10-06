@@ -83,6 +83,7 @@
               <a :href="'<?=base_url();?>actas_recogida/to_pdf/'+id" type="button" download class="btn btn-block btn-lg btn-primary" @click="generar()">Imprimir PDF <span class="mbri-share"></span></a>
               <a href="#" type="button"  class="btn btn-block btn-lg btn-primary" @click="setear_to_email();enviarEmail();">Enviar Email <span class="mbri-letter"></span></a>
             </div>
+          
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
             </div>

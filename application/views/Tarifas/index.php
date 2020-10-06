@@ -1,4 +1,4 @@
-<div id="app" class="container">
+<div id="app" class="container-fluid" style="min-height:1000px;">
   <div class="row">
     <div class="col-lg-12  ">
       <!-- Shopping cart table -->
@@ -48,24 +48,24 @@
         <table id="example1" class="table ">
           <thead>
           <tr>
-            <th class="links">Guía de ruta</th>
-            <th class="links">Origen departamento</th>
-            <th class="links">Origen ciudad</th>
-            <th class="links">Destino despartamento</th>
-            <th class="links">Destino Ciudad</th>
-            <th class="links">Tipo de transporte</th>
-            <th class="links">Precio</th>
-            <th class="links">Actions</th>
+            <th style="white-space: nowrap;" class="links">Guía de ruta</th>
+            <th style="white-space: nowrap;" class="links">Origen ciudad</th>
+            <th style="white-space: nowrap;" class="links">Destino Ciudad</th>
+            <th style="white-space: nowrap;" class="links">Tipo de envío</th>
+            <th style="white-space: nowrap;" class="links">Itinerarios</th>
+            <th style="white-space: nowrap;" class="links">Tipo de transporte</th>
+            <th style="white-space: nowrap;" class="links">Precio</th>
+            <th style="white-space: nowrap;" class="links">Actions</th>
           </tr>
           </thead>
             <tr v-for="(tarifas,index) in tarifas">
-              <td class="links">{{tarifas.id}}</td>
-              <td class="links">{{tarifas.departamento_origen}}</td>
-              <td class="links">{{tarifas.ciudad_origen}}</td>
-              <td class="links">{{tarifas.departamento_destino}}</td>
-              <td class="links">{{tarifas.ciudad_destino}}</td>
-              <td class="links">{{tarifas.tipo_transporte}}</td>
-              <td class="links">{{tarifas.precio}}</td>
+              <td style="white-space: nowrap;" class="links">{{tarifas.id}}</td>
+              <td style="white-space: nowrap;" class="links">{{tarifas.ciudad_origen}}</td>
+              <td style="white-space: nowrap;" class="links">{{tarifas.ciudad_destino}}</td>
+              <td style="white-space: nowrap;" class="links">{{tarifas.tipo_envio}}</td>
+              <td style="white-space: nowrap;" class="links">{{tarifas.itinerarios}}</td>
+              <td style="white-space: nowrap;" class="links">{{tarifas.tipo_transporte}}</td>
+              <td style="white-space: nowrap;" class="links">{{tarifas.precio}}</td>
               <td>
                 <div class="btn-group">
                     <button type="button" class="btn btn-default">Action</button>

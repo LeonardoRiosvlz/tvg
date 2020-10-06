@@ -106,20 +106,21 @@
               <th class="links">Origen</th>
               <th class="links">Destino</th>
               <th class="links">Cliente</th>
-              <th class="links">Fecha de despacho</th>
-              <th class="links">Guia</th>
-              <th class="links">Proveedor</th>
+              <th class="links">Estado</th>
+              <th class="links">Kilos Cliente</th>
+              <th class="links">Flete Total</th>
               <th class="links">Action</th>
             </tr>
             </thead>
               <tr v-for="(cargas,index) in cargas">
-                <td class="links">E-{{cargas.codigo}}</td>
-                <td class="links">{{cargas.ciudad_origen}}</td>
-                <td class="links">{{cargas.ciudad_destino}}</td>
-                <td class="links">{{cargas.nombre_cliente}}</td>
-                <td class="links">{{cargas.fecha_despacho}}</td>
-                <td class="links">{{cargas.n_guia_proveedor}}</td>
-                <td class="links">{{cargas.nombre_proveedor}}</td>
+                <td style="white-space: nowrap;" class="links">E-{{cargas.codigo}}</td>
+                <td style="white-space: nowrap;" class="links">{{cargas.ciudad_origen}}</td>
+                <td style="white-space: nowrap;" class="links">{{cargas.ciudad_destino}}</td>
+                <td v-if="!cargas.nombre_empresa=='No aplica'" style="white-space: nowrap;" class="links">{{cargas.nombre_empresa}}</td>
+                <td v-else style="white-space: nowrap;" class="links">{{cargas.nombre_cliente}}</td>
+                <td style="white-space: nowrap;" class="links"><span class="badge badge-primary">{{cargas.estado}}</span></td>
+                <td style="white-space: nowrap;" class="links">{{cargas.kilos_cliente}}</td>
+                <td style="white-space: nowrap;" class="links">{{cargas.flete_total}} $</td>
                   <td>
                     <div class="btn-group">
                         <button type="button" class="btn btn-default">Action</button>
@@ -127,7 +128,10 @@
                           <span class="sr-only">Toggle Dropdown</span>
                           <div class="dropdown-menu" role="menu">
                             <a class="dropdown-item" href="#"@click="setear(index);ver=true">Ver</a>
+                            <a class="dropdown-item" href="#"@click="loadTrazabilidad(index)">Trazabilidad</a>
                             <a class="dropdown-item" href="#" @click="setear(index);ver=false">Editar</a>
+                            <a class="dropdown-item" href="#" @click="setearcerrar(index);ver=false;">Cerrar envío</a>
+                            <a class="dropdown-item" href="#" @click="enviarcarga(index)">Enviar Carga</a>
                             <a class="dropdown-item" href="#" @click="eliminarcarga(index)">Eliminar</a>
                           </div>
                         </button>
@@ -139,6 +143,43 @@
       <!-- End -->
     </div>
   </div>
+
+
+
+
+  <!-- Modal -->
+  <div class="modal fade" id="trazabilidads" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog " role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Trazabilidad de carga E-{{cargaa}}</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-12 ">
+                <a v-if="cargas.length>0" :href="'<?=base_url();?>Trazabilidad/excelexport/'+cargaa" type="button"  class="btn btn-block btn-primary btn-sm links" >Exportar Excel <span class="mbri-save"></span></a>
+            </div>
+          </div>
+          <div v-for="traza in trazabilidades" class="tracking-item">
+             <div class="tracking-icon status-intransit">
+                <i class="fa fa-location-arrow" aria-hidden="true" style="font-size:15px;color:red;"></i>
+             </div>
+             <div class="tracking-date">{{traza.fecha_despacho}}<span>{{traza.hora}}</span></div>
+             <div class="tracking-content">{{traza.tipo_reporte}} <span>{{traza.ciudad_sat}}</span></div>
+             <div v-if="traza.id_proveedor" class="tracking-content">{{traza.nombre_proveedor}} <span>Nº Guia Proveedor: {{traza.guia_proveedor}}</span></div>
+          </div>
+        </div>
+        <div class="modal-footer">
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+
         <!-- Modal agregar   -->
         <div class="modal fade" id="modal-lg" data-backdrop="static" data-keyboard="false">
          <div class="modal-dialog modal-lg">
@@ -155,12 +196,6 @@
                    <datalist id="encodings">
                        <option v-for="clientes in clientes" v-if="clientes.cliente_especial==='Si'" :value="clientes.cedula_cliente">{{clientes.nombre_cliente}}</option>
                    </datalist>
-               </div>
-               <div class="col-md-4">
-                 <label class="links">Identificación de carga</label>
-                 <div class="form-group">
-                   <input v-model="form.id_carga_cliente" name="id_carga_cliente" class="form-control form-control-lg" >
-                 </div>
                </div>
                <div class="col-md-4 my-4 py-2"><button type="button" class="btn btn-light btn-block btn-lg">Buscar <span class="mbri-search"></span></button></div>
                <div class="card col-12 p-3">
@@ -198,36 +233,6 @@
                <div class="card-body">
                        <form role="form" id="form" @submit.prevent="validateBeforeSubmit">
                          <div class="row">
-                           <div class=" col-md-6 col-sm-12">
-                             <div class="form-group">
-                                <label class="links">Recogida carga donde cliente</label>
-                                  <flat-pickr
-                                      v-validate="'required'"
-                                      v-model="form.f_recogida"
-                                      :config="config"
-                                      class="form-control"
-                                      placeholder="Selecciona fecha"
-                                      name="f_ingreso"
-                                      :disabled="ver">
-                                </flat-pickr>
-                                <p class="text-danger my-1 small" v-if="(errors.first('f_ingreso'))" >  Este dato es requerido  </p>
-                              </div>
-                           </div>
-                           <div class=" col-md-6 col-sm-12">
-                             <div class="form-group">
-                                <label class="links">Llegada carga a TVG</label>
-                                  <flat-pickr
-                                      v-validate="'required'"
-                                      v-model="form.f_ingreso"
-                                      :config="config"
-                                      class="form-control"
-                                      placeholder="Selecciona fecha"
-                                      name="f_ingreso"
-                                      :disabled="ver">
-                                </flat-pickr>
-                                <p class="text-danger my-1 small" v-if="(errors.first('f_ingreso'))" >  Este dato es requerido  </p>
-                              </div>
-                           </div>
                            <div class="col-md-6" v-if="!form.id_tarifa">
                              <label class="links">Tipo de transporte</label>
                              <div class="form-group">
@@ -253,57 +258,12 @@
                                <label class="links">Ruta de envío</label>
                                <input list="tarifas" v-model="form.id_tarifa" @change="tari()"  value="" class="form-control form-control-lg" placeholder="Escriba una ruta">
                                  <datalist id="tarifas">
-                                     <option v-for="tarifas in tarifas" v-if="tarifas.tipo_envio===form.tipo_envio && tarifas.tipo_transporte===form.tipo_transporte"  :value="tarifas.id">De {{tarifas.ciudad_origen}} a {{tarifas.ciudad_destino}} Tiempo:{{tarifas.tiempos}}</option>
+                                     <option v-for="tarifas in tarifas" v-if="tarifas.tipo_envio===form.tipo_envio && tarifas.tipo_transporte===form.tipo_transporte"  :value="tarifas.id">De {{tarifas.ciudad_origen}} a {{tarifas.ciudad_destino}} {{tarifas.itinerarios}}</option>
                                  </datalist>
 
                            </div>
-                           <div class="col-sm-4" v-if="!form.id_tarifa">
-                              <div class="form-group links">
-                                <label>Tarifa</label>
-                                <select v-model="form.id_tarifa" v-validate="'required'" name="ciudad_destino" class="form-control" disabled >
-                                  <option v-for="tarifas in tarifas" v-if="form.departamento_origen===tarifas.departamento_origen && form.departamento_destino===tarifas.departamento_destino && form.ciudad_origen===tarifas.ciudad_origen && form.tipo_envio===tarifas.tipo_envio" :value="tarifas.id">{{tarifas.precio}}</option>
-                                </select>
-                               <p class="text-danger my-1 small" v-if="(errors.first('ciudad_destino'))" >  Este dato es requerido  </p>
-                             </div>
-                          </div>
-                             <div class="col-sm-3" v-if="!form.id_tarifa">
-                               <label class="bold">Departamento origen</label>
-                               <div class="form-group">
-                                 <select v-model="form.dep" @change="depp()" class="form-control" :disabled="ver" >
-                                   <option value=""></option>
-                                   <option v-for="colombia in colombia" :value="colombia.id">{{colombia.departamento}}</option>
-                                 </select>
-                               </div>
-                             </div>
 
-                            <div class="col-sm-3" v-if="!form.id_tarifa">
-                               <div class="form-group links">
-                                 <label>Ciudad origen</label>
-                                <select v-model="form.ciudad_origen" v-validate="'required'" name="ciudad_origen" class="form-control" :disabled="ver" >
-                                    <option v-for="tarifas in tarifas" v-if="form.departamento_origen===tarifas.departamento_origen && form.tipo_envio===tarifas.tipo_envio" :value="tarifas.ciudad_origen">{{tarifas.ciudad_origen}}</option>
-                                </select>
-                                <p class="text-danger my-1 small" v-if="(errors.first('ciudad_origen'))" >  Este dato es requerido  </p>
-                              </div>
-                           </div>
-                           <div class="col-sm-3" v-if="!form.id_tarifa">
-                             <label class="links">Departamento destino</label>
-                             <div class="form-group">
-                               <select v-model="form.departamento_destino" @change="depp_dos()" class="form-control" :disabled="ver" >
-                                 <option value=""></option>
-                                 <option v-for="tarifas in tarifas" v-if="form.departamento_origen===tarifas.departamento_origen && form.ciudad_origen===tarifas.ciudad_origen && form.tipo_envio===tarifas.tipo_envio" :value="tarifas.departamento_destino">{{tarifas.departamento_destino}}</option>
-                               </select>
-                             </div>
-                           </div>
 
-                          <div class="col-sm-3" v-if="!form.id_tarifa">
-                             <div class="form-group links">
-                               <label>Ciudad destino</label>
-                              <select v-model="form.id_tarifa" @change="tari()" v-validate="'required'" name="ciudad_destino" class="form-control" :disabled="ver" >
-                                <option v-for="tarifas in tarifas" v-if="form.departamento_origen===tarifas.departamento_origen && form.departamento_destino===tarifas.departamento_destino && form.ciudad_origen===tarifas.ciudad_origen && form.tipo_envio===tarifas.tipo_envio" :value="tarifas.id">{{tarifas.ciudad_destino}}</option>
-                              </select>
-                              <p class="text-danger my-1 small" v-if="(errors.first('ciudad_destino'))" >  Este dato es requerido  </p>
-                            </div>
-                         </div>
                          <div class="card col-12 p-3 " v-if="form.id_tarifa">
                           <h4 class="card-title">Tarifa Acorde</h4>
                            <div class="card-body row sp">
@@ -343,7 +303,16 @@
                               <p class="text-danger my-1 small" v-if="(errors.first('ciudad_destino'))" >  Este dato es requerido  </p>
                             </div>
                          </div>
-                         <div class="col-sm-4">
+                         <div class="col-sm-3">
+                            <div class="form-group links">
+                              <label>Itinerarios</label>
+                             <select v-model="form.id_tarifa" @change="tari()" v-validate="'required'" name="ciudad_destino" class="form-control" disabled >
+                               <option v-for="tarifas in tarifas" :value="tarifas.id">{{tarifas.itinerarios}}</option>
+                             </select>
+                             <p class="text-danger my-1 small" v-if="(errors.first('ciudad_destino'))" >  Este dato es requerido  </p>
+                           </div>
+                        </div>
+                         <div class="col-sm-3">
                             <div class="form-group links">
                               <label>Tipo de transporte</label>
                              <select v-model="form.id_tarifa" @change="tari()" v-validate="'required'" name="ciudad_destino" class="form-control" disabled >
@@ -352,7 +321,7 @@
                              <p class="text-danger my-1 small" v-if="(errors.first('ciudad_destino'))" >  Este dato es requerido  </p>
                            </div>
                         </div>
-                        <div class="col-sm-4">
+                        <div class="col-sm-3">
                            <div class="form-group links">
                              <label>Tipo de envío</label>
                             <select v-model="form.id_tarifa" @change="tari()" v-validate="'required'" name="ciudad_destino" class="form-control" disabled >
@@ -361,7 +330,7 @@
                             <p class="text-danger my-1 small" v-if="(errors.first('ciudad_destino'))" >  Este dato es requerido  </p>
                           </div>
                        </div>
-                       <div class="col-sm-4">
+                       <div class="col-sm-3">
                           <div class="form-group links">
                             <label>Tarifa</label>
                            <select v-model="form.id_tarifa" @change="tari()" v-validate="'required'" name="ciudad_destino" class="form-control" disabled >
@@ -373,14 +342,14 @@
                              <a href="#" @click="form.departamento_origen='Amazonas';form.ciudad_destino='';form.departamento_destino='';form.ciudad_destino='';form.tipo_transporte='';form.tipo_envio='';form.id_tarifa=''" class="card-link">Cambiar tarifa</a>
                            </div>
                          </div>
-                         <div class="col-md-4">
+                         <div class="col-md-3">
                            <label class="links">Identificación Carga Cliente</label>
                            <div class="form-group">
                              <input v-model="form.id_carga_cliente" v-validate="'required'" name="id_carga_cliente" class="form-control" :disabled="ver||editMode" >
                              <p class="text-danger my-1 small" v-if="(errors.first('id_carga_cliente'))" >  Este dato es requerido  </p>
                            </div>
                          </div>
-                         <div class="col-md-4">
+                         <div class="col-md-3">
                            <label class="links">Tipo de carga</label>
                            <div class="form-group">
                              <select v-model="form.tipo_carga" v-validate="'required'" name="tipo_envio" class="form-control" :disabled="ver" >
@@ -390,44 +359,42 @@
                              <p class="text-danger my-1 small" v-if="(errors.first('tipo_envio'))" >  Este dato es requerido  </p>
                            </div>
                          </div>
-                         <div class="col-md-4">
+                         <div class="col-md-3">
                            <label class="links">Cantidad</label>
                            <div class="form-group">
                              <input v-model="form.cantidad" @change="fletetotal()"  v-validate="'required'" name="cantidad" class="form-control" :disabled="ver" >
                              <p class="text-danger my-1 small" v-if="(errors.first('cantidad'))" >  Este dato es requerido  </p>
                            </div>
                          </div>
-                         <div class="col-md-4">
+                         <div class="col-md-3">
                            <label class="links">KILOS TVG</label>
                            <div class="form-group">
                              <input v-model="form.kilos_tvg" v-validate="'required'" name="kilos_tvg" class="form-control" :disabled="ver" >
                              <p class="text-danger my-1 small" v-if="(errors.first('kilos_tvg'))" >  Este dato es requerido  </p>
                            </div>
                          </div>
-                         <div class="col-md-4">
+                         <div class="col-md-3">
                            <label class="links">Kilos Cliente</label>
                            <div class="form-group">
                              <input v-model="form.kilos_cliente" @change="fletetotal()" v-validate="'required'" name="kilos_cliente" class="form-control" :disabled="ver" >
                              <p class="text-danger my-1 small" v-if="(errors.first('kilos_cliente'))" >  Este dato es requerido  </p>
                            </div>
                          </div>
-                         <div class="col-md-4">
+                         <div class="col-md-3">
                            <label class="links">Flete Fijo</label>
                            <div class="form-group">
                              <input v-model="form.flete_fijo" @change="fletetotal()"  v-validate="'required'" name="flete_fijo" class="form-control" :disabled="ver" >
                              <p class="text-danger my-1 small" v-if="(errors.first('flete_fijo'))" >  Este dato es requerido  </p>
                            </div>
                          </div>
-                         <div class="col-md-4">
+                         <div class="col-md-3">
                            <label class="links">Flete Total</label>
                            <div class="form-group">
                              <input v-model="form.flete_total" v-validate="'required'" name="flete_total" class="form-control" disabled>
                              <p class="text-danger my-1 small" v-if="(errors.first('flete_total'))" >  Este dato es requerido  </p>
                            </div>
                          </div>
-
-
-                         <div class="col-md-4">
+                         <div class="col-md-3">
                            <label class="links">Sede Cliente</label>
                            <div class="form-group">
                              <select v-model="form.sede_cliente" v-validate="'required'" name="tipo_envio" class="form-control" :disabled="ver" >
@@ -436,14 +403,14 @@
                              <p class="text-danger my-1 small" v-if="(errors.first('tipo_envio'))" >  Este dato es requerido  </p>
                            </div>
                          </div>
-                         <div class="col-md-4">
-                           <label class="links">Numero de referencia</label>
+                         <div class="col-md-3">
+                           <label class="links">Referencia Cumplidos</label>
                            <div class="form-group">
-                             <input v-model="form.n_referencia_c" v-validate="'required'" name="n_referencia_c" class="form-control" :disabled="ver" >
+                             <input v-model="form.n_referencia_c" v-validate="'required'" name="n_referencia_c" class="form-control" :disabled="ver||form.estado==='Creada'" >
                              <p class="text-danger my-1 small" v-if="(errors.first('n_referencia_c'))" >  Este dato es requerido  </p>
                            </div>
                          </div>
-                         <div class=" col-md-4 col-sm-12">
+                         <div class=" col-md-3 col-sm-12">
                            <div class="form-group">
                               <label class="links">Fecha entrega cumplidos</label>
                                 <flat-pickr
@@ -452,15 +419,15 @@
                                     class="form-control"
                                     placeholder="Selecciona fecha"
                                     name="numero_anexo_l"
-                                    :disabled="ver">
+                                    :disabled="ver||form.estado==='Creada'">
                               </flat-pickr>
                               <p class="text-danger my-1 small" v-if="(errors.first('numero_anexo_l'))" >  Este dato es requerido  </p>
                             </div>
                          </div>
-                         <div class="col-md-4">
+                         <div class="col-md-6">
                            <label class="links">Número anexo legalización</label>
                            <div class="form-group">
-                             <input v-model="form.numero_anexo_l" v-validate="'required'" name="numero_anexo_l" class="form-control" :disabled="ver" >
+                             <input v-model="form.numero_anexo_l" v-validate="'required'" name="numero_anexo_l" class="form-control" :disabled="ver||form.estado==='Creada'" >
                              <p class="text-danger my-1 small" v-if="(errors.first('numero_anexo_l'))" >  Este dato es requerido  </p>
                            </div>
                          </div>
@@ -479,6 +446,7 @@
          <!-- /.modal-dialog -->
         </div>
    <!-- fin del modal -->
+
    </div>
 </div>
 <script>
@@ -495,6 +463,7 @@
             dateFormat: 'yy-m-d',
             locale: flatpickr.l10ns.es
           },
+         cargaa:"",
          departamento:0,
          ver:false,
          cart:[],
@@ -507,6 +476,8 @@
          tipocarga:[],
          proveedores:[],
          cargas_t:[],
+         guias:[],
+         trazabilidades:[],
          tarifas:[],
          imagenes:[],
          clientes:[],
@@ -529,6 +500,7 @@
              'tipo_transporte':'',
              'tipo_envio':'',
              'precio':'',
+             'estado':'Creada',
              'id_carga_cliente':'',
              'tipo_carga':'',
              'cantidad':'',
@@ -2264,6 +2236,56 @@
                      }
                    })
                  },
+                 enviarcarga(index){
+                   Swal({
+                     title: '¿Estás seguro?',
+                     text: "",
+                     type: 'warning',
+                     showCancelButton: true,
+                     confirmButtonText: '¡Si! ',
+                     cancelButtonText: '¡No! ',
+                     reverseButtons: true
+                   }).then((result) => {
+                     if (result.value) {
+                       let data = new FormData();
+                       data.append('id',this.cargas[index].codigo);
+                         axios.post('index.php/ClientesEspeciales/enviarcarga',data)
+                         .then(response => {
+                           if(response) {
+                             Swal(
+                               '¡Carga enviada!',
+                               '',
+                               'success'
+
+                             ).then(response => {
+                               this.mathc();
+                               localStorage.setItem('id_guia', this.cargas[index].codigo);
+                               localStorage.setItem('prefijo', "E");
+                               window.setTimeout(function () {
+                                     location.href = "<?=base_url();?>Trazabilidad";
+                                 }, 100);
+                             })
+                           } else {
+                             Swal(
+                               'Error',
+                               'Ha ocurrido un error.',
+                               'warning'
+                             ).then(response => {
+                                  this.mathc();
+                             })
+                           }
+                         })
+                     } else if (
+                       result.dismiss === Swal.DismissReason.cancel
+                     ) {
+                       Swal(
+                         'Cancelado',
+                         'No fue eliminado.',
+                         'success'
+                       )
+                     }
+                   })
+                 },
                  eliminarItem(index){
                    Swal({
                      title: '¿Estás seguro?',
@@ -2285,6 +2307,19 @@
                        )
                      }
                    })
+                 },
+                 async loadTrazabilidad(index){
+                   this.cargaa=this.cargas[index].codigo;
+                   let data = new FormData();
+                    data.append('prefijo',"E");
+                    data.append('id_guia',this.cargas[index].codigo);
+                    await axios.post('index.php/Trazabilidad/gettrazabilidad/',data)
+                    .then(({data: {trazabilidad}}) => {
+                      this.trazabilidades = trazabilidad
+                    });
+                    if (this.trazabilidades.length>0) {
+                      $('#trazabilidads').modal('show');
+                    }
                  },
                  setear(index){
                    this.form.codigo=this.cargas[index].codigo,
@@ -2311,6 +2346,38 @@
                    this.form.numero_factura=this.cargas[index].numero_factura,
                    this.form.fecha_factura=this.cargas[index].fecha_factura,
                    this.form.id_tarifa=this.cargas[index].id_tarifa,
+                   this.loadsedes();
+                   this.loadFotos();
+                   this.tari();
+                   $('#modal-lg').modal('show');
+                   this.editMode=true
+                 },
+                 setearcerrar(index){
+                   this.form.codigo=this.cargas[index].codigo,
+                   this.form.nombre_cargo=this.cargas[index].nombre_cargo,
+                   this.form.f_recogida=this.cargas[index].f_recogida,
+                   this.form.f_ingreso=this.cargas[index].f_ingreso,
+                   this.form.cedula=this.cargas[index].cedula_cliente,
+                   this.form.id_carga_cliente=this.cargas[index].id_carga_cliente,
+                   this.form.tipo_carga=this.cargas[index].tipo_carga,
+                   this.form.cantidad=this.cargas[index].cantidad,
+                   this.form.kilos_tvg=this.cargas[index].kilos_tvg,
+                   this.form.kilos_cliente=this.cargas[index].kilos_cliente,
+                   this.form.flete_fijo=this.cargas[index].flete_fijo,
+                   this.form.flete_total=this.cargas[index].flete_total,
+                   this.form.fecha_despacho=this.cargas[index].fecha_despacho,
+                   this.form.proveedor=this.cargas[index].proveedor,
+                   this.form.n_guia_proveedor=this.cargas[index].n_guia_proveedor,
+                   this.form.fecha_en_destino=this.cargas[index].fecha_en_destino,
+                   this.form.sede_cliente=this.cargas[index].sede_cliente,
+                   this.form.fecha_conectividad=this.cargas[index].fecha_conectividad,
+                   this.form.n_referencia_c=this.cargas[index].n_referencia_c,
+                   this.form.f_entrega_c="",
+                   this.form.numero_anexo_l=this.cargas[index].numero_anexo_l,
+                   this.form.numero_factura=this.cargas[index].numero_factura,
+                   this.form.fecha_factura=this.cargas[index].fecha_factura,
+                   this.form.id_tarifa=this.cargas[index].id_tarifa,
+                   this.form.estado="Cumplida",
                    this.loadsedes();
                    this.loadFotos();
                    this.tari();

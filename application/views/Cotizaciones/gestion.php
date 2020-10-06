@@ -6,7 +6,7 @@
 .jus{
   text-align:justify;
   text-justify:inter-word;
-  text-indent: 1.5em;
+  text-indent: 0.5em;
 }
 </style>
 <div id="app" class="container">
@@ -16,13 +16,13 @@
       <div class="car border-0 p-2">
 
           <img v-for="empresa in empresa" :src="'<?=base_url();?>'+empresa.logo_uno" alt="" width="100%"  class="mx-auto  img-fluid">
-            <p class="lead ">Bogotá, D.C. {{fecha_creacion}}</p>
-            <p class="lead nopadding">Señores {{nombre_empresa}}</p>
-            <p class="lead nopadding">{{nombre_cliente}}</p>
-            <p class="lead nopadding">Tel.{{telefono_cliente}}</p>
-            <p class="lead nopadding">Correo: {{correo_cliente}}</p>
-            <p class="lead nopadding">Ciudad: {{ciudad}}</p>
-            <p class="lead">REF: COTIZACIÓN TRANSPORTE A DIFERENTES DESTINOS</p>
+            <p class="lead small ">Bogotá, D.C. {{fecha_creacion}}</p>
+            <p class="lead small nopadding">Señores {{nombre_empresa}}</p>
+            <p class="lead small nopadding">{{nombre_cliente}}</p>
+            <p class="lead small nopadding">Tel.{{telefono_cliente}}</p>
+            <p class="lead small nopadding">Correo: {{correo_cliente}}</p>
+            <p class="lead small nopadding">Ciudad: {{ciudad}}</p>
+            <p class="lead small  ">REF: COTIZACIÓN TRANSPORTE A DIFERENTES DESTINOS</p>
             <ul class="nav nav-tabs" id="myTab" role="tablist">
               <li class="nav-item">
                 <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">SALUDO</a>
@@ -46,7 +46,7 @@
               </div>
               <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
 
-                  <table class="table table-striped table-bordered table condensed table-hover table-responsive  ">
+                  <table class="table table table-sm table-responsive  ">
                     <thead>
                       <tr>
                         <th>ORIGEN</th>

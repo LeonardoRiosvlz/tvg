@@ -106,10 +106,12 @@
                                 <label for="exampleFormControlSelect1">Tipo de raporte</label>
                                   <select v-model="form.tipo_reporte" name="tipo_reporte"   v-validate="'required'" class="form-control" id="exampleFormControlSelect1">
                                     <option value=""></option>
+                                    <option   value="Recogida">Recogida donde cliente</option>
                                     <option   value="Alistamiento">Alistamiento</option>
                                     <option  value="Salida">Salida</option>
                                     <option  value="Redireccionamiento">Redireccionamiento</option>
-                                    <option  value="Llegada">Llegada</option>
+                                    <option  value="Llegada">Llegada</option
+                                      <option  value="Llegada Destino">Llegada Destino</option>
                                   </select>
                                   <p class="text-danger my-1" v-if="(errors.first('tipo_reporte'))" >  Este dato es requerido  </p>
                                 </div>
@@ -130,7 +132,8 @@
                             </div>
                             <div class=" col-md-4 col-sm-12">
                               <div class="form-group">
-                                 <label class="links">Fecha Despacho</label>
+
+                                 <label  class="links">Fecha de {{form.tipo_reporte}}</label>
                                    <flat-pickr
                                        v-validate="'required'"
                                        v-model="form.fecha_despacho"
@@ -142,24 +145,7 @@
                                  <p class="text-danger my-1" v-if="(errors.first('fecha_despacho'))" >  Este dato es requerido  </p>
                                </div>
                             </div>
-                            <div class="col-4">
-                              <div class="form-group">
-                                <label for="exampleFormControlSelect1">Proveedores</label>
-                                  <select v-model="form.id_proveedor"   v-validate="'required'" name="id_proveedor" class="form-control" id="exampleFormControlSelect1">
-                                    <option value=""></option>
-                                    <option v-for="proveedores in proveedores" :value="proveedores.id">{{proveedores.nombre_proveedor}}</option>
-                                  </select>
-                                  <p class="text-danger my-1" v-if="(errors.first('id_proveedor'))" >  Este dato es requerido  </p>
-                                </div>
-                            </div>
-                             <div class="col-md-4">
-                               <!-- textarea -->
-                               <div class="form-group">
-                                 <label class="links">Nº Guía proveedor</label>
-                                  <input type="text" v-model="form.guia_proveedor" v-validate="'required'" name="guia_proveedor" class="form-control" id="" :disabled="ver">
-                                 <p class="text-danger my-1" v-if="(errors.first('guia_proveedor'))" >  Este dato es requerido  </p>
-                               </div>
-                             </div>
+
                              <div class="col-md-8">
                                <!-- textarea -->
                                <div class="form-group">
@@ -171,7 +157,7 @@
                              <div class="col-4">
                                <div class="form-group">
                                  <label for="exampleFormControlSelect1">Satélite encargado</label>
-                                   <select v-model="form.id_satelite"   v-validate="'required'" name="id_satelite" class="form-control" id="exampleFormControlSelect1">
+                                   <select v-model="form.id_satelite"   v-validate="'required'" name="id_satelite" class="form-control" id="exampleFormControlSelect1" :disabled="ver||form.tipo_reporte==='Recogida'">
                                      <option value=""></option>
                                      <option v-for="satelites in satelites" :value="satelites.id">{{satelites.nombre_sat}}</option>
                                    </select>
@@ -188,7 +174,8 @@
                              </div>
                              <div class=" col-md-4 col-sm-12">
                                <div class="form-group">
-                                  <label class="links">LLegada carga destino</label>
+                                 <label v-if="form.tipo_reporte==='Recogida'" class="links">Fecha De Alistamiento</label>
+                                  <label v-else class="links">LLegada carga destino</label>
                                     <flat-pickr
                                         v-validate="'required'"
                                         v-model="form.llegada_destino"
@@ -202,15 +189,24 @@
                              </div>
                              <div class="col-4">
                                <div class="form-group">
-                                 <label for="exampleFormControlSelect1">Sede cliente</label>
-                                   <select v-model="form.id_sede"   v-validate="'required'" name="id_sede" class="form-control" id="exampleFormControlSelect1">
+                                 <label for="exampleFormControlSelect1">Proveedores</label>
+                                   <select v-model="form.id_proveedor"   v-validate="'required'" name="id_proveedor" class="form-control" id="exampleFormControlSelect1">
                                      <option value=""></option>
-                                     <option v-for="sedes in sedes" :value="sedes.id">{{sedes.nombre_sede}}</option>
+                                     <option v-for="proveedores in proveedores" :value="proveedores.id">{{proveedores.nombre_proveedor}}</option>
                                    </select>
-                                   <p class="text-danger my-1" v-if="(errors.first('id_sede'))" >  Este dato es requerido  </p>
+                                   <p class="text-danger my-1" v-if="(errors.first('id_proveedor'))" >  Este dato es requerido  </p>
                                  </div>
                              </div>
+                              <div class="col-md-4">
+                                <!-- textarea -->
+                                <div class="form-group">
+                                  <label class="links">Nº Guía proveedor</label>
+                                   <input type="text" v-model="form.guia_proveedor" v-validate="'required'" name="guia_proveedor" class="form-control" id="" :disabled="ver">
+                                  <p class="text-danger my-1" v-if="(errors.first('guia_proveedor'))" >  Este dato es requerido  </p>
+                                </div>
+                              </div>
                              <div class="col-4">
+                              <label for="colFormLabelSm" class="links">Foto Referecial</label>
                                <div class="form-group" v-if="editMode">
                                  <input type="file"  id="image" name="image">
                                   <p class="text-danger my-1 small" v-if="(errors.first('image'))" >  Este dato es requerido  </p>
@@ -220,7 +216,33 @@
                                        <p class="text-danger my-1 small" v-if="(errors.first('image'))" >  Este dato es requerido  </p>
                                 </div>
                              </div>
+                             <div class="card col-12">
+                              <div class="col-sm-12">
+                               <div class="form-group">
+                                 <label for="colFormLabelSm" class="links">Fotos detalladas</label>
+                                        <div class="col-sm-12">
+                                          <div class="row ">
+                                            <div class="col-8">
+                                              <input type="file"   id="imagenFoto" name="imagenFoto">
+                                            </div>
+                                              <div class="col-4">
+                                              <button class="btn btn-light links btn-lg" type="button"  @click="uploadFoto()">Subir archivo</button>
+                                            </div>
+                                           </div>
+                                      </div>
+                                </div>
                             </div>
+                            <div class="row">
+                              <div v-for="(img ,index) in imagenes" class="card col-lg-4 col-md-6 col-sm-12 col-xs-12" >
+                                  <img :src="'<?=base_url();?>'+img.url" class="card-img-top" alt="...">
+                                  <div class="card-body">
+                                    <a  class="list-group-item list-group-item-action" @click="eliminarImagen(index)"><span class="mbri-close"></span> Eliminar</a>
+                                  </div>
+                                </div>
+                            </div>
+                            </div>
+                            </div>
+
                            <button v-if="editMode===false"  class="button is-primary links btn btn-light float-right my-3" type="submit">Guardar</button>
                            <button v-if="editMode===true && !ver"  class="button is-primary btn btn-light links float-right my-3" type="submit">Editar</button>
                        </form>
@@ -287,6 +309,85 @@
              this.form.departamento=this.colombia[this.form.dep].departamento;
              console.log(this.form.dep);
            },
+           async    uploadFoto() {
+               this.file_data = $('#imagenFoto').prop('files')[0];
+               this.form_data = new FormData();
+               this.form_data.append('file', this.file_data);
+               this.form_data.append('id_carga_cliente', this.form.id_carga_cliente);
+           await      axios.post('index.php/ClientesEspeciales/detail_foto', this.form_data)
+                 .then(response => {
+                   if(response.data.status == 201){
+                     Swal.fire({
+                       type: 'success',
+                       title: 'Exito!',
+                       text: 'Agregado correctamente'
+                     });
+                    this.loadFotos();
+                    document.getElementById("imagenFoto").value = "";
+                   }
+                   else
+                   {
+                     Swal.fire({
+                       type: 'error',
+                       title: 'Lo sentimos',
+                       text: 'Ha ocurrido un error'
+                     })
+                   }
+                 })
+             },
+
+             eliminarImagen(index){
+               Swal({
+                 title: '¿Estás seguro?',
+                 text: "¡ será eliminado para siempre!",
+                 type: 'warning',
+                 showCancelButton: true,
+                 confirmButtonText: '¡Si! ¡eliminar!',
+                 cancelButtonText: '¡No! ¡cancelar!',
+                 reverseButtons: true
+               }).then((result) => {
+                 if (result.value) {
+                   let data = new FormData();
+                   data.append('id',this.imagenes[index].id);
+                     axios.post('index.php/ClientesEspeciales/eliminarImagen',data)
+                     .then(response => {
+                       if(response) {
+                         Swal(
+                           '¡Eliminado!',
+                           'Ha sido eliminado.',
+                           'success'
+                         ).then(response => {
+                               this.loadFotos();
+                         })
+                       } else {
+                         Swal(
+                           'Error',
+                           'Ha ocurrido un error.',
+                           'warning'
+                         ).then(response => {
+                           this.loadFotos();
+                         })
+                       }
+                     })
+                 } else if (
+                   result.dismiss === Swal.DismissReason.cancel
+                 ) {
+                   Swal(
+                     'Cancelado',
+                     'No fue eliminado.',
+                     'success'
+                   )
+                 }
+               })
+             },
+              async    loadFotos(){
+              let data = new FormData();
+               data.append('id_carga_cliente',this.form.id_carga_cliente);
+          await      axios.post('index.php/ClientesEspeciales/getimagenes/',data)
+               .then(({data: {imagenes}}) => {
+                     this.imagenes = imagenes;
+                   });
+               },
            resete(){
 
                this.$validator.reset();
@@ -549,6 +650,20 @@
                    });
 
                  },
+                 loadPln(){
+                   if (localStorage.getItem('prefijo')) {
+                     this.form.prefijo=localStorage.getItem('prefijo');
+                      this.form.id_guia=localStorage.getItem('id_guia');
+                      if(this.form.prefijo==="E"){
+                        window.setTimeout(function () {
+                              localStorage.removeItem('prefijo');
+                              localStorage.removeItem('id_guia');
+                             }, 300);
+                        this.loadguiasE();
+                      }
+                   }
+
+                 },
                  async loadCart() {
 
                      await  axios.get('index.php/User/get_profile/')
@@ -560,6 +675,7 @@
        },
 
        created(){
+         this.loadPln();
             this.loadproveedores();
             this.loadsatelites();
             this.loadCart();
