@@ -17,21 +17,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 'ciudad_destino'           => $data['ciudad_destino'],
                 'itinerarios'              => $data['itinerarios'],
                 'tiempos'                  => $data['tiempos'],
-                'precio'                   => $data['precio'],
-                'precioItem'               => $data['precioItem'],
-                'escala'                   => $data['escala'],
-                'formula'                  => $data['formula'],
                 'segurocarga'                  => $data['segurocarga'],
-                'variable'                 => $data['variable'],
-                'factor'                   => $data['factor'],
-                'id_tarifa'                => $data['id_tarifa'],
-                'idcarga'                => $data['idcarga'],
                 'totalVolumen'             => $data['totalVolumen'],
                 'totalKilos'               => $data['totalKilos'],
                 'totalPrecios'             => $data['totalPrecios'],
                 'totalUnidades'            => $data['totalUnidades'],
                 'totalSeguro'              => $data['totalSeguro'],
                 'costeguia'                => $data['costeguia'],
+                'idcarga'                => $data['idcarga'],
             //    'estado'                   => $data['estado'],
             //    'generado_fecha'           => $data['generado_fecha'],
             ));
@@ -254,6 +247,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                             <td colspan="2">DESCRIPCION DE CARGA</td>
                                             <td colspan="4">DESCRIPCION DE VOLUMEN </td>
                                             <td colspan="2">DESTINO</td>
+                                            <td colspan="1">PRECIO</td>
                                           </tr>
                                           <tr>
                                             <td>TIPO DE CARGA</td>
@@ -264,6 +258,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                             <td style="white-space: nowrap;">VOL 320!</td>
                                             <td style="white-space: nowrap;">KILOS BASC C/U</td>
                                             <td style="white-space: nowrap;">T.KL REAL</td>
+                                            <td style="white-space: nowrap;">VALOR C/U</td>
+
                                           </tr>';
                                       foreach($data->result() as $row){
                                           $items=$row->items;
@@ -278,6 +274,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                     <td>'.$row->volumen.'</td>
                                                     <td>'.$row->kilosbascula.'</td>
                                                     <td>'.$row->kilostotal.'</td>
+                                                    <td>$'.$row->precio.'</td>
+
+
                                                   </tr>
                                               ';}
                                         }
@@ -290,7 +289,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                       <td style="white-space: nowrap;">Sumatoria vol.</td>
                                                       <td>'.$row->totalVolumen.'</td>
                                                       <td style="white-space: nowrap;">Sumatoria Kilos.</td>
-                                                      <td>'.$row->totalKilos.'</td>
+                                                      <td colspan="2">'.$row->totalKilos.'</td>
+
+
                                                     </tr>
 
                                                     <tr>
@@ -298,34 +299,29 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                       if ($row->totalKilos>=$row->totalVolumen) {
                                                         $output .= '<td colspan="2" style="white-space: nowrap;">VALOR PARA LIQUIDAR</td>
                                                                     <td style="white-space: nowrap;">Sumatoria Kilos. </td>
-                                                                    <td>'.$row->totalKilos.'</td>
+                                                                    <td colspan="2">'.$row->totalKilos.' kg</td>
                                                              ';
                                                       }else{
                                                         $output .= '<td colspan="2" style="white-space: nowrap;">VALOR PARA LIQUIDAR</td>
                                                                     <td style="white-space: nowrap;">Sumatoria volumen. </td>
-                                                                    <td>'.$row->totalVolumen.'</td>';
+                                                                    <td colspan="2">'.$row->totalVolumen.'</td>';
                                                       }
 
                                                       $output .= '</tr>';
-                                                      $output .= '  <tr >
-                                                          <td colspan=4 style=" border-style: none;"></td>
-                                                          <td colspan="2" style="white-space: nowrap;">PRECIO PARA LIQUIDAR</td>
-                                                                  <td style="white-space: nowrap;">Precio negociado </td>
-                                                                  <td>$ '.$row->precio.'</td></tr>';
                                                      $output .= '  <tr>
                                                          <td colspan="4" style=" border-style: none;"></td>
                                                          <td colspan="3" style="white-space: nowrap;">VALOR FLETE</td>
-                                                                 <td style="white-space: nowrap;">$ '.$row->totalPrecios.'</td></tr>';
+                                                                 <td colspan="2" style="white-space: nowrap;">$ '.$row->totalPrecios.'</td></tr>';
                                                     $output .= '  <tr>
                                                         <td colspan=4 style="border-style: none;"></td>
                                                         <td colspan="2" style="white-space: nowrap;">SEGURO SOBRE VALOR DECLARADO</td>
-                                                                <td style="white-space: nowrap;">'.$row->segurocarga.' %</td>
-                                                                <td></td></tr>';
+                                                                <td colspan="3" style="white-space: nowrap;">'.$row->segurocarga.' %</td>
+                                                                </tr>';
                                                    $output .= '  <tr border="0">
                                                        <td colspan=4 style=" border-style: none;"></td>
                                                        <td colspan="3" style="white-space: nowrap; background:yellow;">TOTAL</td>
 
-                                                               <td style="white-space: nowrap;">$ '.$row->totalPrecios.'</td></tr>';
+                                                               <td colspan="2" style="white-space: nowrap;">$ '.$row->totalPrecios.'</td></tr>';
                                                  }
                                         $output .= '</table>';
 

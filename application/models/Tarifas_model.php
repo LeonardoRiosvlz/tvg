@@ -16,6 +16,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
       private $_itinerarios;
       private $_tiempos;
       private $_status;
+      private $_criterio;
 
           public function setId($id) {
               $this->_id = $id;
@@ -57,7 +58,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
           public function setStatus($status) {
               $this->_status = $status;
           }
-
+          public function setCriterio($criterio) {
+              $this->_criterio = $criterio;
+          }
         public function insertar($data){
             $this->db->insert('tarifas', array(
                 'ciudad_origen'     => $data['ciudad_origen'],
@@ -72,6 +75,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 'itinerarios'     => $data['itinerarios'],
                 'tiempos'     => $data['tiempos'],
                 'status'     => $data['status'],
+                'criterio'     => $data['criterio'],
             ));
             return $this->db->error();
         }
@@ -91,6 +95,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
               'itinerarios'     => $data['itinerarios'],
               'tiempos'     => $data['tiempos'],
               'status'     => $data['status'],
+              'criterio'     => $data['criterio'],
             ));
             return $this->db->error();
            }
@@ -144,6 +149,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             'itinerarios'   => $this->_itinerarios,
                             'tiempos'     => $this->_tiempos,
                             'status'     => $this->_status,
+                            'criterio'     => $this->_criterio,
                           );
                           $this->db->where('id', $this->_id);
                           $this->db->update($tableName, $data);
@@ -162,6 +168,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             'itinerarios'     => $this->_itinerarios,
                             'tiempos'     => $this->_tiempos,
                             'status'     => $this->_status,
+                            'crirterio'     => $this->_crirterio,
                           );
                           $this->db->insert($tableName, $data);
                           return $this->db->insert_id();

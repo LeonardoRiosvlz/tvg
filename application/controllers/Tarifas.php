@@ -97,6 +97,7 @@ class Tarifas extends MY_Controller {
 					 					 $this->excel->getActiveSheet()->getColumnDimension('H')->setWidth(10);
 					 					 $this->excel->getActiveSheet()->getColumnDimension('I')->setWidth(10);
 					 					 $this->excel->getActiveSheet()->getColumnDimension('J')->setWidth(15);
+										 $this->excel->getActiveSheet()->getColumnDimension('K')->setWidth(10);
 					 					 //Le aplicamos negrita a los títulos de la cabecera.
 					 					 $this->excel->getActiveSheet()->getStyle("A{$contador}")->getFont()->setBold(true);
 					 					 $this->excel->getActiveSheet()->getStyle("B{$contador}")->getFont()->setBold(true);
@@ -108,6 +109,7 @@ class Tarifas extends MY_Controller {
 					 					 $this->excel->getActiveSheet()->getStyle("H{$contador}")->getFont()->setBold(true);
 					 					 $this->excel->getActiveSheet()->getStyle("I{$contador}")->getFont()->setBold(true);
 										 $this->excel->getActiveSheet()->getStyle("J{$contador}")->getFont()->setBold(true);
+										 $this->excel->getActiveSheet()->getStyle("K{$contador}")->getFont()->setBold(true);
 
 					 					 //Definimos los títulos de la cabecera.
 					 					 $this->excel->getActiveSheet()->setCellValue("A{$contador}", 'DEPARTAMENTO ORIGEN');
@@ -120,6 +122,7 @@ class Tarifas extends MY_Controller {
 					 					 $this->excel->getActiveSheet()->setCellValue("H{$contador}", 'ITINEARIOS');
 										 $this->excel->getActiveSheet()->setCellValue("I{$contador}", 'TIEMPOS');
 					 					 $this->excel->getActiveSheet()->setCellValue("J{$contador}", 'ESTATUS');
+										 $this->excel->getActiveSheet()->setCellValue("K{$contador}", 'CRITERIO');
 
 					 					 //Definimos la data del cuerpo.
 					 					 foreach($llamadas as $l){
@@ -136,6 +139,7 @@ class Tarifas extends MY_Controller {
 					 							$this->excel->getActiveSheet()->setCellValue("H{$contador}", $l->itinerarios);
 					 							$this->excel->getActiveSheet()->setCellValue("I{$contador}", $l->tiempos);
 												$this->excel->getActiveSheet()->setCellValue("J{$contador}", $l->status);
+												$this->excel->getActiveSheet()->setCellValue("J{$contador}", $l->criterio);
 
 					 					 }
 					 					 //Le ponemos un nombre al archivo que se va a generar.
@@ -167,6 +171,7 @@ class Tarifas extends MY_Controller {
 																				'itinerarios' => 'itinerarios',
 																				'tiempos' => 'tiempos',
 																				'status' => 'status',
+																				'criterio' => 'criterio',
 																			 );
 
 					        $customerInfo = $this->tarifas->getcustomerList();
@@ -185,6 +190,7 @@ class Tarifas extends MY_Controller {
 												'itinerarios'     => $element['itinerarios'],
 												'tiempos'     => $element['tiempos'],
 												'status'     => $element['status'],
+												'criterio'     => $element['criterio'],
 					            );
 					        }
 					        $data = array_merge($metaData,$storData);
@@ -234,6 +240,7 @@ class Tarifas extends MY_Controller {
 									              'itinerarios'     => $element['itinerarios'],
 									              'tiempos'     => $element['tiempos'],
 									              'status'     => $element['status'],
+																'criterio'     => $element['criterio'],
 															);
 													}
 											}
@@ -253,6 +260,7 @@ class Tarifas extends MY_Controller {
 											$this->tarifas->setItinerarios($element['itinerarios']);
 											$this->tarifas->setTiempos($element['tiempos']);
 											$this->tarifas->setStatus($element['status']);
+											$this->tarifas->setCriterio($element['criterio']);
 											$this->tarifas->createCustomer();
 									}
 									redirect('Tarifas');

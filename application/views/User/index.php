@@ -219,7 +219,7 @@
                                  <div class="form-group">
                                    <select v-model="form.banned" v-validate="'required'"  name="banned" class="form-control" :disabled="ver" >
                                     <option value="0">Activo</option>
-                                    <option value="1">Banear</option>
+                                    <option value="1">Inactivo</option>
                                    </select>
                                    <p class="text-danger my-1 small" v-if="(errors.first('banned'))" >  Este dato es requerido  </p>
                                  </div>
@@ -337,8 +337,8 @@
                                    <button class="btn btn-block links" @click="habilitar(0)"><span class="mbri-close " ></span> Rechazar</button>
                                </div>
                                <div class="col-12">
-                                 <button v-if="form.banned==='0'" class="btn btn-block btn-danger links" @click="banear(1)"><span class="mbri-close " ></span> Banear </button>
-                                 <button v-if="form.banned==='1'" class="btn btn-block btn-success links" @click="banear(0)"><span class="mbri-ok " ></span> Desbanear</button>
+                                 <button v-if="form.banned==='0'" class="btn btn-block btn-danger links" @click="banear(1)"><span class="mbri-close " ></span> Desctivar </button>
+                                 <button v-if="form.banned==='1'" class="btn btn-block btn-success links" @click="banear(0)"><span class="mbri-ok " ></span> Activar</button>
                                </div>
                                <!--/col-->
                            </div>

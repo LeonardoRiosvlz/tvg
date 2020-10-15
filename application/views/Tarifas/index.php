@@ -152,12 +152,14 @@
                        <div class="col-sm-12">
                          <label class="links">Tipo de envíos</label>
                          <div class="form-group">
-                           <select v-model="form.tipo_envio" v-validate="'required'" name="tipo_envio" class="form-control" :disabled="ver" >
+                           <select v-model="form.tipo_envio" @change="tar()" v-validate="'required'" name="tipo_envio" class="form-control" :disabled="ver" >
+                             <option value=""></option>
                              <option v-for="tiposenvios in tiposenvios" v-if="tiposenvios.tipo_transporte===form.tipo_transporte" :value="tiposenvios.nombre_tiposenvios">{{tiposenvios.nombre_tiposenvios}}</option>
                            </select>
                            <p class="text-danger my-1 small" v-if="(errors.first('tipo_envio'))" >  Este dato es requerido  </p>
                          </div>
                        </div>
+                       <pre>{{form}}</pre>
                          <div class="col-sm-12">
                            <!-- textarea -->
                            <div class="form-group">
@@ -1541,6 +1543,7 @@
              'ciudad_origen':'',
              'tipo_transporte':'',
              'tipo_envio':'',
+             'criterio':'',
              'precio':'',
              'itinerarios':'',
              'tiempos':'',
@@ -1554,6 +1557,16 @@
            depp_dos(){
              this.form.departamento_destino=this.colombia[this.form.dep_dos].departamento;
              console.log(this.form.dep_dos);
+           },
+           tar(){
+             for (var i = 0; i < this.tiposenvios.length; i++) {
+               if (this.tiposenvios[i].nombre_tiposenvios===this.form.tipo_envio) {
+                 this.form.criterio=this.tiposenvios[i].criterio;
+               }
+
+             }
+             this.form.departamento_sede=this.colombia[this.form.dep].departamento;
+             console.log(this.form.dep);
            },
            resete(){
 
@@ -1692,6 +1705,7 @@
                        this.form.itinerarios=this.tarifas[index].itinerarios,
                        this.form.tiempos=this.tarifas[index].tiempos,
                        this.form.status=this.tarifas[index].status,
+                       this.form.criterio=this.tarifas[index].criterio,
                        $('#modal-lg').modal('show');
                        this.editMode=true
                  },
@@ -1709,6 +1723,7 @@
                    this.form.itinerarios=this.tarifas[index].itinerarios,
                    this.form.tiempos=this.tarifas[index].tiempos,
                    this.form.status=this.tarifas[index].status,
+                   this.form.criterio=this.tarifas[index].criterio,
                    $('#myModal').modal('show');
                    this.editMode=false
                  },

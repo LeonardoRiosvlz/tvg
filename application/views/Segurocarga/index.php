@@ -23,7 +23,7 @@
           <table id="example1" class="table ">
             <thead>
             <tr>
-              <th class="links">Procentaje</th>
+              <th class="links">Porcentaje</th>
               <th class="links">Status</th>
               <th class="links">Action</th>
             </tr>
@@ -68,8 +68,8 @@
                              <div class="col-sm-12">
                                <!-- textarea -->
                                <div class="form-group">
-                                 <label class="links">Nombre segurocarga</label>
-                                  <input type="number" v-model="form.porcentaje" v-validate="'required'" name="porcentaje" class="form-control" id="" :disabled="ver">
+                                 <label class="links">Segurocarga</label>
+                                  <input type="text" v-model="form.porcentaje" v-validate="'required'" name="porcentaje" class="form-control" id="" :disabled="ver">
                                  <p class="text-danger my-1" v-if="(errors.first('porcentaje'))" >  Este dato es requerido  </p>
                                </div>
                              </div>

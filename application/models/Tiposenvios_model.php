@@ -14,6 +14,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             $this->db->update('tiposenvios', array(
               'nombre_tiposenvios'     => $data['nombre_tiposenvios'],
               'tipo_transporte'     => $data['tipo_transporte'],
+              'criterio'     => $data['criterio'],
             ));
             return $this->db->error();
            }

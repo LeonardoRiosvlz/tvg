@@ -25,12 +25,14 @@
             <tr>
               <th class="links">Nombre Elemento o Condición</th>
               <th class="links">Tipo de transporte</th>
+              <th class="links">Criterio</th>
               <th class="links">Action</th>
             </tr>
             </thead>
               <tr v-for="(tiposenvios,index) in tiposenvios">
                 <td class="links">{{tiposenvios.nombre_tiposenvios}}</td>
                 <td class="links">{{tiposenvios.tipo_transporte}}</td>
+                <td class="links">{{tiposenvios.criterio}}</td>
                   <td>
                     <div class="btn-group">
                         <button type="button" class="btn btn-default">Action</button>
@@ -81,6 +83,17 @@
                                  </select>
                                </div>
                              </div>
+                             <div class="col-md-12">
+                               <label class="links">Criterio</label>
+                               <div class="form-group">
+                                 <select v-model="form.criterio" v-validate="'required'"  name="estado" class="form-control" :disabled="ver" >
+                                  <option value=""></option>
+                                  <option value="Kilos">Kilos</option>
+                                  <option value="Unidad">Unidad</option>
+                                 </select>
+                                 <p class="text-danger my-1 small" v-if="(errors.first('estado'))" >  Este dato es requerido/o es inválido  </p>
+                               </div>
+                             </div>
                             </div>
                            <button v-if="editMode===false"  class="button is-primary links btn btn-light float-right my-3" type="submit">Guardar</button>
                            <button v-if="editMode===true && !ver"  class="button is-primary btn btn-light links float-right my-3" type="submit">Editar</button>
@@ -113,6 +126,7 @@
          form:{
              'id':'',
              'nombre_tiposenvios':'',
+             'criterio':'',
              'tipo_transporte':'',
          }
        },
@@ -234,6 +248,7 @@
                    this.form.id=this.tiposenvios[index].id,
                    this.form.nombre_tiposenvios=this.tiposenvios[index].nombre_tiposenvios,
                    this.form.tipo_transporte=this.tiposenvios[index].tipo_transporte,
+                   this.form.criterio=this.tiposenvios[index].criterio,
                    $('#modal-lg').modal('show');
                    this.editMode=true
                  },
@@ -241,6 +256,7 @@
                    this.form.id=this.tiposenvios[index].id,
                    this.form.nombre_tiposenvios=this.tiposenvios[index].nombre_tiposenvios,
                    this.form.tipo_transporte=this.tiposenvios[index].tipo_transporte,
+                   this.form.criterio=this.tiposenvios[index].criterio,
                    $('#myModal').modal('show');
                    this.editMode=false
                  },

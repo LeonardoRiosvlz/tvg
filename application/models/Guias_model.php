@@ -30,7 +30,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 'valor_flete'     => $data['totalPrecios'],
                 'otrosCargos'     => $data['otrosCargos'],
                 'total'     => $data['total'],
-                'id_tarifa'     => $data['id_tarifa'],
+                'estado'     => "Creada",
+                'id_planilla'     => $data['id_planilla'],
+                'observaciones'     => $data['observaciones'],
                 'precioNegociado'     => $data['precioNegociado'],
             ));
             return $this->db->error();

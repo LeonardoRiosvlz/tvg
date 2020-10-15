@@ -345,19 +345,18 @@
              <div class="col-sm-6">
                <label class="links">Medida</label>
                <div class="form-group">
-                 <select v-model="item.escala"   name="escala" class="form-control" :disabled="ver" >
+                 <select v-model="item.escala"   name="escala" class="form-control" :disabled="ver||item.criterio==='Unidad'" >
                    <option value=""></option>
                   <option value="Metros">Metros</option>
                   <option value="Centímetros">Centímetros</option>
                   <option value="Porcientos">Porcientos</option>
                  </select>
-
                </div>
              </div>
              <div class="col-sm-6">
                 <div class="form-group links">
                   <label>Factor</label>
-                 <select v-model="item.factor" @change="facto()" name="segurocarga" class="form-control" >
+                 <select v-model="item.factor" @change="facto()" name="segurocarga" class="form-control"   :disabled="ver||item.criterio==='Unidad'">
                    <option value=""></option>
                    <option v-for="factores in factores" v-if="factores.escala===item.escala"  :value="factores.id">{{factores.formula}} </option>
                  </select>
@@ -369,7 +368,7 @@
         </div>
         </div>
         <button
-        v-if="item.id_tarifa && item.segurocarga && item.costeguia && item.escala && item.formula && item.variable"
+        v-if="item.id_tarifa && item.segurocarga && item.costeguia && item.escala && item.formula && item.variable || item.id_tarifa && item.segurocarga && item.costeguia && item.criterio==='Unidad' "
          type="button" class="btn btn-success btn-lg btn-block my-2" @click="pushearItem()">Agregar <span class="mbri-save"></span></button>
           <div class="table-responsive my-2">
             <table class="table table-striped table-bordered table condensed table-hover table-responsive  ">
@@ -417,7 +416,12 @@
               </tbody>
             </table>
           </div>
-
+          <div class="col-8">
+            <div class="form-group">
+              <label for="exampleFormControlTextarea1">Observación</label>
+              <textarea v-model="form.observaciones" class="form-control" id="exampleFormControlTextarea1" rows="1" :disabled="ver"></textarea>
+            </div>
+          </div>
           <label class="switch pull-right col-12">
             <input type="checkbox" v-model="form.vernota" checked @change="verNotas()" :disabled="ver">
             <span class="slider round"></span>
@@ -425,7 +429,22 @@
           <label class="switch pull-right col-12">
             Notas
           </label>
+          <div class="collapse" id="collapseExample">
+            <div class="form-group">
+              <label for="exampleFormControlInput1">Titulo</label>
+              <input v-model="resumen" type="email" class="form-control" id="exampleFormControlInput1" placeholder="">
+            </div>
+            <div class="form-group">
+            <label for="exampleFormControlTextarea1">Descripción</label>
+            <textarea v-model="descripcion" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+            <button type="button" class="btn btn-primary btn-lg btn-block" @click="pushearNota()">Agregar nota</button>
+          </div>
+
+          </div>
           <div class="card col-12" v-if="form.vernota">
+            <a class="btn btn-primary my-1" style="width:150px" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+              Agregar Nota
+            </a>
             <div class="card-body p-3">
               <h5 class="card-title">Notas</h5>
               <div v-for="(notas ,index) in form.notas" class="card p-3 m-3">
@@ -443,10 +462,10 @@
                 <h5 class="links text-center"v-if="cotizaciones.length>0">Cotizaciones Relacionadas al cliente</h5>
                 <div class=" p-1" v-if="cotizaciones.length>0">
                   <div class="row">
-                    <div v-for="cotizaciones in cotizacionesCliente" v-if="cotizaciones.cedula===form.cedula" class="card col-3">
+                    <div v-for="cotizaciones in cotizacionesCliente"  class="card col-2">
                       <div class="card-body">
-                        <h5 class="card-title">COT-{{cotizaciones.id}}</h5>
-                        <p class="card-text">{{cotizaciones.username}}</p>
+                        <h5 class="card-title small text-center">COT-{{cotizaciones.id}}</h5>
+                        <p class="card-text small text-center">{{cotizaciones.username}}</p>
                         <a :href="'<?=base_url()?>Cotizaciones/cotizaciones_to_pdf/'+cotizaciones.codigo+'/'+cotizaciones.id" class="btn btn-primary" download>Descargar <span class="mbri-download"></span></a>
                       </div>
                     </div>
@@ -669,7 +688,7 @@
      <div class="col-sm-6">
        <label class="links">Medida</label>
        <div class="form-group">
-         <select v-model="item.escala"   name="escala" class="form-control" :disabled="ver" >
+         <select v-model="item.escala"   name="escala" class="form-control" :disabled="ver||item.criterio==='Unidad'" >
            <option value=""></option>
           <option value="Metros">Metros</option>
           <option value="Centímetros">Centímetros</option>
@@ -681,7 +700,7 @@
      <div class="col-sm-6">
         <div class="form-group links">
           <label>Factor</label>
-         <select v-model="item.factor" @change="facto()" name="segurocarga" class="form-control" >
+         <select v-model="item.factor" @change="facto()" name="segurocarga" class="form-control" :disabled="ver||item.criterio==='Unidad'">
            <option value=""></option>
            <option v-for="factores in factores" v-if="factores.escala===item.escala"  :value="factores.id">{{factores.formula}} </option>
          </select>
@@ -694,10 +713,10 @@
 </div>
 </div>
 <button
-v-if="item.id_tarifa && item.segurocarga && item.costeguia && item.escala && item.formula && item.variable && item.nuevo_precio && !corregirMode"
+v-if="item.id_tarifa && item.segurocarga && item.costeguia && item.escala && item.formula && item.variable && item.nuevo_precio && !corregirMode || item.id_tarifa && item.segurocarga && item.costeguia && item.criterio==='Unidad'  && item.nuevo_precio && !corregirMode"
  type="button" class="btn btn-success btn-lg btn-block my-2" @click="pushearItemr()">Agregar <span class="mbri-save"></span></button>
  <button
- v-if="item.id_tarifa && item.segurocarga && item.costeguia && item.escala && item.formula && item.variable && item.nuevo_precio && corregirMode"
+ v-if="item.id_tarifa && item.segurocarga && item.costeguia && item.escala && item.formula && item.variable && item.nuevo_precio && corregirMode || item.id_tarifa && item.segurocarga && item.costeguia && item.criterio==='Unidad' && item.nuevo_precio && corregirMode"
   type="button" class="btn btn-success btn-lg btn-block my-2" @click="editarItem()">Editar <span class="mbri-save"></span></button>
   <div class="table-responsive my-2">
     <table class="table table-striped table-bordered table condensed table-hover table-responsive  ">
@@ -766,10 +785,26 @@ v-if="item.id_tarifa && item.segurocarga && item.costeguia && item.escala && ite
     <input type="checkbox" v-model="form.vernota" checked @change="verNotas()" :disabled="ver">
     <span class="slider round"></span>
   </label>
+
+
+<div class="collapse" id="collapseExampless">
+      <div class="form-group">
+        <label for="exampleFormControlInput1">Titulo</label>
+        <input v-model="resumen" type="email" class="form-control" id="exampleFormControlInput1" placeholder="">
+      </div>
+      <div class="form-group">
+      <label for="exampleFormControlTextarea1">Descripción</label>
+      <textarea v-model="descripcion" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+    </div>
+    <button type="button" class="btn btn-primary btn-lg btn-block" @click="pushearNota()">Agregar nota</button>
+</div>
   <label class="switch pull-right col-12">
     Notas
   </label>
   <div class="card col-12" v-if="form.vernota">
+    <a class="btn btn-primary my-1" style="width:150px;" data-toggle="collapse" href="#collapseExampless" role="button" aria-expanded="false" aria-controls="collapseExample">
+      Agregar Nota
+    </a>
     <div class="card-body p-3">
       <h5 class="card-title">Notas</h5>
       <div v-for="(notas ,index) in form.notas" class="card p-3 m-3">
@@ -866,6 +901,8 @@ v-if="item.id_tarifa && item.segurocarga && item.costeguia && item.escala && ite
          cotizaciones:[],
          editMode:false,
          corregirMode:false,
+         descripcion:"",
+         resumen:"",
          item:{
            'departamento_destino':'',
            'ciudad_destino':'',
@@ -884,6 +921,7 @@ v-if="item.id_tarifa && item.segurocarga && item.costeguia && item.escala && ite
            'formula':'',
            'variable':'',
            'factor':'',
+           'criterio':'',
          },
          email:{
            'correo_cliente':'',
@@ -924,6 +962,7 @@ v-if="item.id_tarifa && item.segurocarga && item.costeguia && item.escala && ite
            this.item.escala=this.form.items[index].escala;
            this.item.factor=this.form.items[index].factor;
            this.item.variable=this.form.items[index].variable;
+           this.item.criterio=this.form.items[index].criterio;
            this.tari();
            this.facto();
            this.item.tipo_transporte=this.form.items[index].tipo_transporte;
@@ -1040,18 +1079,31 @@ v-if="item.id_tarifa && item.segurocarga && item.costeguia && item.escala && ite
                   this.item.itinerarios=this.tarifas[i].itinerarios;
                   this.item.tiempos=this.tarifas[i].tiempos;
                   this.item.precio=this.tarifas[i].precio;
+                  this.item.criterio=this.tarifas[i].criterio;
+                  if (this.item.criterio==='Unidad') {
+                    this.item.factor==="";
+                    this.item.escala==="";
+                  }
                }
              }
            },
            facto(){
-             for (var i = 0; i < this.factores.length; i++) {
-               if (this.factores[i].id===this.item.factor) {
-                 this.item.escala=this.factores[i].escala;
-                 this.item.formula=this.factores[i].formula;
-                 this.item.variable=this.factores[i].variable;
-                  this.item.factor=this.item.factor;
+             if (this.item.criterio==='Unidad') {
+               this.item.escala="";
+               this.item.formula="";
+               this.item.variable="";
+                this.item.factor="";
+             }else{
+               for (var i = 0; i < this.factores.length; i++) {
+                 if (this.factores[i].id===this.item.factor) {
+                   this.item.escala=this.factores[i].escala;
+                   this.item.formula=this.factores[i].formula;
+                   this.item.variable=this.factores[i].variable;
+                    this.item.factor=this.item.factor;
+                 }
                }
              }
+
            },
            cargarCotizacion(index){
              if (this.form.f_vencimiento==='') {
@@ -1347,6 +1399,7 @@ v-if="item.id_tarifa && item.segurocarga && item.costeguia && item.escala && ite
                       escala:this.item.escala,
                       formula:this.item.formula,
                       variable:this.item.variable,
+                      criterio:this.item.criterio,
                     });
                     if (this.form.notas.length<1) {
                       for (var i = 0; i < this.notas.length; i++) {
@@ -1387,6 +1440,33 @@ v-if="item.id_tarifa && item.segurocarga && item.costeguia && item.escala && ite
                     this.item.formula="";
                     this.item.variable="";
 
+                 } else if (
+                   result.dismiss === Swal.DismissReason.cancel
+                 ) {
+                   Swal(
+                     'Cancelado',
+                     'No fue eliminado.',
+                     'success'
+                   )
+                 }
+               })
+             },
+             pushearNota(){
+               Swal({
+                 title: '¿Deseas agregar esta nota?',
+                 type: 'warning',
+                 showCancelButton: true,
+                 confirmButtonText: '¡Si!',
+                 cancelButtonText: '¡No!',
+                 reverseButtons: true
+               }).then((result) => {
+                 if (result.value) {
+                   this.form.notas.push({
+                      descripcion:this.descripcion,
+                      resumen:this.resumen,
+                    });
+                    this.descripcion="";
+                    this.resumen="";
                  } else if (
                    result.dismiss === Swal.DismissReason.cancel
                  ) {
@@ -1769,15 +1849,15 @@ v-if="item.id_tarifa && item.segurocarga && item.costeguia && item.escala && ite
                       this.cotizaciones = cotizaciones
                     });
                     $("#example1").DataTable();
-                    this.estado.enviados=0;
-                    this.estado.anuladas=0;
-                    this.estado.rechazadas=0;
-                    this.estado.estudio=0;
-                    this.estado.borrador=0;
-                    this.estado.aceptadas=0;
+                    this.estados.enviado=0;
+                    this.estados.anuladas=0;
+                    this.estados.rechazadas=0;
+                    this.estados.estudio=0;
+                    this.estados.borrador=0;
+                    this.estados.aceptadas=0;
                     for (var i = 0; i < this.cotizaciones.length; i++) {
-                      if (this.cotizaciones[i].estatus_gestion==='Enviado' && this.cotizaciones[i].estatus_gestion==='Enviado') {
-                        this.estados.enviados=this.estados.enviados+1;
+                      if (this.cotizaciones[i].estatus_gestion==='Enviado') {
+                        this.estados.enviado=this.estados.enviado+1;
                       }else if (this.cotizaciones[i].estatus_gestion==='Anulada') {
                         this.estados.anuladas=this.estados.anuladas+1;
                       }else if (this.cotizaciones[i].estatus_gestion==='Borrador' || this.cotizaciones[i].estatus_gestion==='Renegociado') {
@@ -1800,15 +1880,15 @@ v-if="item.id_tarifa && item.segurocarga && item.costeguia && item.escala && ite
                       this.cotizaciones = cotizaciones
                     });
                     $("#example1").DataTable();
-                    this.estado.enviados=0;
-                    this.estado.anuladas=0;
-                    this.estado.rechazadas=0;
-                    this.estado.estudio=0;
-                    this.estado.borrador=0;
-                    this.estado.aceptadas=0;
+                    this.estados.enviado=0;
+                    this.estados.anuladas=0;
+                    this.estados.rechazadas=0;
+                    this.estados.estudio=0;
+                    this.estados.borrador=0;
+                    this.estados.aceptadas=0;
                     for (var i = 0; i < this.cotizaciones.length; i++) {
                       if (this.cotizaciones[i].estatus_gestion==='Enviado') {
-                        this.estados.enviados=this.estados.enviados+1;
+                        this.estados.enviado=this.estados.enviado+1;
                       }else if (this.cotizaciones[i].estatus_gestion==='Anulada') {
                         this.estados.anuladas=this.estados.anuladas+1;
                       }else if (this.cotizaciones[i].estatus_gestion==='Borrador' || this.cotizaciones[i].estatus_gestion==='Renegociado') {

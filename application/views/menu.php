@@ -1,9 +1,9 @@
 
-<div id="app">
+<div id="app" >
 
-    <div class="container-fluid text-center text-warning" style="background-color:#293072;">SVG CARGO S.A.S.</div>
+    <div  class="container-fluid text-center text-warning" style="background-color:#293072;">TVG CARGO S.A.S.</div>
 
-    <div class="container-fluid">
+    <div class="container-fluid" >
       <div class="row head-s">
         <div class="col-2  imagisotipo d-none d-sm-none d-md-none d-xl-block py-2 ">
            <a href="<?=base_url("User");?>"><img src="<?php echo base_url('include/img/logo.png');?>" alt="logo" style="width:90%;"></a>
@@ -30,7 +30,7 @@
                   <?php endif; ?>
                 <?php if ($this->auth_role == 'customer' ||   $this->auth_role == 'manager' || $this->auth_role == 'admin'): ?>
                   <li class="nav-item">
-                    <a class="nav-link btn-icono sp" onclick="openNav2()" ><span class="mbri-setting"></span></a>
+                    <a class="nav-link btn-icono sp" onclick="openNav2()" ><span class="mbri-menu"></span></a>
                   </li>
                 <?php endif; ?>
                 </ul>
@@ -61,7 +61,7 @@
                   <?php endif; ?>
                 <?php if ($this->auth_role == 'customer' ||   $this->auth_role == 'manager' || $this->auth_role == 'admin'): ?>
                   <li class="nav-item">
-                    <a class="nav-link btn-icono sp" onclick="openNav2()" ><span class="mbri-setting"></span></a>
+                    <a class="nav-link btn-icono sp" onclick="openNav2()" ><span class="mbri-menu"></span></a>
                   </li>
                 <?php endif; ?>
                 </ul>
@@ -77,6 +77,8 @@
                       <a class="dropdown-item links" href="<?=base_url()?>sucursales"><i class="fa fa-bank" aria-hidden="true"></i> Sucursales</a>
                       <a class="dropdown-item links" href="<?=base_url()?>Root_user"><i class="fa fa-users" aria-hidden="true"></i> Usuarios del sistema</a>
                       <a class="dropdown-item links" href="<?=base_url()?>FormasPago"><i class="fa fa-money" aria-hidden="true"></i> Formas de pago </a>
+                      <a class="dropdown-item links" href="<?=base_url()?>cargos"><i class="fa fa-street-view" aria-hidden="true"></i> Cargos</a>
+                      <a class="dropdown-item links" v-show="permisos.satelites" href="<?=base_url()?>Satelites"><i class="fa fa-space-shuttle" aria-hidden="true"></i> Satélites</a>
                     </div>
                   </div>
                   <div class="dropdown">
@@ -86,7 +88,7 @@
                     </button>
                     <?php endif; ?>
                     <div class="dropdown-menu">
-                      <a class="dropdown-item links" href="<?=base_url()?>cargos"><i class="fa fa-street-view" aria-hidden="true"></i> Cargos</a>
+
                       <a class="dropdown-item links" href="<?=base_url()?>Tiempo"><i class="fa fa-clock-o" aria-hidden="true"></i> Tiempos de entrega</a>
                       <a class="dropdown-item links" href="<?=base_url()?>transporte"><i class="fa fa-truck" aria-hidden="true"></i> Tipos de trasnporte</a>
                       <a class="dropdown-item links" href="<?=base_url()?>Itinerarios"><i class="fa fa-align-center" aria-hidden="true"></i> Itinerarios</a>
@@ -104,7 +106,7 @@
                       Notas y Alertas
                     </button>
                     <div class="dropdown-menu">
-                      <a class="dropdown-item links" v-show="permisos.Notas" href="<?=base_url()?>Notas"><i class="fa fa-sticky-note-o" aria-hidden="true"></i> Notas</a>
+                      <a class="dropdown-item links" href="<?=base_url()?>Notas"><i class="fa fa-sticky-note-o" aria-hidden="true"></i> Notas</a>
                       <a class="dropdown-item links" href="<?=base_url()?>Alertas"><i class="fa fa-bell" aria-hidden="true"></i> Alertas</a>
                     </div>
                   </div>
@@ -113,11 +115,10 @@
                       Clientes y Proveedores
                     </button>
                     <div class="dropdown-menu">
-                      <a class="dropdown-item links" v-show="permisos.sedesClientes" href="<?=base_url()?>Sedes"><i class="fa fa-paper-plane" aria-hidden="true"></i> Sedes Clientes</a>
                       <a class="dropdown-item links" v-show="permisos.clientes"  href="<?=base_url()?>Clientes"><i class="fa fa-user-o" aria-hidden="true"></i> Clientes de la empresa</a>
+                      <a class="dropdown-item links" v-show="permisos.sedesClientes" href="<?=base_url()?>Sedes"><i class="fa fa-paper-plane" aria-hidden="true"></i> Sedes Clientes</a>
                       <a class="dropdown-item links" v-show="permisos.remitentes"  href="<?=base_url()?>Remitentes"><i class="fa fa-terminal" aria-hidden="true"></i> Remitentes</a>
                       <a class="dropdown-item links" v-show="permisos.proveedores"  href="<?=base_url()?>Proveedores"><i class="fa fa-car" aria-hidden="true"></i> Proveedores de transporte</a>
-                      <a class="dropdown-item links" v-show="permisos.satelites" href="<?=base_url()?>Satelites"><i class="fa fa-space-shuttle" aria-hidden="true"></i> Satélites</a>
                       <a class="dropdown-item links" v-show="permisos.trazabilidad" href="<?=base_url()?>Trazabilidad"><i class="fa fa-location-arrow" aria-hidden="true"></i> Trazabilidad de la carga</a>
                     </div>
                   </div>
@@ -128,6 +129,7 @@
         </div>
       </div>
     </div>
+
     <div id="mySidenav2" class="sidenav">
       <a class="links" href="javascript:void(0)" class="closebtn" onclick="closeNav2()">&times;</a>
       <div v-for="profiles in cart" class="card border-0" style="width: 100%;background:#293072!important;" style="background:#293072!important;">

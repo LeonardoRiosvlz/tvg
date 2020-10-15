@@ -255,7 +255,7 @@ function fetch_details(){
   $datos=$this->db->get();
 
     $this->db->select('c.*,u.nombre,u.apellido, s.nombre_sucursal, f.forma')
-    ->from('clientes C')
+    ->from('clientes c')
     ->join('users u', 'c.autorizador = u.user_id')
     ->join('sucursales s', 'c.sucursal = s.id')
     ->join('forma_pago f', 'c.forma_pago = f.id');

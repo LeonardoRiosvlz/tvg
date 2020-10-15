@@ -304,13 +304,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             $output .= '
                               </div>
                               <div id="footer">
-                                <img class="adapt-img" src="'.base_url($row->logo_dos).'" alt style="display: block;" width="110%" height="68px"></a>
+                                <img class="adapt-img" src="'.base_url($row->logo_dos).'" alt style="display: block;" width="100%" height="68px"></a>
                               </div>';
                               }
 
                          foreach($data->result() as $row){
                              $output .= '
-                                <p class="lead text-right" style="color:red;font-size:25px;">COT-'.$row->id.'</p></BR>
+                                <p class="lead text-right" style="color:red;font-size:17px; margin:0;padding:0; float:right">  COT-'.$row->id.'</p></BR>
+                                 <p style="font-size:17px; margin:0;padding:0;float:right;color:grey;">('.$row->nombre.' '.$row->apellido.')</p></BR>
                                 <p class="lead text-right" style="color:grey;font-size:14px;margin:0;padding:0;">Válido hasta: '.$row->f_vencimiento.'</p></BR>
                                 <p class="lead text-left" style="font-size:15px;">Bogotá, D.C. '.$row->fecha_creacion.'</sp</BR>
                                     ';
@@ -325,7 +326,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                     <p style="font-size:19px; padding: 0;margin: 0;"> Teléfono: '.$row->telefono_cliente.'</p></BR>
                                     <p style="font-size:19px; padding: 0;margin: 0;"> Correo electrónico:'.$row->correo_cliente.'</p></BR>
                                     <p style="font-size:19px; padding: 0;margin: 0;"> Ciudad:'.$row->ciudad.'</p></BR>
-                                    <h4 class="titulos text-center" style="font-weight: bold;font-size:19px;;"> REF: COTIZACIÓN TRANSPORTE A DIFERENTES DESTINO </h4>
+                                    <h4 class="titulos text-center" style="font-weight: bold;font-size:19px;;"> REF: COTIZACIÓN TRANSPORTE A DIFERENTES DESTINOS </h4>
                                     <h5 class="titulos" style="font-weight: bold;font-size:19px;">Estimados Señores:</h5>
                                     ';
                                   }
@@ -347,7 +348,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 <td>TRANSPORTE</td>
                                 <td>ORIGEN</td>
                                 <td>DESTINO</td>
-                                <td>VALOR KILO</td>
+                                <td>VALOR KILO/UNIDAD</td>
                                 <td>VALOR SEGURO</td>
                                 <td>COSTE DE GUIA</td>
                                 <td>ITINERARIO</td>

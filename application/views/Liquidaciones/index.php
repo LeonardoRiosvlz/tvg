@@ -122,6 +122,7 @@
                <div class="card-body">
                  <div class="row p-1 d-flex justify-content-between">
                    <div class="col-md-4">
+
                      <label class="links">CLIENTE</label>
                      <input list="encodings" v-model="form.cedula" @change="loadCotizacionesclientes();loadLiquidaciones();"  value="" class="form-control form-control-lg" placeholder="Escriba una cedula o NIT" :disabled="ver">
                        <datalist id="encodings">
@@ -195,15 +196,52 @@
                       </div>
                     </div>
                  </div>
-                 <label class="switch pull-right" v-if="!form.id_tarifa">
-                   <input type="checkbox" v-model="vertable">
-                   <span class="slider round"></span>
-                 </label>
-               </br>
-                 <div class="d-flex justify-content-center" v-if="vertable && !form.id_tarifa">
+                      <label for="">Cotizacion/Tarifa</label>
+                 <div class="row">
+                   <label class="switch pull-right">
+                     <input type="checkbox" v-model="vertable">
+                     <span class="slider round"></span>
+                   </label>
+                 </div>
+                 <div class="row" v-if="!vertable">
+                   <div class="col-md-6" >
+                     <label class="links">Tipo de transporte</label>
+                     <div class="form-group">
+                       <select v-model="form.tipo_transporte" @change="form.tipo_envio=''"  name="tipo_transporte" class="form-control" :disabled="ver" >
+                        <option value=""></option>
+                         <option v-for="transportes in transportes" :value="transportes.tipo_transporte">{{transportes.tipo_transporte}}</option>
+                       </select>
+                     </div>
+                   </div>
+                   <div class="col-md-6" >
+                     <label class="links">Tipo de envío</label>
+                     <div class="form-group">
+                       <select v-model="form.tipo_envio" @change="item.id_tarifa=''"  name="tipo_envio" class="form-control" :disabled="ver" >
+                         <option value=""></option>
+                         <option v-for="tiposenvios in tiposenvios" v-show="tiposenvios.tipo_transporte===form.tipo_transporte" :value="tiposenvios.nombre_tiposenvios">{{tiposenvios.nombre_tiposenvios}}</option>
+                       </select>
+                     </div>
+                   </div>
+                     <div class="col-sm-12">
+
+                         <label class="links">Ruta de envío</label>
+                         <input list="tarifas" v-model="item.id_tarifa" @change="tari()"  value="" class="form-control form-control-lg" placeholder="Escriba una ruta">
+                           <datalist id="tarifas">
+                               <option v-for="tarifas in tarifas" v-if="tarifas.tipo_envio===form.tipo_envio && tarifas.tipo_transporte===form.tipo_transporte"  :value="tarifas.id">De {{tarifas.ciudad_origen}} a {{tarifas.ciudad_destino}}  -{{tarifas.itinerarios}}</option>
+                           </datalist>
+
+                     </div>
+                 </div>
+
+                 <div class="d-flex justify-content-center row" v-if="vertable">
                    <div class="table-responsive my-2 ">
                      <table  class="table table-striped table-bordered table condensed table-hover "width="100%"  >
                        <thead>
+                         <tr>
+                           <th scope="col" colspan="6" class="border-0 bg-info  text-center">
+                               <div class="bg-info rounded-pill px-4  text-uppercase font-weight-bold links text-white">Items de la cotización <i class="fa fa-calculator" aria-hidden="true"></i></div>
+                           </th>
+                         </tr>
                          <tr>
                            <th>ORIGEN</th>
                            <th>DESTINO</th>
@@ -238,11 +276,11 @@
                    </div>
                  </div>
 
-                <div class="row" v-if="form.id_tarifa">
+                <div class="row" >
                   <div class="col-sm-3">
                      <div class="form-group links">
                        <label>Depto. origen</label>
-                      <select v-model="form.id_tarifa" @change="tari()"  name="ciudad_destino" class="form-control" disabled >
+                      <select v-model="item.id_tarifa" @change="tari()"  name="ciudad_destino" class="form-control" disabled >
                         <option v-for="tarifas in tarifas"  :value="tarifas.id">{{tarifas.departamento_origen}}</option>
                       </select>
 
@@ -251,7 +289,7 @@
                  <div class="col-sm-3">
                     <div class="form-group links">
                       <label>Ciudad origen</label>
-                     <select v-model="form.id_tarifa" @change="tari()" name="ciudad_destino" class="form-control" disabled >
+                     <select v-model="item.id_tarifa" @change="tari()" name="ciudad_destino" class="form-control" disabled >
                        <option v-for="tarifas in tarifas"  :value="tarifas.id">{{tarifas.ciudad_origen}}</option>
                      </select>
 
@@ -260,7 +298,7 @@
                 <div class="col-sm-3">
                    <div class="form-group links">
                      <label>Depto. destino</label>
-                    <select v-model="form.id_tarifa" @change="tari()"  name="ciudad_destino" class="form-control" disabled >
+                    <select v-model="item.id_tarifa" @change="tari()"  name="ciudad_destino" class="form-control" disabled >
                       <option v-for="tarifas in tarifas"  :value="tarifas.id">{{tarifas.departamento_destino}}</option>
                     </select>
 
@@ -269,7 +307,7 @@
                <div class="col-sm-3">
                   <div class="form-group links">
                     <label>Ciudad destino</label>
-                   <select v-model="form.id_tarifa" @change="tari()" name="ciudad_destino" class="form-control" disabled >
+                   <select v-model="item.id_tarifa" @change="tari()" name="ciudad_destino" class="form-control" disabled >
                      <option v-for="tarifas in tarifas" :value="tarifas.id">{{tarifas.ciudad_destino}}</option>
                    </select>
 
@@ -278,7 +316,7 @@
               <div class="col-sm-3">
                  <div class="form-group links">
                    <label>itinerarios</label>
-                  <select v-model="form.id_tarifa" @change="tari()"  name="ciudad_destino" class="form-control" disabled >
+                  <select v-model="item.id_tarifa" @change="tari()"  name="ciudad_destino" class="form-control" disabled >
                     <option v-for="tarifas in tarifas"  :value="tarifas.id">{{tarifas.itinerarios}}</option>
                   </select>
 
@@ -287,7 +325,7 @@
              <div class="col-sm-3">
                 <div class="form-group links">
                   <label>Tiempos de entrega</label>
-                 <select v-model="form.id_tarifa" @change="tari()"  name="ciudad_destino" class="form-control" disabled >
+                 <select v-model="item.id_tarifa" @change="tari()"  name="ciudad_destino" class="form-control" disabled >
                    <option v-for="tarifas in tarifas"  :value="tarifas.id">{{tarifas.tiempos}}</option>
                  </select>
                </div>
@@ -295,7 +333,7 @@
             <div class="col-sm-3">
                <div class="form-group links">
                  <label>Tarifa</label>
-                <select v-model="form.id_tarifa" @change="tari()"  name="ciudad_destino" class="form-control" disabled >
+                <select v-model="item.id_tarifa" @change="tari()"  name="ciudad_destino" class="form-control" disabled >
                   <option v-for="tarifas in tarifas"  :value="tarifas.id">{{tarifas.precio}}</option>
                 </select>
               </div>
@@ -303,22 +341,22 @@
            <div class="col-3">
              <label class="links">Precio negociado</label>
              <div class="input-group">
-               <input v-model="form.precio" type="number"  class="form-control" placeholder="" disabled>
+               <input v-model="item.precio" type="number"  class="form-control" placeholder="" disabled>
              </div>
            </div>
            <div class="col-4">
              <label class="links">Coste de Guía</label>
-             <div class="input-group">
-               <input v-model="form.costeguia" type="number"  class="form-control" placeholder="" disabled>
-             </div>
+             <select v-model="form.costeguia"  name="escala" class="form-control"  >
+               <option value=""></option>
+              <option v-for="costeguia in costeguia" :value="costeguia.valor">{{costeguia.valor}}</option>
+             </select>
            </div>
            <div class="col-4">
-             <label class="links">Seguro de Carga</label>
-             <div class="input-group">
-               <select  name="escala" class="form-control"  disabled>
-                 <option value="">{{form.segurocarga}} %</option>
-               </select>
-             </div>
+             <label class="links">Seguro de Carga %</label>
+             <select v-model="form.segurocarga"  name="escala" class="form-control"  >
+               <option value=""></option>
+              <option v-for="segurocarga in segurocarga" :value="segurocarga.porcentaje">{{segurocarga.porcentaje}}</option>
+             </select>
            </div>
            <div class="col-4">
              <div class="form-group">
@@ -329,7 +367,7 @@
                  <div class="col-sm-4">
                    <label class="links">Medida</label>
                    <div class="form-group">
-                     <select v-model="form.escala"  name="escala" class="form-control" disabled >
+                     <select v-model="item.escala"  name="escala" class="form-control"  :disabled="ver||item.criterio==='Unidad'"  >
                        <option value=""></option>
                       <option value="Metros">Metros</option>
                       <option value="Centímetros">Centímetros</option>
@@ -341,9 +379,9 @@
                  <div class="col-sm-4">
                     <div class="form-group links">
                       <label>Factor</label>
-                     <select v-model="form.factor" @change="facto()"  name="segurocarga" class="form-control"  disabled>
+                     <select v-model="item.factor" @change="facto()"  name="segurocarga" class="form-control"  :disabled="ver||item.criterio==='Unidad'"  >
                        <option value=""></option>
-                       <option v-for="factores in factores" v-if="factores.escala===form.escala"  :value="factores.id">{{factores.formula}} </option>
+                       <option v-for="factores in factores" v-if="factores.escala===item.escala"  :value="factores.id">{{factores.formula}} </option>
                      </select>
                    </div>
                 </div>
@@ -354,11 +392,11 @@
                         <option v-for="tipocarga in tipocarga"  :value="tipocarga.nombre_tipocarga" >{{tipocarga.nombre_tipocarga}}</option>
                       </select>
                       <div class="input-group-append">
-                        <input v-model="item.cantidad" @change="selector();" type="number" :disabled="ver" class="form-control" placeholder="Cantidad">
+                        <input v-model="item.cantidad"  type="number" :disabled="ver" class="form-control" placeholder="Cantidad">
                       </div>
                     </div>
                  </div>
-                 <div class="col-7 row card  border-0 " v-if="form.escala==='' || form.escala==='Porcientos'">
+                 <div class="col-7 row card  border-0 " v-if="item.escala==='' || item.escala==='Porcientos'">
                    <label class="links lead">Volumen</label>
                    <div class="col-12 row p-2">
                      <div class="col-3">
@@ -387,7 +425,7 @@
                      </div>
                    </div>
                  </div>
-                 <div class="col-7 row card  border-0 " v-if="form.escala==='Metros'">
+                 <div class="col-7 row card  border-0 " v-if="item.escala==='Metros'">
                    <label class="links lead">Volumen</label>
                    <div class="col-12 row p-2">
                      <div class="col-3">
@@ -416,7 +454,7 @@
                      </div>
                    </div>
                  </div>
-                 <div class="col-7 row card  border-0 " v-if="form.escala==='Centímetros'">
+                 <div class="col-7 row card  border-0 " v-if="item.escala==='Centímetros'">
                    <label class="links lead">Volumen</label>
                    <div class="col-12 row p-2">
                      <div class="col-3">
@@ -451,7 +489,7 @@
                      <div class="col-5">
                     <label class="links">KILOS BASC</label>
                        <div class="input-group">
-                         <input  v-model="item.kilosbascula" @change="kilos()" type="number" class="form-control" placeholder="">
+                         <input  v-model="item.kilosbascula" @change="kilos()" type="number" class="form-control" placeholder="" :disabled="ver||item.criterio==='Unidad'">
                        </div>
                      </div>
                      <div class="col-6">
@@ -461,9 +499,10 @@
                        </div>
                      </div>
                      <div class="col-1 " style="margin-top:39px;">
-                        <button v-if="form.escala==='Metros'" class="btn btn-success float-left" type="button" @click="metros()" name="button"><span class="mbri-play"></span></button>
-                        <button v-if="form.escala==='Centímetros'" class="btn btn-success float-left" type="button" @click="centimetros()" name="button"><span class="mbri-play"></span></button>
-                        <button v-if="form.escala==='Porcientos'" class="btn btn-success float-left" type="button" @click="porcientos()" name="button"><span class="mbri-play"></span></button>
+                       <button v-if="item.criterio==='Unidad'" class="btn btn-success float-left" type="button" @click="unidad()" name="button"><span class="mbri-play"></span>u</button>
+                       <button v-if="item.escala==='Metros'&& item.criterio==='Kilos'" class="btn btn-success float-left" type="button" @click="metros()" name="button"><span class="mbri-play"></span>m</button>
+                       <button v-if="item.escala==='Centímetros' && item.criterio==='Kilos'" class="btn btn-success float-left" type="button" @click="centimetros()" name="button"><span class="mbri-play"></span>c</button>
+                       <button v-if="item.escala==='Porcientos' && item.criterio==='Kilos'" class="btn btn-success float-left" type="button" @click="porcientos()" name="button"><span class="mbri-play"></span>p</button>
                      </div>
                    </div>
                  </div>
@@ -487,14 +526,26 @@
 
                  </div>
               </div>
-              <div class="row" v-if="item.precioItem>0" v-if="form.id_tarifa">
-                <div class="col-3" v-if="item.volumen>item.kilostotal">
+              <div class="row" v-if="item.precioItem>0" >
+                <div class="col-3" v-if="item.volumen>item.kilostotal && item.criterio==='Kilos'">
                   <div class="form-group">
                    <label for="inputlg">Volumen</label>
                    <input v-model="item.volumen" class="form-control input-lg" id="inputlg" type="text" disabled>
                  </div>
                 </div>
-                <div class="col-3" v-if="item.volumen<item.kilostotal||item.volumen==item.kilostotal">
+                <div class="col-3" v-if="item.volumen<item.kilostotal||item.volumen==item.kilostotal && item.criterio==='Kilos'">
+                  <div class="form-group">
+                   <label for="inputlg">Kilos</label>
+                   <input v-model="item.kilostotal" class="form-control input-lg" id="inputlg" type="text" disabled>
+                 </div>
+                </div>
+                <div class="col-3" v-if="item.criterio==='Unidad'">
+                  <div class="form-group">
+                   <label for="inputlg">Cantidad</label>
+                   <input v-model="item.cantidad" class="form-control input-lg" id="inputlg" type="text" disabled>
+                 </div>
+                </div>
+                <div class="col-3" v-if="item.cantidad==='Kilos'">
                   <div class="form-group">
                    <label for="inputlg">Kilos</label>
                    <input v-model="item.kilostotal" class="form-control input-lg" id="inputlg" type="text" disabled>
@@ -506,7 +557,7 @@
                 <div class="col-3">
                   <div class="form-group">
                    <label for="inputlg">PRECIO</label>
-                   <input v-model="form.precioItem" class="form-control input-lg" id="inputlg" type="text" disabled>
+                   <input v-model="item.precio" class="form-control input-lg" id="inputlg" type="text" disabled>
                  </div>
                 </div>
                 <div class="col-1" style="padding-top:38px;">
@@ -519,16 +570,26 @@
                  </div>
                 </div>
               </div>
-
-
               <button
-              v-if="form.id_tarifa && form.escala && !corregirMode && item.kilostotal && item.volumen  && item.precioItem || form.id_tarifa && form.escala==='Porcientos' && form.formula && form.variable && !corregirMode && item.kilostotal && item.precioItem"
+              v-if="item.criterio==='Unidad' && item.precioItem && !corregirMode"
                type="button" class="btn btn-success btn-lg btn-block my-2" @click="pushearItem()">Agregar <span class="mbri-save"></span></button>
                <button
-               v-if="form.id_tarifa  && form.escala && corregirMode && item.precioItem  || form.id_tarifa && form.escala==='Porcientos' && form.formula && form.variable && !corregirMode && item.kilostotal && item.precioItem && corregirMode"
+               v-if="item.criterio==='Unidad'  && item.precioItem && corregirMode"
                 type="button" class="btn btn-success btn-lg btn-block my-2" @click="editarItem()">Editar <span class="mbri-save"></span></button>
-                <table class="table table-striped table-bordered table condensed table-hover  "v-if="form.id_tarifa">
+              <button
+              v-if="item.id_tarifa && item.escala && !corregirMode && item.kilostotal && item.volumen  && item.precioItem || item.id_tarifa && item.escala==='Porcientos' && item.formula && item.variable && !corregirMode && item.kilostotal && item.precioItem"
+               type="button" class="btn btn-success btn-lg btn-block my-2" @click="pushearItem()">Agregar <span class="mbri-save"></span></button>
+               <button
+               v-if="item.criterio==='Kilos' && item.id_tarifa  && item.escala && corregirMode && item.precioItem  || item.criterio==='Kilos' && item.id_tarifa && item.escala==='Porcientos' && item.formula && item.variable && !corregirMode && item.kilostotal && item.precioItem && corregirMode"
+                type="button" class="btn btn-success btn-lg btn-block my-2" @click="editarItem()">Editar <span class="mbri-save"></span></button>
+                <table class="table table-striped table-bordered table condensed table-hover  ">
+
                   <thead>
+                    <tr>
+                      <th scope="col" colspan="6" class="border-0 bg-danger  text-center">
+                          <div class="bg-danger rounded-pill px-4  text-uppercase font-weight-bold links text-white">Items Liquidados <i class="fa fa-calculator" aria-hidden="true"></i></div>
+                      </th>
+                    </tr>
                     <tr>
 
                       <th style="white-space: nowrap;">TIPO DE CARGA</th>
@@ -562,7 +623,7 @@
                     </tr>
                   </tbody>
                 </table>
-                <div class="col-12 row card  border-0 " v-if="form.id_tarifa">
+                <div class="col-12 row card  border-0 " >
                   <div class="col-12 row p-2">
                     <div class="col-3">
                    <label class="links">SUMATORIA DE VOLUMEN</label>
@@ -646,7 +707,11 @@
            'facturas':true,
          },
          cargos:[],
+         costeguia:[],
+         tiposenvios:[],
+         transportes:[],
          items:[],
+         segurocarga:[],
          factores:[],
          tarifas:[],
          tipocarga:[],
@@ -718,6 +783,7 @@
            'kilosbascula':'',
            'kilostotal':'',
            'precioItem':'',
+           'criterio':'',
          },
        },
        methods: {
@@ -971,6 +1037,19 @@
                  }
                })
              },
+             unidad(){
+               this.item.volumen=0;
+               this.item.precioItem=0;
+               this.item.kilostotal=0;
+               this.item.al="";
+               this.item.la="";
+               this.item.an="";
+               this.item.kilostotal=0;
+               if (this.item.criterio==='Unidad') {
+                   this.item.precioItem=this.item.cantidad*parseFloat(this.item.precio);
+
+               }
+             },
            generar(){
              for (var i = 0; i < this.liquidaciones.length; i++) {
                if (this.liquidaciones[i].id==this.id) {
@@ -1170,13 +1249,13 @@
              this.form.ciudad_destino="",
              this.form.tipo_carga="",
              this.form.itinerarios="",
-             this.form.precio="",
-             this.form.precioItem="",
-             this.form.escala="",
-             this.form.formula="",
-             this.form.variable="",
-             this.form.factor="",
-             this.form.id_tarifa="",
+             this.item.precio="",
+             this.item.precioItem="",
+             this.item.escala="",
+             this.item.formula="",
+             this.item.variable="",
+             this.item.factor="",
+             this.item.id_tarifa="",
              this.form.totalVolumen="",
              this.form.totalKilos="",
              this.form.totalPrecios="",
@@ -1204,17 +1283,21 @@
                if (result.value) {
                  this.form.items.splice(this.item.llave, 1);
                  this.form.items.push({
-                    tipo_carga:this.item.tipo_carga,
-                    an:this.item.an,
-                    al:this.item.al,
-                    la:this.item.la,
-                    cantidad:this.item.cantidad,
-                    kilosbascula:this.item.kilosbascula,
-                    kilostotal:this.item.kilostotal,
-                    volumen:this.item.volumen,
-                    kilostotal:this.item.kilostotal,
-                    tipocarga:this.item.tipocarga,
-                    precioItem:this.item.precioItem,
+                   tipo_carga:this.item.tipo_carga,
+                   an:this.item.an,
+                   al:this.item.al,
+                   la:this.item.la,
+                   cantidad:this.item.cantidad,
+                   kilosbascula:this.item.kilosbascula,
+                   kilostotal:this.item.kilostotal,
+                   volumen:this.item.volumen,
+                   kilostotal:this.item.kilostotal,
+                   tipocarga:this.item.tipocarga,
+                   precio:this.item.precio,
+                   precioItem:this.item.precioItem,
+                   id_tarifa:this.item.id_tarifa,
+                   cirterio:this.item.criterio,
+                   factor:this.item.factor,
                   });
                   this.sumar();
                   this.item.precio="";
@@ -1231,6 +1314,9 @@
                   this.item.kilostotal="";
                   this.item.tipocarga="";
                   this.item.precioItem="";
+                  this.item.id_tarifa="";
+                  this.item.tipo_transporte="";
+                  this.item.tipo_envio="";
                } else if (
                  result.dismiss === Swal.DismissReason.cancel
                ) {
@@ -1244,11 +1330,13 @@
            },
            corregir(index){
              this.item.tipocarga=this.form.items[index].tipocarga;
+             this.item.factor=this.form.items[index].factor;
              this.item.llave=index;
              this.item.precio=this.form.items[index].precio;
              this.item.an=this.form.items[index].an;
              this.item.al=this.form.items[index].al;
              this.item.la=this.form.items[index].la;
+              this.item.cirterio=this.form.items[index].cirterio;
              this.item.cantidad=this.form.items[index].cantidad;
              this.item.kilosbascula=this.form.items[index].kilosbascula;
              this.item.kilostotal=this.form.items[index].kilostotal;
@@ -1257,13 +1345,14 @@
              this.item.tipocarga=this.form.items[index].tipocarga;
              this.item.precioItem=this.form.items[index].precioItem;
              this.selector();
+              this.facto();
            },
            crearplanilla(index){
-             this.form.id_tarifa=this.items[index].id_tarifa;
-             this.form.tipocarga=this.items[index].tipocarga;
-             this.form.escala=this.items[index].escala;
-             this.form.factor=this.items[index].factor;
-             this.form.variable=this.items[index].variable;
+             this.item.id_tarifa=this.items[index].id_tarifa;
+             this.item.tipocarga=this.items[index].tipocarga;
+             this.item.escala=this.items[index].escala;
+             this.item.factor=this.items[index].factor;
+             this.item.variable=this.items[index].variable;
              this.form.costeguia=this.items[index].costeguia;
              this.form.segurocarga=this.items[index].segurocarga;
              this.tari();
@@ -1271,9 +1360,9 @@
              this.form.tipo_transporte=this.items[index].tipo_transporte;
              this.form.tipo_envio=this.items[index].tipo_envio;
              this.item.llave=index;
-             this.form.precio=this.items[index].precio;
-             this.form.precioItem=this.items[index].precio;
-             this.selector();
+             this.item.precio=this.items[index].precio;
+  
+
            },
                pushearItem(index){
                  Swal({
@@ -1296,7 +1385,11 @@
                         volumen:this.item.volumen,
                         kilostotal:this.item.kilostotal,
                         tipocarga:this.item.tipocarga,
+                        precio:this.item.precio,
                         precioItem:this.item.precioItem,
+                        id_tarifa:this.item.id_tarifa,
+                        cirterio:this.item.criterio,
+                        factor:this.item.factor,
                       });
                       this.sumar();
                       this.item.precio="";
@@ -1311,6 +1404,11 @@
                       this.item.kilostotal="";
                       this.item.tipocarga="";
                       this.item.precioItem="";
+                      this.item.factor="";
+                      this.item.escala="";
+                      this.item.id_tarifa="";
+                      this.item.tipo_transporte="";
+                      this.item.tipo_envio="";
                    } else if (
                      result.dismiss === Swal.DismissReason.cancel
                    ) {
@@ -1345,6 +1443,18 @@
                    }
                  })
                },
+               async loadtiposenvios() {
+                 await   axios.get('index.php/TiposEnvios/gettiposenvios/')
+                    .then(({data: {tiposenvios}}) => {
+                      this.tiposenvios = tiposenvios
+                    });
+                  },
+            async loadtransportes() {
+               await   axios.get('index.php/Transporte/gettransportes/')
+                  .then(({data: {transportes}}) => {
+                    this.transportes = transportes
+                  });
+                },
                selector(){
                  if (this.item.escala==="Centímetros") {
                    this.centimetros();
@@ -1362,18 +1472,19 @@
             metros(){
               this.item.volumen=0;
               this.item.precioItem=0;
-              this.item.volumen=parseFloat(this.item.an) * parseFloat(this.item.la) * parseFloat(this.item.al) * parseInt(this.form.variable) * parseInt(this.item.cantidad);
+              this.item.volumen=parseFloat(this.item.an) * parseFloat(this.item.la) * parseFloat(this.item.al) * parseInt(this.item.variable) * parseInt(this.item.cantidad);
+              this.item.volumen=this.item.volumen.toFixed(2);
               if (this.item.escala==='Porcientos') {
-                  this.item.precioItem=this.item.kilostotal*parseFloat(this.form.precioItem);
+                  this.item.precioItem=this.item.kilostotal*parseFloat(this.item.precioItem);
               }else{
                 if (this.item.volumen>this.item.kilostotal) {
                   console.log("volumen");
-                  this.item.precioItem=this.item.volumen*this.form.precioItem;
+                  this.item.precioItem=this.item.volumen*this.item.precio;
                 }else if(this.item.volumen<this.item.kilostotal){
                   console.log("kilos");
-                  this.item.precioItem=this.item.kilostotal*this.form.precioItem;
+                  this.item.precioItem=this.item.kilostotal*this.item.precio;
                 }else if(this.item.volumen==this.item.kilostotal){
-                  this.item.precioItem=this.item.kilostotal*this.form.precioItem;
+                  this.item.precioItem=this.item.kilostotal*this.item.precio;
                 }
               }
 
@@ -1382,16 +1493,17 @@
               console.log("metros");
               this.item.volumen=0;
               this.item.precioItem=0;
-              this.item.volumen=((parseFloat(this.item.an) * parseFloat(this.item.la) * parseFloat(this.item.al) )/ parseFloat(this.form.variable) )* parseFloat(this.item.cantidad);
+              this.item.volumen=((parseFloat(this.item.an) * parseFloat(this.item.la) * parseFloat(this.item.al) )/ parseFloat(this.item.variable) )* parseFloat(this.item.cantidad);
+              this.item.volumen=this.item.volumen.toFixed(2);
               if (this.item.escala==='Porcientos') {
-                  this.item.precioItem=this.item.kilostotal*parseFloat(this.form.precioItem);
+                  this.item.precioItem=this.item.kilostotal*parseFloat(this.item.precioItem);
               }else{
                 if (this.item.volumen>this.item.kilostotal) {
-                  this.item.precioItem=this.item.volumen*this.form.precioItem;
+                  this.item.precioItem=this.item.volumen*this.item.precio;
                 }else if(this.item.volumen<this.item.kilostotal){
-                  this.item.precioItem=this.item.kilostotal*this.form.precioItem;
+                  this.item.precioItem=this.item.kilostotal*this.item.precio;
                 }else if(this.item.volumen==this.item.kilostotal){
-                  this.item.precioItem=this.item.kilostotal*this.form.precioItem;
+                  this.item.precioItem=this.item.kilostotal*this.item.precio;
                 }
               }
             },
@@ -1402,22 +1514,22 @@
               this.item.al="";
               this.item.la="";
               this.item.an="";
-              this.item.kilostotal=(parseFloat(this.item.kilosbascula)+(parseFloat(this.item.kilosbascula)*((parseFloat(this.form.variable) )/ 100)))*parseInt(this.item.cantidad);
+              this.item.kilostotal=(parseFloat(this.item.kilosbascula)+(parseFloat(this.item.kilosbascula)*((parseFloat(this.item.variable) )/ 100)))*parseInt(this.item.cantidad);
               if (this.item.escala==='Porcientos') {
-                  this.item.precioItem=this.item.kilostotal*parseFloat(this.form.precioItem);
+                  this.item.precioItem=this.item.kilostotal*parseFloat(this.item.precioItem);
               }else{
                 if (this.item.volumen>this.item.kilostotal) {
-                  this.item.precioItem=this.item.volumen*this.form.precioItem;
+                  this.item.precioItem=this.item.volumen*this.item.precio;
                 }else if(this.item.volumen<this.item.kilostotal){
-                  this.item.precioItem=this.item.kilostotal*this.form.precioItem;
+                  this.item.precioItem=this.item.kilostotal*this.item.precio;
                 }else if(this.item.volumen==this.item.kilostotal){
-                  this.item.precioItem=this.item.kilostotal*this.form.precioItem;
+                  this.item.precioItem=this.item.kilostotal*this.item.precio;
                 }
               }
             },
             tari(){
               for (var i = 0; i < this.tarifas.length; i++) {
-                if (this.tarifas[i].id===this.form.id_tarifa) {
+                if (this.tarifas[i].id===this.item.id_tarifa) {
                   this.form.departamento_origen=this.tarifas[i].departamento_origen;
                   this.form.departamento_destino=this.tarifas[i].departamento_destino;
                   this.form.ciudad_origen=this.tarifas[i].ciudad_origen;
@@ -1425,19 +1537,28 @@
                    this.form.tipo_carga=this.tarifas[i].tipo_carga;
                    this.form.itinerarios=this.tarifas[i].itinerarios;
                    this.form.tiempos=this.tarifas[i].tiempos;
-                   this.form.precio=this.tarifas[i].precio;
+                   this.item.precio=this.tarifas[i].precio;
+                   this.item.criterio=this.tarifas[i].criterio;
+                   console.log(this.tarifas[i].criterio);
                 }
               }
             },
             facto(){
-              for (var i = 0; i < this.factores.length; i++) {
-                if (this.factores[i].id===this.form.factor) {
-                  this.form.escala=this.factores[i].escala;
-                  this.form.formula=this.factores[i].formula;
-                  this.form.variable=this.factores[i].variable;
-                  this.selector();
+              if (this.item.criterio==='Unidad') {
+                this.item.escala="";
+                this.item.formula="";
+                this.item.variable="";
+                 this.item.factor="";
+              }else{
+                for (var i = 0; i < this.factores.length; i++) {
+                  if (this.factores[i].id===this.item.factor) {
+                    this.item.escala=this.factores[i].escala;
+                    this.item.formula=this.factores[i].formula;
+                    this.item.variable=this.factores[i].variable;
+                     this.item.factor=this.item.factor;
+                  }
                 }
-              }
+ }
             },
                  setear(index){
                    this.form.id=this.liquidaciones[index].id,
@@ -1453,13 +1574,13 @@
                    this.form.ciudad_destino=this.liquidaciones[index].ciudad_destino,
                    this.form.tipo_carga=this.liquidaciones[index].tipo_carga,
                    this.form.itinerarios=this.liquidaciones[index].itinerarios,
-                   this.form.precio=this.liquidaciones[index].precio,
-                   this.form.precioItem=this.liquidaciones[index].precio,
+                   this.item.precio=this.liquidaciones[index].precio,
+                   this.item.precioItem=this.liquidaciones[index].precio,
                    this.form.escala=this.liquidaciones[index].escala,
                    this.form.formula=this.liquidaciones[index].formula,
                    this.form.variable=this.liquidaciones[index].variable,
                    this.form.factor=this.liquidaciones[index].factor,
-                   this.form.id_tarifa=this.liquidaciones[index].id_tarifa,
+                   this.item.id_tarifa=this.liquidaciones[index].id_tarifa,
                    this.form.totalVolumen=this.liquidaciones[index].totalVolumen,
                    this.form.totalKilos=this.liquidaciones[index].totalKilos,
                    this.form.totalPrecios=this.liquidaciones[index].totalPrecios,
@@ -1514,6 +1635,13 @@
                  });
                   $("#example1").DataTable();
                },
+               async loadcosteguia() {
+              await   axios.get('index.php/CosteGuia/getcosteguia/')
+                 .then(({data: {costeguia}}) => {
+                   this.costeguia = costeguia
+                 });
+
+               },
              async loadfactores() {
                await   axios.get('index.php/Factores/getfactores/')
                   .then(({data: {factores}}) => {
@@ -1527,6 +1655,13 @@
                         this.tipocarga = tipocarga
                       });
                     },
+                    async loadsegurocarga() {
+                      await   axios.get('index.php/SeguroCarga/getsegurocarga/')
+                         .then(({data: {segurocarga}}) => {
+                           this.segurocarga = segurocarga
+                         });
+
+                       },
                     async loadCart() {
                         await  axios.get('index.php/User/get_profile/')
                          .then(({data: {profiles}}) => {
@@ -1542,6 +1677,10 @@
        },
 
        created(){
+            this.loadcosteguia();
+            this.loadsegurocarga();
+            this.loadtransportes();
+            this.loadtiposenvios();
             this.loadfactores();
             this.loadtipocarga();
             this.loadclientes();

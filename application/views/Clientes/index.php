@@ -52,7 +52,7 @@
         <div class="row">
           <div class="col-md-4">
 
-          <a href="<?=base_url()?>Orders_admin">
+          <a href="#">
             <div class="card-counter info p-2 zoom" style="opacity:0.9">
               <span class=" fa mbri-users" style="font-size:5em;opacity:0.6"></span>
               <span class="count-numbers">{{parseInt(activos)+parseInt(inactivos)}}</span>
@@ -63,7 +63,7 @@
 
           <div class="col-md-4">
 
-          <a href="<?=base_url()?>Orders_admin">
+          <a href="#">
             <div class="card-counter success p-2 zoom" style="opacity:0.9">
               <span class=" fa mbri-users" style="font-size:5em;opacity:0.6"></span>
               <span class="count-numbers">{{activos}}</span>
@@ -74,7 +74,7 @@
 
           <div class="col-md-4">
 
-            <a href="<?=base_url()?>Shipping">
+            <a href="#">
             <div class="card-counter danger p-2 zoom" style="opacity:0.9;background-color:#red!important">
               <span class="mbri-users" style="font-size:5em;opacity:0.6"></span>
               <span class="count-numbers">{{inactivos}}</span>
