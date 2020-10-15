@@ -6,8 +6,8 @@ class CosteGuia extends MY_Controller {
 		$this->load->model('costeguia_model', 'costeguia');
 	  }
     public function index() {
-			if( ! $this->verify_min_level(1)){
-				redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
+			if( ! $this->verify_min_level(6)){
+				redirect (base_url());
 			}
      		$this->is_logged_in();
         $this->load->view('header',["css"=>[""]]);
@@ -24,8 +24,8 @@ class CosteGuia extends MY_Controller {
 				}
 
 			public function insertar() {
-				if( ! $this->verify_min_level(1)){
-					redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
+				if( ! $this->verify_min_level(6)){
+					redirect (base_url());
 				}
 				$data = json_decode($this->input->post('service_form'),true);
 				$result = $this->costeguia->insertar($data);
@@ -37,8 +37,8 @@ class CosteGuia extends MY_Controller {
 					}
 				}
 			public function editar() {
-				if( ! $this->verify_min_level(1)){
-					redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
+				if( ! $this->verify_min_level(6)){
+					redirect (base_url());
 				}
 			    $data = json_decode($this->input->post('service_form'),true);
 				$result = $this->costeguia->editar($data);
@@ -50,8 +50,8 @@ class CosteGuia extends MY_Controller {
 					}
 				}
 			public function eliminar() {
-				if( ! $this->verify_min_level(1)){
-					redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
+				if( ! $this->verify_min_level(6)){
+					redirect (base_url());
 				}
 	            $id = $this->input->post('id');
 	            $result = $this->costeguia->deletecosteguia($id);

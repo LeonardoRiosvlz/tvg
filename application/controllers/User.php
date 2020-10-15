@@ -8,7 +8,7 @@ class User extends MY_Controller{
       //$this->force_ssl();
       $this->load->model('User_model', 'user');
       if( ! $this->verify_min_level(1)){
-          redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
+          redirect (base_url());
         }
       // Form and URL helpers always loaded (just for convenience)
       $this->load->helper('url');

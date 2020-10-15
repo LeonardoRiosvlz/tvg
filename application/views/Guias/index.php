@@ -30,7 +30,7 @@
             </tr>
             <tr>
               <th scope="col" colspan="5" class="border-0 bg-white  text-center">
-                <button type="button" @click="resete();ver=false" class="btn btn-block btn-light btn-sm links" >Agregar <span class="mbri-plus"></span></button>
+                <button type="button" v-if="permiso"  @click="resete();ver=false" class="btn btn-block btn-light btn-sm links" >Agregar <span class="mbri-plus"></span></button>
               </th>
             </tr>
           </thead>
@@ -138,7 +138,7 @@
                 <option value="Creada">Creada</option>
                 <option value="Enviada">Enviada</option>
                 <option value="Cumplida">Cumplida</option>
-                <option value="Creada">En Físico</option>
+                <option value="En Físico">En Físico</option>
                 <option value="Archivada">Archivada</option>
                 <option value="Anulada">Anulada</option>
               </select>
@@ -160,25 +160,25 @@
           <table id="example1" class="table ">
             <thead>
             <tr>
-              <th class="links">Nº Guía</th>
-              <th class="links">Cliente</th>
-              <th class="links">ORIGEN</th>
-              <th class="links">DESTINO</th>
-              <th class="links">ESTADO</th>
-              <th class="links">REMITENTE</th>
-              <th class="links">DESCARGAR</th>
-              <th class="links">Action</th>
+              <th style="white-space: nowrap;" class="links">Nº Guía</th>
+              <th style="white-space: nowrap;"  class="links">Cliente</th>
+              <th  style="white-space: nowrap;"  class="links">ORIGEN</th>
+              <th  style="white-space: nowrap;" class="links">DESTINO</th>
+              <th style="white-space: nowrap;" class="links">ESTADO</th>
+              <th style="white-space: nowrap;" class="links">REMITENTE</th>
+              <th style="white-space: nowrap;" class="links">DESCARGAR</th>
+              <th style="white-space: nowrap;" class="links">Action</th>
             </tr>
             </thead>
               <tr v-for="(guias,index) in guias">
-                <td class="links">N-{{guias.id}}</td>
-                <td v-if="guias.nombre_empresa==='No aplica'" class="links">{{guias.nombre_cliente}}</td>
-                <td v-else class="links">{{guias.nombre_empresa}}</td>
-                <td class="links">{{guias.ciudad_origen}}</td>
-                <td class="links">{{guias.ciudad_destino}}</td>
-                <td class="links">{{guias.estado}}</td>
-                <td class="links">{{guias.contacto_remitente}}</td>
-                <td class="links"><a :href="'<?=base_url()?>Guias/Guia_to_pdf/'+guias.id"  download>Descargar PDF</a></td>
+                <td style="white-space: nowrap;"  class="links">N-{{guias.id}}</td>
+                <td style="white-space: nowrap;"  v-if="guias.nombre_empresa==='No aplica'" class="links">{{guias.nombre_cliente}}</td>
+                <td style="white-space: nowrap;"  v-else class="links">{{guias.nombre_empresa}}</td>
+                <td style="white-space: nowrap;"  class="links">{{guias.ciudad_origen}}</td>
+                <td style="white-space: nowrap;"  class="links">{{guias.ciudad_destino}}</td>
+                <td style="white-space: nowrap;"  class="links">{{guias.estado}}</td>
+                <td style="white-space: nowrap;"  class="links">{{guias.contacto_remitente}}</td>
+                <td  style="white-space: nowrap;"  class="links"><a :href="'<?=base_url()?>Guias/Guia_to_pdf/'+guias.id"  download>Descargar PDF</a></td>
 
                   <td>
                     <div class="btn-group">
@@ -186,14 +186,18 @@
                         <button type="button" class="btn btn-default dropdown-toggle dropdown-icon" data-toggle="dropdown">
                           <span class="sr-only">Toggle Dropdown</span>
                           <div class="dropdown-menu" role="menu">
-                            <a class="dropdown-item" href="#"@click="setear(index);ver=true">Ver</a>
-                            <a class="dropdown-item" href="#" @click="setear(index)">Duplicar</a>
-                            <a class="dropdown-item" v-show="guias.estado==='En físico'" href="#" @click="archivada(index)">Agregar a factura</a>
-                            <a class="dropdown-item" href="#" @click="anularguias(index)">Anular</a>
-                            <a class="dropdown-item"  href="#" @click="enviarguias(index)">Enviar Guía</a>
-                            <a class="dropdown-item" v-show="guias.estado==='Enviada'" href="#" @click="setearCumplida(index)">Cimplidas</a>
-                            <a class="dropdown-item" href="#" @click="enfisico(index)">En Físico</a>
-                            <a class="dropdown-item" href="#" @click="archivada(index)">Archivada</a>
+                            <a class="dropdown-item"  href="#"@click="setear(index);ver=true">Ver</a>
+                            <a class="dropdown-item" href="#"@click="loadTrazabilidad(index)">Trazabilidad</a>
+                            <a class="dropdown-item" v-if="permiso" href="#" @click="setear(index)">Duplicar</a>
+                            <?php if ( $this->auth_role == 'manager' || $this->auth_role == 'admin'): ?>
+                              <a class="dropdown-item" v-if="permiso" v-show="guias.estado==='En físico'" href="#" @click="archivada(index)">Agregar a factura</a>
+                            <?php endif; ?>
+                            <a class="dropdown-item" v-if="permiso" href="#" @click="anularguias(index)">Anular</a>
+                            <a class="dropdown-item" v-if="permiso"  href="#" @click="enviarguias(index)">Enviar Guía</a>
+                            <a class="dropdown-item" href="#" @click="notificarCliente(index)">Notificar llegada al cliente</a>
+                            <a class="dropdown-item"  v-show="guias.estado==='Enviada'&& permiso" href="#" @click="setearCumplida(index)">Carga Cumplida</a>
+                            <a class="dropdown-item" v-if="permiso" href="#" @click="enfisico(index)">En Físico</a>
+                            <a class="dropdown-item" v-if="permiso" href="#" @click="archivada(index)">Archivada</a>
                           </div>
                         </button>
                     </div>
@@ -204,6 +208,43 @@
       <!-- End -->
     </div>
   </div>
+
+
+  <!-- Modal -->
+  <div class="modal fade" id="trazabilidads" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog " role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Trazabilidad de carga N-{{cargaa}}</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-12 p-1">
+                <a v-if="guias.length>0" :href="'<?=base_url();?>Trazabilidad/excelexportn/'+cargaa" type="button"  class="btn btn-block btn-primary btn-sm links" >Exportar Excel <span class="mbri-save"></span></a>
+            </div>
+            <div class="col-12 p-1">
+                <a v-if="guias.length>0" :href="'<?=base_url();?>Trazabilidad/detalles?ref_pre=N&ref_guia='+cargaa" type="button"  class="btn btn-block btn-success btn-sm links" target="_blank" >Ver Detalles<span class="mbri-eye"></span></a>
+            </div>
+          </div>
+          <div v-for="traza in trazabilidades" class="tracking-item">
+             <div class="tracking-icon status-intransit">
+                <i class="fa fa-location-arrow" aria-hidden="true" style="font-size:15px;color:red;"></i>
+             </div>
+             <div class="tracking-date">{{traza.fecha_despacho}}<span>{{traza.hora}}</span></div>
+             <div class="tracking-content">{{traza.tipo_reporte}} <span>{{traza.ciudad_sat}}</span></div>
+             <div v-if="traza.id_proveedor" class="tracking-content">{{traza.nombre_proveedor}} <span>Nº Guia Proveedor: {{traza.guia_proveedor}}</span></div>
+          </div>
+        </div>
+        <div class="modal-footer">
+
+        </div>
+      </div>
+    </div>
+  </div>
+
 
   <!-- Modal -->
   <div class="modal fade" id="cumplidas"  role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -286,14 +327,14 @@
 
                    <?php if ($this->auth_role == 'customer'): ?>
                      <label class="links">PLANILLAS</label>
-                      <input list="encodingss" v-model="form.id_planilla" @keyup="loadLiquidacion()"  value="" class="form-control form-control-lg" placeholder="Escriba una cedula" :disabled="!form.cedula">
+                      <input list="encodingss" v-model="form.id_planilla" @keyup="loadLiquidacion()"  value="" class="form-control form-control-lg" placeholder="Escriba una cedula" :disabled="ver||!form.cedula">
                         <datalist id="encodingss">
                            <option v-for="liquidaciones in liquidaciones" v-if="liquidaciones.estado==='Generado' && liquidaciones.user_id==='<?=$auth_user_id;?>'" :value="liquidaciones.id">{{liquidaciones.id}}</option>
                       </datalist>
                    <?php endif; ?>
                    <?php if ( $this->auth_role == 'manager' || $this->auth_role == 'admin'): ?>
                      <label class="links">PLANILLAS</label>
-                      <input list="encodingss" v-model="form.id_planilla" @keyup="loadLiquidacion()"  value="" class="form-control form-control-lg" placeholder="Escriba una cedula" :disabled="!form.cedula">
+                      <input list="encodingss" v-model="form.id_planilla" @keyup="loadLiquidacion()"  value="" class="form-control form-control-lg" placeholder="Escriba una cedula" :disabled="ver||!form.cedula">
                         <datalist id="encodingss">
                            <option v-for="liquidaciones in liquidaciones" v-if="liquidaciones.estado==='Generado'" :value="liquidaciones.id">PLN-{{liquidaciones.id}}</option>
                       </datalist>
@@ -304,24 +345,24 @@
                <div class="row pr-4 pl-4">
                  <div class="form-group col-4">
                    <label class="links">Empresa</label>
-                    <input type="text" v-model="form.nombre_empresa" v-validate="'required'" name="nombre_empresa" class="form-control" id="" >
+                    <input type="text" v-model="form.nombre_empresa" v-validate="'required'" name="nombre_empresa" class="form-control" id="" :disabled="ver">
                    <p class="text-danger my-1 small" v-if="(errors.first('nombre_empresa'))" >  Este dato es requerido  </p>
                  </div>
                  <div class="form-group col-4">
                    <label class="links">Dirección empresa</label>
-                    <input type="text" v-model="form.direccion_cliente" v-validate="'required'" name="direccion_cliente" class="form-control" id="" >
+                    <input type="text" v-model="form.direccion_cliente" v-validate="'required'" name="direccion_cliente" class="form-control" id="" :disabled="ver">
                    <p class="text-danger my-1 small" v-if="(errors.first('direccion_cliente'))" >  Este dato es requerido  </p>
                  </div>
                  <div class="form-group col-4">
                    <label class="links">Teléfono</label>
-                    <input type="text" v-model="form.telefono_cliente" v-validate="'required'" name="telefono_cliente" class="form-control" id="" >
+                    <input type="text" v-model="form.telefono_cliente" v-validate="'required'" name="telefono_cliente" class="form-control" id="" :disabled="ver">
                    <p class="text-danger my-1 small" v-if="(errors.first('telefono_cliente'))" >  Este dato es requerido  </p>
                  </div>
                </div>
                <nav>
                   <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                    <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" @click="modeTarifa=false" aria-controls="nav-home" aria-selected="true">Planilla PLN-{{form.id_planilla}}</a>
-                    <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" @click="modeTarifa=true;form.id_tarifa=''" aria-controls="nav-profile" aria-selected="false">Tarifa</a>
+                    <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" @click="modeTarifa=false" aria-controls="nav-home" aria-selected="true" :disabled="ver">Planilla</a>
+                    <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" @click="modeTarifa=true;form.id_tarifa=''" aria-controls="nav-profile" aria-selected="false" :disabled="ver">Tarifa</a>
                   </div>
                 </nav>
                 <div class="tab-content" id="nav-tabContent">
@@ -329,35 +370,39 @@
                     <div class="row pr-4 pl-4">
                       <div class="form-group col-3">
                         <label class="links">Transporte</label>
-                         <input type="text" v-model="form.tipo_transporte" v-validate="'required'" name="tipo_transporte" class="form-control" id="" >
+                         <input type="text" v-model="form.tipo_transporte" v-validate="'required'" name="tipo_transporte" class="form-control" id="":disabled="ver" >
                         <p class="text-danger my-1 small" v-if="(errors.first('tipo_transporte'))" >  Este dato es requerido  </p>
                       </div>
                       <div class="form-group col-3">
                         <label class="links">Tipo de envío</label>
-                         <input type="text" v-model="form.tipo_envio" v-validate="'required'" name="tipo_envio" class="form-control" id="" >
+                         <input type="text" v-model="form.tipo_envio" v-validate="'required'" name="tipo_envio" class="form-control" id="" :disabled="ver">
                         <p class="text-danger my-1 small" v-if="(errors.first('tipo_envio'))" >  Este dato es requerido  </p>
                       </div>
                       <div class="form-group col-3">
                         <label class="links">Origen</label>
-                         <input type="text" v-model="form.ciudad_origen" v-validate="'required'" name="ciudad_origen" class="form-control" id="" >
+                         <input type="text" v-model="form.ciudad_origen" v-validate="'required'" name="ciudad_origen" class="form-control" id="" :disabled="ver">
                         <p class="text-danger my-1 small" v-if="(errors.first('ciudad_origen'))" >  Este dato es requerido  </p>
                       </div>
                       <div class="form-group col-3">
                         <label class="links">Destino</label>
-                         <input type="text" v-model="form.ciudad_destino" v-validate="'required'" name="ciudad_destino" class="form-control" id="" >
+                         <input type="text" v-model="form.ciudad_destino" v-validate="'required'" name="ciudad_destino" class="form-control" id="" :disabled="ver">
                         <p class="text-danger my-1 small" v-if="(errors.first('ciudad_destino'))" >  Este dato es requerido  </p>
                       </div>
                       <div class="form-group col-3">
                         <label class="links">Itinerarios</label>
-                         <input type="text" v-model="form.itinerarios" v-validate="'required'" name="itinerarios" class="form-control" id="" >
+                         <input type="text" v-model="form.itinerarios" v-validate="'required'" name="itinerarios" class="form-control" id="" :disabled="ver">
                         <p class="text-danger my-1 small" v-if="(errors.first('itinerarios'))" >  Este dato es requerido  </p>
                       </div>
                       <div class="form-group col-6">
                         <label class="links">Tiempos de envío</label>
-                         <input type="text" v-model="form.tiempos" v-validate="'required'" name="tiempos" class="form-control" id="" >
+                         <input type="text" v-model="form.tiempos" v-validate="'required'" name="tiempos" class="form-control" id="" :disabled="ver">
                         <p class="text-danger my-1 small" v-if="(errors.first('tiempos'))" >  Este dato es requerido  </p>
                       </div>
-
+                      <div class="form-group col-3" v-if="form.precioNegociado>0 && ver">
+                        <label class="links">Precio negociado</label>
+                         <input type="number" v-model="form.precioNegociado" v-validate="'required'" name="precioNegociado" class="form-control"  :disabled="!modeTarifa">
+                        <p class="text-danger my-1 small" v-if="(errors.first('precioNegociado'))" >  Este dato es requerido  </p>
+                      </div>
                     </div>
                 </div>
                   <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
@@ -383,8 +428,8 @@
                          </div>
                        </div>
                          <div class="col-sm-12">
-                             <label class="links">Origen-Destino</label>
-                             <input list="tarifas" v-model="form.id_tarifa" @change="tari()"  value="" class="form-control form-control-lg" placeholder="Escriba una ruta">
+                             <label class="links">Ruta de envío</label>
+                             <input list="tarifas" v-model="form.id_tarifa" @change="tari()"  value="" class="form-control form-control-lg" placeholder="Escriba una ruta" :disabled="ver">
                                <datalist id="tarifas">
                                    <option v-for="tarifas in tarifas" v-if="tarifas.tipo_envio===form.tipo_envio && tarifas.tipo_transporte===form.tipo_transporte"  :value="tarifas.id">De {{tarifas.ciudad_origen}} a {{tarifas.ciudad_destino}} Tiempo:{{tarifas.tiempos}}</option>
                                </datalist>
@@ -455,122 +500,121 @@
               </div>
           </div>
       </div>
-<div class="card col-12 pl-4 pr-4 border-0" >
-            </div>
-            <div class="row pr-4 pl-4 p-1 d-flex ">
-              <div class="col-md-4">
-                <label class="links">Remitente</label>
-                <input list="encoding" v-model="form.cedula_remitente" v-validate="'required'"  @keyup="form.contacto_remitente='';form.direccion_remitente='';form.telefono_remitente='';"   value="" class="form-control form-control-lg" placeholder="Escriba una cedula" :disabled="ver">
-                  <datalist id="encoding">
-                      <option v-for="remitentes in remitentes"  :value="remitentes.cedula_remitente" :disabled="ver">{{remitentes.contacto_remitente}}</option>
-                  </datalist>
-                    <p class="text-danger my-1 small" v-if="(errors.first('cedula_remitente'))" >  Este dato es requerido  </p>
-              </div>
-              <div class="col-md-4">
-                <button type="button" class="btn btn-primary btn-lg" @click="buscarRemitente()" style="margin-top:37px;">Buscar <span class="mbri-search"></span></button>
-              </div>
-            </div>
-            <div class="row pr-4 pl-4">
-              <div class="form-group col-4">
-                <label class="links">Empresa</label>
-                 <input type="text" v-model="form.contacto_remitente" v-validate="'required'" name="contacto_remitente" class="form-control" id="" >
-                <p class="text-danger my-1 small" v-if="(errors.first('contacto_remitente'))" >  Este dato es requerido  </p>
-              </div>
-              <div class="form-group col-4">
-                <label class="links">Dirección empresa</label>
-                 <input type="text" v-model="form.direccion_remitente" v-validate="'required'" name="direccion_remitente" class="form-control" id="" >
-                <p class="text-danger my-1 small" v-if="(errors.first('direccion_remitente'))" >  Este dato es requerido  </p>
-              </div>
-              <div class="form-group col-4">
-                <label class="links">Teléfono</label>
-                 <input type="text" v-model="form.telefono_remitente" v-validate="'required'" name="telefono_remitente" class="form-control" id="" >
-                <p class="text-danger my-1 small" v-if="(errors.first('telefono_remitente'))" >  Este dato es requerido  </p>
-              </div>
-              <div class="form-group col-4">
-                <label class="links">Piezas</label>
-                 <input type="number" v-model="form.cantidad" v-validate="'required'" name="cantidad" class="form-control"  >
-                <p class="text-danger my-1 small" v-if="(errors.first('cantidad'))" >  Este dato es requerido  </p>
-              </div>
-              <div class="form-group col-4">
-                <label class="links">Kilos</label>
-                 <input type="text" v-model="form.totalKilos" v-validate="'required'" name="totalKilos" class="form-control"  >
-                <p class="text-danger my-1 small" v-if="(errors.first('totalKilos'))" >  Este dato es requerido  </p>
-              </div>
-              <div class="form-group col-4">
-                <label class="links">Volumen</label>
-                 <input type="text" v-model="form.totalVolumen" v-validate="'required'" name="totalVolumen" class="form-control"  >
-                <p class="text-danger my-1 small" v-if="(errors.first('totalVolumen'))" >  Este dato es requerido  </p>
-              </div>
-              <div class="form-group col-4">
-                <label class="links">Valor declarado</label>
-                 <input type="text" @change="seg();sumar" v-model="form.valorDeclarado" v-validate="'required'" name="valorDeclarado" class="form-control"  >
-                <p class="text-danger my-1 small" v-if="(errors.first('valorDeclarado'))" >  Este dato es requerido  </p>
-              </div>
-              <div class="form-group col-4">
-                <div class="form-group">
-                 <label class="links">Seguro carga</label>
-                  <select class="form-control" @change="seg();sumar();" v-model="form.segurocarga" v-validate="'required'" name="segurocarga"  name="valorDeclarado" id="exampleFormControlSelect1" >
-                    <option></option>
-                    <option v-for="segurocarga in segurocarga" :value="segurocarga.porcentaje">{{segurocarga.porcentaje}} %</option>
-                  </select>
-                  <p class="text-danger my-1 small" v-if="(errors.first('segurocarga'))" >  Este dato es requerido  </p>
-                </div>
-              </div>
-              <div class="form-group col-4">
-                <label class="links">Valor seguro</label>
-                 <input type="text" @change="sumar()" v-model="form.totalSeguro" v-validate="'required'" name="totalSeguro" class="form-control"  >
-                <p class="text-danger my-1 small" v-if="(errors.first('totalSeguro'))" >  Este dato es requerido  </p>
-              </div>
-              <div class="form-group col-4">
-                <label class="links">Valuación</label>
-                <select class="form-control"  v-model="form.costeguia" v-validate="'required'" name="costeguia"  name="valorDeclarado" id="exampleFormControlSelect1" >
-                  <option></option>
-                  <option v-for="costeguia in costeguia" :value="costeguia.valor">{{costeguia.valor}} </option>
-                </select>
-                  <p class="text-danger my-1 small" v-if="(errors.first('costeguia'))" >  Este dato es requerido  </p>
-              </div>
-              <div class="form-group col-4">
-                <label class="links">Valor envió</label>
-                 <input type="text" v-model="form.totalPrecios" v-validate="'required'" name="totalPrecios" class="form-control"  >
-                <p class="text-danger my-1 small" v-if="(errors.first('totalPrecios'))" >  Este dato es requerido  </p>
-              </div>
-              <div class="form-group col-4">
-                <label class="links">Otros cargos</label>
-                 <input type="number" v-model="form.otrosCargos" @change="sumar()" v-validate="'required'" name="otrosCargos" class="form-control"  >
-                <p class="text-danger my-1 small" v-if="(errors.first('otrosCargos'))" >  Este dato es requerido  </p>
-              </div>
-            </div>
-            <div class="row align-items-end">
-              <div class="col-md-4 ml-auto">
-                <label >Total</label>
-                <input v-model="form.total" class="form-control form-control-lg" type="text" placeholder="" disabled>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-8">
-                <div class="form-group">
-                  <label for="exampleFormControlTextarea1">Observación</label>
-                  <textarea v-model="form.observaciones"  v-validate="'required'" name="observaciones" class="form-control" id="exampleFormControlTextarea1" rows="2"></textarea>
-                    <p class="text-danger my-1 small" v-if="(errors.first('observaciones'))" >  Este dato es requerido  </p>
-                  </div>
-              </div>
-              <div class="form-group col-6">
-                <label class="links">Dice contener</label>
-                 <input type="text" v-model="form.dicecontener" @change="sumar()" v-validate="'required'" name="dicecontener" class="form-control"  >
-                <p class="text-danger my-1 small" v-if="(errors.first('dicecontener'))" >  Este dato es requerido  </p>
-              </div>
-              <div class="form-group col-6">
-                <div class="form-group">
-                 <label class="links">Forma pago</label>
-                  <select class="form-control" v-model="form.forma_pago" v-validate="'required'" name="forma_pago"  name="valorDeclarado" id="exampleFormControlSelect1" >
-                    <option></option>
-                    <option v-for="formaspago in formaspago" :value="formaspago.id">{{formaspago.descripcion}} {{formaspago.dias}} dias</option>
-                  </select>
-                  <p class="text-danger my-1 small" v-if="(errors.first('forma_pago'))" >  Este dato es requerido  </p>
-                </div>
-              </div>
-            </div>
-
+        <div class="card col-12 pl-4 pr-4 border-0" >
+                    </div>
+                    <div class="row pr-4 pl-4 p-1 d-flex ">
+                      <div class="col-md-4">
+                        <label class="links">Remitente</label>
+                        <input list="encoding" v-model="form.cedula_remitente" v-validate="'required'"  @keyup="form.contacto_remitente='';form.direccion_remitente='';form.telefono_remitente='';"   value="" class="form-control form-control-lg" placeholder="Escriba una cedula" :disabled="ver">
+                          <datalist id="encoding">
+                              <option v-for="remitentes in remitentes"  :value="remitentes.cedula_remitente" :disabled="ver">{{remitentes.contacto_remitente}}</option>
+                          </datalist>
+                            <p class="text-danger my-1 small" v-if="(errors.first('cedula_remitente'))" >  Este dato es requerido  </p>
+                      </div>
+                      <div class="col-md-4">
+                        <button type="button" class="btn btn-primary btn-lg" @click="buscarRemitente()" style="margin-top:37px;">Buscar <span class="mbri-search"></span></button>
+                      </div>
+                    </div>
+                    <div class="row pr-4 pl-4">
+                      <div class="form-group col-4">
+                        <label class="links">Empresa</label>
+                         <input type="text" v-model="form.contacto_remitente" v-validate="'required'" name="contacto_remitente" class="form-control" id="" :disabled="ver">
+                        <p class="text-danger my-1 small" v-if="(errors.first('contacto_remitente'))" >  Este dato es requerido  </p>
+                      </div>
+                      <div class="form-group col-4">
+                        <label class="links">Dirección empresa</label>
+                         <input type="text" v-model="form.direccion_remitente" v-validate="'required'" name="direccion_remitente" class="form-control" id="":disabled="ver" >
+                        <p class="text-danger my-1 small" v-if="(errors.first('direccion_remitente'))" >  Este dato es requerido  </p>
+                      </div>
+                      <div class="form-group col-4">
+                        <label class="links">Teléfono</label>
+                         <input type="text" v-model="form.telefono_remitente" v-validate="'required'" name="telefono_remitente" class="form-control" id="":disabled="ver" >
+                        <p class="text-danger my-1 small" v-if="(errors.first('telefono_remitente'))" >  Este dato es requerido  </p>
+                      </div>
+                      <div class="form-group col-4">
+                        <label class="links">Piezas</label>
+                         <input type="number" v-model="form.cantidad" v-validate="'required'" name="cantidad" class="form-control"  :disabled="ver">
+                        <p class="text-danger my-1 small" v-if="(errors.first('cantidad'))" >  Este dato es requerido  </p>
+                      </div>
+                      <div class="form-group col-4">
+                        <label class="links">Kilos</label>
+                         <input type="text" v-model="form.totalKilos" v-validate="'required'" name="totalKilos" class="form-control" :disabled="ver" >
+                        <p class="text-danger my-1 small" v-if="(errors.first('totalKilos'))" >  Este dato es requerido  </p>
+                      </div>
+                      <div class="form-group col-4">
+                        <label class="links">Volumen</label>
+                         <input type="text" v-model="form.totalVolumen" v-validate="'required'" name="totalVolumen" class="form-control"  :disabled="ver">
+                        <p class="text-danger my-1 small" v-if="(errors.first('totalVolumen'))" >  Este dato es requerido  </p>
+                      </div>
+                      <div class="form-group col-4">
+                        <label class="links">Valor declarado</label>
+                         <input type="text" @change="seg();sumar" v-model="form.valorDeclarado" v-validate="'required'" name="valorDeclarado" class="form-control"  :disabled="ver">
+                        <p class="text-danger my-1 small" v-if="(errors.first('valorDeclarado'))" >  Este dato es requerido  </p>
+                      </div>
+                      <div class="form-group col-4">
+                        <div class="form-group">
+                         <label class="links">Seguro carga ({{minimo}}$ minimo asegurado)</label>
+                          <select class="form-control" @change="seg();sumar();" v-model="form.segurocarga" v-validate="'required'" name="segurocarga"  name="valorDeclarado" id="exampleFormControlSelect1" :disabled="ver||form.valorDeclarado < minimo">
+                            <option></option>
+                            <option v-for="segurocarga in segurocarga" :value="segurocarga.porcentaje">{{segurocarga.porcentaje}} %</option>
+                          </select>
+                          <p class="text-danger my-1 small" v-if="(errors.first('segurocarga'))" >  Este dato es requerido  </p>
+                        </div>
+                      </div>
+                      <div class="form-group col-4">
+                        <label class="links">Valor seguro</label>
+                         <input type="text" @change="sumar()" v-model="form.totalSeguro" v-validate="'required'" name="totalSeguro" class="form-control"  :disabled="ver">
+                        <p class="text-danger my-1 small" v-if="(errors.first('totalSeguro'))" >  Este dato es requerido  </p>
+                      </div>
+                      <div class="form-group col-4">
+                        <label class="links">Valuación</label>
+                        <select class="form-control" @change="sumar()"  v-model="form.costeguia" v-validate="'required'" name="costeguia"  name="valorDeclarado" id="exampleFormControlSelect1" :disabled="ver">
+                          <option></option>
+                          <option v-for="costeguia in costeguia" :value="costeguia.valor">{{costeguia.valor}} </option>
+                        </select>
+                          <p class="text-danger my-1 small" v-if="(errors.first('costeguia'))" >  Este dato es requerido  </p>
+                      </div>
+                      <div class="form-group col-4">
+                        <label class="links">Valor envió</label>
+                         <input type="text" v-model="form.totalPrecios" v-validate="'required'" name="totalPrecios" class="form-control"  :disabled="ver">
+                        <p class="text-danger my-1 small" v-if="(errors.first('totalPrecios'))" >  Este dato es requerido  </p>
+                      </div>
+                      <div class="form-group col-4">
+                        <label class="links">Otros cargos</label>
+                         <input type="number" v-model="form.otrosCargos" @change="sumar()" v-validate="'required'" name="otrosCargos" class="form-control" :disabled="ver" >
+                        <p class="text-danger my-1 small" v-if="(errors.first('otrosCargos'))" >  Este dato es requerido  </p>
+                      </div>
+                    </div>
+                    <div class="row align-items-end">
+                      <div class="col-md-4 ml-auto">
+                        <label >Total</label>
+                        <input v-model="form.total" class="form-control form-control-lg" type="text" placeholder="" disabled>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-8">
+                        <div class="form-group">
+                          <label for="exampleFormControlTextarea1">Observación</label>
+                          <textarea v-model="form.observaciones"  v-validate="'required'" name="observaciones" class="form-control" id="exampleFormControlTextarea1" rows="2" :disabled="ver"></textarea>
+                            <p class="text-danger my-1 small" v-if="(errors.first('observaciones'))" >  Este dato es requerido  </p>
+                          </div>
+                      </div>
+                      <div class="form-group col-6">
+                        <label class="links">Dice contener</label>
+                         <input type="text" v-model="form.dicecontener" @change="sumar()" v-validate="'required'" name="dicecontener" class="form-control" :disabled="ver" >
+                        <p class="text-danger my-1 small" v-if="(errors.first('dicecontener'))" >  Este dato es requerido  </p>
+                      </div>
+                      <div class="form-group col-6">
+                        <div class="form-group">
+                         <label class="links">Forma pago</label>
+                          <select class="form-control" v-model="form.forma_pago" v-validate="'required'" name="forma_pago"  name="valorDeclarado" id="exampleFormControlSelect1" :disabled="ver">
+                            <option></option>
+                            <option v-for="formaspago in formaspago" :value="formaspago.id">{{formaspago.descripcion}} {{formaspago.dias}} dias</option>
+                          </select>
+                          <p class="text-danger my-1 small" v-if="(errors.first('forma_pago'))" >  Este dato es requerido  </p>
+                        </div>
+                      </div>
+                    </div>
                      <button v-if="editMode===false"  class="button is-primary links btn btn-light float-right my-3" type="submit">Guardar</button>
                      <button v-if="editMode===true && !ver"  class="button is-primary btn btn-light links float-right my-3" type="submit">Editar</button>
                  </form>
@@ -597,6 +641,8 @@
          creada:'',
          enviada:'',
          cumplida:'',
+         minimo:0,
+         minim:'',
          fisico:'',
          archivadas:'',
          anulada:'',
@@ -606,6 +652,7 @@
          desde:'',
          hasta:'',
          ciudad:'',
+          cargaa:"",
          config: {
             wrap: true,
             enableTime: false,
@@ -617,6 +664,7 @@
          ver:false,
          cart:[],
          permisos:[],
+         trazabilidades:[],
          guias:[],
          imagenes:[],
          liquidaciones:[],
@@ -625,6 +673,7 @@
          clientes:[],
          factura:[],
          guias:[],
+         permiso:'',
          tarifas:[],
          formaspago:[],
          segurocarga:[],
@@ -1180,11 +1229,47 @@
                this.$validator.reset();
                document.getElementById("form").reset();
                this.editMode=false;
-               this.form.nombre_cargo='';
+               this.form.fecha="",
+               this.form.ciudad_origen="",
+               this.form.ciudad_destino="",
+               this.form.cedula="",
+               this.form.nombre_empresa="",
+               this.form.direccion_cliente="",
+               this.form.telefono_cliente="",
+               this.form.cedula_remitente="",
+               this.form.contacto_remitente="",
+               this.form.direccion_remitente="",
+               this.form.telefono_remitente="",
+               this.form.cantidad="",
+               this.form.totalKilos="",
+               this.form.totalVolumen="",
+               this.form.valorDeclarado="",
+               this.form.segurocarga="",
+               this.form.totalSeguro="",
+               this.form.dicecontener="",
+               this.form.costeguia="",
+               this.form.totalPrecios="",
+               this.form.otrosCargos="",
+               this.form.total="",
+               this.form.id_tarifa="",
+               this.form.precioNegociado="",
+               this.form.tipo_envio="",
+               this.form.tipo_transporte="",
+               this.form.itinerarios="",
+               this.form.tiempos="",
+               this.form.observaciones="",
+               this.form.id_planilla="",
+               this.form.forma_pago="",
                $('#modal-lg').modal('show');
            },
            seg(){
-             this.form.totalSeguro=parseFloat(this.form.valorDeclarado)*parseFloat(this.form.segurocarga)/100;
+             if (this.form.valorDeclarado<this.minimo) {
+               this.form.totalSeguro=0;
+               this.sumar();
+             }else{
+               this.form.totalSeguro=parseFloat(this.form.valorDeclarado)*parseFloat(this.form.segurocarga)/100;
+               this.sumar();
+             }
            },
 
            validateBeforeSubmit() {
@@ -1362,6 +1447,25 @@
                      }
                    })
                  },
+                 async loadTrazabilidad(index){
+                   this.cargaa=this.guias[index].id;
+                   let data = new FormData();
+                    data.append('prefijo',"N");
+                    data.append('id_guia',this.guias[index].id);
+                    await axios.post('index.php/Trazabilidad/gettrazabilidad/',data)
+                    .then(({data: {trazabilidad}}) => {
+                      this.trazabilidades = trazabilidad
+                    });
+                    if (this.trazabilidades.length>0) {
+                      $('#trazabilidads').modal('show');
+                    }else{
+                      Swal.fire({
+                        type: 'warning',
+                        title: 'No estan registrados items',
+                        text: 'de trazabilidad para esta guia'
+                      })
+                    }
+                 },
           archivada(index){
                    Swal({
                      title: '¿Estás seguro?',
@@ -1411,6 +1515,49 @@
                        }
                      })
                  },
+                 notificarCliente(index){
+                   Swal({
+                     title: '¿Desea notificar al cliente la llegada?',
+                     text: "",
+                     type: 'warning',
+                     showCancelButton: true,
+                     confirmButtonText: '¡Si! ',
+                     cancelButtonText: '¡No! ',
+                     reverseButtons: true
+                   }).then((result) => {
+                     if (result.value) {
+                       let data = new FormData();
+                       data.append('id',this.guias[index].id);
+                       data.append('correo_cliente',this.guias[index].correo_cliente);
+                         axios.post('index.php/Guias/notificarcliente',data)
+                         .then(response => {
+                           if(response) {
+                             Swal(
+                               '¡Notificación enviada!',
+                               '',
+                               'success'
+                             )
+                           } else {
+                             Swal(
+                               'Error',
+                               'Ha ocurrido un error.',
+                               'warning'
+                             ).then(response => {
+
+                             })
+                           }
+                         })
+                     } else if (
+                       result.dismiss === Swal.DismissReason.cancel
+                     ) {
+                       Swal(
+                         'Cancelado',
+                         '',
+                         'success'
+                       )
+                     }
+                   })
+                 },
                  enviarguias(index){
                    Swal({
                      title: '¿Estás seguro?',
@@ -1424,6 +1571,7 @@
                      if (result.value) {
                        let data = new FormData();
                        data.append('id',this.guias[index].id);
+                       data.append('correo_cliente',this.guias[index].correo_cliente);
                          axios.post('index.php/Guias/enviarguias',data)
                          .then(response => {
                            if(response) {
@@ -1434,6 +1582,11 @@
                                'success'
                              ).then(response => {
                                 this.mathc();
+                                localStorage.setItem('id_guia', this.guias[index].id);
+                                localStorage.setItem('prefijo', "N");
+                                window.setTimeout(function () {
+                                      location.href = "<?=base_url();?>Trazabilidad";
+                                  }, 100);
                              })
                            } else {
                              Swal(
@@ -1563,6 +1716,12 @@
                    this.form.total=this.guias[index].total,
                    this.form.id_tarifa=this.guias[index].id_tarifa,
                    this.form.precioNegociado=this.guias[index].precioNegociado,
+                   this.form.tipo_envio=this.guias[index].tipo_envio,
+                   this.form.tipo_transporte=this.guias[index].tipo_transporte,
+                   this.form.itinerarios=this.guias[index].itinerarios,
+                   this.form.tiempos=this.guias[index].tiempos,
+                   this.form.observaciones=this.guias[index].observaciones,
+                   this.form.id_planilla=this.guias[index].id_planilla,
                    this.tari();
                    $('#modal-lg').modal('show');
                  },
@@ -1785,11 +1944,7 @@
                                 this.cart = profiles;
                              });
                               this.permisos=JSON.parse(this.cart[0].permisos);
-                              if (! this.permisos.guiasNormales) {
-                               window.setTimeout(function () {
-                                     location.href = "<?=base_url();?>";
-                                }, 0);
-                              }
+                                this.permiso=this.permisos.guiasNormales;
                            },
                            async loadcosteguia() {
                           await   axios.get('index.php/CosteGuia/getcosteguia/')
@@ -1798,6 +1953,59 @@
                              });
 
                            },
+                           editarMinimo(index){
+                                  Swal({
+                                    title: '¿Dese editar el valor mínimo?',
+                                    text: "",
+                                    type: 'warning',
+                                    showCancelButton: true,
+                                    confirmButtonText: '¡Si!',
+                                    cancelButtonText: '¡No!',
+                                    reverseButtons: true
+                                  }).then((result) => {
+                                    if (result.value) {
+                                      let data = new FormData();
+                                      data.append('minimo',JSON.stringify(this.minimo));
+                                        axios.post('index.php/Facturas/minimo',data)
+                                        .then(response => {
+                                          if(response) {
+                                            Swal(
+                                              '¡Enviado !',
+                                              'Ha sido enviado con exito .',
+                                              'success'
+                                            ).then(response => {
+                                                $('#minimoModal').modal('hide');
+                                              this.loadMinimo();
+                                            })
+                                          } else {
+                                            Swal(
+                                              'Error',
+                                              'Ha ocurrido un error.',
+                                              'warning'
+                                            ).then(response => {
+                                           //   this.loadcotizaciones();
+                                            })
+                                          }
+                                        })
+                                    } else if (
+                                      result.dismiss === Swal.DismissReason.cancel
+                                    ) {
+                                      Swal(
+                                        'Cancelado',
+                                        'No fue enviado.',
+                                        'success'
+                                      )
+                                    }
+                                  })
+                                },
+                           async loadMinimo() {
+                             await   axios.get('index.php/Facturas/getValor/')
+                                .then(({data: {minimo}}) => {
+                                  this.minim = minimo
+                                });
+                                this.minimo=this.minim[0].valor;
+                                this.minimo=parseInt(this.minimo);
+                              },
                     contadors(){
                       this.creada=0;this.enviada=0;this.cumplida=0;this.fisico=0;this.archivadas=0;this.anulada=0;
                       for (var i = 0; i < this.guias.length; i++) {
@@ -1820,6 +2028,7 @@
        },
 
        created(){
+            this.loadMinimo();
             this.loadcosteguia();
             this.loadformaspago();
             this.loadremitentes();

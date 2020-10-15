@@ -162,8 +162,8 @@
           <div id="collapse2" class="panel-collapse collapse">
             <ul class="list-group sp">
               <li class="list-group-item" v-show="permisos.guiasNormales"><a class="dropdown-item links" href="<?=base_url()?>Guias"><i class="fa fa-road" aria-hidden="true"></i> Guías De Carga Clientes Normales</a></li>
-              <li class="list-group-item"v-show="permisos.guiasEspeciales"><a class="dropdown-item links" href="<?=base_url()?>ClientesEspeciales"><i class="fa fa-road" aria-hidden="true"></i> Guías De Carga Clientes Especiales</a></li>
-              <li class="list-group-item"v-show="permisos.facturas"><a class="dropdown-item links" href="<?=base_url()?>Facturas"><i class="fa fa-file-text" aria-hidden="true"></i> Facturas</a></li>
+              <li class="list-group-item" v-show="permisos.guiasEspeciales"><a class="dropdown-item links" href="<?=base_url()?>ClientesEspeciales"><i class="fa fa-road" aria-hidden="true"></i> Guías De Carga Clientes Especiales</a></li>
+              <li class="list-group-item" v-show="permisos.facturas"><a class="dropdown-item links" href="<?=base_url()?>Facturas"><i class="fa fa-file-text" aria-hidden="true"></i> Facturas</a></li>
             </ul>
           </div>
         </div>

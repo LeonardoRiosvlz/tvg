@@ -2,6 +2,8 @@
   <div class="row">
     <div class="col-lg-12 my-1 ">
       <!-- Shopping cart table -->
+      <!-- Button trigger modal -->
+
       <div class="table-responsive ">
         <table id="example2" class="table">
           <thead>
@@ -17,6 +19,7 @@
             </tr>
           </thead>
         </table>
+
         <div class="row">
           <div class=" col-md-3 col-sm-12">
             <div class="form-group">
@@ -68,6 +71,8 @@
             </div>
           </div>
         </div>
+
+
 
       <?php if ( $this->auth_role == 'manager' || $this->auth_role == 'admin'): ?>
         <div class="row">
@@ -166,7 +171,7 @@
                      </datalist>
                  </div>
                  <div class="col-3 py-4">
-                    <button type="button" @click="setearCliente()" class="btn btn-primary btn-lg">Buscar Cliente</button>
+                    <button type="button" @click="setearCliente()" class="btn btn-primary btn-lg" style="margin-top:12px!important">Buscar Cliente</button>
                  </div>
                </div>
          <!-- Incio de formulario -->
@@ -1115,21 +1120,25 @@
                       },
                        <?php endif; ?>
                  loadPln(){
-                   this.form.items=JSON.parse(localStorage.factura);
-                   if(this.form.items.length>0){
-                      this.cedula=this.form.items[0].cedula_cliente;
-                      this.setearCliente();
-                     this.form.total=0;this.form.subtotal=0;
-                     for (var i = 0; i < this.form.items.length; i++) {
-                       this.form.total=parseFloat(this.form.total)+parseFloat(this.form.items[i].total);
+                   if (localStorage.factura) {
+                     this.form.items=JSON.parse(localStorage.factura);
+                     if(this.form.items.length>0){
+                        this.cedula=this.form.items[0].cedula_cliente;
+                        this.setearCliente();
+                       this.form.total=0;this.form.subtotal=0;
+                       for (var i = 0; i < this.form.items.length; i++) {
+                         this.form.total=parseFloat(this.form.total)+parseFloat(this.form.items[i].total);
+                       }
+                       window.setTimeout(function () {
+                             $('#modal-lg').modal('show');
+                             localStorage.removeItem('factura');
+                            }, 300);
+
                      }
-                     window.setTimeout(function () {
-                           $('#modal-lg').modal('show');
-                           localStorage.removeItem('factura');
-                          }, 300);
-
-
+                   }else{
+                     return;
                    }
+
                  },
                  async loadnotas() {
                        await   axios.get('index.php/Notas/getnotass/')
@@ -1170,6 +1179,7 @@
                       },
 
                  created(){
+                    
                       this.loadclientes();
                       this.loadtransportes();
                       this.loadnotas();

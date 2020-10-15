@@ -149,7 +149,7 @@
                   <div class="row py-3 pt-3">
                     <div class="col-md-4">
                       <label class="links">Clientes</label>
-                      <input list="encodings" v-model="form.cedula"  @change="loadCotizacionesclientes()"  value="" class="form-control form-control-lg" placeholder="Escriba una cedula o Nit" :disabled="ver">
+                      <input list="encodings" v-model="form.cedula"  @change="loadCotizacionesclientes();setCliente();"  value="" class="form-control form-control-lg" placeholder="Escriba una cedula o Nit" :disabled="ver">
                         <datalist id="encodings">
                             <option v-for="clientes in clientes"  v-if="clientes.cliente_especial==='No'" :value="clientes.cedula_cliente">{{clientes.nit_cliente}}</option>
                         </datalist>
@@ -170,62 +170,25 @@
 
                   <div class="card col-12 p-3">
                      <h5 >Datos del cliente</h5>
-                     <div class="row" v-if="form.cedula">
-                       <div class="col-md-4">
-                         <label class="links">Empresa</label>
-                         <div class="form-group">
-                           <select v-model="form.cedula"  name="tipo_envio" class="form-control" disabled >
-                             <option v-for="clientes in clientes" v-if="clientes.cliente_especial==='No'" :value="clientes.cedula_cliente">{{clientes.nombre_empresa}}</option>
-                           </select>
-                           <p class="text-danger my-1 small" v-if="(errors.first('tipo_envio'))" >  Este dato es requerido  </p>
+                     <div class="row p-2" v-if="form.cedula">
+                       <div class="form-group col-3">
+                        <label for="exampleInputEmail1">Cliente</label>
+                          <input type="email" v-model="form.nombre_cliente" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                        </div>
+                        <div class="form-group col-3">
+                         <label for="exampleInputEmail1">Cedula/Nit</label>
+                           <input type="email" v-model="form.cn" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
                          </div>
-                       </div>
-                       <div class="col-md-4">
-                         <label class="links">Representante Legal</label>
-                         <div class="form-group">
-                           <select v-model="form.cedula"  name="tipo_envio" class="form-control" disabled>
-                             <option v-for="clientes in clientes" v-if="clientes.cliente_especial==='No'" :value="clientes.cedula_cliente">{{clientes.r_legal}}</option>
-                           </select>
-                           <p class="text-danger my-1 small" v-if="(errors.first('tipo_envio'))" >  Este dato es requerido  </p>
-                         </div>
-                       </div>
-                       <div class="col-md-4">
-                         <label class="links">Telefono</label>
-                         <div class="form-group">
-                           <select v-model="form.cedula"  name="tipo_envio" class="form-control" disabled>
-                             <option v-for="clientes in clientes" v-if="clientes.cliente_especial==='No'" :value="clientes.cedula_cliente">{{clientes.telefono_cliente}}</option>
-                           </select>
-                           <p class="text-danger my-1 small" v-if="(errors.first('tipo_envio'))" >  Este dato es requerido  </p>
-                         </div>
-                       </div>
-                       <div class="col-md-4">
-                         <label class="links">Correo</label>
-                         <div class="form-group">
-                           <select v-model="form.cedula"  name="tipo_envio" class="form-control" disabled>
-                             <option v-for="clientes in clientes" v-if="clientes.cliente_especial==='No'" :value="clientes.cedula_cliente">{{clientes.correo_cliente}}</option>
-                           </select>
-                           <p class="text-danger my-1 small" v-if="(errors.first('tipo_envio'))" >  Este dato es requerido  </p>
-                         </div>
-                       </div>
-                       <div class="col-md-4">
-                         <label class="links">Telefono</label>
-                         <div class="form-group">
-                           <select v-model="form.cedula"  name="tipo_envio" class="form-control" disabled>
-                             <option v-for="clientes in clientes" v-if="clientes.cliente_especial==='No'" :value="clientes.cedula_cliente">{{clientes.telefono_cliente}}</option>
-                           </select>
-                           <p class="text-danger my-1 small" v-if="(errors.first('tipo_envio'))" >  Este dato es requerido  </p>
-                         </div>
-                       </div>
-                       <div class="col-md-4">
-                         <label class="links">Ciudad</label>
-                         <div class="form-group">
-                           <select v-model="form.cedula"  name="tipo_envio" class="form-control" disabled>
-                             <option v-for="clientes in clientes" v-if="clientes.cliente_especial==='No'" :value="clientes.cedula_cliente">{{clientes.ciudad}}</option>
-                           </select>
-                           <p class="text-danger my-1 small" v-if="(errors.first('tipo_envio'))" >  Este dato es requerido  </p>
-                         </div>
-                       </div>
+                         <div class="form-group col-3">
+                          <label for="exampleInputEmail1">Telefono</label>
+                            <input type="email" v-model="form.telefono_cliente" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                          </div>
+                          <div class="form-group col-3">
+                           <label for="exampleInputEmail1">Correo </label>
+                             <input type="email" v-model="form.correo_cliente" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                           </div>
                      </div>
+
                   </div>
                   <div class="row" v-show="!ver">
 
@@ -447,13 +410,9 @@
             </a>
             <div class="card-body p-3">
               <h5 class="card-title">Notas</h5>
-              <div v-for="(notas ,index) in form.notas" class="card p-3 m-3">
-                <div class="d-flex justify-content-between">
-                  <h6 class="card-subtitle mb-2 ">{{notas.resumen}}</h6>
-                  <button v-show="!ver" type="button" class="btn btn-danger pull-right" name="button"  @click="eliminarNota(index)">Eliminar <span class="mbri-trash"></span></button>
-                </div>
-                <p class="card-text links">{{notas.descripcion}}</p>
-              </div>
+              <button v-for="(notas ,index) in form.notas" type="button" class="btn btn-danger m-1" data-toggle="tooltip" data-placement="top" :title="notas.descripcion" @click="eliminarNota(index)">
+                {{notas.numero}} {{notas.tipo_transporte}} <span class="mbri-trash"></span>
+              </button>
             </div>
           </div>
 
@@ -939,6 +898,7 @@ v-if="item.id_tarifa && item.segurocarga && item.costeguia && item.escala && ite
              'tiempo':'',
              'observaciones':'',
              'f_vencimiento':'',
+             'nombre_cliente':'',
              'vernota':true,
              'items':[],
              'notas':[],
@@ -947,6 +907,27 @@ v-if="item.id_tarifa && item.segurocarga && item.costeguia && item.escala && ite
          },
        },
        methods: {
+         setCliente(){
+
+           for (var i = 0; i < this.clientes.length; i++) {
+
+             if (this.clientes[i].cedula_cliente==this.form.cedula) {
+               if (this.clientes[i].nombre_empresa==='No aplica') {
+                 this.form.nombre_cliente=this.clientes[i].nombre_cliente;
+                 this.form.cn=this.clientes[i].cedula_cliente;
+                 this.form.telefono_cliente=this.clientes[i].telefono_cliente;
+                 this.form.correo_cliente=this.clientes[i].correo_cliente;
+                 console.log("natural");
+               }else{
+                 this.form.nombre_cliente=this.clientes[i].nombre_empresa;
+                 this.form.cn=this.clientes[i].nit_cliente;
+                 this.form.telefono_cliente=this.clientes[i].telefono_cliente;
+                 this.form.correo_cliente=this.clientes[i].correo_cliente;
+                 console.log("juridica");
+               }
+             }
+           }
+         },
          verNotas(){
            if (this.form.vernota) {
              this.form.vnota="Si";
@@ -1462,6 +1443,7 @@ v-if="item.id_tarifa && item.segurocarga && item.costeguia && item.escala && ite
                }).then((result) => {
                  if (result.value) {
                    this.form.notas.push({
+                      tipo_transporte:" ",
                       descripcion:this.descripcion,
                       resumen:this.resumen,
                     });

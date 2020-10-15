@@ -26,6 +26,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 'placa'     => $data['placa'],
                 'conductor'     => $data['conductor'],
                 'fecha_recogida'     => $data['fecha_recogida'],
+                'user_id'     => $data['user_id'],
             ));
             return $this->db->error();
         }

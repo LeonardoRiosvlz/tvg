@@ -25,6 +25,21 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             ));
             return $this->db->error();
         }
+        public function minimo($data) {
+            $this->db->where('id', 1);
+            $this->db->update('valorminimo', array(
+              'valor'     => $data,
+            ));
+            return $this->db->error();
+           }
+           public function getValor() {
+               return $this->db
+               ->select('*')
+               ->from('valorminimo')
+               ->where('id', 1)
+               ->get()
+               ->result();
+             }
         public function generar($data) {
             $this->db->where('id',$data['numero_doc']);
             $this->db->update('facturas', array(

@@ -643,12 +643,7 @@
                            <input v-model="form.totalPrecios" type="number" class="form-control" placeholder="" disabled>
                        </div>
                     </div>
-                    <div class="col-3">
-                     <label class="links">Total seguro de carga</label>
-                      <div class="input-group">
-                           <input v-model="form.totalSeguro" type="number" class="form-control" placeholder="" disabled>
-                       </div>
-                    </div>
+
                   </div>
                 </div>
                 <h5 class="links text-center"v-if="liquidaciones.length>0">Liquidaciones Relacionadas al cliente</h5>
@@ -660,12 +655,9 @@
                     </div>
                   </div>
                 </div>
-
-
-                           <button v-if="editMode===false" @click="cargarPlanilla()"  class="button is-primary links btn btn-light float-right my-3" type="submit">Guardar</button>
-                           <button v-if="editMode===true && !ver" @click="editarPlanilla()"  class="button is-primary btn btn-light links float-right my-3" type="submit">Editar</button>
-
-                     </div>
+                  <button v-if="editMode===false" @click="cargarPlanilla()"  class="button is-primary links btn btn-light float-right my-3" type="submit">Guardar</button>
+                  <button v-if="editMode===true && !ver" @click="editarPlanilla()"  class="button is-primary btn btn-light links float-right my-3" type="submit">Editar</button>
+                </div>
          <!-- Fin del formulario -->
              </div>
            </div>
@@ -1361,7 +1353,7 @@
              this.form.tipo_envio=this.items[index].tipo_envio;
              this.item.llave=index;
              this.item.precio=this.items[index].precio;
-  
+
 
            },
                pushearItem(index){

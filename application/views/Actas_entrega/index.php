@@ -6,9 +6,10 @@
 
         <table id="example2" class="table">
           <thead>
+
             <tr>
               <th scope="col" colspan="5" class="border-0 bg-white  text-center">
-                  <div class="bg-light rounded-pill px-4 py-3 text-uppercase font-weight-bold links">Actas de entrega <i class="fa fa-handshake-o" aria-hidden="true"></i></div>
+                  <div  class="bg-light rounded-pill px-4 py-3 text-uppercase font-weight-bold links">Actas de entrega <i class="fa fa-handshake-o" aria-hidden="true"></i></div>
               </th>
             </tr>
           </thead>
@@ -18,7 +19,7 @@
           <thead>
             <tr>
               <th scope="col" colspan="5" class="border-0 bg-white  text-center">
-                <button type="button" @click="resete();ver=false" class="btn btn-block btn-light btn-sm links" >Agregar <span class="mbri-plus"></span></button>
+                <button v-if="permiso" type="button" @click="resete();ver=false" class="btn btn-block btn-light btn-sm links" >Agregar <span class="mbri-plus"></span></button>
               </th>
             </tr>
           </thead>
@@ -34,6 +35,7 @@
               <th class="links">CIUDAD ORIGEN</th>
               <th class="links">CIUDAD DESTINO</th>
               <th class="links">CANTIDAD</th>
+              <th class="links">DESCARGAR</th>
               <th class="links">Action</th>
             </tr>
             </thead>
@@ -45,6 +47,7 @@
                 <td class="links">{{actas_entrega.ciudad_origen}}</td>
                 <td class="links">{{actas_entrega.ciudad_destino}}</td>
                 <td class="links">{{actas_entrega.unidades}}</td>
+                <td class="links"><a :href="'<?=base_url();?>Actas_entrega/to_pdf/'+actas_entrega.id" type="button" download  >Imprimir PDF </td>
                   <td>
                     <div class="btn-group">
                         <button type="button" class="btn btn-default">Action</button>
@@ -52,8 +55,8 @@
                           <span class="sr-only">Toggle Dropdown</span>
                           <div class="dropdown-menu" role="menu">
                             <a class="dropdown-item" href="#"@click="setear(index);ver=true">Ver</a>
-                            <a class="dropdown-item" href="#" @click="setear(index);ver=false">Editar</a>
-                            <a class="dropdown-item" href="#" @click="eliminarsedes(index)">Eliminar</a>
+                            <a class="dropdown-item" v-if="permiso" href="#" @click="setear(index);ver=false">Editar</a>
+                            <a class="dropdown-item" v-if="permiso" href="#" @click="eliminarsedes(index)">Eliminar</a>
                           </div>
                         </button>
                     </div>
@@ -173,7 +176,7 @@
                                   <p class="text-danger my-1" v-if="(errors.first('id_sede'))" >  Este dato es requerido  </p>
                                 </div>
                              </div>
-                          
+
                              <div class="col-4">
                                <!-- textarea -->
                                <div class="form-group">
@@ -318,6 +321,7 @@
            'cantidad':'',
            'descripcion':'',
          },
+         permiso:'',
          departamento:0,
          ver:false,
          cart:[],
@@ -2055,11 +2059,7 @@
                                this.cart = profiles;
                             });
                             this.permisos=JSON.parse(this.cart[0].permisos);
-                            if (! this.permisos.actasEntrega) {
-                             window.setTimeout(function () {
-                                   location.href = "<?=base_url();?>";
-                              }, 0);
-                            }
+                            this.permiso=this.permisos.actasEntrega;
                           },
        },
 

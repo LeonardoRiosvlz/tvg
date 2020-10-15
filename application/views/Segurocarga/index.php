@@ -20,6 +20,32 @@
           </thead>
 
         </table>
+        <button type="button" class="btn btn-primary my-2" data-toggle="modal" data-target="#minimoModal">
+          Valor mínimo asegurado {{minimo}} $
+        </button>
+        <!-- Modal -->
+        <div class="modal fade" id="minimoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">  Valor mínimo </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="form-group">
+                  <label class="links">Valor mínimo</label>
+                   <input type="text" v-model="minimo"  name="minimo" class="form-control" id="" :disabled="ver">
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" @click="editarMinimo()">Editar</button>
+              </div>
+            </div>
+          </div>
+        </div>
           <table id="example1" class="table ">
             <thead>
             <tr>
@@ -108,6 +134,8 @@
        data: {
          departamento:0,
          ver:false,
+         minimo:0,
+         minim:'',
          cart:[],
          permisos:[],
          segurocarga:[],
@@ -119,6 +147,59 @@
          }
        },
        methods: {
+         editarMinimo(index){
+                Swal({
+                  title: '¿Dese editar el valor mínimo?',
+                  text: "",
+                  type: 'warning',
+                  showCancelButton: true,
+                  confirmButtonText: '¡Si!',
+                  cancelButtonText: '¡No!',
+                  reverseButtons: true
+                }).then((result) => {
+                  if (result.value) {
+                    let data = new FormData();
+                    data.append('minimo',JSON.stringify(this.minimo));
+                      axios.post('index.php/Facturas/minimo',data)
+                      .then(response => {
+                        if(response) {
+                          Swal(
+                            '¡Enviado !',
+                            'Ha sido enviado con exito .',
+                            'success'
+                          ).then(response => {
+                              $('#minimoModal').modal('hide');
+                            this.loadMinimo();
+                          })
+                        } else {
+                          Swal(
+                            'Error',
+                            'Ha ocurrido un error.',
+                            'warning'
+                          ).then(response => {
+                         //   this.loadcotizaciones();
+                          })
+                        }
+                      })
+                  } else if (
+                    result.dismiss === Swal.DismissReason.cancel
+                  ) {
+                    Swal(
+                      'Cancelado',
+                      'No fue enviado.',
+                      'success'
+                    )
+                  }
+                })
+              },
+         async loadMinimo() {
+           await   axios.get('index.php/Facturas/getValor/')
+              .then(({data: {minimo}}) => {
+                this.minim = minimo
+              });
+              this.minimo=this.minim[0].valor;
+              this.minimo=parseInt(this.minimo);
+            },
            resete(){
 
                this.$validator.reset();
@@ -267,6 +348,7 @@
        created(){
             this.loadsegurocarga();
             this.loadCart();
+            this.loadMinimo();
        },
    })
  </script>

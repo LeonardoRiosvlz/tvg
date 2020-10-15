@@ -243,10 +243,7 @@
                                       <input type="checkbox" id="check4" v-model="form.permisos.guiasEspeciales" checked/>
                                        <label class="labels" for="check4"><i class="fa fa-road" aria-hidden="true"></i> Guías  (clientes especiales)</label>
                                     </div>
-                                    <div class="col-3 ">
-                                      <input type="checkbox" id="check43" v-model="form.permisos.facturas" checked/>
-                                       <label class="labels" for="check43"><i class="fa fa-file" aria-hidden="true"></i> Facturas</label>
-                                    </div>
+
                                     <div class="col-3 ">
                                       <input type="checkbox" id="check5" v-model="form.permisos.actasEntrega" checked/>
                                        <label class="labels" for="check5"><i class="fa fa-handshake-o" aria-hidden="true"></i> Actas de entrega</label>

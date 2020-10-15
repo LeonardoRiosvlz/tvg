@@ -7,7 +7,7 @@ class Actas_recogida extends MY_Controller {
 	  }
     public function index() {
 			if( ! $this->verify_min_level(1)){
-				redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
+				redirect (base_url());
 			}
      		$this->is_logged_in();
         $this->load->view('header',["css"=>[""]]);
@@ -31,7 +31,7 @@ class Actas_recogida extends MY_Controller {
 					}
 			public function insertar() {
 				if( ! $this->verify_min_level(1)){
-					redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
+					redirect (base_url());
 				}
 				$data = json_decode($this->input->post('service_form'),true);
 				$data['id']    = $this->actas_recogida->get_unused_id();
@@ -58,7 +58,7 @@ class Actas_recogida extends MY_Controller {
 				}
 			public function eliminar() {
 				if( ! $this->verify_min_level(1)){
-					redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
+				redirect (base_url());
 				}
 	            $id = $this->input->post('id');
 	            $result = $this->actas_recogida->deleteactas_recogida($id);
@@ -116,8 +116,17 @@ class Actas_recogida extends MY_Controller {
 													     <meta content="telephone=no" name="format-detection">
 													     <title></title>
 													     <!--[if (mso 16)]>
-													     <style type="text/css">
+															 <style type="text/css">
 													     a {text-decoration: none;}
+															 .es-button-border:hover a.es-button {
+																	 background:#FFFFFF;
+																	 border-color:#FFFFFF;
+																	}
+																	.es-button-border:hover {
+																	 background:#FFFFFF;
+																	 border-style:solid solid solid solid;
+																	 border-color:#3D5CA3 #3D5CA3 #3D5CA3 #3D5CA3;
+																	}
 													     </style>
 													     <![endif]-->
 													     <!--[if gte mso 9]><style>sup { font-size: 100% !important; }</style><![endif]-->
@@ -266,7 +275,7 @@ class Actas_recogida extends MY_Controller {
 													                                                                                 </tr>
 																																																					 <tr>
 																																																							 <td class="esd-block-text es-p5b" align="left">
-																																																									 <h2>Estimados de '.$data['nombre_empresa'].'</h2>
+																																																									 <h2>Estimado '.$data['nombre_empresa'].'</h2>
 																																																							 </td>
 																																																					 </tr>
 																																																					 <tr>
@@ -318,29 +327,23 @@ recoger la mercancía en sus instalaciones, el día '.$data['fecha_recogida'].'<
 													                             <tbody>
 													                                 <tr>
 													                                     <td class="esd-stripe" align="center">
-													                                         <table bgcolor="#ffffff" class="es-content-body" align="center" cellpadding="0" cellspacing="0" width="600">
-													                                             <tbody>
-													                                                 <tr>
-													                                                     <td class="es-p20t es-p20r es-p20l esd-structure" align="left">
-													                                                         <table cellpadding="0" cellspacing="0" width="100%">
-													                                                             <tbody>
-													                                                                 <tr>
-													                                                                     <td width="560" class="esd-container-frame" align="center" valign="top">
-													                                                                         <table cellpadding="0" cellspacing="0" width="100%">
-													                                                                             <tbody>
-													                                                                                 <tr>
-													                                                                                     <td align="center" class="esd-block-button"><span class="es-button-border"><a href="'.base_url().'Actas_recogida/to_pdf/'.$data['id'].'" class="es-button" target="_blank">Descargar El Acta</a></span></td>
-													                                                                                 </tr>
-													                                                                             </tbody>
-													                                                                         </table>
-													                                                                     </td>
-													                                                                 </tr>
-													                                                             </tbody>
-													                                                         </table>
-													                                                     </td>
-													                                                 </tr>
-													                                             </tbody>
-													                                         </table>
+																																	 <table cellpadding="0" cellspacing="0" width="100%">
+																																			 <tbody>
+																																					 <tr>
+																																							 <td width="560" class="esd-container-frame" align="center" valign="top">
+																																									 <table cellpadding="0" cellspacing="0" width="100%">
+																																											 <tbody>
+																																													 <tr>
+																																													 <td align="center" class="esd-block-button"><span class="es-button-border">
+																																															<a href="'.base_url().'Actas_recogida/to_pdf/'.$data['id'].'" class="es-button" target="_blank" style="mso-style-priority:100 !important;text-decoration:none !important;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:arial, helvetica, sans-serif;font-size:16px;color:#333333;border-style:solid;border-color:#3D85C6;border-width:5px 30px 5px 30px;display:inline-block;background:#3D85C6;border-radius:0px;font-weight:normal;font-style:normal;line-height:19px;width:auto;text-align:center"> Descargar Acta </a>
+																																															</td>
+																																													 </tr>
+																																											 </tbody>
+																																									 </table>
+																																							 </td>
+																																					 </tr>
+																																			 </tbody>
+																																	 </table>
 													                                     </td>
 													                                 </tr>
 													                             </tbody>

@@ -9,12 +9,12 @@ class Recalculadas extends MY_Controller {
 	  }
     public function index() {
 			if( ! $this->verify_min_level(1)){
-				redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
+				redirect (base_url());
 			}
      		$this->is_logged_in();
         $this->load->view('header',["css"=>[""]]);
         $this->load->view('menu');
-        $this->load->view('recalculadas/index');
+        $this->load->view('Recalculadas/index');
         $this->load->view('footer',["js"=>[""]]);
       }
 			public function getcotizaciones($id=0) {
@@ -34,7 +34,7 @@ class Recalculadas extends MY_Controller {
 					}
 			public function insertar() {
 				if( ! $this->verify_min_level(1)){
-					redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
+				redirect (base_url());
 				}
 
 				$data = json_decode($this->input->post('service_form'),true);
@@ -53,7 +53,7 @@ class Recalculadas extends MY_Controller {
 				}
 			public function editar() {
 				if( ! $this->verify_min_level(1)){
-					redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
+					redirect (base_url());
 				}
 			  $data = json_decode($this->input->post('service_form'),true);
 				if ($data['renegociar']==="Si") {
@@ -74,7 +74,7 @@ class Recalculadas extends MY_Controller {
 				}
 			public function eliminar() {
 				if( ! $this->verify_min_level(1)){
-					redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
+					redirect (base_url());
 				}
 	            $id = $this->input->post('id');
 	            $result = $this->cotizaciones->deletecotizaciones($id);
@@ -96,7 +96,7 @@ class Recalculadas extends MY_Controller {
 		 ////////////////
 				 public function detail_foto() {
 					 if( ! $this->verify_min_level(1)){
-							 redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
+							redirect (base_url());
 						 }
 					 $config['upload_path']          = './include/files';
 					 $config['allowed_types']        = 'jpg|png|jpeg';
@@ -130,7 +130,7 @@ class Recalculadas extends MY_Controller {
 
 				 public function eliminarImagen() {
 					 if( ! $this->verify_min_level(1)){
-								 redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
+								redirect (base_url());
 							 }
 					 $id = $this->input->post('id');
 					 $result = $this->cotizaciones->eliminarImagen($id);

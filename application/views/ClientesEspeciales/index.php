@@ -130,9 +130,10 @@
                             <a class="dropdown-item" href="#"@click="setear(index);ver=true">Ver</a>
                             <a class="dropdown-item" href="#"@click="loadTrazabilidad(index)">Trazabilidad</a>
                             <a class="dropdown-item" href="#" @click="setear(index);ver=false">Editar</a>
-                            <a class="dropdown-item" href="#" @click="setearcerrar(index);ver=false;">Cerrar envío</a>
+                            <a class="dropdown-item" href="#" @click="setearcerrar(index);ver=false;cerrar=true;">Cerrar envío</a>
                             <a class="dropdown-item" href="#" @click="enviarcarga(index)">Enviar Carga</a>
                             <a class="dropdown-item" href="#" @click="eliminarcarga(index)">Eliminar</a>
+                            <a class="dropdown-item" href="#" @click="notificarCliente(index)">Notificar llegada al cliente</a>
                           </div>
                         </button>
                     </div>
@@ -159,8 +160,11 @@
         </div>
         <div class="modal-body">
           <div class="row">
-            <div class="col-12 ">
+            <div class="col-12 p-1">
                 <a v-if="cargas.length>0" :href="'<?=base_url();?>Trazabilidad/excelexport/'+cargaa" type="button"  class="btn btn-block btn-primary btn-sm links" >Exportar Excel <span class="mbri-save"></span></a>
+            </div>
+            <div class="col-12 p-1">
+                <a v-if="cargas.length>0" :href="'<?=base_url();?>Trazabilidad/detalles?ref_pre=E&ref_guia='+cargaa" type="button"  class="btn btn-block btn-success btn-sm links" target="_blank"> Ver Detalles <span class="mbri-save"></span></a>
             </div>
           </div>
           <div v-for="traza in trazabilidades" class="tracking-item">
@@ -434,7 +438,8 @@
 
                             </div>
                            <button v-if="editMode===false"  class="button is-primary links btn btn-light float-right my-3" type="submit">Guardar</button>
-                           <button v-if="editMode===true && !ver"  class="button is-primary btn btn-light links float-right my-3" type="submit">Editar</button>
+                           <button v-if="editMode===true && !ver && !cerrar"  class="button is-primary btn btn-light links float-right my-3" type="submit">Editar</button>
+                           <button v-if="editMode===true && !ver && cerrar"  class="button is-primary btn btn-light links float-right my-3" type="submit">Cerrar envio</button>
                        </form>
                      </div>
          <!-- Fin del formulario -->
@@ -1820,6 +1825,7 @@
           }
           ],
           desde:'',
+          cerrar:false,
           hasta:'',
           numero:'',
           exceluno:false,
@@ -2171,6 +2177,7 @@
                              text: 'Editado correctamente'
                           });
                           this.editMode=false;
+                          this.cerrar=false;
                           this.resete();
                          }
                          else{
@@ -2249,6 +2256,7 @@
                      if (result.value) {
                        let data = new FormData();
                        data.append('id',this.cargas[index].codigo);
+                       data.append('correo_cliente',this.cargas[index].correo_cliente);
                          axios.post('index.php/ClientesEspeciales/enviarcarga',data)
                          .then(response => {
                            if(response) {
@@ -2281,6 +2289,49 @@
                        Swal(
                          'Cancelado',
                          'No fue eliminado.',
+                         'success'
+                       )
+                     }
+                   })
+                 },
+                 notificarCliente(index){
+                   Swal({
+                     title: '¿Desea notificar al cliente la llegada?',
+                     text: "",
+                     type: 'warning',
+                     showCancelButton: true,
+                     confirmButtonText: '¡Si! ',
+                     cancelButtonText: '¡No! ',
+                     reverseButtons: true
+                   }).then((result) => {
+                     if (result.value) {
+                       let data = new FormData();
+                       data.append('id',this.cargas[index].codigo);
+                       data.append('correo_cliente',this.cargas[index].correo_cliente);
+                         axios.post('index.php/ClientesEspeciales/notificarcliente',data)
+                         .then(response => {
+                           if(response) {
+                             Swal(
+                               '¡Notificación enviada!',
+                               '',
+                               'success'
+                             )
+                           } else {
+                             Swal(
+                               'Error',
+                               'Ha ocurrido un error.',
+                               'warning'
+                             ).then(response => {
+
+                             })
+                           }
+                         })
+                     } else if (
+                       result.dismiss === Swal.DismissReason.cancel
+                     ) {
+                       Swal(
+                         'Cancelado',
+                         '',
                          'success'
                        )
                      }

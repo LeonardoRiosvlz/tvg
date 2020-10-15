@@ -1,6 +1,6 @@
 
 
-<div id="app" class="container">
+<div id="app" class="container" style="min-height:1200px;">
   <div class="row">
     <div class="col-lg-12 my-5 ">
       <!-- Shopping cart table -->
@@ -104,7 +104,7 @@
                             <div class="col-4">
                               <div class="form-group">
                                 <label for="exampleFormControlSelect1">Tipo de raporte</label>
-                                  <select v-model="form.tipo_reporte" name="tipo_reporte"   v-validate="'required'" class="form-control" id="exampleFormControlSelect1">
+                                  <select v-model="form.tipo_reporte" name="tipo_reporte"   v-validate="'required'" class="form-control" id="exampleFormControlSelect1" :disabled="ver">
                                     <option value=""></option>
                                     <option   value="Recogida">Recogida donde cliente</option>
                                     <option   value="Alistamiento">Alistamiento</option>
@@ -145,7 +145,7 @@
                                  <p class="text-danger my-1" v-if="(errors.first('fecha_despacho'))" >  Este dato es requerido  </p>
                                </div>
                             </div>
-                            <div class="col-4">
+                            <div class="col-3">
                               <div class="form-group">
                                 <label for="exampleFormControlSelect1">Satélite encargado</label>
                                   <select v-model="form.id_satelite"   v-validate="'required'" name="id_satelite" class="form-control" id="exampleFormControlSelect1" :disabled="ver||form.tipo_reporte==='Recogida'||form.tipo_reporte==='Alistamiento'||form.tipo_reporte==='Llegada Destino'">
@@ -156,7 +156,7 @@
                                 </div>
                             </div>
 
-                            <div class=" col-md-4 col-sm-12" v-show="form.tipo_reporte">
+                            <div class=" col-md-3 col-sm-12" v-show="form.tipo_reporte">
                               <div class="form-group">
                                 <label v-if="form.tipo_reporte==='Recogida'" class="links">Fecha De Alistamiento</label>
                                 <label v-if="form.tipo_reporte==='Alistamiento'" class="links">Fecha De Envío</label>
@@ -174,7 +174,7 @@
                                  <p class="text-danger my-1" v-if="(errors.first('llegada_destino'))" >  Este dato es requerido  </p>
                                </div>
                             </div>
-                            <div class="col-4">
+                            <div class="col-6">
                              <label for="colFormLabelSm" class="links">Foto Referecial</label>
                               <div class="form-group" v-if="editMode">
                                 <input type="file"  id="image" name="image">
@@ -261,7 +261,7 @@
         </div>
    <!-- fin del modal -->
    </div>
-  <pre>{{form}}</pre>
+
 </div>
 <script>
       Vue.component('flat-pickr', VueFlatpickr);
@@ -673,6 +673,13 @@
                               localStorage.removeItem('id_guia');
                              }, 300);
                         this.loadguiasE();
+                      }
+                      if(this.form.prefijo==="N"){
+                        window.setTimeout(function () {
+                              localStorage.removeItem('prefijo');
+                              localStorage.removeItem('id_guia');
+                             }, 300);
+                        this.loadguiasN();
                       }
                    }
 

@@ -9,7 +9,7 @@ class Cotizaciones extends MY_Controller {
 	  }
     public function index() {
 			if( ! $this->verify_min_level(1)){
-				redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
+				redirect (base_url());
 			}
      		$this->is_logged_in();
         $this->load->view('header',["css"=>[""]]);
@@ -55,7 +55,7 @@ class Cotizaciones extends MY_Controller {
 					}
 			public function insertar() {
 				if( ! $this->verify_min_level(1)){
-					redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
+					redirect (base_url());
 				}
 
 				$data = json_decode($this->input->post('service_form'),true);
@@ -74,7 +74,7 @@ class Cotizaciones extends MY_Controller {
 				}
 			public function editar() {
 				if( ! $this->verify_min_level(1)){
-					redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
+				redirect (base_url());
 				}
 			  $data = json_decode($this->input->post('service_form'),true);
 				if ($data['renegociar']==="Si") {
@@ -95,7 +95,7 @@ class Cotizaciones extends MY_Controller {
 				}
 			public function eliminar() {
 				if( ! $this->verify_min_level(1)){
-					redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
+					redirect (base_url());
 				}
 	            $id = $this->input->post('id');
 	            $result = $this->cotizaciones->deletecotizaciones($id);
@@ -117,7 +117,7 @@ class Cotizaciones extends MY_Controller {
 		 ////////////////
 				 public function detail_foto() {
 					 if( ! $this->verify_min_level(1)){
-							 redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
+							 redirect (base_url());
 						 }
 					 $config['upload_path']          = './include/files';
 					 $config['allowed_types']        = 'jpg|png|jpeg|pdf';
@@ -151,7 +151,7 @@ class Cotizaciones extends MY_Controller {
 
 				 public function eliminarImagen() {
 					 if( ! $this->verify_min_level(1)){
-								 redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
+								 redirect (base_url());
 							 }
 					 $id = $this->input->post('id');
 					 $result = $this->cotizaciones->eliminarImagen($id);
@@ -195,6 +195,15 @@ class Cotizaciones extends MY_Controller {
 											     <!--[if (mso 16)]>
 											     <style type="text/css">
 											     a {text-decoration: none;}
+													 .es-button-border:hover a.es-button {
+															 background:#FFFFFF;
+															 border-color:#FFFFFF;
+															}
+															.es-button-border:hover {
+															 background:#FFFFFF;
+															 border-style:solid solid solid solid;
+															 border-color:#3D5CA3 #3D5CA3 #3D5CA3 #3D5CA3;
+															}
 											     </style>
 											     <![endif]-->
 											     <!--[if gte mso 9]><style>sup { font-size: 100% !important; }</style><![endif]-->
@@ -343,7 +352,7 @@ class Cotizaciones extends MY_Controller {
 											                                                                                 </tr>
 																																																			 <tr>
 																																																					 <td class="esd-block-text es-p5b" align="left">
-																																																							 <h2>Estimados de '.$data['nombre_empresa'].':</h2>
+																																																							 <h2>Estimados Señores:</h2>
 																																																					 </td>
 																																																			 </tr>
 											                                                                                 <tr>
@@ -379,9 +388,9 @@ class Cotizaciones extends MY_Controller {
 											                                                                     <td class="esd-container-frame" width="560" valign="top" align="center">
 											                                                                         <table width="100%" cellspacing="0" cellpadding="0">
 											                                                                             <tbody>
-											                                                                                 <tr>
-											                                                                                     <td class="esd-block-button es-p10b" align="left"><span class="es-button-border"><a href="'.base_url($data['url_gestion']).'" class="es-button" target="_blank">Gestionar</a></span></td>
-											                                                                                 </tr>
+																																																			 <tr>
+																																																				 	<a href="'.base_url($data['url_gestion']).'" class="es-button" target="_blank" style="mso-style-priority:100 !important;text-decoration:none !important;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:arial, helvetica, sans-serif;font-size:16px;color:#333333;border-style:solid;border-color:#3D85C6;border-width:5px 30px 5px 30px;display:inline-block;background:#3D85C6;border-radius:0px;font-weight:normal;font-style:normal;line-height:19px;width:auto;text-align:center"> GESTIONAR </a>
+																																																				</tr>
 											                                                                             </tbody>
 											                                                                         </table>
 											                                                                     </td>
@@ -411,7 +420,9 @@ class Cotizaciones extends MY_Controller {
 											                                                                         <table cellpadding="0" cellspacing="0" width="100%">
 											                                                                             <tbody>
 											                                                                                 <tr>
-											                                                                                     <td align="center" class="esd-block-button"><span class="es-button-border"><a href="'.base_url($data['url_pdf']).'" class="es-button" target="_blank">Descargar PDF</a></span></td>
+																																																			 <td align="center" class="esd-block-button"><span class="es-button-border">
+																																																			 		<a href="'.base_url($data['url_pdf']).'" class="es-button" target="_blank" style="mso-style-priority:100 !important;text-decoration:none !important;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:arial, helvetica, sans-serif;font-size:16px;color:#333333;border-style:solid;border-color:#3D85C6;border-width:5px 30px 5px 30px;display:inline-block;background:#3D85C6;border-radius:0px;font-weight:normal;font-style:normal;line-height:19px;width:auto;text-align:center"> Descargar PDF </a>
+											                                                                                    </td>
 											                                                                                 </tr>
 											                                                                             </tbody>
 											                                                                         </table>
@@ -618,9 +629,55 @@ class Cotizaciones extends MY_Controller {
 											     <meta content="telephone=no" name="format-detection">
 											     <title></title>
 											     <!--[if (mso 16)]>
-											     <style type="text/css">
-											     a {text-decoration: none;}
-											     </style>
+													 <style type="text/css">
+												 .rollover div {
+												 	font-size:0;
+												 }
+												 .rollover:hover .rollover-first {
+												 	max-height:0px!important;
+												 	display:none!important;
+												 }
+												 .rollover:hover .rollover-second {
+												 	max-height:none!important;
+												 	display:inline-block!important;
+												 }
+												 #outlook a {
+												 	padding:0;
+												 }
+												 .ExternalClass {
+												 	width:100%;
+												 }
+												 .ExternalClass,
+												 .ExternalClass p,
+												 .ExternalClass span,
+												 .ExternalClass font,
+												 .ExternalClass td,
+												 .ExternalClass div {
+												 	line-height:100%;
+												 }
+												 .es-button {
+												 	mso-style-priority:100!important;
+												 	text-decoration:none!important;
+												 }
+												 a[x-apple-data-detectors] {
+												 	color:inherit!important;
+												 	text-decoration:none!important;
+												 	font-size:inherit!important;
+												 	font-family:inherit!important;
+												 	font-weight:inherit!important;
+												 	line-height:inherit!important;
+												 }
+												 .es-desk-hidden {
+												 	display:none;
+												 	float:left;
+												 	overflow:hidden;
+												 	width:0;
+												 	max-height:0;
+												 	line-height:0;
+												 	mso-hide:all;
+												 }
+												 @media only screen and (max-width:600px) {p, ul li, ol li, a { font-size:16px!important; line-height:150%!important } h1 { font-size:30px!important; text-align:center; line-height:120%!important } h2 { font-size:26px!important; text-align:center; line-height:120%!important } h3 { font-size:20px!important; text-align:center; line-height:120%!important } h1 a { font-size:30px!important } h2 a { font-size:26px!important } h3 a { font-size:20px!important } .es-menu td a { font-size:13px!important } .es-header-body p, .es-header-body ul li, .es-header-body ol li, .es-header-body a { font-size:16px!important } .es-footer-body p, .es-footer-body ul li, .es-footer-body ol li, .es-footer-body a { font-size:16px!important } .es-infoblock p, .es-infoblock ul li, .es-infoblock ol li, .es-infoblock a { font-size:12px!important } *[class="gmail-fix"] { display:none!important } .es-m-txt-c, .es-m-txt-c h1, .es-m-txt-c h2, .es-m-txt-c h3 { text-align:center!important } .es-m-txt-r, .es-m-txt-r h1, .es-m-txt-r h2, .es-m-txt-r h3 { text-align:right!important } .es-m-txt-l, .es-m-txt-l h1, .es-m-txt-l h2, .es-m-txt-l h3 { text-align:left!important } .es-m-txt-r img, .es-m-txt-c img, .es-m-txt-l img { display:inline!important } .es-button-border { display:block!important } .es-button { font-size:16px!important; display:block!important; border-left-width:0px!important; border-right-width:0px!important } .es-btn-fw { border-width:10px 0px!important; text-align:center!important } .es-adaptive table, .es-btn-fw, .es-btn-fw-brdr, .es-left, .es-right { width:100%!important } .es-content table, .es-header table, .es-footer table, .es-content, .es-footer, .es-header { width:100%!important; max-width:600px!important } .es-adapt-td { display:block!important; width:100%!important } .adapt-img { width:100%!important; height:auto!important } .es-m-p0 { padding:0px!important } .es-m-p0r { padding-right:0px!important } .es-m-p0l { padding-left:0px!important } .es-m-p0t { padding-top:0px!important } .es-m-p0b { padding-bottom:0!important } .es-m-p20b { padding-bottom:20px!important } .es-mobile-hidden, .es-hidden { display:none!important } tr.es-desk-hidden, td.es-desk-hidden, table.es-desk-hidden { width:auto!important; overflow:visible!important; float:none!important; max-height:inherit!important; line-height:inherit!important } tr.es-desk-hidden { display:table-row!important } table.es-desk-hidden { display:table!important } td.es-desk-menu-hidden { display:table-cell!important } .es-menu td { width:1%!important } table.es-table-not-adapt, .esd-block-html table { width:auto!important } table.es-social { display:inline-block!important } table.es-social td { display:inline-block!important } }
+												 </style>
 											     <![endif]-->
 											     <!--[if gte mso 9]><style>sup { font-size: 100% !important; }</style><![endif]-->
 											     <!--[if gte mso 9]>
@@ -768,7 +825,7 @@ class Cotizaciones extends MY_Controller {
 											                                                                                 </tr>
 																																																			 <tr>
 																																																					 <td class="esd-block-text es-p5b" align="left">
-																																																							 <h2>Estimados de '.$data['nombre_empresa'].':</h2>
+																																																							 <h2>Reciba un cordial saludo</h2>
 																																																					 </td>
 																																																			 </tr>
 											                                                                                 <tr>

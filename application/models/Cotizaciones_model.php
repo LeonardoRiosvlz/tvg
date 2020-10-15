@@ -310,9 +310,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
                          foreach($data->result() as $row){
                              $output .= '
-                                <p class="lead text-right" style="color:red;font-size:17px; margin:0;padding:0; float:right">  COT-'.$row->id.'</p></BR>
-                                 <p style="font-size:17px; margin:0;padding:0;float:right;color:grey;">('.$row->nombre.' '.$row->apellido.')</p></BR>
-                                <p class="lead text-right" style="color:grey;font-size:14px;margin:0;padding:0;">Válido hasta: '.$row->f_vencimiento.'</p></BR>
+                                <div class="row">
+                                  <p class="lead text-right" style="color:red;font-size:17px; margin:0;padding:0; float:right">  COT-'.$row->id.'</p></BR>
+                                   <p style="font-size:17px; margin:0;padding:0;color:grey;">('.$row->nombre.' '.$row->apellido.')</p></BR>
+                                  <p class="lead text-right" style="color:grey;font-size:14px;margin:0;padding:0;">Válido hasta: '.$row->f_vencimiento.'</p></BR>
+                                </div>
+
+
                                 <p class="lead text-left" style="font-size:15px;">Bogotá, D.C. '.$row->fecha_creacion.'</sp</BR>
                                     ';
                                     if ($row->tipo_cliente==="Persona jurídica") {
@@ -345,26 +349,29 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             <table class="table">
                               <tr
                               <tr>
-                                <td>TRANSPORTE</td>
-                                <td>ORIGEN</td>
-                                <td>DESTINO</td>
-                                <td>VALOR KILO/UNIDAD</td>
-                                <td>VALOR SEGURO</td>
-                                <td>COSTE DE GUIA</td>
-                                <td>ITINERARIO</td>
+                                <td style="white-space: nowrap;font-size:10px;">TRANSPORTE</td>
+                                <td style="white-space: nowrap;font-size:10px;">ORIGEN</td>
+                                <td style="white-space: nowrap;font-size:10px;">DESTINO</td>
+                                <td style="white-space: nowrap;font-size:10px;">TIPO DE ENVIO</td>
+                                <td style="white-space: nowrap;font-size:10px;">VALOR KILO/UNIDAD</td>
+                                <td style="white-space: nowrap;font-size:10px;">VALOR SEGURO</td>
+                                <td style="white-space: nowrap;font-size:10px;">COSTE DE GUIA</td>
+                                <td style="white-space: nowrap;font-size:10px;">ITINERARIO</td>
                               </tr>';
                           foreach($data->result() as $row){
                               $items=$row->items;
                                 foreach(json_decode($items) as $row){
                                   $output .= '
                                       <tr>
-                                        <td>'.$row->tipo_transporte.'</td>
-                                        <td>'.$row->ciudad_origen.'</td>
-                                        <td>'.$row->ciudad_destino.'</td>
-                                        <td>$'.$row->precio.'</td>
-                                        <td>'.$row->segurocarga.'% del valor declarado de la mercancía</td>
-                                        <td>$'.$row->costeguia.'</td>
-                                        <td>'.$row->itinerarios.'</td>
+                                        <td style="font-size:10px;;">'.$row->tipo_transporte.'</td>
+                                        <td style="font-size:10px;;">'.$row->ciudad_origen.'</td>
+                                        <td style="font-size:10px;;">'.$row->ciudad_destino.'</td>
+                                        <td style="font-size:10px;;">'.$row->tipo_envio.'</td>
+                                        <td style="font-size:10px;;">$'.$row->precio.'</td>
+                                        <td style="font-size:10px;;">'.$row->segurocarga.'% del valor declarado de la mercancía</td>
+                                        <td style="font-size:10px;;">$'.$row->costeguia.'</td>
+                                        <td style="font-size:10px;;">'.$row->itinerarios.'</td>
+
                                       </tr>
                                   ';}
                             }

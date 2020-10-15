@@ -2,8 +2,6 @@
   <div class="row">
     <div class="col-lg-12 my-2 ">
       <!-- Shopping cart table -->
-
-
         <table id="example2" class="table">
           <thead>
             <tr>
@@ -13,16 +11,16 @@
             </tr>
           </thead>
         </table>
-
         <table id="example2" class="table " >
           <thead>
             <tr>
               <th scope="col" colspan="5" class="border-0 bg-white  text-center">
-                <button type="button" @click="resete();ver=false" class="btn btn-block btn-light btn-sm links" >Agregar <span class="mbri-plus"></span></button>
+                <button v-if="permiso" type="button" @click="resete();ver=false" class="btn btn-block btn-light btn-sm links" >Agregar <span class="mbri-plus"></span></button>
               </th>
             </tr>
           </thead>
         </table>
+
         <div class="table-responsive">
           <table id="example1" class="table my-2" >
             <thead>
@@ -54,8 +52,8 @@
                           <span class="sr-only">Toggle Dropdown</span>
                           <div class="dropdown-menu" role="menu">
                             <a class="dropdown-item" href="#"@click="setear(index);ver=true">Ver</a>
-                            <a class="dropdown-item" href="#" @click="setear(index);ver=false">Editar</a>
-                            <a class="dropdown-item" href="#" @click="eliminarsedes(index)">Eliminar</a>
+                            <a class="dropdown-item" v-if="permiso" href="#" @click="setear(index);ver=false">Editar</a>
+                            <a class="dropdown-item" v-if="permiso" href="#" @click="eliminarsedes(index)">Eliminar</a>
                           </div>
                         </button>
                     </div>
@@ -80,10 +78,10 @@
             <div class="modal-body">
               <h2 class="links text-center"> ACTAS DE ENTREGA</h2>
               <button type="button" class="btn btn-block btn-lg btn-success"><span class="mbri-bookmark"></span>AEN-{{id}}</button>
-              <a :href="'<?=base_url();?>actas_recogida/to_pdf/'+id" type="button" download class="btn btn-block btn-lg btn-primary" @click="generar()">Imprimir PDF <span class="mbri-share"></span></a>
+              <a :href="'<?=base_url();?>actas_recogida/to_pdf/'+id" type="button" download class="btn btn-block btn-lg btn-primary" >Imprimir PDF <span class="mbri-share"></span></a>
               <a href="#" type="button"  class="btn btn-block btn-lg btn-primary" @click="setear_to_email();enviarEmail();">Enviar Email <span class="mbri-letter"></span></a>
             </div>
-          
+
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
             </div>
@@ -289,6 +287,7 @@
          departamento:0,
          ver:false,
          cart:[],
+         permiso:'',
          permisos:[],
          sedes:[],
          actas_recogida:[],
@@ -2098,6 +2097,7 @@
                                this.cart = profiles;
                             });
                             this.permisos=JSON.parse(this.cart[0].permisos);
+                            this.permiso=this.permisos.actasRecogidas;
                           },
        },
 

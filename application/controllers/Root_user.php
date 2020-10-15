@@ -11,7 +11,7 @@ class Root_user extends MY_Controller
       //$this->force_ssl();
       $this->load->model('User_model', 'user');
       if( ! $this->verify_min_level(9)){
-          redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
+          redirect (base_url());
         }
       // Form and URL helpers always loaded (just for convenience)
       $this->load->helper('url');
@@ -33,7 +33,7 @@ class Root_user extends MY_Controller
 
       public function eliminar() {
   			if( ! $this->verify_min_level(9)){
-  				redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
+  				redirect (base_url());
   			}
               $id = $this->input->post('id');
               $result = $this->user->eliminar($id);
@@ -49,7 +49,7 @@ class Root_user extends MY_Controller
       public function insertar() {
         $this->load->model('examples/examples_model');
         if( ! $this->verify_min_level(9)){
-          redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
+          redirect (base_url());
         }
 
         $config['upload_path']          = './include/img/user';
@@ -429,7 +429,7 @@ class Root_user extends MY_Controller
 
         public function get_profilet(){
           if( ! $this->verify_min_level(9)){
-              redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
+              redirect (base_url());
             }
           $data['profiles'] = $this->user->get_profiles();
           header('Content-Type: application/json');
@@ -439,7 +439,7 @@ class Root_user extends MY_Controller
 
       public function get_profile(){
         if( ! $this->verify_min_level(1)){
-            redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
+            redirect (base_url());
           }
         $data['profiles'] = $this->user->get_profiless();
         header('Content-Type: application/json');
@@ -454,7 +454,7 @@ class Root_user extends MY_Controller
            }
            public function editar() {
              if( ! $this->verify_min_level(1)){
-               redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
+               redirect (base_url());
              }
                  $data = json_decode($this->input->post('service_form'),true);
                  $result = $this->user->editar($data);
@@ -468,7 +468,7 @@ class Root_user extends MY_Controller
              }
              public function editar_img() {
                if( ! $this->verify_min_level(1)){
-                 redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
+                 redirect (base_url());
                }
              $config['upload_path']          = './include/img/user/';
              $config['allowed_types']        = 'jpg|png|jpeg';

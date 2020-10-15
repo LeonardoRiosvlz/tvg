@@ -8,7 +8,7 @@ class Trazabilidad extends MY_Controller {
 	  }
     public function index() {
 			if( ! $this->verify_min_level(1)){
-				redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
+				redirect (base_url());
 			}
      		$this->is_logged_in();
         $this->load->view('header',["css"=>[""]]);
@@ -23,6 +23,16 @@ class Trazabilidad extends MY_Controller {
 	        $this->load->view('Trazabilidad/timeline');
 	        $this->load->view('footer',["js"=>[""]]);
 	      }
+		public function detalles() {
+			if( ! $this->verify_min_level(1)){
+				redirect (base_url());
+			}
+				$this->is_logged_in();
+				$this->load->view('header',["css"=>[""]]);
+				$this->load->view('menu',["css"=>[""]]);
+				$this->load->view('Trazabilidad/detalles');
+				$this->load->view('footer',["js"=>[""]]);
+			}
 				public function satelites() {
 						$this->is_logged_in();
 						$this->load->view('header',["css"=>[""]]);
@@ -41,7 +51,7 @@ class Trazabilidad extends MY_Controller {
 
 			public function insertar() {
 				if( ! $this->verify_min_level(1)){
-					redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
+					redirect (base_url());
 				}
 				$config['upload_path']          = './include/img/trazabilidad/';
 				$config['allowed_types']        = 'jpg|png|jpeg';
@@ -69,7 +79,7 @@ class Trazabilidad extends MY_Controller {
 				}
 			public function editar() {
 				if( ! $this->verify_min_level(1)){
-					redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
+					redirect (base_url());
 				}
 			    $data = json_decode($this->input->post('service_form'),true);
 				$result = $this->trazabilidad->editar($data);
@@ -82,7 +92,7 @@ class Trazabilidad extends MY_Controller {
 				}
 				public function editar_img() {
 					if( ! $this->verify_min_level(1)){
-						redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
+						redirect (base_url());
 					}
 					$config['upload_path']          = './include/img/trazabilidad/';
 					$config['allowed_types']        = 'jpg|png|jpeg';
@@ -135,7 +145,7 @@ class Trazabilidad extends MY_Controller {
 								}
 			public function eliminar() {
 				if( ! $this->verify_min_level(1)){
-					redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
+					redirect (base_url());
 				}
 	            $id = $this->input->post('id');
 	            $result = $this->trazabilidad->deletetrazabilidad($id);
@@ -233,15 +243,90 @@ class Trazabilidad extends MY_Controller {
 		}
 	}
 
+	public function excelexportn($id){
+		$datas['id_guia'] = $id;
+		$datas['prefijo'] = "N";
+		$llamadas= $this->trazabilidad->gettrazabilidad($datas);
+	 if(count($llamadas) > 0){
+			 //Cargamos la librería de excel.
+			 $this->load->library('excel'); $this->excel->setActiveSheetIndex(0);
+			 $this->excel->getActiveSheet()->setTitle('Cargas');
+			 //Contador de filas
+			 $contador = 1;
+			 //Le aplicamos ancho las columnas.
+			 $this->excel->getActiveSheet()->getColumnDimension('A')->setWidth(30);
+			 $this->excel->getActiveSheet()->getColumnDimension('B')->setWidth(30);
+			 $this->excel->getActiveSheet()->getColumnDimension('C')->setWidth(30);
+			 $this->excel->getActiveSheet()->getColumnDimension('D')->setWidth(30);
+			 $this->excel->getActiveSheet()->getColumnDimension('E')->setWidth(30);
+			 $this->excel->getActiveSheet()->getColumnDimension('F')->setWidth(30);
+			 $this->excel->getActiveSheet()->getColumnDimension('G')->setWidth(30);
+			 $this->excel->getActiveSheet()->getColumnDimension('H')->setWidth(30);
+
+
+
+			 //Le aplicamos negrita a los títulos de la cabecera.
+			 $this->excel->getActiveSheet()->getStyle("A{$contador}")->getFont()->setBold(true);
+			 $this->excel->getActiveSheet()->getStyle("B{$contador}")->getFont()->setBold(true);
+			 $this->excel->getActiveSheet()->getStyle("C{$contador}")->getFont()->setBold(true);
+			 $this->excel->getActiveSheet()->getStyle("D{$contador}")->getFont()->setBold(true);
+			 $this->excel->getActiveSheet()->getStyle("E{$contador}")->getFont()->setBold(true);
+			 $this->excel->getActiveSheet()->getStyle("F{$contador}")->getFont()->setBold(true);
+			 $this->excel->getActiveSheet()->getStyle("G{$contador}")->getFont()->setBold(true);
+			 $this->excel->getActiveSheet()->getStyle("H{$contador}")->getFont()->setBold(true);
+
+
+			 $this->excel->getActiveSheet()->setCellValue("A{$contador}", 'Nº GUIA');
+			 $this->excel->getActiveSheet()->setCellValue("B{$contador}", 'REPORTE');
+			 $this->excel->getActiveSheet()->setCellValue("C{$contador}", 'HORA');
+			 $this->excel->getActiveSheet()->setCellValue("D{$contador}", 'FECHA');
+			 $this->excel->getActiveSheet()->setCellValue("E{$contador}", 'PROVEEDOR');
+			 $this->excel->getActiveSheet()->setCellValue("F{$contador}", 'GUIA PROVEEDOR');
+			 $this->excel->getActiveSheet()->setCellValue("G{$contador}", 'FECHA (ESTIMADA PRÓXIMO TRAZO)');
+			 $this->excel->getActiveSheet()->setCellValue("H{$contador}", 'CIUDAD');
+
+			 //Definimos la data del cuerpo.
+			 foreach($llamadas as $l){
+					//Incrementamos una fila más, para ir a la siguiente.
+					$contador++;
+					//Informacion de las filas de la consulta.
+					$this->excel->getActiveSheet()->setCellValue("A{$contador}","N-".$l->id_guia);
+					$this->excel->getActiveSheet()->setCellValue("B{$contador}", $l->tipo_reporte);
+				  $this->excel->getActiveSheet()->setCellValue("C{$contador}", $l->hora);
+					$this->excel->getActiveSheet()->setCellValue("D{$contador}", $l->fecha_despacho);
+					$this->excel->getActiveSheet()->setCellValue("E{$contador}", $l->nombre_proveedor);
+					$this->excel->getActiveSheet()->setCellValue("F{$contador}", $l->guia_proveedor);
+					$this->excel->getActiveSheet()->setCellValue("G{$contador}", $l->llegada_destino);
+					$this->excel->getActiveSheet()->setCellValue("H{$contador}", $l->ciudad_sat);
+
+
+
+
+
+			 }
+			 //Le ponemos un nombre al archivo que se va a generar.
+			 $archivo = "Trazabilidad-N-.$id.xls";
+			 header('Content-Type: application/vnd.ms-excel');
+			 header('Content-Disposition: attachment;filename="'.$archivo.'"');
+			 header('Cache-Control: max-age=0');
+			 $objWriter = PHPExcel_IOFactory::createWriter($this->excel, 'Excel5');
+			 //Hacemos una salida al navegador con el archivo Excel.
+			 $objWriter->save('php://output');
+		}else{
+			 echo 'No se han encontrado llamadas';
+			 exit;
+		}
+	}
+
 
 	////////////////
 			public function detail_foto() {
 
 				$config['upload_path']          = './include/img/trazabilidad/';
 				$config['allowed_types']        = 'jpg|png|jpeg';
-				$config['max_size']             = 7500;
-				$config['max_width']            = 2500;
-				$config['max_height']           = 1400;
+				$config['max_size']             = 750000;
+				$config['max_width']            = 250000;
+				$config['max_height']           = 140000;
 				$this->load->library('upload', $config);
 				if ( ! $this->upload->do_upload('file')) {
 					$error = array('error' => $this->upload->display_errors());
@@ -266,7 +351,7 @@ class Trazabilidad extends MY_Controller {
 			}
 
 			public function eliminarImagen() {
-	
+
 				$id = $this->input->post('id');
 				$result = $this->trazabilidad->eliminarImagen($id);
 					 if($result['code'] == 0){

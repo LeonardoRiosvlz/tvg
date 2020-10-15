@@ -7,8 +7,8 @@ class Facturas extends MY_Controller {
 		$this->load->model('Archivos_model', 'archivos');
 	  }
     public function index() {
-			if( ! $this->verify_min_level(1)){
-				redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
+			if( ! $this->verify_min_level(6)){
+				redirect (base_url());
 			}
      		$this->is_logged_in();
         $this->load->view('header',["css"=>[""]]);
@@ -17,12 +17,11 @@ class Facturas extends MY_Controller {
         $this->load->view('footer',["js"=>[""]]);
       }
 			public function getfacturas($id=0) {
-
 				  $data['facturas'] = $this->facturas->getfacturas();
 				  header('Content-Type: application/json');
 				  echo json_encode(['facturas' => $data['facturas']]);
-
 				}
+
 				public function getfacturasu($id=0) {
 					$datas['user_id'] = $this->input->post('user_id');
 						$data['facturas'] = $this->facturas->getfacturasu($datas);
@@ -713,7 +712,7 @@ class Facturas extends MY_Controller {
 										}
 			public function insertar() {
 				if( ! $this->verify_min_level(1)){
-					redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
+					redirect (base_url());
 				}
 				$data = json_decode($this->input->post('service_form'),true);
 				$data['id']    = $this->facturas->get_unused_id();
@@ -727,7 +726,7 @@ class Facturas extends MY_Controller {
 				}
 				public function editar() {
 					if( ! $this->verify_min_level(1)){
-						redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
+						redirect (base_url());
 					}
 					$data = json_decode($this->input->post('service_form'),true);
 					$result = $this->facturas->editar($data);
@@ -738,9 +737,22 @@ class Facturas extends MY_Controller {
 							echo json_encode(['status' => '500', 'message' => 'no creado, ha ocurrido un error']);
 						}
 					}
+			public function minimo() {
+				if( ! $this->verify_min_level(9)){
+					redirect (base_url());
+				}
+				$data = json_decode($this->input->post('minimo'),true);
+				$result = $this->facturas->minimo($data);
+					if($result['code'] == 0){
+						echo json_encode(['status' => '200', 'id' => $data['id']]);
+					}
+					else{
+						echo json_encode(['status' => '500', 'message' => 'no creado, ha ocurrido un error']);
+					}
+				}
 			public function anular() {
-				if( ! $this->verify_min_level(1)){
-					redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
+				if( ! $this->verify_min_level(6)){
+					redirect (base_url());
 				}
 			    $data = json_decode($this->input->post('service_form'),true);
 				$result = $this->facturas->anular($data);
@@ -752,8 +764,8 @@ class Facturas extends MY_Controller {
 					}
 				}
 			public function eliminar() {
-				if( ! $this->verify_min_level(1)){
-					redirect (site_url (LOGIN_PAGE. '?logou= 1' , $redirect_protocol));
+				if( ! $this->verify_min_level(6)){
+					redirect (base_url());
 				}
 	            $id = $this->input->post('id');
 	            $result = $this->facturas->deletefacturas($id);
@@ -1606,6 +1618,12 @@ class Facturas extends MY_Controller {
 					  header('Content-Type: application/json');
 					  echo json_encode(['facturas' => $data['facturas']]);
 		 }
+		 public function getValor() {
+
+				 $data['minimo'] = $this->facturas->getValor();
+				 header('Content-Type: application/json');
+				 echo json_encode(['minimo' => $data['minimo']]);
+	}
 		 public function fat(){
 			 $this->load->view('header',["css"=>[""]]);
 			  $this->load->view('menu_blank');

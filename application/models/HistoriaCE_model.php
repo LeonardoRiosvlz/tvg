@@ -55,7 +55,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
               }
         public function getcarga() {
             return $this->db
-            ->select('c.*,s.nombre_sede,t.*,k.nombre_cliente,k.nombre_empresa,k.nit_cliente')
+            ->select('c.*,k.correo_cliente,s.nombre_sede,t.*,k.nombre_cliente,k.nombre_empresa,k.nit_cliente')
             ->from('historial_ce c')
             ->join('sedes s', 'c.sede_cliente = s.id', 'left outer')
             ->join('tarifas t', 'c.id_tarifa = t.id', 'left outer')
@@ -65,7 +65,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
           }
           public function get_anexo($id) {
               return $this->db
-              ->select('c.*,f.forma,f.dias,s.nombre_sede,t.*,k.nombre_empresa,k.nit_cliente,k.nombre_cliente,k.telefono_cliente,k.direccion_cliente,k.ciudad')
+              ->select('c.*,k.correo_cliente,f.forma,f.dias,s.nombre_sede,t.*,k.nombre_empresa,k.nit_cliente,k.nombre_cliente,k.telefono_cliente,k.direccion_cliente,k.ciudad')
               ->from('historial_ce c')
               ->where('numero_anexo_l', $id)
               ->where('c.estado', "Cumplida")
@@ -78,7 +78,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             }
           public function getcarga_cedula($id) {
               return $this->db
-              ->select('c.*,s.nombre_sede,t.*,k.nombre_cliente,k.nombre_empresa,k.nit_cliente')
+              ->select('c.*,k.correo_cliente,s.nombre_sede,t.*,k.nombre_cliente,k.nombre_empresa,k.nit_cliente')
               ->from('historial_ce c')
               ->where('c.cedula_cliente', $id)
               ->join('sedes s', 'c.sede_cliente = s.id', 'left outer')
@@ -89,7 +89,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             }
             public function getcarga_cedula_tiempo($datas) {
                 return $this->db
-                ->select('c.*,s.nombre_sede,t.*,k.nombre_cliente,k.nit_cliente,k.nombre_empresa')
+                ->select('c.*,k.correo_cliente,s.nombre_sede,t.*,k.nombre_cliente,k.nit_cliente,k.nombre_empresa')
                 ->from('historial_ce c')
                 ->where('c.cedula_cliente', $datas['cedula'])
                 ->where('f_entrega_c >=', $datas['desde'])
@@ -102,7 +102,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
               }
               public function getcarga_fecha_numero($datas) {
                   return $this->db
-                  ->select('c.*,s.nombre_sede,t.*,k.nombre_cliente,k.nit_cliente,k.nombre_empresa')
+                  ->select('c.*,k.correo_cliente,s.nombre_sede,t.*,k.nombre_cliente,k.nit_cliente,k.nombre_empresa')
                   ->from('historial_ce c')
                   ->where('n_referencia_c', $datas['numero'])
                   ->where('f_entrega_c >=', $datas['desde'])
@@ -115,7 +115,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 }
                 public function getcarga_fecha_cedula_numero($datas) {
                     return $this->db
-                    ->select('c.*,s.nombre_sede,t.*,k.nombre_cliente,k.nit_cliente,k.nombre_empresa')
+                    ->select('c.*,k.correo_cliente,s.nombre_sede,t.*,k.nombre_cliente,k.nit_cliente,k.nombre_empresa')
                     ->from('historial_ce c')
                     ->where('n_referencia_c', $datas['numero'])
                     ->where('f_entrega_c >=', $datas['desde'])
@@ -128,7 +128,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                   }
               public function getcarga_tiempo($datas) {
                   return $this->db
-                  ->select('c.*,s.nombre_sede,t.*,k.nombre_cliente,k.nit_cliente,k.nombre_empresa')
+                  ->select('c.*,k.correo_cliente,s.nombre_sede,t.*,k.nombre_cliente,k.nit_cliente,k.nombre_empresa')
                   ->from('historial_ce c')
                   ->where('f_entrega_c >=', $datas['desde'])
                   ->where('f_entrega_c <=', $datas['hasta'])
@@ -140,7 +140,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 }
                 public function getcarga_numero($datas) {
                     return $this->db
-                    ->select('c.*,s.nombre_sede,t.*,k.nombre_cliente,k.nit_cliente,k.nombre_empresa')
+                    ->select('c.*,k.correo_cliente,s.nombre_sede,t.*,k.nombre_cliente,k.nit_cliente,k.nombre_empresa')
                     ->from('historial_ce c')
                     ->where('n_referencia_c', $datas['numero'])
                     ->join('sedes s', 'c.sede_cliente = s.id', 'left outer')
@@ -151,7 +151,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                   }
             public function getcarga_cedula_numero($id,$numero) {
                 return $this->db
-                ->select('c.*,s.nombre_sede,t.*,k.nombre_cliente,k.nit_cliente,k.nombre_empresa')
+                ->select('c.*,k.correo_cliente,s.nombre_sede,t.*,k.nombre_cliente,k.nit_cliente,k.nombre_empresa')
                 ->from('historial_ce c')
                 ->where('c.cedula_cliente', $id)
                 ->where('n_referencia_c', $numero)
@@ -163,7 +163,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
               }
               public function getcarga_cedula_numero_tiempo($datas) {
                 return $this->db
-                ->select('c.*,s.nombre_sede,t.*,k.nombre_cliente,k.nombre_empresa,k.nit_cliente')
+                ->select('c.*,k.correo_cliente,s.nombre_sede,t.*,k.nombre_cliente,k.nombre_empresa,k.nit_cliente')
                 ->from('historial_ce c')
                 ->where('n_referencia_c', $datas['n_referencia_c'])
                 ->where('f_entrega_c >=', $datas['desde'])
